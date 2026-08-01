@@ -131,6 +131,16 @@ dd input:focus { outline:2px solid var(--soft); border-color:var(--green); }
   display:inline-block; background:var(--green); color:#fff; text-decoration:none;
   border-radius:999px; padding:8px 12px; font-size:13px; font-weight:800;
 }
+.market-check { margin:0 0 12px; padding:12px; border:1px solid #d9e2fb; border-radius:14px; background:#f7f9ff; }
+.market-title { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; margin-bottom:7px; }
+.market-title b { color:var(--pana); font-size:13px; }
+.market-title small { color:var(--muted); font-size:10.5px; text-align:right; line-height:1.35; }
+.market-row { display:flex; align-items:center; justify-content:space-between; gap:10px; min-height:34px; padding:6px 7px; border-top:1px solid #e4e9f5; color:var(--text); text-decoration:none; font-size:12.5px; }
+a.market-row { border-radius:8px; }
+a.market-row:hover { background:#fff; }
+.market-row strong { color:var(--pana); font-size:14px; white-space:nowrap; }
+.market-row em { display:inline-block; margin-left:4px; padding:2px 5px; border-radius:999px; background:#fff0df; color:#9a541c; font-size:9.5px; font-style:normal; font-weight:800; }
+.market-check p { margin:7px 0 0; color:#6f6258; font-size:10.5px; line-height:1.5; }
 .trylog { margin:0 0 12px; padding:11px 13px; background:#faf8f4; border:1px solid var(--line); border-radius:12px; }
 .trylog b { display:block; font-size:12px; color:var(--muted); margin-bottom:6px; }
 .trylog label { display:inline-block; margin-right:12px; font-size:13px; font-weight:700; color:#59615d; }
@@ -202,10 +212,16 @@ td input:focus { outline:0; border-bottom-color:var(--green); }
 .ratebox strong{font-size:17px}.ratebox button{padding:6px 10px;background:#fff;color:var(--green)}
 .source-meta{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;color:var(--muted);font-size:12px}.filter-hint{display:none;color:var(--muted);font-size:12px;margin:6px 0 10px}
 .photo img{width:100%;height:190px;object-fit:contain;border-radius:12px;display:block}.qtyrow dd{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.qtycontrol{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}.qtycontrol button{border-radius:0;padding:4px 10px;background:#f3f0ea;color:var(--text)}.qtyinput{width:46px!important;border:0!important;border-left:1px solid var(--line)!important;border-right:1px solid var(--line)!important;border-radius:0!important;text-align:center;padding:4px!important}.subtotal{font-size:12px;color:var(--green);font-weight:800}
+.photo.shoe-gallery{overflow:hidden;background:linear-gradient(145deg,#fbfcfb,#edf3f0);padding-bottom:34px}
+.photo.shoe-gallery>.shoe-main{width:100%;height:184px;object-fit:contain;filter:drop-shadow(0 12px 16px rgba(38,48,44,.12))}
+.photo.shoe-gallery>.shoe-alt{position:absolute;right:10px;bottom:36px;width:62px;height:62px;object-fit:contain;background:rgba(255,255,255,.94);border:1px solid rgba(47,109,94,.16);border-radius:13px;padding:4px;box-shadow:0 6px 16px rgba(38,48,44,.12)}
+.image-source{position:absolute;left:10px;right:10px;bottom:9px;color:#52615b;font-size:10.5px;font-weight:750;line-height:1.3;text-align:center;text-decoration:none}
+.image-source:hover{text-decoration:underline;color:var(--green)}
 .tryfields{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}.tryfields label{margin:0!important}.tryfields select{margin-left:4px;border:1px solid var(--line);border-radius:8px;padding:5px;background:#fff}.feel{display:flex;gap:7px;flex-wrap:wrap;align-items:center}.feel span{font-size:12px;color:var(--muted);font-weight:800}.feel label,.candidate{margin:0!important}.candidate{display:block!important;margin-top:8px!important;color:var(--green)!important}.empty-state{display:none;text-align:center;padding:42px 16px;color:var(--muted)}.empty-state.show{display:grid;gap:6px}.empty-state b{color:var(--text);font-size:18px}
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid rgba(47,109,94,.25);outline-offset:2px}
 .card.done{opacity:.74}.card.done .check{color:var(--green)}
 @media(max-width:560px){.card{grid-template-columns:1fr}.photo{min-height:185px}.photo img{height:160px;max-width:88%;margin:auto}.meta-row{grid-template-columns:1fr}.ratebox{justify-content:space-between}.filter-hint{display:block}.filters{margin-top:12px}.body{padding:17px}.cartlist{max-height:40vh}}
+@media(max-width:560px){.photo.shoe-gallery{min-height:210px}.photo.shoe-gallery>.shoe-main{height:168px;max-width:90%}.photo.shoe-gallery>.shoe-alt{width:58px;height:58px;right:14px}}
 
 
 
@@ -474,6 +490,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 <div><dt>現場售價</dt><dd><input class="persist" data-key="text_0" placeholder="現場填寫" type="text"/></dd></div>
 <div><dt>台灣售價</dt><dd><input class="persist" data-key="text_1" placeholder="比價用" type="text"/></dd></div>
 </dl>
+<div class="market-check">
+<div class="market-title"><b>台灣電商比價</b><small>價格快照<br/>2026/08/01 21:02</small></div>
+<div class="market-row"><span>日本參考價換算</span><strong class="jp-twd" data-yen="10470">—</strong></div>
+<a class="market-row" href="https://www.momoshop.com.tw/TP/TP0009010/goodsDetail/TP00090100000478" rel="noopener noreferrer" target="_blank"><span>momo <em>跨境</em></span><strong>NT$2,390 ↗</strong></a>
+<a class="market-row" href="https://24h.pchome.com.tw/prod/DMAH7M-A900JUEN1" rel="noopener noreferrer" target="_blank"><span>PChome <em>國際版</em></span><strong>NT$2,990 ↗</strong></a>
+<p>同型號，但非明確標示的台灣公司貨。促銷、運費、庫存與保固以開啟頁面為準。</p>
+</div>
 <a class="official" href="https://panasonic.jp/hair/products/EH-NE7N.html" rel="noopener noreferrer" target="_blank">官方商品頁 ↗</a>
 </div>
 </article>
@@ -496,6 +519,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 <div><dt>現場售價</dt><dd><input class="persist" data-key="text_2" placeholder="現場填寫" type="text"/></dd></div>
 <div><dt>台灣售價</dt><dd><input class="persist" data-key="text_3" placeholder="比價用" type="text"/></dd></div>
 </dl>
+<div class="market-check">
+<div class="market-title"><b>台灣電商比價</b><small>價格快照<br/>2026/08/01 21:02</small></div>
+<div class="market-row"><span>日本參考價換算</span><strong class="jp-twd" data-yen="4073">—</strong></div>
+<a class="market-row" href="https://www.momoshop.com.tw/TP/TP0009010/goodsDetail/TP00090100000480" rel="noopener noreferrer" target="_blank"><span>momo <em>跨境</em></span><strong>NT$1,669 ↗</strong></a>
+<a class="market-row" href="https://24h.pchome.com.tw/prod/DMAH7M-A900JUELX" rel="noopener noreferrer" target="_blank"><span>PChome <em>國際版</em></span><strong>NT$2,790 ↗</strong></a>
+<p>同型號，但非明確標示的台灣公司貨。促銷、運費、庫存與保固以開啟頁面為準。</p>
+</div>
 <a class="official" href="https://panasonic.jp/hair/products/EH-NE5N.html" rel="noopener noreferrer" target="_blank">官方商品頁 ↗</a>
 </div>
 </article>
@@ -903,6 +933,41 @@ const buyCards=[...document.querySelectorAll('.card.buy')];
 const yen=n=>'¥'+Math.round(n).toLocaleString('en-US');
 const twd=n=>'NT$'+Math.round(n*RATE).toLocaleString('en-US');
 
+const ON_SHOE_IMAGES={
+ cloudtilt:['Cloudtilt','images/on/cloudtilt-side.avif','images/on/cloudtilt-top.avif'],
+ cloudsurfermax:['Cloudsurfer Max','images/on/cloudsurfer-max-side.avif','images/on/cloudsurfer-max-top.avif'],
+ cloudsurfer2:['Cloudsurfer 2','images/on/cloudsurfer-2-side.avif','images/on/cloudsurfer-2-top.avif'],
+ cloud6:['Cloud 6','images/on/cloud-6-side.avif','images/on/cloud-6-top.avif'],
+ cloudrunner3:['Cloudrunner 3','images/on/cloudrunner-3-side.avif','images/on/cloudrunner-3-top.avif']
+};
+function installOnShoeImages(){
+ Object.entries(ON_SHOE_IMAGES).forEach(([id,[name,mainSrc,altSrc]])=>{
+  const card=document.querySelector(`.card[data-id="${id}"]`),photo=card?.querySelector('.photo'),main=photo?.querySelector('img');
+  if(!card||!photo||!main)return;
+  main.src=mainSrc;main.alt=`${name} 鞋款側面`;main.className='shoe-main';
+  const detail=document.createElement('img');detail.className='shoe-alt';detail.src=altSrc;detail.alt=`${name} 鞋款俯視圖`;detail.loading='lazy';
+  const source=document.createElement('a');source.className='image-source';source.href=card.querySelector('.official')?.href||'https://www.on.com/';source.target='_blank';source.rel='noopener noreferrer';source.textContent='圖片來源：ON 官方網站 ↗';
+  photo.classList.add('shoe-gallery');photo.append(detail,source);
+ });
+}
+
+const HOKA_SHOE_IMAGES={
+ clifton11:['Clifton 11','images/hoka/clifton-11.jpeg'],
+ bondi9:['Bondi 9','images/hoka/bondi-9.jpeg'],
+ skyflow:['Skyflow','images/hoka/skyflow.jpeg'],
+ transport2:['Transport 2','images/hoka/transport-2.jpeg'],
+ gaviota5:['Gaviota 5','images/hoka/gaviota-5.jpeg']
+};
+function installHokaShoeImages(){
+ Object.entries(HOKA_SHOE_IMAGES).forEach(([id,[name,mainSrc]])=>{
+  const card=document.querySelector(`.card[data-id="${id}"]`),photo=card?.querySelector('.photo'),main=photo?.querySelector('img');
+  if(!card||!photo||!main)return;
+  main.src=mainSrc;main.alt=`${name} 鞋款側面`;main.className='shoe-main';
+  const source=document.createElement('a');source.className='image-source';source.href='https://www.ispo.com.tw/';source.target='_blank';source.rel='noopener noreferrer';source.textContent='圖片來源：ISPO+ 官方網站 ↗';
+  photo.classList.add('shoe-gallery');photo.append(source);
+ });
+}
+
 function cardName(card){return card.querySelector('h2')?.textContent.trim()||''}
 function qty(card){return Math.max(0,Number(card.querySelector('.qtyinput')?.value||1))}
 function cardTotal(card){return Number(card.dataset.unitPrice||0)*qty(card)}
@@ -926,6 +991,7 @@ function restoreAll(){
 
 function refresh(){
  let done=0,sumAll=0,sumDone=0,rows='';
+ document.querySelectorAll('.jp-twd').forEach(el=>{el.textContent='約 '+twd(Number(el.dataset.yen||0))});
  buyCards.forEach(card=>{
   const box=card.querySelector('.check input'),total=cardTotal(card); sumAll+=total;
   card.querySelector('.subtotal').textContent='小計 '+yen(total);
@@ -968,6 +1034,8 @@ async function updateRate(){
  val.textContent='¥1 = NT$'+RATE.toFixed(4);time.textContent='匯率來源：臺灣銀行｜目前使用最近成功取得的匯率';refresh();
 }
 document.getElementById('refreshRate').onclick=updateRate;
+installOnShoeImages();
+installHokaShoeImages();
 restoreAll();document.querySelectorAll('.shoebox').forEach(b=>b.closest('.card').classList.toggle('done',b.checked));refresh();applyFilters();updateRate();
 </script>
 </body>
