@@ -332,9 +332,11 @@
     .area-tag { background: var(--soft); color: var(--green); }
     .category-tag { background: #f2eee8; color: #665e54; }
 
-    .store-card h2 {
+    .store-name {
+      display: block;
       margin: 0;
       font-size: 19px;
+      font-weight: 800;
       letter-spacing: -.012em;
       line-height: 1.4;
     }
@@ -758,15 +760,15 @@
       focusButton.setAttribute('aria-label', `在地圖上聚焦：${store.name}`);
       focusButton.addEventListener('click', () => focusStore(store.id));
 
-      const tagRow = document.createElement('div');
+      const tagRow = document.createElement('span');
       tagRow.className = 'tag-row';
       tagRow.append(
         makeTextElement('span', 'tag area-tag', AREA_LABELS[store.area]),
         makeTextElement('span', 'tag category-tag', CATEGORY_LABELS[store.category])
       );
 
-      const title = makeTextElement('h2', '', store.name);
-      const brand = makeTextElement('p', 'brand', store.brand);
+      const title = makeTextElement('span', 'store-name', store.name);
+      const brand = makeTextElement('span', 'brand', store.brand);
       const details = document.createElement('dl');
       details.className = 'details';
       details.append(
@@ -784,8 +786,8 @@
         actions.append(makeExternalLink(source.label, source.url, 'action-link'));
       });
 
-      focusButton.append(tagRow, title, brand, details, note);
-      card.append(focusButton, actions);
+      focusButton.append(tagRow, title, brand);
+      card.append(focusButton, details, note, actions);
       return card;
     }
 
