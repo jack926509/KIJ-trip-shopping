@@ -1,0 +1,12 @@
+{
+  "name": "kij-trip-shopping",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:images": "node scripts/build-images.mjs",
+    "validate:data": "node scripts/validate-products.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.5"
+  }
+}
