@@ -303,7 +303,7 @@ export const PRODUCTS = [
     twdRef: 2390,
     defaultQty: 1,
     image: 'images/thumb/ne7n.webp',
-    note: '雙倍礦物負離子吹風機，三段風溫可折疊，2025 年 LDK 讀者票選 Best Buy；想一次到位選這台。',
+    note: '雙倍礦物負離子吹風機，三段風溫可折疊，2025 年 LDK 讀者票選 Best Buy（得獎資訊見 docs/dryer-specs-and-reviews-2026-08-01.md）；想一次到位選這台。',
     source: 'docs/japan-product-prices-2026-08-01.md',
     stores: []
   },
@@ -319,7 +319,7 @@ export const PRODUCTS = [
     twdRef: 1669,
     defaultQty: 1,
     image: 'images/thumb/ne5n.webp',
-    note: '負離子吹風機，功能與 NE7N 相近但少礦物負離子與離子充電面板，CP 值首選，價差近 ¥6,400。',
+    note: '負離子吹風機，功能與 NE7N 相近但少礦物負離子與離子充電面板，CP 值首選，比 NE7N 便宜約 ¥2,557。',
     source: 'docs/japan-product-prices-2026-08-01.md',
     stores: []
   },
