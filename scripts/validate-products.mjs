@@ -52,6 +52,9 @@ for (const p of products) {
 
   if (typeof p.image !== 'string' || p.image.length === 0) errors.push(`${label}: image 缺漏`);
 
+  const thumbPath = path.join(ROOT, 'images/thumb', `${p.id}.webp`);
+  if (!existsSync(thumbPath)) errors.push(`${label}: 找不到對應的 images/thumb/${p.id}.webp（先跑 npm run build:images）`);
+
   if (p.yen !== null) {
     if (typeof p.source !== 'string' || p.source.length === 0) {
       errors.push(`${label}: yen 非 null 時 source 不得為空`);
