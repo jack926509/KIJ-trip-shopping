@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>博多・天神購物地圖｜北九州之旅</title>
-  <meta name="description" content="北九州之旅的博多與天神購物地圖，可依區域與店家類別篩選。">
+  <title>小倉・博多・天神購物地圖｜北九州之旅</title>
+  <meta name="description" content="北九州之旅的小倉、博多與天神購物地圖，可依區域與店家類別篩選。">
   <script>
     window.__mapFallbackRequested = false;
     function showMapFallback() {
@@ -22,6 +22,7 @@
     integrity="sha256-p4NxAoJBhIINfQ3ynhtu7kmQnSHOOJiZ7dNDzJu0Q88="
     crossorigin=""
   >
+  <link rel="stylesheet" href="assets/kij.css">
   <style>
     :root {
       --bg: #f4f1eb;
@@ -34,10 +35,6 @@
       --line: #e7e1d8;
       --gold: #d8a414;
       --warn: #b4571f;
-      --shoe: #356e9d;
-      --drug: #a45165;
-      --daily: #9b6d24;
-      --supermarket: #47764f;
     }
 
     * { box-sizing: border-box; }
@@ -200,10 +197,11 @@
       border-radius: 50%;
     }
 
-    .legend .shoe { background: var(--shoe); }
-    .legend .drug { background: var(--drug); }
-    .legend .daily { background: var(--daily); }
-    .legend .supermarket { background: var(--supermarket); }
+    /* 分類色票與 assets/kij.css 的 .kij-cat-* 文字色保持一致，不在本檔另建一套色票 */
+    .legend .shoe { background: #1f5fa8; } /* 對應 .kij-cat-shoe */
+    .legend .drug { background: #0a7a6a; } /* 對應 .kij-cat-drug */
+    .legend .daily { background: #a04a10; } /* 對應 .kij-cat-food（daily／supermarket 皆為橘色系） */
+    .legend .supermarket { background: #a04a10; } /* 對應 .kij-cat-food */
 
     .content-grid {
       display: grid;
@@ -407,6 +405,52 @@
 
     .maps-link:hover { background: var(--green-dark); }
 
+    .store-products {
+      margin-top: 13px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--line);
+    }
+
+    .store-products-label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--green-dark);
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .store-products-thumbs {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .store-product-thumb {
+      display: block;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .store-product-thumb img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .store-products-more {
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
     #emptyState {
       padding: 48px 20px;
       background: #fff;
@@ -418,6 +462,24 @@
 
     #emptyState[hidden] { display: none; }
     #emptyState strong { display: block; margin-bottom: 6px; color: var(--text); font-size: 17px; }
+
+    #resetFiltersBtn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: var(--tap-min, 44px);
+      margin-top: 12px;
+      padding: 8px 16px;
+      border: 1px solid var(--green);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--green-dark);
+      font-size: 13px;
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    #resetFiltersBtn:hover { background: var(--soft); }
 
     .leaflet-container { font: inherit; }
 
@@ -440,10 +502,11 @@
       border-radius: 50%;
     }
 
-    .map-pin--shoe { background: var(--shoe); }
-    .map-pin--drug { background: var(--drug); }
-    .map-pin--daily { background: var(--daily); }
-    .map-pin--supermarket { background: var(--supermarket); }
+    /* 分類色票與 assets/kij.css 的 .kij-cat-* 文字色保持一致，不在本檔另建一套色票 */
+    .map-pin--shoe { background: #1f5fa8; } /* 對應 .kij-cat-shoe */
+    .map-pin--drug { background: #0a7a6a; } /* 對應 .kij-cat-drug */
+    .map-pin--daily { background: #a04a10; } /* 對應 .kij-cat-food（daily／supermarket 皆為橘色系） */
+    .map-pin--supermarket { background: #a04a10; } /* 對應 .kij-cat-food */
 
     .popup-content { min-width: 180px; }
     .popup-content strong { display: block; margin-bottom: 4px; font-size: 14px; }
@@ -483,8 +546,8 @@
     <a class="back-link" href="index.html" aria-label="返回北九州之旅購物清單">← 返回購物清單</a>
 
     <header class="hero">
-      <p class="eyebrow">HAKATA · TENJIN</p>
-      <h1>博多・天神購物地圖</h1>
+      <p class="eyebrow">KOKURA · HAKATA · TENJIN</p>
+      <h1>小倉・博多・天神購物地圖</h1>
       <p class="hero-copy">依區域與類別快速找順路店家。地圖座標供初步定位，實際出發前請以官方資料確認營業時間，並使用 Google Maps 完整搜尋結果導航。</p>
     </header>
 
@@ -492,6 +555,7 @@
       <div class="filter-group" aria-label="區域篩選">
         <span class="filter-label">區域</span>
         <button class="active" type="button" data-area="all" aria-pressed="true">全部</button>
+        <button type="button" data-area="kokura" aria-pressed="false">小倉</button>
         <button type="button" data-area="hakata" aria-pressed="false">博多</button>
         <button type="button" data-area="tenjin" aria-pressed="false">天神</button>
       </div>
@@ -531,17 +595,29 @@
         <div id="emptyState" hidden>
           <strong>沒有符合條件的店家</strong>
           請調整區域或類別篩選。
+          <div>
+            <button type="button" id="resetFiltersBtn">重設篩選</button>
+          </div>
         </div>
       </section>
     </div>
   </main>
+
+  <nav class="kij-bottombar">
+    <a href="index.html"><i>🛍️</i>清單</a>
+    <a href="#" class="active" aria-current="page"><i>🗺️</i>地圖</a>
+    <a href="index.html#checkout"><i>🧾</i>結算</a>
+    <a href="index.html?fav=1"><i>⭐</i>收藏</a>
+  </nav>
 
   <script
     src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""
   ></script>
-  <script>
+  <script type="module">
+    import { PRODUCTS } from './assets/products.js';
+
     const STORES = [
       {
         id: 'hoka-fukuoka-tenjin',
@@ -699,10 +775,184 @@
           { label: 'AEON 九州官方門市頁', url: 'https://tenpo.aeon-kyushu.info/maxvalu/detail/mvex-hakatagion/' }
         ],
         mapsQuery: 'マックスバリュエクスプレス博多祇園店 福岡県福岡市博多区祇園町 7-20'
+      },
+      // 小倉商圈
+      {
+        id: 'matsumoto-kiyoshi-kokura-station-south',
+        name: '松本清 小倉站南口店',
+        brand: '松本清',
+        category: 'drug',
+        area: 'kokura',
+        address: '福岡縣北九州市小倉北區京町 2-4-27',
+        hours: '07:00–24:00',
+        note: '離小倉站南口很近，適合回飯店前補貨。',
+        lat: 33.88593,
+        lng: 130.88137,
+        officialUrl: 'https://www.matsukiyococokara-online.com/map/?kid=20805475',
+        officialSources: [
+          { label: '松本清官方門市頁', url: 'https://www.matsukiyococokara-online.com/map/?kid=20805475' }
+        ],
+        mapsQuery: 'マツモトキヨシ 小倉駅南口店'
+      },
+      {
+        id: 'cocokara-fine-kokura-station',
+        name: 'Cocokara Fine 小倉站店',
+        brand: 'Cocokara Fine',
+        category: 'drug',
+        area: 'kokura',
+        address: '福岡縣北九州市小倉北區淺野 1-1-1',
+        hours: '09:00–22:00',
+        note: '位於小倉站商場地下樓層。',
+        lat: 33.88684,
+        lng: 130.88272,
+        officialUrl: 'https://www.matsukiyococokara-online.com/map/?kid=20001291',
+        officialSources: [
+          { label: 'Cocokara Fine 官方門市頁', url: 'https://www.matsukiyococokara-online.com/map/?kid=20001291' }
+        ],
+        mapsQuery: 'ココカラファイン 小倉駅店'
+      },
+      {
+        id: 'daiso-amu-plaza-kokura',
+        name: 'DAISO AMU PLAZA 小倉店',
+        brand: 'DAISO',
+        category: 'daily',
+        area: 'kokura',
+        address: '福岡縣北九州市小倉北區淺野 1-1-1',
+        hours: '10:00–20:00',
+        note: '可與 Cocokara Fine 同樓層安排。',
+        lat: 33.88684,
+        lng: 130.88229,
+        officialUrl: 'https://www.daiso-sangyo.co.jp/shop/detail/005500',
+        officialSources: [
+          { label: 'DAISO 官方門市頁', url: 'https://www.daiso-sangyo.co.jp/shop/detail/005500' }
+        ],
+        mapsQuery: 'DAISO アミュプラザ小倉店'
+      },
+      {
+        id: '3coins-plus-amu-plaza-kokura',
+        name: '3COINS＋plus AMU PLAZA 小倉店',
+        brand: '3COINS',
+        category: 'daily',
+        area: 'kokura',
+        address: '福岡縣北九州市小倉北區淺野 1-1-1',
+        hours: '10:00–20:00',
+        note: '中型店、提供免稅服務。',
+        lat: 33.88678,
+        lng: 130.88229,
+        officialUrl: 'https://www.palcloset.jp/addons/pal/shoplist/detail/?b=3coins&brandshop_no=2234',
+        officialSources: [
+          { label: '3COINS 官方店鋪頁', url: 'https://www.palcloset.jp/addons/pal/shoplist/detail/?b=3coins&brandshop_no=2234' }
+        ],
+        mapsQuery: '3COINS plus アミュプラザ小倉店'
+      },
+      {
+        id: 'sundrug-uomachi-ginten-street',
+        name: 'Sundrug 魚町銀天街店',
+        brand: 'Sundrug',
+        category: 'drug',
+        area: 'kokura',
+        address: '福岡縣北九州市小倉北區魚町 2 丁目',
+        hours: '依官方當日公告',
+        note: '魚町商店街主要藥妝採買點。',
+        lat: 33.88334,
+        lng: 130.87999,
+        mapsQuery: 'サンドラッグ 魚町銀天街店'
+      },
+      {
+        id: 'don-quijote-kokura-uomachi',
+        name: '唐吉訶德 小倉魚町店',
+        brand: '唐吉訶德',
+        category: 'drug',
+        area: 'kokura',
+        address: '福岡縣北九州市小倉北區魚町周邊',
+        hours: '依官方當日公告',
+        note: '適合晚間一次補齊食品、日用品和藥妝。',
+        lat: 33.88289,
+        lng: 130.87942,
+        mapsQuery: 'ドン・キホーテ 小倉魚町店'
+      },
+      // 天神（新增，避開既有 3coins-plus-mina-tenjin／daikoku-drug-tenjin-building 重複）
+      {
+        id: 'matsumoto-kiyoshi-tenjin-underground',
+        name: '松本清 天神地下街店',
+        brand: '松本清',
+        category: 'drug',
+        area: 'tenjin',
+        address: '福岡縣福岡市中央區天神 2 丁目地下街',
+        hours: '依官方當日公告',
+        note: '雨天逛街最方便。',
+        lat: 33.59030,
+        lng: 130.39812,
+        mapsQuery: 'マツモトキヨシ 天神地下街店'
+      },
+      {
+        id: 'cocokara-fine-fukuoka-parco',
+        name: 'Cocokara Fine 福岡 PARCO 店',
+        brand: 'Cocokara Fine',
+        category: 'drug',
+        area: 'tenjin',
+        address: '福岡縣福岡市中央區天神 2-9-18',
+        hours: '依 PARCO 營業時間',
+        note: '可與 PARCO、天神地下街一起逛。',
+        lat: 33.59075,
+        lng: 130.39861,
+        mapsQuery: 'ココカラファイン 福岡パルコ店'
+      },
+      {
+        id: 'matsumoto-kiyoshi-mina-tenjin',
+        name: '松本清 mina 天神店',
+        brand: '松本清',
+        category: 'drug',
+        area: 'tenjin',
+        address: '福岡縣福岡市中央區天神 4-3-8',
+        hours: '依官方當日公告',
+        note: '與 3COINS 同棟，集中採買效率最高。',
+        lat: 33.59345,
+        lng: 130.39880,
+        mapsQuery: 'マツモトキヨシ ミーナ天神店'
+      },
+      {
+        id: 'daiso-lachic-fukuoka-tenjin',
+        name: 'DAISO LACHIC 福岡天神店',
+        brand: 'DAISO',
+        category: 'daily',
+        area: 'tenjin',
+        address: '福岡縣福岡市中央區天神 2-1-1',
+        hours: '依商場營業時間',
+        note: '同區亦有 Standard Products、THREEPPY。',
+        lat: 33.58843,
+        lng: 130.39910,
+        mapsQuery: 'DAISO ラシック福岡天神店'
+      },
+      {
+        id: 'daikoku-drug-tenjin-nishidori',
+        name: '大國藥妝 天神西通店',
+        brand: '大國藥妝',
+        category: 'drug',
+        area: 'tenjin',
+        address: '福岡縣福岡市中央區今泉 1 丁目',
+        hours: '依官方當日公告',
+        note: '可和天神西通逛街行程串聯。',
+        lat: 33.58703,
+        lng: 130.39679,
+        mapsQuery: 'ダイコクドラッグ 天神西通り店'
+      },
+      {
+        id: 'don-quijote-fukuoka-tenjin',
+        name: '唐吉訶德 福岡天神本店',
+        brand: '唐吉訶德',
+        category: 'drug',
+        area: 'tenjin',
+        address: '福岡縣福岡市中央區今泉 1 丁目',
+        hours: '依官方當日公告',
+        note: '適合最後統一補貨。',
+        lat: 33.58664,
+        lng: 130.39606,
+        mapsQuery: 'ドン・キホーテ 福岡天神本店'
       }
     ];
 
-    const AREA_LABELS = { hakata: '博多', tenjin: '天神' };
+    const AREA_LABELS = { hakata: '博多', tenjin: '天神', kokura: '小倉' };
     const CATEGORY_LABELS = { shoe: '鞋款', drug: '藥妝', daily: '生活雜貨', supermarket: '超市' };
     const MARKER_HTML = {
       shoe: '<span class="map-pin map-pin--shoe"><span aria-hidden="true"></span></span>',
@@ -750,6 +1000,38 @@
       return link;
     }
 
+    function productsForStore(storeId) {
+      return PRODUCTS.filter((p) => p.stores.includes(storeId));
+    }
+
+    function renderStoreProducts(store, container) {
+      const items = productsForStore(store.id);
+      if (items.length === 0) return; // 無對應商品時不顯示區塊，不顯示「可買 0 項」
+
+      const wrap = document.createElement('div');
+      wrap.className = 'store-products';
+      wrap.append(makeTextElement('span', 'store-products-label', `這裡可買 ${items.length} 項`));
+
+      const shown = items.slice(0, 5);
+      const thumbRow = document.createElement('div');
+      thumbRow.className = 'store-products-thumbs';
+      shown.forEach((p) => {
+        const link = document.createElement('a');
+        link.href = `index.html#${p.id}`;
+        link.className = 'store-product-thumb';
+        const img = document.createElement('img');
+        img.src = p.image;
+        img.alt = p.name;
+        link.append(img);
+        thumbRow.append(link);
+      });
+      if (items.length > 5) {
+        thumbRow.append(makeTextElement('span', 'store-products-more', `+${items.length - 5}`));
+      }
+      wrap.append(thumbRow);
+      container.append(wrap);
+    }
+
     function createStoreCard(store) {
       const card = document.createElement('article');
       card.className = 'store-card';
@@ -779,15 +1061,20 @@
       const note = makeTextElement('p', 'note', store.note);
       const actions = document.createElement('div');
       actions.className = 'card-actions';
-      const primarySource = store.officialSources.find(source => source.url === store.officialUrl);
       actions.append(makeExternalLink('Google Maps 導航', makeMapsUrl(store), 'action-link maps-link'));
-      actions.append(makeExternalLink(primarySource ? primarySource.label : '官方資料', store.officialUrl, 'action-link'));
-      store.officialSources.filter(source => source.url !== store.officialUrl).forEach(source => {
-        actions.append(makeExternalLink(source.label, source.url, 'action-link'));
-      });
+      const officialSources = store.officialSources || [];
+      if (store.officialUrl) {
+        const primarySource = officialSources.find((source) => source.url === store.officialUrl);
+        actions.append(makeExternalLink(primarySource ? primarySource.label : '官方資料', store.officialUrl, 'action-link'));
+      }
+      officialSources
+        .filter((source) => source.url !== store.officialUrl)
+        .forEach((source) => actions.append(makeExternalLink(source.label, source.url, 'action-link')));
 
       focusButton.append(tagRow, title, brand);
-      card.append(focusButton, details, note, actions);
+      card.append(focusButton, details, note);
+      renderStoreProducts(store, card);
+      card.append(actions);
       return card;
     }
 
@@ -898,6 +1185,10 @@
     }
 
     bindFilterButtons();
+    document.getElementById('resetFiltersBtn').addEventListener('click', () => {
+      applyFilters('area', 'all');
+      applyFilters('category', 'all');
+    });
     renderStores();
 
     try {
