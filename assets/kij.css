@@ -1,0 +1,287 @@
+/* KIJ 共用設計系統：index.html、map.html 皆引用此檔，顏色與間距不得在頁面內覆寫 */
+:root {
+  --bg: #fffdf8;
+  --surface: #ffffff;
+  --accent: #ff6b45;
+  --accent-soft: #fff4ec;
+  --text: #2b2118;
+  --muted: #9c9086;
+  --line: #f2e8dc;
+  --radius-card: 16px;
+  --radius-pill: 99px;
+  --shadow-card: 0 3px 12px rgba(180, 120, 80, .13);
+  --tap-min: 44px;
+}
+
+* { box-sizing: border-box; }
+
+body.kij {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+}
+
+.kij-cat-drug { color: #0a7a6a; background: #d7f5ee; }
+.kij-cat-food { color: #a04a10; background: #ffe7d8; }
+.kij-cat-electronics { color: #6b3fa0; background: #ece2fb; }
+.kij-cat-shoe { color: #1f5fa8; background: #dceafb; }
+
+.kij-pill {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+}
+
+.kij-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg);
+  box-shadow: 0 2px 10px rgba(180, 120, 80, .08);
+  padding-bottom: 10px;
+}
+
+.kij-header .title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 15px 11px;
+}
+
+.kij-header .title-row b {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.kij-header .title-row span {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.kij-progress {
+  margin: 0 15px 12px;
+  background: var(--accent-soft);
+  border-radius: 14px;
+  padding: 11px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.kij-progress .label { font-size: 12px; color: #a04a10; font-weight: 700; }
+.kij-progress .total { font-size: 19px; font-weight: 800; color: var(--accent); }
+
+.kij-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 0 15px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.kij-tab {
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 9px 15px;
+  border-radius: var(--radius-pill);
+  background: #f3ede6;
+  color: #6f6459;
+  white-space: nowrap;
+  min-height: var(--tap-min);
+  display: flex;
+  align-items: center;
+  border: none;
+  cursor: pointer;
+}
+
+.kij-tab.active {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(255, 107, 69, .35);
+}
+
+.kij-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 13px 4px 10px;
+  cursor: pointer;
+  min-height: var(--tap-min);
+}
+
+.kij-section-header b { font-size: 14.5px; font-weight: 800; }
+.kij-section-header .count { font-size: 11.5px; color: var(--muted); font-weight: 600; }
+
+.kij-card {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  padding: 11px;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 10px;
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+}
+
+.kij-card .thumb {
+  width: 66px;
+  height: 66px;
+  border-radius: 11px;
+  background: #f7f2ea;
+  flex: none;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+}
+
+.kij-card .thumb img { width: 100%; height: 100%; object-fit: contain; }
+
+.kij-card .thumb::after {
+  content: "⤢";
+  position: absolute;
+  right: 3px;
+  bottom: 1px;
+  font-size: 11px;
+  color: #fff;
+  background: rgba(43, 33, 24, .55);
+  border-radius: 5px;
+  padding: 0 4px;
+}
+
+.kij-card .mid { flex: 1; min-width: 0; }
+.kij-card h5 { font-size: 13.5px; font-weight: 800; margin: 5px 0 2px; }
+.kij-card .ja { font-size: 10.5px; color: var(--muted); }
+.kij-card .price-row { display: flex; align-items: baseline; gap: 7px; margin-top: 7px; }
+.kij-card .yen { font-size: 18px; font-weight: 800; color: var(--accent); }
+.kij-card .twd { font-size: 10px; color: var(--muted); }
+
+.kij-checkbox {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  border: 2px solid #e0d5c8;
+  flex: none;
+  background: none;
+  cursor: pointer;
+  position: relative;
+  padding: 0;
+}
+
+.kij-checkbox.on {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.kij-checkbox.on::after {
+  content: "✓";
+  color: #fff;
+  font-size: 16px;
+  font-weight: 800;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kij-bottombar {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  padding: 10px 0 max(14px, env(safe-area-inset-bottom));
+  z-index: 10;
+}
+
+.kij-bottombar a, .kij-bottombar button {
+  flex: 1;
+  text-align: center;
+  font-size: 10.5px;
+  color: #a99e93;
+  background: none;
+  border: none;
+  min-height: var(--tap-min);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.kij-bottombar .active { color: var(--accent); font-weight: 800; }
+.kij-bottombar i { font-size: 19px; font-style: normal; }
+
+.kij-clerk-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--surface);
+  display: none;
+  flex-direction: column;
+}
+
+.kij-clerk-overlay.show { display: flex; }
+
+.kij-clerk-overlay .bar {
+  background: #2b2118;
+  color: #fff;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: var(--tap-min);
+}
+
+.kij-clerk-overlay .bar button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  min-width: var(--tap-min);
+  min-height: var(--tap-min);
+  cursor: pointer;
+}
+
+.kij-clerk-overlay .big {
+  flex: 1;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.kij-clerk-overlay .big img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+.kij-clerk-overlay .info {
+  background: #2b2118;
+  color: #fff;
+  padding: 16px 20px calc(20px + env(safe-area-inset-bottom));
+  text-align: center;
+}
+
+.kij-clerk-overlay .jpn { font-size: 19px; font-weight: 800; line-height: 1.4; }
+.kij-clerk-overlay .model { font-family: ui-monospace, Menlo, monospace; font-size: 15px; font-weight: 700; color: #ffb08c; margin-top: 7px; }
+.kij-clerk-overlay .ask { font-size: 13.5px; margin-top: 11px; background: rgba(255, 255, 255, .13); border-radius: 9px; padding: 8px 10px; line-height: 1.5; }
+.kij-clerk-overlay .qty { font-size: 12px; color: #c9bdb0; margin-top: 9px; }
+
+.kij-img-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--muted);
+  background: var(--accent-soft);
+}
