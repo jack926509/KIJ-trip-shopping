@@ -50,10 +50,7 @@
     <button type="button" id="kijFavBtn" data-action="nav-fav"><i>⭐</i>收藏</button>
   </nav>
 
-  <!-- 店員模式浮層必須放在 #app 內部，才能被下方掛在 appEl 上的事件委派（click
-       監聽器）接住；先前放在 #app 外面的同層兄弟節點，導致 ✕ 按鈕點擊事件永遠
-       冒泡不到 appEl，closeClerkMode() 永遠不會被觸發，只能用鍵盤 Escape 關閉。
-       position:fixed 不受父層影響，搬進 #app 不影響版面／捲動。 -->
+  <!-- 需放在 #app 內：關閉鈕等點擊要靠下方掛在 appEl 上的事件委派才吃得到。 -->
   <div class="kij-clerk-overlay" id="clerkOverlay">
     <div class="bar">
       <span>店員模式</span>
