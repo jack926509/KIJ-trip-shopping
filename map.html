@@ -14,13 +14,13 @@
       if (mapElement) mapElement.hidden = true;
       if (fallbackElement) fallbackElement.hidden = false;
     }
-    window.addEventListener('error', showMapFallback, true);
   </script>
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
     crossorigin=""
+    onerror="showMapFallback()"
   >
   <link rel="stylesheet" href="assets/kij.css">
   <style>
@@ -606,7 +606,7 @@
   <nav class="kij-bottombar">
     <a href="index.html"><i>🛍️</i>清單</a>
     <a href="#" class="active" aria-current="page"><i>🗺️</i>地圖</a>
-    <a href="index.html#checkout"><i>🧾</i>結算</a>
+    <a href="index.html#kijCheckoutSection"><i>🧾</i>結算</a>
     <a href="index.html?fav=1"><i>⭐</i>收藏</a>
   </nav>
 
@@ -614,6 +614,7 @@
     src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""
+    onerror="showMapFallback()"
   ></script>
   <script type="module">
     import { PRODUCTS } from './assets/products.js';
@@ -1004,6 +1005,15 @@
       return PRODUCTS.filter((p) => p.stores.includes(storeId));
     }
 
+    /* 對齊 index.html 的圖片載入失敗 fallback（顯示商品名稱首字色塊），
+     * 沒有共用模組，靜態網站沒有建置流程，直接複製一份邏輯即可。 */
+    function makeImgFallback(letter) {
+      const div = document.createElement('div');
+      div.className = 'kij-img-fallback';
+      div.textContent = letter;
+      return div;
+    }
+
     function renderStoreProducts(store, container) {
       const items = productsForStore(store.id);
       if (items.length === 0) return; // 無對應商品時不顯示區塊，不顯示「可買 0 項」
@@ -1020,8 +1030,11 @@
         link.href = `index.html#${p.id}`;
         link.className = 'store-product-thumb';
         const img = document.createElement('img');
-        img.src = p.image;
         img.alt = p.name;
+        img.addEventListener('error', () => {
+          img.replaceWith(makeImgFallback(p.name[0]));
+        }, { once: true });
+        img.src = p.image;
         link.append(img);
         thumbRow.append(link);
       });

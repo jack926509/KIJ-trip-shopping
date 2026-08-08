@@ -277,9 +277,9 @@ function buildCardHtml(product) {
   }
 
   return `
-    <div class="kij-card" data-id="${product.id}">
+    <div class="kij-card" id="${escapeHtml(product.id)}" data-id="${escapeHtml(product.id)}">
       <button type="button" class="thumb" data-action="clerk" aria-label="放大看${escapeHtml(product.name)}圖片與求助句">
-        <img src="${product.image}" alt="${escapeHtml(product.name)}" loading="lazy">
+        <img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" loading="lazy">
       </button>
       <div class="mid">
         ${pillHtml}
@@ -431,12 +431,55 @@ function syncKijState() {
  * ──────────────────────────────────────────────────────────────── */
 function focusSection(groupOrAll) {
   document.querySelectorAll('.kij-section').forEach((section) => {
-    const show = groupOrAll === 'all' || section.dataset.group === groupOrAll;
+    const group = section.dataset.group;
+    const show = groupOrAll === 'all' || group === groupOrAll;
     section.querySelector('.kij-section-body').hidden = !show;
     section.querySelector('.kij-section-header').setAttribute('aria-expanded', String(show));
+    // 切回「全部」頁籤時，本函式會把所有分區強制展開；
+    // 若不同步寫回 localStorage，使用者手動收合過的分區重新整理頁面後又會變回收合狀態，
+    // 跟他離開前看到的「展開」畫面不一致，所以這裡要跟著寫回收合鍵。
+    // 非「全部」的頁籤篩選只是暫時隱藏其他分區，不代表使用者要收合它們，故不寫回。
+    if (groupOrAll === 'all' && GROUPS.includes(group)) {
+      setSectionCollapsed(group, false);
+    }
   });
   if (groupOrAll !== 'all') {
-    document.querySelector(`[data-group="${groupOrAll}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelector(`.kij-section[data-group="${groupOrAll}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+/* map.html 商品縮圖連到 index.html#<id> 時，載入應能展開該商品所屬分區並捲動聚焦；
+ * 沿用 focusSection 的展開邏輯，但只展開單一分區、不影響其他分區的顯示／收合狀態。 */
+function focusProductById(id) {
+  const product = PRODUCTS_BY_ID.get(id);
+  if (!product) return false;
+  const section = document.querySelector(`.kij-section[data-group="${product.group}"]`);
+  if (section) {
+    const body = section.querySelector('.kij-section-body');
+    const header = section.querySelector('.kij-section-header');
+    if (body && body.hidden) {
+      body.hidden = false;
+      header?.setAttribute('aria-expanded', 'true');
+      setSectionCollapsed(product.group, false);
+    }
+  }
+  const card = document.getElementById(id);
+  if (card) {
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return true;
+  }
+  return false;
+}
+
+/* 讀取 map.html 帶過來的 URL 參數：?fav=1 套用收藏篩選、#<商品id> 定位捲動到該商品 */
+function applyUrlParams() {
+  const params = new URLSearchParams(location.search);
+  if (params.get('fav') === '1' && !viewState.favOnly) {
+    toggleFavOnly();
+  }
+  if (location.hash.length > 1) {
+    const id = decodeURIComponent(location.hash.slice(1));
+    focusProductById(id);
   }
 }
 
@@ -637,6 +680,7 @@ renderSections();
 updateProgressBar();
 updateCheckoutSummary();
 syncKijState();
+applyUrlParams();
 </script>
 </body>
 </html>
