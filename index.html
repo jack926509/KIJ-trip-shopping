@@ -49,19 +49,23 @@
     <button type="button" data-action="nav-checkout"><i>🧾</i>結算</button>
     <button type="button" id="kijFavBtn" data-action="nav-fav"><i>⭐</i>收藏</button>
   </nav>
-</div>
 
-<div class="kij-clerk-overlay" id="clerkOverlay">
-  <div class="bar">
-    <span>店員模式</span>
-    <button type="button" data-action="close-clerk" aria-label="關閉店員模式">✕</button>
-  </div>
-  <div class="big"><img alt="" src=""></div>
-  <div class="info">
-    <p class="jpn" hidden></p>
-    <p class="model" hidden></p>
-    <p class="ask">この商品を探しています。<br>置き場所を教えていただけますか？</p>
-    <p class="qty"></p>
+  <!-- 店員模式浮層必須放在 #app 內部，才能被下方掛在 appEl 上的事件委派（click
+       監聽器）接住；先前放在 #app 外面的同層兄弟節點，導致 ✕ 按鈕點擊事件永遠
+       冒泡不到 appEl，closeClerkMode() 永遠不會被觸發，只能用鍵盤 Escape 關閉。
+       position:fixed 不受父層影響，搬進 #app 不影響版面／捲動。 -->
+  <div class="kij-clerk-overlay" id="clerkOverlay">
+    <div class="bar">
+      <span>店員模式</span>
+      <button type="button" data-action="close-clerk" aria-label="關閉店員模式">✕</button>
+    </div>
+    <div class="big"><img alt="" src=""></div>
+    <div class="info">
+      <p class="jpn" hidden></p>
+      <p class="model" hidden></p>
+      <p class="ask">この商品を探しています。<br>置き場所を教えていただけますか？</p>
+      <p class="qty"></p>
+    </div>
   </div>
 </div>
 
