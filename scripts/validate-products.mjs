@@ -17,6 +17,7 @@ function fail(errors) {
 
 const VALID_GROUP = new Set(['shopping', 'dryer', 'shoes']);
 const VALID_TRACKING = new Set(['buy', 'try']);
+const VALID_PRICE_KIND = new Set(['official', 'retailer-reference', 'launch-reference', 'legacy-reference', 'pending']);
 
 const products = await loadProducts();
 const errors = [];
@@ -43,6 +44,18 @@ for (const p of products) {
 
   if (p.yen !== null && typeof p.yen !== 'number') errors.push(`${label}: yen 必須是 null 或數字`);
   if (p.twdRef !== null && typeof p.twdRef !== 'number') errors.push(`${label}: twdRef 必須是 null 或數字`);
+  if (!VALID_PRICE_KIND.has(p.priceKind)) errors.push(`${label}: priceKind 不合法（${p.priceKind}）`);
+  if (p.priceSourceUrl !== null && (typeof p.priceSourceUrl !== 'string' || !/^https:\/\//.test(p.priceSourceUrl))) {
+    errors.push(`${label}: priceSourceUrl 必須是 null 或 https URL`);
+  }
+  if (p.priceCheckedAt !== null && !/^\d{4}-\d{2}-\d{2}$/.test(p.priceCheckedAt)) {
+    errors.push(`${label}: priceCheckedAt 必須是 null 或 YYYY-MM-DD`);
+  }
+  if (p.yen === null && p.priceKind !== 'pending') errors.push(`${label}: 未定價商品的 priceKind 必須是 pending`);
+  if (p.yen !== null && p.priceKind === 'pending') errors.push(`${label}: 有日圓價格時不得標為 pending`);
+  if (['official', 'retailer-reference', 'launch-reference'].includes(p.priceKind) && p.priceSourceUrl === null) {
+    errors.push(`${label}: ${p.priceKind} 價格必須附 priceSourceUrl`);
+  }
 
   if (p.tracking === 'buy') {
     if (typeof p.defaultQty !== 'number' || p.defaultQty < 1) errors.push(`${label}: tracking=buy 時 defaultQty 必須 ≥ 1`);

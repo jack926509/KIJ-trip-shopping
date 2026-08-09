@@ -1,5 +1,5 @@
 // 單一商品資料源。index.html 與 map.html 皆從此檔讀取，不得各自維護副本。
-export const PRODUCTS = [
+const BASE_PRODUCTS = [
   // ── 藥妝日用（shopping，18 項）──
   {
     id: 'jinmart',
@@ -538,3 +538,67 @@ export const PRODUCTS = [
     stores: []
   }
 ];
+
+const PRICE_OVERRIDES = {
+  cloudtilt: {
+    yen: 23100,
+    source: 'docs/product-price-sources-2026-08-09.md',
+    priceKind: 'official',
+    priceSourceUrl: 'https://www.on.com/ja-jp/products/cloudtilt-m-3me1010/mens/grain-white-shoes-3ME10105217',
+    priceCheckedAt: '2026-08-09',
+    note: 'On 城市旅遊款，官方日本售價 ¥23,100；顏色與尺寸庫存依門市為準。',
+  },
+  bondi9: {
+    yen: 24200,
+    source: 'docs/product-price-sources-2026-08-09.md',
+    priceKind: 'official',
+    priceSourceUrl: 'https://www.hoka.com/jp/bondi-9/1162011.html',
+    priceCheckedAt: '2026-08-09',
+    note: 'HOKA 最大緩震款，官方日本定價 ¥24,200；實際庫存依門市為準。',
+  },
+  skyflow: {
+    yen: 22000,
+    source: 'docs/product-price-sources-2026-08-09.md',
+    priceKind: 'retailer-reference',
+    priceSourceUrl: 'https://store.alpen-group.jp/Form/Product/ProductDetail.aspx?shop=0&pid=4304230316-0001&bid=1257',
+    priceCheckedAt: '2026-08-09',
+    note: 'HOKA 柔彈款，日本通路參考價 ¥22,000；實際門市價格與庫存可能不同。',
+  },
+  gaviota5: {
+    yen: 27500,
+    source: 'docs/product-price-sources-2026-08-09.md',
+    priceKind: 'launch-reference',
+    priceSourceUrl: 'https://www.rikujyokyogi.co.jp/archives/108880',
+    priceCheckedAt: '2026-08-09',
+    note: 'HOKA 穩定厚底款，2023 年上市參考價 ¥27,500；屬舊款，實際出清價格與庫存可能不同。',
+  },
+  'hasameru-sponge': {
+    yen: 551,
+    source: 'docs/product-price-sources-2026-08-09.md',
+    priceKind: 'retailer-reference',
+    priceSourceUrl: 'https://www.yodobashi.com/product/100000001008953262/',
+    priceCheckedAt: '2026-08-09',
+    note: '山崎產業バスボンくんはさめるスポンジ，現行 W ポケット款通路參考價 ¥551；顏色與版本請現場核對。',
+  },
+  'chawanmushi-no-moto': {
+    yen: 237,
+    source: 'docs/product-price-sources-2026-08-09.md',
+    priceKind: 'official',
+    priceSourceUrl: 'https://www.kubara.jp/item/search/%E8%8C%B6%E7%A2%97%E8%92%B8%E3%81%97',
+    priceCheckedAt: '2026-08-09',
+    note: '久原本家茅乃舍出品，單包官方售價 ¥237；加水加蛋即可製作茶碗蒸。',
+  },
+};
+
+export const PRODUCTS = BASE_PRODUCTS.map((product) => {
+  const override = PRICE_OVERRIDES[product.id] || {};
+  const yen = Object.hasOwn(override, 'yen') ? override.yen : product.yen;
+  return {
+    ...product,
+    ...override,
+    yen,
+    priceKind: override.priceKind || (yen === null ? 'pending' : 'legacy-reference'),
+    priceSourceUrl: override.priceSourceUrl || null,
+    priceCheckedAt: override.priceCheckedAt || (yen === null ? null : '2026-08-01'),
+  };
+});
