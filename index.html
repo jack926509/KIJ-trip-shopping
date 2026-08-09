@@ -182,7 +182,6 @@ const PRICE_KIND_LABEL = {
   official: '官方定價',
   'retailer-reference': '通路參考價',
   'launch-reference': '上市參考價',
-  'legacy-reference': '參考價',
   pending: '價格待確認',
 };
 
@@ -217,7 +216,7 @@ function buildCardHtml(product) {
         <button type="button" class="kij-qty-btn" data-action="qty-plus" aria-label="增加數量">＋</button>
       </div>`;
     controlsHtml = `
-      <button type="button" class="kij-status-btn${bought ? ' on' : ''}" data-action="toggle-bought" aria-pressed="${bought}">${bought ? '已購買 ✓' : '標記已購買'}</button>`;
+      <button type="button" class="kij-status-btn${bought ? ' on' : ''}" data-action="toggle-bought" aria-pressed="${bought}">${bought ? '已購買 ✓' : '未購買'}</button>`;
   } else {
     const tried = isTried(product.id);
     const yenText = product.yen != null ? `¥${product.yen.toLocaleString()}` : '價格待確認';
@@ -227,7 +226,7 @@ function buildCardHtml(product) {
         <span class="kij-price-kind">${priceKindText}</span>
       </div>`;
     controlsHtml = `
-      <button type="button" class="kij-status-btn${tried ? ' on' : ''}" data-action="toggle-tried" aria-pressed="${tried}">${tried ? '已試穿 ✓' : '標記已試穿'}</button>`;
+      <button type="button" class="kij-status-btn${tried ? ' on' : ''}" data-action="toggle-tried" aria-pressed="${tried}">${tried ? '已試穿 ✓' : '未試穿'}</button>`;
   }
 
   return `
@@ -318,7 +317,7 @@ function syncCardVisual(card, product) {
     const bought = isBought(product.id);
     boughtBtn.classList.toggle('on', bought);
     boughtBtn.setAttribute('aria-pressed', String(bought));
-    boughtBtn.textContent = bought ? '已購買 ✓' : '標記已購買';
+    boughtBtn.textContent = bought ? '已購買 ✓' : '未購買';
 
     const qty = getQty(product.id);
     const qtyValueEl = card.querySelector('.kij-qty-value');
@@ -328,7 +327,7 @@ function syncCardVisual(card, product) {
     const tried = isTried(product.id);
     triedBtn.classList.toggle('on', tried);
     triedBtn.setAttribute('aria-pressed', String(tried));
-    triedBtn.textContent = tried ? '已試穿 ✓' : '標記已試穿';
+    triedBtn.textContent = tried ? '已試穿 ✓' : '未試穿';
   }
 }
 

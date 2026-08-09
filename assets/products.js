@@ -540,6 +540,88 @@ const BASE_PRODUCTS = [
 ];
 
 const PRICE_OVERRIDES = {
+  'hareno-toothbrush': {
+    priceKind: 'retailer-reference',
+    priceSourceUrl: 'https://lohaco.yahoo.co.jp/store/h-lohaco/item/xw29088/',
+    priceCheckedAt: '2026-08-01',
+  },
+  'lion-stain-rescue': {
+    priceKind: 'retailer-reference',
+    priceSourceUrl: 'https://lohaco.yahoo.co.jp/store/h-lohaco/item/aa53310/',
+    priceCheckedAt: '2026-08-01',
+  },
+  'kobayashi-ichiteki': {
+    priceKind: 'retailer-reference',
+    priceSourceUrl: 'https://lohaco.yahoo.co.jp/store/h-lohaco/item/9046790/',
+    priceCheckedAt: '2026-08-01',
+  },
+  ramen: {
+    yen: 306,
+    priceKind: 'official',
+    priceSourceUrl: 'https://www.maruchan.co.jp/products/brand/maruchanseimen-cup/',
+    priceCheckedAt: '2026-08-01',
+    note: '東洋水產官方建議零售價 ¥278 未稅，含稅預算以 ¥306 計；門市促銷價可能不同。',
+  },
+  ne7n: {
+    priceKind: 'retailer-reference',
+    priceSourceUrl: 'https://kakaku.com/item/J0000048995/',
+    priceCheckedAt: '2026-08-01',
+  },
+  ne5n: {
+    priceKind: 'retailer-reference',
+    priceSourceUrl: 'https://review.kakaku.com/review/J0000048996/',
+    priceCheckedAt: '2026-08-01',
+  },
+  cloudsurfermax: {
+    priceKind: 'official',
+    priceSourceUrl: 'https://www.on.com/ja-jp/products/cloudsurfer-max-m-3mf3043',
+    priceCheckedAt: '2026-08-01',
+  },
+  cloudsurfer2: {
+    priceKind: 'official',
+    priceSourceUrl: 'https://www.on.com/ja-jp/products/cloudsurfer-2-3mf1012',
+    priceCheckedAt: '2026-08-01',
+  },
+  cloud6: {
+    priceKind: 'official',
+    priceSourceUrl: 'https://www.on.com/en-jp/shop/shoes/cloudrunner',
+    priceCheckedAt: '2026-08-01',
+  },
+  cloudrunner3: {
+    priceKind: 'official',
+    priceSourceUrl: 'https://www.on.com/en-jp/shop/shoes/cloudrunner',
+    priceCheckedAt: '2026-08-01',
+  },
+  clifton11: {
+    priceKind: 'official',
+    priceSourceUrl: 'https://hoka-jp-api.hoka.com/',
+    priceCheckedAt: '2026-08-01',
+  },
+  transport2: {
+    priceKind: 'launch-reference',
+    priceSourceUrl: 'https://web.goout.jp/fashion/461940/',
+    priceCheckedAt: '2026-08-01',
+  },
+  'golden-seasoning': {
+    priceKind: 'official',
+    priceSourceUrl: 'https://horinishi.jp/lineup/',
+    priceCheckedAt: '2026-08-01',
+  },
+  'toothbrush-p61': {
+    priceKind: 'retailer-reference',
+    priceSourceUrl: 'https://www.costco.co.jp/c/EBiSU-Premium-Care-Series-Toothbrush-6-PK/p/83612',
+    priceCheckedAt: '2026-08-01',
+  },
+  '3coins-luggage-bag': {
+    priceKind: 'retailer-reference',
+    priceSourceUrl: 'https://ure.pia.co.jp/articles/-/3063302',
+    priceCheckedAt: '2026-08-01',
+  },
+  'kayanoya-dashi': {
+    priceKind: 'official',
+    priceSourceUrl: 'https://www.kubara.jp/sp/kayanoya/dashi/kayanoyadashi/570000/',
+    priceCheckedAt: '2026-08-01',
+  },
   cloudtilt: {
     yen: 23100,
     source: 'docs/product-price-sources-2026-08-09.md',
@@ -590,14 +672,22 @@ const PRICE_OVERRIDES = {
   },
 };
 
+const PENDING_PRICE_IDS = new Set([
+  'jinmart', 'roihi', 'atnon', 'nature', 'anelon', 'moilip', 'pitas',
+  'soft', 'kombu', 'findmy', 'belt-fan',
+]);
+
 export const PRODUCTS = BASE_PRODUCTS.map((product) => {
-  const override = PRICE_OVERRIDES[product.id] || {};
+  const pendingOverride = PENDING_PRICE_IDS.has(product.id)
+    ? { yen: null, priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: null }
+    : {};
+  const override = { ...pendingOverride, ...(PRICE_OVERRIDES[product.id] || {}) };
   const yen = Object.hasOwn(override, 'yen') ? override.yen : product.yen;
   return {
     ...product,
     ...override,
     yen,
-    priceKind: override.priceKind || (yen === null ? 'pending' : 'legacy-reference'),
+    priceKind: override.priceKind || 'pending',
     priceSourceUrl: override.priceSourceUrl || null,
     priceCheckedAt: override.priceCheckedAt || (yen === null ? null : '2026-08-01'),
   };

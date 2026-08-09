@@ -17,7 +17,7 @@ function fail(errors) {
 
 const VALID_GROUP = new Set(['shopping', 'dryer', 'shoes']);
 const VALID_TRACKING = new Set(['buy', 'try']);
-const VALID_PRICE_KIND = new Set(['official', 'retailer-reference', 'launch-reference', 'legacy-reference', 'pending']);
+const VALID_PRICE_KIND = new Set(['official', 'retailer-reference', 'launch-reference', 'pending']);
 
 const products = await loadProducts();
 const errors = [];
