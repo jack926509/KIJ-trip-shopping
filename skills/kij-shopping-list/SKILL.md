@@ -1,6 +1,6 @@
 ---
 name: kij-shopping-list
-description: 新增或更新北九州購物清單商品。當使用者說「新增購物清單商品」、「把這個商品加到北九州清單」、提供商品名稱或日本商品網址時必須使用。負責研究日本價格、官方商品資料、圖片、分類與可證實的店鋪關聯，安全寫入 KIJ-trip-shopping 網站並完成資料與瀏覽器驗證。
+description: 新增或更新北九州購物清單商品。當使用者說「新增購物清單商品」、「把這個商品加到北九州清單」、「便利商店新增這個」或提供商品名稱、日本商品網址、商品照片時必須使用。負責研究日本價格、官方商品資料、圖片、分類與可證實的店鋪關聯，安全寫入 KIJ-trip-shopping 網站並完成資料與瀏覽器驗證。
 ---
 
 # 北九州購物清單商品管理
@@ -24,7 +24,9 @@ description: 新增或更新北九州購物清單商品。當使用者說「新�
 
 ## 商品欄位
 
-請使用 `templates/product-record.js`。`group` 只能是 `shopping`、`dryer`、`shoes`；一般採買商品的 `tracking` 是 `buy`，鞋款試穿用 `try`。`tracking: 'buy'` 必須有正整數 `defaultQty`；`tracking: 'try'` 的 `defaultQty` 必須是 `null`。
+請使用 `templates/product-record.js`。`group` 只能是 `shopping`、`convenience`、`dryer`、`shoes`。藥妝、日用品與一般伴手禮使用 `shopping`；Lawson、7-ELEVEN、FamilyMart 等便利商店食品與飲品使用 `convenience`；吹風機使用 `dryer`；鞋款使用 `shoes`。一般採買商品的 `tracking` 是 `buy`，鞋款試穿用 `try`。`tracking: 'buy'` 必須有正整數 `defaultQty`；`tracking: 'try'` 的 `defaultQty` 必須是 `null`。
+
+便利商店商品的 `category` 使用網站既有分類，例如 `冰品`、`麵包甜點`、`飲品`、`即食湯品`；新分類只有在確有必要且頁面色票對照已一併補齊時才新增。
 
 價格種類：
 
