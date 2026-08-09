@@ -16,39 +16,22 @@
       </div>
       <div class="kij-progress">
         <span class="label" id="kijProgressLabel"></span>
-        <span class="total" id="kijProgressTotal">¥0</span>
       </div>
       <nav class="kij-tabs" id="kijTabs">
-        <button type="button" class="kij-tab active" data-action="tab" data-group="all">全部</button>
-        <button type="button" class="kij-tab" data-action="tab" data-group="shopping">藥妝日用</button>
+        <button type="button" class="kij-tab active" data-action="tab" data-group="shopping">藥妝日用</button>
         <button type="button" class="kij-tab" data-action="tab" data-group="dryer">吹風機</button>
-        <button type="button" class="kij-tab" data-action="tab" data-group="shoes">鞋款試穿</button>
+        <button type="button" class="kij-tab" data-action="tab" data-group="shoes">鞋款</button>
       </nav>
     </div>
   </header>
 
   <main id="kijMain">
     <div id="kijSections"></div>
-
-    <section class="kij-section" data-group="checkout">
-      <div class="kij-section-header" data-action="toggle-section" role="button" tabindex="0" aria-expanded="true">
-        <b>🧾 結算</b>
-        <span class="count" id="kijCheckoutCount"></span>
-      </div>
-      <div class="kij-section-body" id="kijCheckoutSection">
-        <div class="kij-progress">
-          <span class="label">預估總金額（僅計入「要買」商品，鞋款試穿不計）</span>
-          <span class="total" id="kijCheckoutTotal">¥0</span>
-        </div>
-        <div id="kijCheckoutList"></div>
-      </div>
-    </section>
   </main>
 
   <nav class="kij-bottombar">
     <a href="#" class="active" data-action="nav-list"><i>🛍️</i>清單</a>
     <a href="map.html"><i>🗺️</i>地圖</a>
-    <button type="button" data-action="nav-checkout"><i>🧾</i>結算</button>
   </nav>
 </div>
 
@@ -65,6 +48,7 @@ const GROUP_META = {
   dryer: { label: '吹風機', icon: '💨' },
   shoes: { label: '鞋款試穿', icon: '👟' },
 };
+let activeGroup = 'shopping';
 
 /* 6 種實際 category → 4 種色票 class 的對應規則。
  * 分類文字本身一律從 PRODUCTS 動態取得（不寫死清單），
@@ -140,12 +124,6 @@ function setQty(id, val) { writeNum(`kij_qty_${id}`, Math.max(0, val)); }
 function isSectionCollapsed(group) { return readBool(`kij_section_${group}_collapsed`, false); }
 function setSectionCollapsed(group, val) { writeBool(`kij_section_${group}_collapsed`, val); }
 
-function computeTotal() {
-  return PRODUCTS
-    .filter((p) => p.tracking === 'buy' && p.yen != null)
-    .reduce((sum, p) => sum + p.yen * getQty(p.id), 0);
-}
-
 /* ────────────────────────────────────────────────────────────────
  * 小工具
  * ──────────────────────────────────────────────────────────────── */
@@ -194,9 +172,14 @@ function buildCardHtml(product) {
   const jaHtml = product.jaName ? `<div class="ja">${escapeHtml(product.jaName)}</div>` : '';
   const modelHtml = product.model ? `<div class="ja">型號：${escapeHtml(product.model)}</div>` : '';
   const noteHtml = product.note ? `<div class="ja">${escapeHtml(product.note)}</div>` : '';
-  const priceNoteHtml = product.priceKind === 'pending'
-    ? `<div class="ja kij-price-note">價格待確認原因：${escapeHtml(product.priceNote)}</div>`
+  const sourceHtml = product.priceSourceUrl
+    ? `<a class="ja kij-price-source" href="${escapeHtml(product.priceSourceUrl)}" target="_blank" rel="noopener noreferrer">查看價格來源 ↗</a>`
     : '';
+  const researchHtml = product.group === 'dryer'
+    ? `<a class="ja kij-price-source" href="docs/dryer-specs-and-reviews-2026-08-01.md" target="_blank">完整規格與評價 ↗</a>`
+    : product.group === 'shoes'
+      ? `<a class="ja kij-price-source" href="docs/shoe-research-2026-08-09.md" target="_blank">十款推薦與評價 ↗</a>`
+      : '';
 
   let priceHtml = '';
   let controlsHtml = '';
@@ -244,7 +227,8 @@ function buildCardHtml(product) {
         ${modelHtml}
         ${priceHtml}
         ${noteHtml}
-        ${priceNoteHtml}
+        ${sourceHtml}
+        ${researchHtml}
       </div>
       <div class="kij-card-actions">
         ${controlsHtml}
@@ -308,7 +292,7 @@ function attachImageFallbacks() {
 }
 
 function renderSections() {
-  document.getElementById('kijSections').innerHTML = GROUPS.map(buildSectionHtml).join('');
+  document.getElementById('kijSections').innerHTML = buildSectionHtml(activeGroup);
   attachImageFallbacks();
 }
 
@@ -339,7 +323,6 @@ function updateProgressBar() {
   const buyItems = PRODUCTS.filter((p) => p.tracking === 'buy');
   const boughtCount = buyItems.filter((p) => isBought(p.id)).length;
   document.getElementById('kijProgressLabel').textContent = `已買 ${boughtCount} / ${buyItems.length} 項`;
-  document.getElementById('kijProgressTotal').textContent = `¥${computeTotal().toLocaleString()}`;
 }
 
 function updateShoeSectionCount() {
@@ -347,50 +330,22 @@ function updateShoeSectionCount() {
   if (header) header.textContent = shoeCountText();
 }
 
-function updateCheckoutSummary() {
-  const total = computeTotal();
-  document.getElementById('kijCheckoutTotal').textContent = `¥${total.toLocaleString()}`;
-  const items = PRODUCTS.filter((p) => p.tracking === 'buy' && getQty(p.id) > 0);
-  document.getElementById('kijCheckoutCount').textContent = `${items.length} 項`;
-  const list = document.getElementById('kijCheckoutList');
-  list.innerHTML = items.length
-    ? items.map((p) => {
-        const qty = getQty(p.id);
-        const subtotal = p.yen != null ? `¥${(p.yen * qty).toLocaleString()}` : '—';
-        return `<div class="kij-checkout-row" style="display:flex;justify-content:space-between;padding:8px 4px;border-bottom:1px solid var(--line);font-size:13px;"><span>${escapeHtml(p.name)} × ${qty}</span><span>${subtotal}</span></div>`;
-      }).join('')
-    : `<p class="ja" style="padding:8px 4px;">尚未設定任何購買數量，調整商品卡片上的數量後這裡會列出明細。</p>`;
-}
-
 function syncKijState() {
   window.__kijState = {
     bought: Object.fromEntries(PRODUCTS.filter((p) => p.tracking === 'buy').map((p) => [p.id, isBought(p.id)])),
     qty: Object.fromEntries(PRODUCTS.filter((p) => p.tracking === 'buy').map((p) => [p.id, getQty(p.id)])),
     tried: Object.fromEntries(PRODUCTS.filter((p) => p.tracking === 'try').map((p) => [p.id, isTried(p.id)])),
-    total: computeTotal(),
   };
 }
 
 /* ────────────────────────────────────────────────────────────────
  * 分類頁籤「跳轉＋聚焦」（brief 給定的確切邏輯）
  * ──────────────────────────────────────────────────────────────── */
-function focusSection(groupOrAll) {
-  document.querySelectorAll('.kij-section').forEach((section) => {
-    const group = section.dataset.group;
-    const show = groupOrAll === 'all' || group === groupOrAll;
-    section.querySelector('.kij-section-body').hidden = !show;
-    section.querySelector('.kij-section-header').setAttribute('aria-expanded', String(show));
-    // 切回「全部」頁籤時，本函式會把所有分區強制展開；
-    // 若不同步寫回 localStorage，使用者手動收合過的分區重新整理頁面後又會變回收合狀態，
-    // 跟他離開前看到的「展開」畫面不一致，所以這裡要跟著寫回收合鍵。
-    // 非「全部」的頁籤篩選只是暫時隱藏其他分區，不代表使用者要收合它們，故不寫回。
-    if (groupOrAll === 'all' && GROUPS.includes(group)) {
-      setSectionCollapsed(group, false);
-    }
-  });
-  if (groupOrAll !== 'all') {
-    document.querySelector(`.kij-section[data-group="${groupOrAll}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
+function focusSection(group) {
+  activeGroup = group;
+  document.querySelectorAll('.kij-tab').forEach((tab) => tab.classList.toggle('active', tab.dataset.group === group));
+  renderSections();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 /* map.html 商品縮圖連到 index.html#<id> 時，載入應能展開該商品所屬分區並捲動聚焦；
@@ -398,16 +353,7 @@ function focusSection(groupOrAll) {
 function focusProductById(id) {
   const product = PRODUCTS_BY_ID.get(id);
   if (!product) return false;
-  const section = document.querySelector(`.kij-section[data-group="${product.group}"]`);
-  if (section) {
-    const body = section.querySelector('.kij-section-body');
-    const header = section.querySelector('.kij-section-header');
-    if (body && body.hidden) {
-      body.hidden = false;
-      header?.setAttribute('aria-expanded', 'true');
-      setSectionCollapsed(product.group, false);
-    }
-  }
+  if (activeGroup !== product.group) focusSection(product.group);
   const card = document.getElementById(id);
   if (card) {
     card.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -436,9 +382,7 @@ function toggleSectionCollapse(section) {
 }
 
 function resetView() {
-  document.querySelectorAll('.kij-tab').forEach((t) => t.classList.toggle('active', t.dataset.group === 'all'));
-  focusSection('all');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  focusSection('shopping');
 }
 
 /* ────────────────────────────────────────────────────────────────
@@ -470,7 +414,6 @@ appEl.addEventListener('click', (e) => {
       setBought(id, !isBought(id));
       syncCardVisual(card, product);
       updateProgressBar();
-      updateCheckoutSummary();
       syncKijState();
       break;
     }
@@ -489,23 +432,12 @@ appEl.addEventListener('click', (e) => {
       setQty(id, Math.max(0, getQty(id) + delta));
       syncCardVisual(card, product);
       updateProgressBar();
-      updateCheckoutSummary();
       syncKijState();
       break;
     }
     case 'nav-list': {
       e.preventDefault();
       resetView();
-      break;
-    }
-    case 'nav-checkout': {
-      e.preventDefault();
-      // 結算區塊的 data-group="checkout" 不屬於任何頁籤群組，若使用者當下停在
-      // 非「全部」頁籤，結算區塊會被 focusSection 設成 hidden，導致 scrollIntoView
-      // 對一個 display:none 的元素完全無效。先強制切回「全部」讓所有分區（含結算）
-      // 可見，再捲動，避免對隱藏區塊呼叫 scrollIntoView 而無效。
-      focusSection('all');
-      document.getElementById('kijCheckoutSection')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       break;
     }
     default:
@@ -528,7 +460,6 @@ appEl.addEventListener('keydown', (e) => {
 document.getElementById('kijItemCount').textContent = `共 ${PRODUCTS.length} 項商品`;
 renderSections();
 updateProgressBar();
-updateCheckoutSummary();
 syncKijState();
 applyUrlParams();
 </script>

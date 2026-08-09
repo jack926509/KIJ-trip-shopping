@@ -540,6 +540,78 @@ const BASE_PRODUCTS = [
 ];
 
 const PRICE_OVERRIDES = {
+  jinmart: {
+    yen: 1098,
+    model: '15 g',
+    source: 'docs/product-price-sources-2026-08-09.md',
+    priceKind: 'retailer-reference',
+    priceSourceUrl: 'https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4987241139217',
+    priceCheckedAt: '2026-08-09',
+    note: '照片確認為 Mentholatum ジンマート 15 g；松本清線上通路參考價 ¥1,098。',
+  },
+  roihi: {
+    yen: 2618,
+    model: '80 g',
+    source: 'docs/product-price-sources-2026-08-09.md',
+    priceKind: 'retailer-reference',
+    priceSourceUrl: 'https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4987167090265',
+    priceCheckedAt: '2026-08-09',
+    note: '照片對應ロイヒクリームフェルビ 80 g；松本清線上通路參考價 ¥2,618。',
+  },
+  atnon: {
+    yen: 1430,
+    model: '15 g',
+    source: 'docs/product-price-sources-2026-08-09.md',
+    priceKind: 'official',
+    priceSourceUrl: 'https://www.kobayashi.co.jp/seihin/anex_cream/',
+    priceCheckedAt: '2026-08-09',
+    note: '照片對應アットノンEX クリーム 15 g；小林製藥建議零售價 ¥1,300 未稅（含稅 ¥1,430）。',
+  },
+  nature: {
+    yen: 803,
+    model: '40 ml',
+    source: 'docs/product-price-sources-2026-08-09.md',
+    priceKind: 'retailer-reference',
+    priceSourceUrl: 'https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4955814710965',
+    priceCheckedAt: '2026-08-09',
+    note: '照片對應ネイチャーコンク 薬用フットケアローション 40 ml；松本清線上通路參考價 ¥803。',
+  },
+  anelon: {
+    yen: 1628,
+    model: '10 カプセル',
+    source: 'docs/product-price-sources-2026-08-09.md',
+    priceKind: 'retailer-reference',
+    priceSourceUrl: 'https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4987300029459',
+    priceCheckedAt: '2026-08-09',
+    note: '照片對應アネロン「ニスキャップ」10 粒；松本清線上通路參考價 ¥1,628。',
+  },
+  moilip: {
+    yen: 1078,
+    model: '8 g',
+    source: 'docs/product-price-sources-2026-08-09.md',
+    priceKind: 'retailer-reference',
+    priceSourceUrl: 'https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4909978204440',
+    priceCheckedAt: '2026-08-09',
+    note: '照片對應モアリップN 8 g；松本清線上通路參考價 ¥1,078。',
+  },
+  pitas: {
+    yen: 632,
+    model: 'ライチ 12 個',
+    source: 'docs/product-price-sources-2026-08-09.md',
+    priceKind: 'retailer-reference',
+    priceSourceUrl: 'https://www.matsukiyococokara-online.com/store/catalog/product/view/id/45209611',
+    priceCheckedAt: '2026-08-09',
+    note: '照片對應ピタス のどトローチL（荔枝）12 枚；松本清線上通路參考價 ¥632。',
+  },
+  soft: {
+    yen: 990,
+    model: '20 g',
+    source: 'docs/product-price-sources-2026-08-09.md',
+    priceKind: 'retailer-reference',
+    priceSourceUrl: 'https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4971825016582',
+    priceCheckedAt: '2026-08-09',
+    note: '照片對應デオナチュレ ソフトストーンW 20 g；松本清線上通路參考價 ¥990。',
+  },
   'hareno-toothbrush': {
     priceKind: 'retailer-reference',
     priceSourceUrl: 'https://lohaco.yahoo.co.jp/store/h-lohaco/item/xw29088/',
@@ -673,8 +745,7 @@ const PRICE_OVERRIDES = {
 };
 
 const PENDING_PRICE_IDS = new Set([
-  'jinmart', 'roihi', 'atnon', 'nature', 'anelon', 'moilip', 'pitas',
-  'soft', 'kombu', 'findmy', 'belt-fan',
+  'kombu', 'findmy', 'belt-fan',
 ]);
 
 const PENDING_PRICE_NOTES = {

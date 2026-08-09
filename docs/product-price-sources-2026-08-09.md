@@ -1,5 +1,20 @@
 # 商品價格來源紀錄（2026-08-09）
 
+## 照片辨識後補充的藥妝通路價格
+
+| 商品 | 照片可辨識規格 | 日本含稅價 | 種類 | 直接來源 |
+| --- | --- | ---: | --- | --- |
+| ジンマート | 15 g | ¥1,098 | 松本清線上通路參考價 | [松本清](https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4987241139217) |
+| ロイヒクリームフェルビ | 80 g | ¥2,618 | 松本清線上通路參考價 | [松本清](https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4987167090265) |
+| アットノンEX クリーム | 15 g | ¥1,430 | 小林製藥建議零售價（¥1,300 未稅） | [小林製藥](https://www.kobayashi.co.jp/seihin/anex_cream/) |
+| ネイチャーコンク 薬用フットケアローション | 40 ml | ¥803 | 松本清線上通路參考價 | [松本清](https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4955814710965) |
+| アネロン「ニスキャップ」 | 10 粒 | ¥1,628 | 松本清線上通路參考價 | [松本清](https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4987300029459) |
+| モアリップN | 8 g | ¥1,078 | 松本清線上通路參考價 | [松本清](https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4909978204440) |
+| ピタス のどトローチL | 荔枝 12 枚 | ¥632 | 松本清線上通路參考價 | [松本清](https://www.matsukiyococokara-online.com/store/catalog/product/view/id/45209611) |
+| デオナチュレ ソフトストーンW | 20 g | ¥990 | 松本清線上通路參考價 | [松本清](https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4971825016582) |
+
+松本清線上價格與實體門市可能不同；本表不以網路價格保證門市售價。
+
 本次補價以日本官方網站優先；官方商品頁未提供可讀價格時，才使用日本大型通路或上市資訊，並在網站卡片標示為「通路參考價」或「上市參考價」。
 
 | 商品 | 顯示價格 | 價格種類 | 來源 |
