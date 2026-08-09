@@ -53,6 +53,9 @@ for (const p of products) {
   }
   if (p.yen === null && p.priceKind !== 'pending') errors.push(`${label}: 未定價商品的 priceKind 必須是 pending`);
   if (p.yen !== null && p.priceKind === 'pending') errors.push(`${label}: 有日圓價格時不得標為 pending`);
+  if (p.priceKind === 'pending' && (typeof p.priceNote !== 'string' || p.priceNote.trim().length === 0)) {
+    errors.push(`${label}: pending 商品必須提供 priceNote 說明待確認原因`);
+  }
   if (['official', 'retailer-reference', 'launch-reference'].includes(p.priceKind) && p.priceSourceUrl === null) {
     errors.push(`${label}: ${p.priceKind} 價格必須附 priceSourceUrl`);
   }
@@ -80,7 +83,7 @@ for (const p of products) {
 
   // 簡體字掃描（僅檢查中文欄位，粗略但足以攔截明顯誤植）
   const SIMPLIFIED_MARKERS = ['产', '业', '国', '这', '为', '来', '发', '经', '现', '会', '与', '实', '万', '价'];
-  for (const field of ['name', 'note']) {
+  for (const field of ['name', 'note', 'priceNote']) {
     const val = p[field];
     if (typeof val === 'string' && SIMPLIFIED_MARKERS.some((ch) => val.includes(ch))) {
       errors.push(`${label}: ${field} 疑似含簡體字（"${val}"）`);

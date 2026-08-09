@@ -584,12 +584,12 @@ const PRICE_OVERRIDES = {
   },
   cloud6: {
     priceKind: 'official',
-    priceSourceUrl: 'https://www.on.com/en-jp/shop/shoes/cloudrunner',
+    priceSourceUrl: 'https://www.on.com/ja-jp/products/cloud-6-m-3mf1007/mens/',
     priceCheckedAt: '2026-08-01',
   },
   cloudrunner3: {
     priceKind: 'official',
-    priceSourceUrl: 'https://www.on.com/en-jp/shop/shoes/cloudrunner',
+    priceSourceUrl: 'https://www.on.com/ja-jp/products/cloudrunner-3-m-3mg1007',
     priceCheckedAt: '2026-08-01',
   },
   clifton11: {
@@ -677,9 +677,29 @@ const PENDING_PRICE_IDS = new Set([
   'soft', 'kombu', 'findmy', 'belt-fan',
 ]);
 
+const PENDING_PRICE_NOTES = {
+  jinmart: '卡片未載明品牌、容量或型號，無法可靠比對單一商品價格。',
+  roihi: '卡片未載明包裝規格，藥妝店價格會依貼數與促銷不同。',
+  atnon: '卡片未載明容量與型號，無法可靠比對單一商品價格。',
+  nature: '卡片未載明確切品名與包裝規格，無法可靠比對單一商品價格。',
+  anelon: '卡片未載明包裝規格，藥妝店價格會依錠數與促銷不同。',
+  moilip: '卡片未載明容量與型號，無法可靠比對單一商品價格。',
+  pitas: '卡片未載明貼片尺寸與入數，價格會依規格不同。',
+  soft: '卡片未載明硬度與包裝入數，無法可靠比對單一商品價格。',
+  kombu: '卡片未載明品牌與容量，無法可靠比對單一商品價格。',
+  findmy: '卡片未載明確切品牌與型號，無法可靠比對單一商品價格。',
+  'belt-fan': '卡片未載明品牌、電池容量與型號，無法可靠比對單一商品價格。',
+};
+
 export const PRODUCTS = BASE_PRODUCTS.map((product) => {
   const pendingOverride = PENDING_PRICE_IDS.has(product.id)
-    ? { yen: null, priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: null }
+    ? {
+        yen: null,
+        priceKind: 'pending',
+        priceSourceUrl: null,
+        priceCheckedAt: null,
+        priceNote: PENDING_PRICE_NOTES[product.id],
+      }
     : {};
   const override = { ...pendingOverride, ...(PRICE_OVERRIDES[product.id] || {}) };
   const yen = Object.hasOwn(override, 'yen') ? override.yen : product.yen;
@@ -687,8 +707,9 @@ export const PRODUCTS = BASE_PRODUCTS.map((product) => {
     ...product,
     ...override,
     yen,
-    priceKind: override.priceKind || 'pending',
-    priceSourceUrl: override.priceSourceUrl || null,
-    priceCheckedAt: override.priceCheckedAt || (yen === null ? null : '2026-08-01'),
+    priceKind: override.priceKind || product.priceKind || 'pending',
+    priceSourceUrl: override.priceSourceUrl || product.priceSourceUrl || null,
+    priceCheckedAt: override.priceCheckedAt || product.priceCheckedAt || (yen === null ? null : '2026-08-01'),
+    priceNote: override.priceNote || null,
   };
 });

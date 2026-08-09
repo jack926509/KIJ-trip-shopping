@@ -194,6 +194,9 @@ function buildCardHtml(product) {
   const jaHtml = product.jaName ? `<div class="ja">${escapeHtml(product.jaName)}</div>` : '';
   const modelHtml = product.model ? `<div class="ja">型號：${escapeHtml(product.model)}</div>` : '';
   const noteHtml = product.note ? `<div class="ja">${escapeHtml(product.note)}</div>` : '';
+  const priceNoteHtml = product.priceKind === 'pending'
+    ? `<div class="ja kij-price-note">價格待確認原因：${escapeHtml(product.priceNote)}</div>`
+    : '';
 
   let priceHtml = '';
   let controlsHtml = '';
@@ -241,6 +244,7 @@ function buildCardHtml(product) {
         ${modelHtml}
         ${priceHtml}
         ${noteHtml}
+        ${priceNoteHtml}
       </div>
       <div class="kij-card-actions">
         ${controlsHtml}
