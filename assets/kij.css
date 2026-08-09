@@ -246,7 +246,8 @@ body.kij {
 
 .kij-progress .label { color: var(--accent); font-size: 13px; }
 .kij-progress .total { color: var(--accent); font-size: 22px; }
-.kij-tabs { padding: 0; }
+.kij-tabs { padding: 0; gap: 9px; }
+.kij-tab { flex: 0 0 auto; min-height: 44px; }
 .kij-tab { background: #ece8e1; color: #4e5652; }
 .kij-tab.active { background: var(--accent); box-shadow: 0 3px 10px rgba(47, 109, 94, .28); }
 
@@ -270,20 +271,32 @@ body.kij {
 }
 
 .kij-card .thumb {
-  width: 100px;
-  height: 100px;
+  width: 132px;
+  height: 132px;
   border: 1px solid var(--line);
   border-radius: 12px;
   background: #f7f4ed;
-  cursor: default;
+  overflow: hidden;
 }
 .kij-card .thumb::after { content: none; }
+.kij-image-link { display: block; width: 100%; height: 100%; cursor: zoom-in; }
+.kij-image-link img { width: 100%; height: 100%; object-fit: cover; transition: transform .18s ease; }
+.kij-image-link:hover img { transform: scale(1.05); }
 .kij-card h5 { margin: 7px 0 3px; font-size: 18px; line-height: 1.3; }
 .kij-card .ja { font-size: 12px; line-height: 1.55; }
 .kij-card .price-row { flex-wrap: wrap; margin-top: 9px; }
 .kij-card .yen { color: var(--accent); font-size: 23px; }
 .kij-card .twd, .kij-price-kind { font-size: 11px; color: var(--muted); }
 .kij-card-actions { display: flex; flex-direction: column; justify-content: space-between; gap: 12px; min-width: 102px; }
+.kij-card-convenience .kij-card-actions,
+.kij-card-dryer .kij-card-actions { display: none; }
+.kij-card-convenience .mid,
+.kij-card-dryer .mid { align-self: center; }
+.kij-purchase-toggle { align-self: flex-end; white-space: nowrap; }
+.kij-card-shopping { align-items: center; min-height: 196px; }
+.kij-card-shopping .thumb { width: 174px; height: 174px; margin: 0 16px 0 4px; align-self: center; }
+.kij-card-shopping .mid { padding-left: 4px; }
+.kij-card-shopping .kij-purchase-toggle { min-height: 32px; padding: 5px 8px; border-radius: 8px; font-size: 11px; }
 .kij-status-btn {
   min-height: var(--tap-min);
   padding: 8px 12px;
@@ -296,9 +309,44 @@ body.kij {
   cursor: pointer;
 }
 .kij-status-btn.on { background: var(--accent); color: #fff; }
+.kij-map-open {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 850;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.kij-map-open:hover { background: var(--accent); color: #fff; }
+.kij-store-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  margin-top: 10px;
+  padding-top: 9px;
+  border-top: 1px dashed var(--line);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.55;
+}
+.kij-store-summary span { min-width: 64px; color: var(--muted); font-weight: 650; }
+.kij-store-summary.is-pending { color: var(--muted); font-weight: 650; }
 .kij-qty-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+.kij-qty-row > span:first-child { min-width: 64px; color: var(--muted); font-size: 12px; font-weight: 650; }
 .kij-qty-btn { min-width: 36px; min-height: 36px; border: none; border-radius: 8px; background: var(--accent-soft); color: var(--accent); font-size: 17px; font-weight: 800; cursor: pointer; }
 .kij-qty-value { min-width: 24px; text-align: center; font-weight: 800; }
+.kij-shopping-facts { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 14px; margin-top: 11px; color: var(--text); }
+.kij-shopping-facts > span { min-width: 64px; color: var(--muted); font-size: 12px; font-weight: 650; }
+.kij-shopping-facts strong { color: var(--accent); font-size: 18px; }
+.kij-shopping-facts small { color: var(--muted); font-size: 11px; }
+.kij-dryer-summary { margin-top: 4px; color: var(--muted); font-size: 13px; font-weight: 700; }
 .kij-checkout-row { display:flex; justify-content:space-between; gap:16px; padding:10px 4px; border-bottom:1px solid var(--line); font-size:14px; }
 
 .kij-bottombar { background: rgba(255, 255, 255, .96); border-top-color: var(--line); }
@@ -314,7 +362,10 @@ body.kij {
   .kij-header { padding-top: 12px; }
   .kij-header .title-row b { font-size: 23px; }
   .kij-card { gap: 11px; padding: 12px; }
-  .kij-card .thumb { width: 82px; height: 82px; }
+  .kij-card .thumb { width: 108px; height: 108px; }
+  .kij-card-shopping { min-height: 134px; }
+  .kij-card-shopping .thumb { width: 122px; height: 122px; margin-right: 4px; }
+  .kij-card-shopping .mid { padding-left: 0; }
   .kij-card h5 { font-size: 16px; }
   .kij-card .yen { font-size: 20px; }
   .kij-card-actions { min-width: 82px; }
@@ -330,10 +381,54 @@ body.kij {
   background: var(--surface);
 }
 .kij-compare-note { margin: 0; padding: 12px 14px; color: var(--muted); font-size: 12px; line-height: 1.55; }
+.kij-compare-title { margin: 0; padding: 14px 14px 8px; color: var(--accent); font-size: 15px; }
+.kij-compare-title span { margin-left: 8px; color: var(--muted); font-size: 12px; font-weight: 650; }
 .kij-compare-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border-top: 1px solid var(--line); }
-.kij-compare table { width: 100%; min-width: 720px; border-collapse: collapse; font-size: 12px; }
+.kij-compare table { width: 100%; min-width: 720px; border-collapse: collapse; table-layout: fixed; font-size: 12px; }
 .kij-compare th, .kij-compare td { padding: 11px 12px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; line-height: 1.45; }
 .kij-compare th { background: var(--accent-soft); color: var(--accent); font-weight: 800; white-space: nowrap; }
 .kij-compare td:first-child { min-width: 146px; color: var(--text); font-weight: 800; }
 .kij-compare th:last-child, .kij-compare td:last-child { border-right: 0; }
 .kij-compare tbody tr:last-child td { border-bottom: 0; }
+.kij-dryer-compare { border-color: #c9d8ec; }
+.kij-dryer-compare .kij-compare-note { background: #f3f7fc; }
+.kij-dryer-compare th { background: #e7f0fb; color: #315f94; }
+.kij-dryer-compare td:first-child { background: #f7faff; color: #315f94; }
+.kij-dryer-compare table { min-width: 640px; }
+.kij-dryer-compare th:first-child,
+.kij-dryer-compare td:first-child { width: 22%; }
+.kij-dryer-compare th:not(:first-child),
+.kij-dryer-compare td:not(:first-child) { width: 39%; }
+.kij-shoe-brand { margin: 0 12px 14px; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; }
+.kij-shoe-brand-on { border-color: #b9cfea; }
+.kij-shoe-brand-hoka { border-color: #f1cbab; }
+.kij-shoe-brand-on .kij-compare-title { background: #edf5ff; color: #28639d; }
+.kij-shoe-brand-hoka .kij-compare-title { background: #fff3e9; color: #bf651f; }
+.kij-shoe-brand .kij-compare-scroll { border-top: 0; }
+.kij-shoe-brand-on th { background: #dfeeff; color: #28639d; }
+.kij-shoe-brand-hoka th { background: #ffead8; color: #bf651f; }
+.kij-shoe-brand-on td:first-child { background: #f5f9ff; color: #28639d; }
+.kij-shoe-brand-hoka td:first-child { background: #fff8f1; color: #bf651f; }
+.kij-shoe-compare .kij-compare-scroll { border-top: 0; }
+.kij-shoe-card-group { grid-column: 1 / -1; padding-top: 6px; }
+.kij-shoe-card-group > h3 { margin: 0 0 10px; padding: 9px 12px; border-radius: 10px; font-size: 16px; letter-spacing: .06em; }
+.kij-shoe-card-group-on > h3 { background: #edf5ff; color: #28639d; }
+.kij-shoe-card-group-hoka > h3 { background: #fff3e9; color: #bf651f; }
+.kij-shoe-card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+
+@media (max-width: 540px) {
+  .kij-card-actions { min-width: 88px; }
+  .kij-map-open { min-height: 34px; padding: 7px 8px; font-size: 11px; }
+  .kij-compare th:first-child,
+  .kij-compare td:first-child { position: sticky; left: 0; z-index: 1; }
+  .kij-compare th:first-child { background: var(--accent-soft); }
+  .kij-compare td:first-child { background: var(--surface); }
+  .kij-dryer-compare th:first-child { background: #e7f0fb; }
+  .kij-dryer-compare td:first-child { background: #f7faff; }
+  .kij-shoe-brand-on th:first-child { background: #dfeeff; }
+  .kij-shoe-brand-on td:first-child { background: #f5f9ff; }
+  .kij-shoe-brand-hoka th:first-child { background: #ffead8; }
+  .kij-shoe-brand-hoka td:first-child { background: #fff8f1; }
+  .kij-shoe-brand { margin: 0 8px 12px; }
+  .kij-shoe-card-grid { grid-template-columns: 1fr; }
+}

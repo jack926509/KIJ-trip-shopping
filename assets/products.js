@@ -603,7 +603,7 @@ const BASE_PRODUCTS = [
   // ── Lawson 便利商店必買必吃（2026-08-09，使用者提供圖片）──
   {
     id: 'morinaga-caramelic-pudding',
-    group: 'convenience', tracking: 'buy', category: '冰品',
+    group: 'convenience', tracking: 'buy', category: '冰品', storeBrand: 'LAWSON',
     name: 'Morinaga 焦糖布丁冰淇淋', jaName: 'マミーレ キャラメリックプディング', model: null,
     yen: 180, twdRef: null, defaultQty: 1, image: 'images/thumb/morinaga-caramelic-pudding.webp',
     note: 'Lawson 圖片推薦新品；請以門市冷凍櫃實際庫存為準。', source: 'docs/product-price-sources-2026-08-09.md', stores: [],
@@ -611,7 +611,7 @@ const BASE_PRODUCTS = [
   },
   {
     id: 'strawberry-chocolate-melon-pan',
-    group: 'convenience', tracking: 'buy', category: '麵包甜點',
+    group: 'convenience', tracking: 'buy', category: '麵包甜點', storeBrand: 'LAWSON',
     name: '草莓巧克力菠蘿麵包', jaName: 'チョコ！メロンパン いちご', model: null,
     yen: 235, twdRef: null, defaultQty: 1, image: 'images/thumb/strawberry-chocolate-melon-pan.webp',
     note: 'Lawson 圖片推薦新品；有效期限短，適合當日購買食用。', source: 'docs/product-price-sources-2026-08-09.md', stores: [],
@@ -619,7 +619,7 @@ const BASE_PRODUCTS = [
   },
   {
     id: 'jurokucha-630ml',
-    group: 'convenience', tracking: 'buy', category: '飲品',
+    group: 'convenience', tracking: 'buy', category: '飲品', storeBrand: 'LAWSON',
     name: 'Asahi 十六茶', jaName: 'アサヒ 十六茶', model: '630 ml・無咖啡因',
     yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/jurokucha-630ml.webp',
     note: 'Lawson 圖片推薦新品；630 ml、無咖啡因標示，價格以門市為準。', source: '', stores: [],
@@ -627,7 +627,7 @@ const BASE_PRODUCTS = [
   },
   {
     id: 'gogo-no-kocha-ice-milk-tea',
-    group: 'convenience', tracking: 'buy', category: '飲品',
+    group: 'convenience', tracking: 'buy', category: '飲品', storeBrand: 'LAWSON',
     name: '午後紅茶 ICE MILK TEA', jaName: '午後の紅茶 ICE MILK TEA', model: null,
     yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/gogo-no-kocha-ice-milk-tea.webp',
     note: 'Lawson 圖片推薦新品；冷藏飲品，價格以門市為準。', source: '', stores: [],
@@ -635,11 +635,69 @@ const BASE_PRODUCTS = [
   },
   {
     id: 'asari-miso-soup',
-    group: 'convenience', tracking: 'buy', category: '即食湯品',
+    group: 'convenience', tracking: 'buy', category: '即食湯品', storeBrand: 'LAWSON',
     name: '蛤蜊味噌湯', jaName: 'あさりのおみそ汁', model: null,
     yen: 178, twdRef: null, defaultQty: 1, image: 'images/thumb/asari-miso-soup.webp',
     note: 'Lawson 圖片推薦；可直接加熱食用，請以門市冷藏櫃實際庫存為準。', source: 'docs/product-price-sources-2026-08-09.md', stores: [],
     priceKind: 'photo-reference', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '使用者提供圖片中的層架價標為 ¥165（含稅 ¥178）。'
+  },
+
+  // ── 追加：調味料與常備藥（2026-08-09，使用者提供圖片）──
+  {
+    id: 'hanamidori-kiwami-spice',
+    group: 'shopping', tracking: 'buy', category: '食品伴手禮',
+    name: '博多華味鳥 10 種極香料', jaName: '博多華味鳥 10種の極スパイス', model: '55 g（現行規格）',
+    yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/hanamidori-kiwami-spice.webp',
+    note: '黑胡椒、大蒜、芝麻等 10 種香料調和，適合雞肉、魚類與炒菜。2026 年現行規格由 60 g 改為 55 g，外包裝可能與照片略有不同。', source: '', stores: [],
+    priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '現行 55 g 規格的官方定價與可直接驗證的單瓶通路價格均未顯示。'
+  },
+  {
+    id: 'kobayashi-zukkinon-ointment',
+    group: 'shopping', tracking: 'buy', category: '旅途常備藥',
+    name: '小林製藥塗抹式 ZUKKINON 軟膏', jaName: '塗るズッキノン軟膏', model: '第 3 類醫藥品・15 g',
+    yen: 1100, twdRef: null, defaultQty: 1, image: 'images/thumb/kobayashi-zukkinon-ointment.webp',
+    note: '肩頸僵硬伴隨頭痛時使用的外用軟膏；請依說明書使用，不可塗於太陽穴、眼周、黏膜或傷口。', source: 'docs/product-price-sources-2026-08-09.md', stores: [],
+    priceKind: 'official', priceSourceUrl: 'https://www.kobayashi.co.jp/seihin/zkn_n/index.html', priceCheckedAt: '2026-08-09', priceNote: null
+  },
+  {
+    id: 'jojoen-salad-sauce',
+    group: 'shopping', tracking: 'buy', category: '食品伴手禮',
+    name: '敘敘苑芝麻風味沙拉醬', jaName: '敘々苑 野菜サラダのたれ［ごま風味］', model: '300 ml',
+    yen: 702, twdRef: null, defaultQty: 1, image: 'images/thumb/jojoen-salad-sauce.webp',
+    note: '醬油與芝麻風味沙拉醬，建議先放入碗中再與蔬菜充分拌合，不是直接淋上的一般沙拉醋。', source: 'docs/product-price-sources-2026-08-09.md', stores: [],
+    priceKind: 'official', priceSourceUrl: 'https://j-products.net/products/salad-tare.html', priceCheckedAt: '2026-08-09', priceNote: null
+  },
+  {
+    id: 'fundokin-ao-yuzu-kosho',
+    group: 'shopping', tracking: 'buy', category: '食品伴手禮',
+    name: 'FUNDOKIN 青柚子胡椒', jaName: 'フンドーキン 青柚子こしょう', model: '50 g 瓶裝',
+    yen: 443, twdRef: null, defaultQty: 1, image: 'images/thumb/fundokin-ao-yuzu-kosho.webp',
+    note: '大分特產調味料，使用日本產青柚子果皮與青辣椒；適合鍋物、烏龍麵、味噌湯與炒菜。開封後須冷藏。', source: 'docs/product-price-sources-2026-08-09.md', stores: [],
+    priceKind: 'official', priceSourceUrl: 'https://www.fundokin.co.jp/sp/products/yuzukosyo/', priceCheckedAt: '2026-08-09', priceNote: null
+  },
+  {
+    id: 'higashimaru-oyster-dashi-shoyu',
+    group: 'shopping', tracking: 'buy', category: '食品伴手禮',
+    name: 'HIGASHIMARU 牡蠣高湯醬油', jaName: 'ヒガシマル 牡蠣だし醤油', model: '400 ml',
+    yen: 421, twdRef: null, defaultQty: 1, image: 'images/thumb/higashimaru-oyster-dashi-shoyu.webp',
+    note: '使用瀨戶內產真牡蠣精華，搭配柴魚與昆布高湯；鹽分較一般濃口醬油少 25%，可用於拌飯、炒物與燉煮。', source: 'docs/product-price-sources-2026-08-09.md', stores: [],
+    priceKind: 'official', priceSourceUrl: 'https://www.higashimaru.co.jp/products/detail/pdt0103.html', priceCheckedAt: '2026-08-09', priceNote: null
+  },
+  {
+    id: '3coins-defrosting-plate',
+    group: 'shopping', tracking: 'buy', category: '廚房用品',
+    name: '3COINS KITINTO 解凍盤', jaName: '解凍プレート／KITINTO', model: '2412-KR542-0000・約直徑19.6 × 厚み0.3 cm',
+    yen: 1100, twdRef: null, defaultQty: 1, image: 'images/thumb/3coins-defrosting-plate.webp',
+    note: '鋁合金解凍盤；生肉、魚類解凍用。圖片標價為 ¥1,100，本品為 3COINS 商品，実體店庫存請現場確認。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['3coins-plus-mina-tenjin', '3coins-plus-amu-plaza-kokura'],
+    priceKind: 'photo-reference', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '使用者提供的層架照片可辨識 KITINTO 解凍盤與 ¥1,100（含稅）標價。'
+  },
+  {
+    id: '3coins-folding-camp-chair',
+    group: 'shopping', tracking: 'buy', category: '戶外用品',
+    name: '3COINS 折疊式迷你露營椅', jaName: '折りたたみコンパクトチェア', model: '2525-DN9065-000・黑色',
+    yen: 660, twdRef: null, defaultQty: 1, image: 'images/thumb/3coins-folding-camp-chair.webp',
+    note: '適合排隊、露營與野餐的折疊椅；官方資料標示耐重 100 kg、含收納袋。實體店庫存請現場確認。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['3coins-plus-mina-tenjin', '3coins-plus-amu-plaza-kokura'],
+    priceKind: 'official', priceSourceUrl: 'https://www.palcloset.jp/display/item/2525-DN9065-000/?b=3coins', priceCheckedAt: '2026-08-09', priceNote: null
   }
 ];
 

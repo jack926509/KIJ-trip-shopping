@@ -42,3 +42,24 @@
 | 生田斗真廣告藥、感冒藥、痠痛藥與其餘 Lawson 品項 | 待確認 | 待確認 | 使用者提供圖片 | 未將無法清楚辨識的價格或規格寫成確定資料。 |
 
 三項藥品皆保留為採購辨識資料，不提供醫療建議；便利商店品項的價格、供應與庫存請以旅途中現場標示為準。
+
+## 2026-08-09 新增調味料與常備藥
+
+| 品項 | 規格 | 網站顯示價格 | 價格種類 | 直接來源 | 圖片來源 |
+| --- | --- | ---: | --- | --- | --- |
+| 博多華味鳥 10 種の極スパイス | 55 g（現行規格） | 待確認 | 待確認 | [Profoods 商品規格頁](https://www.profoods.co.jp/i/0600551) | 使用者提供 `照片 1.jpg`；網站保存為 `images/source/hanamidori-kiwami-spice.jpg` |
+| 塗るズッキノン軟膏 | 15 g | ¥1,100（¥1,000 未稅） | 官方定價 | [小林製藥](https://www.kobayashi.co.jp/seihin/zkn_n/index.html) | 使用者提供 `照片 2.jpg`；網站保存為 `images/source/kobayashi-zukkinon-ointment.jpg` |
+| 敘々苑 野菜サラダのたれ［ごま風味］ | 300 ml | ¥702 | 官方定價 | [敘敘苑商品介紹](https://j-products.net/products/salad-tare.html) | 使用者提供 `照片 3.jpg`；網站保存為 `images/source/jojoen-salad-sauce.jpg` |
+| フンドーキン 青柚子こしょう | 50 g 瓶裝 | ¥443（¥410 未稅） | 官方定價 | [FUNDOKIN](https://www.fundokin.co.jp/sp/products/yuzukosyo/) | 使用者提供 `照片 4.jpg`；網站保存為 `images/source/fundokin-ao-yuzu-kosho.jpg` |
+| ヒガシマル 牡蠣だし醤油 | 400 ml | ¥421（¥390 未稅） | 官方定價 | [HIGASHIMARU](https://www.higashimaru.co.jp/products/detail/pdt0103.html) | 使用者提供 `照片 5.jpg`；網站保存為 `images/source/higashimaru-oyster-dashi-shoyu.jpg` |
+
+價格查證日期為 2026-08-09。食品的含稅價以日本 8% 消費稅換算，醫藥品以 10% 消費稅換算，實際門市價格可能不同。華味鳥商品頁記錄 2026-01-09 已由 60 g 調整為 55 g；因可直接驗證的商品頁未顯示單瓶價格，本次不採用搜尋摘要價格。
+
+## 2026-08-09 新增 3COINS 廚房與戶外用品
+
+| 品項 | 規格 | 網站顯示價格 | 價格種類 | 直接來源 | 圖片來源 |
+| --- | --- | ---: | --- | --- | --- |
+| 3COINS KITINTO 解凍盤 | 品番 2412-KR542-0000、約直徑19.6 × 厚み0.3 cm、鋁合金 | ¥1,100 | 照片標價 | [3COINS 官方商品頁](https://www.palcloset.jp/display/item/2412-KR542-0000/?b=3coins&cl=19&ixFlag=a&ixPageType=Pdp&ixShelfId=search_keyword__%E3%82%AD%E3%83%83%E3%83%81%E3%83%B3&ixShelfIndex=4&ixShelfType=search_keyword) | 使用者提供 `3coins解凍盤.png`；網站保存為 `images/source/3coins-defrosting-plate.png` |
+| 3COINS 折りたたみコンパクトチェア | 品番 2525-DN9065-000、黑色、耐重 100 kg、含收納袋 | ¥660 | 官方定價 | [3COINS 官方商品頁](https://www.palcloset.jp/display/item/2525-DN9065-000/?b=3coins) | 使用者提供 `3coins露營椅.jpg`；網站保存為 `images/source/3coins-folding-camp-chair.jpg` |
+
+兩項均由 3COINS 官方網站確認為品牌商品，對應網站地圖中已有官方店鋪資料的 3COINS+plus ミーナ天神店與 3COINS+plus AMU PLAZA 小倉店。不對實體店的庫存、顏色或可購數量做保證。
