@@ -19,6 +19,7 @@
       </div>
       <nav class="kij-tabs" id="kijTabs">
         <button type="button" class="kij-tab active" data-action="tab" data-group="shopping">藥妝日用</button>
+        <button type="button" class="kij-tab" data-action="tab" data-group="convenience">便利商店必買必吃</button>
         <button type="button" class="kij-tab" data-action="tab" data-group="dryer">吹風機</button>
         <button type="button" class="kij-tab" data-action="tab" data-group="shoes">鞋款</button>
       </nav>
@@ -42,9 +43,10 @@ import { PRODUCTS } from './assets/products.js';
  * 資料索引
  * ──────────────────────────────────────────────────────────────── */
 const PRODUCTS_BY_ID = new Map(PRODUCTS.map((p) => [p.id, p]));
-const GROUPS = ['shopping', 'dryer', 'shoes'];
+const GROUPS = ['shopping', 'convenience', 'dryer', 'shoes'];
 const GROUP_META = {
   shopping: { label: '藥妝日用', icon: '🛍️' },
+  convenience: { label: '便利商店必買必吃', icon: '🏪' },
   dryer: { label: '吹風機', icon: '💨' },
   shoes: { label: '鞋款試穿', icon: '👟' },
 };
@@ -60,6 +62,11 @@ const CATEGORY_CHIP_CLASS = {
   '食品伴手禮': 'kij-cat-food',
   '3C 配件': 'kij-cat-electronics',
   '日用品': 'kij-cat-shoe',
+  '晴雨傘': 'kij-cat-shoe',
+  '冰品': 'kij-cat-food',
+  '麵包甜點': 'kij-cat-food',
+  '飲品': 'kij-cat-food',
+  '即食湯品': 'kij-cat-food',
 };
 function chipClassForCategory(category) {
   return CATEGORY_CHIP_CLASS[category] || 'kij-cat-shoe';
@@ -144,7 +151,7 @@ function makeFallback(letter) {
  * dryer／shoes 群組沒有 category，改用「這個群組本身」對應最貼近的色票，
  * 讓吹風機（家電）落在 kij-cat-electronics、鞋款落在 kij-cat-shoe，維持一致規則。 */
 function pillForProduct(product) {
-  if (product.group === 'shopping' && product.category) {
+  if ((product.group === 'shopping' || product.group === 'convenience') && product.category) {
     return { text: product.category, cls: chipClassForCategory(product.category) };
   }
   if (product.group === 'dryer') {
@@ -163,6 +170,40 @@ const PRICE_KIND_LABEL = {
   'photo-reference': '照片標價',
   pending: '價格待確認',
 };
+
+const COMPARE_DETAILS = {
+  ne7n: ['1.6 m³/min', 'W Mineral＋負離子', '約 550 g・可折疊', 'AC 100 V／1200 W', '重視髮絲照護'],
+  ne5n: ['1.6 m³/min', '負離子', '約 545 g・可折疊', 'AC 100 V／1200 W', '想要輕巧好收納'],
+  cloudtilt: ['CloudTec Phase', '城市旅遊', '輕量日常步行', '¥23,100', '通勤、城市走路'],
+  cloudsurfermax: ['CloudTec Phase', '長距離緩震', '柔軟滾動感', '以店頭為準', '長時間步行'],
+  cloudsurfer2: ['CloudTec Phase', '日常跑步', '平衡緩震', '以店頭為準', '慢跑與旅遊兼用'],
+  cloud6: ['CloudTec', '日常生活', '輕量好穿脫', '以店頭為準', '城市旅行'],
+  cloudrunner3: ['CloudTec', '穩定支撐', '中性至支撐型', '以店頭為準', '需要支撐感'],
+  clifton11: ['EVA 中底', '均衡緩震', '輕量舒適', '以店頭為準', '全天走路'],
+  bondi9: ['厚底泡棉', '高緩震', '柔軟厚實', '¥24,200', '腳底想要更軟'],
+  skyflow: ['EVA 泡棉', '日常緩震', '平衡支撐', '¥22,000', '旅遊與慢跑'],
+  transport2: ['HOKA 緩震中底', '城市健走', '耐走外底', '以店頭為準', '旅行健走'],
+  gaviota5: ['H-Frame', '高穩定緩震', '寬楦支撐', '¥27,500', '需要穩定支撐'],
+};
+
+function comparisonTableHtml(group, items) {
+  const isDryer = group === 'dryer';
+  const headings = isDryer
+    ? ['型號', '風量', '護髮功能', '重量／收納', '電壓／功率', '適合誰']
+    : ['鞋款', '中底／科技', '走路感受', '穿著取向', '參考價', '適合誰'];
+  const rows = items.map((product) => {
+    const details = COMPARE_DETAILS[product.id] || [];
+    const cells = [product.name, ...details].map((value) => `<td>${escapeHtml(value || '待確認')}</td>`).join('');
+    return `<tr>${cells}</tr>`;
+  }).join('');
+  const note = isDryer
+    ? '規格以日本 Panasonic 官方資料為準；海外使用前請確認電壓。'
+    : '鞋楦與實際腳感因人而異，建議在店內試穿後再決定。';
+  return `<section class="kij-compare" aria-label="${escapeHtml(GROUP_META[group].label)}比較表">
+    <p class="kij-compare-note">${escapeHtml(note)}</p>
+    <div class="kij-compare-scroll"><table><thead><tr>${headings.map((heading) => `<th>${escapeHtml(heading)}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>
+  </section>`;
+}
 
 /* ────────────────────────────────────────────────────────────────
  * 卡片渲染
@@ -249,7 +290,7 @@ function buildSectionHtml(group) {
   const collapsed = isSectionCollapsed(group);
   let bodyInner;
 
-  if (group === 'shopping') {
+  if (group === 'shopping' || group === 'convenience') {
     // 分類清單只從實際出現在 PRODUCTS 裡的 category 動態推算，不寫死清單。
     const categories = [...new Set(items.map((p) => p.category))];
     bodyInner = categories.map((category) => {
@@ -267,6 +308,8 @@ function buildSectionHtml(group) {
   } else {
     bodyInner = items.map(buildCardHtml).join('');
   }
+
+  if (group === 'dryer' || group === 'shoes') bodyInner = comparisonTableHtml(group, items) + bodyInner;
 
   const countText = group === 'shoes' ? shoeCountText() : `${items.length} 項`;
 
