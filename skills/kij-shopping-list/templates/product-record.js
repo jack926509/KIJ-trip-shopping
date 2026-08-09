@@ -1,0 +1,19 @@
+{
+  id: 'brand-product-name',
+  group: 'shopping',
+  tracking: 'buy',
+  category: '日用品',
+  name: '中文商品名',
+  jaName: '日本商品名',
+  model: null,
+  yen: 0,
+  twdRef: null,
+  defaultQty: 1,
+  image: 'images/thumb/brand-product-name.webp',
+  note: '商品用途、包裝與必要的價格說明。',
+  source: 'docs/product-price-sources-YYYY-MM-DD.md',
+  priceKind: 'official',
+  priceSourceUrl: 'https://example.jp/product',
+  priceCheckedAt: 'YYYY-MM-DD',
+  stores: []
+}

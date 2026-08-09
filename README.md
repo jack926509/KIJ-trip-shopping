@@ -9,18 +9,24 @@
 - 商品分類篩選
 - 商品名稱與品牌搜尋
 - 購買完成勾選
-- 收藏商品
 - 數量與價格計算
 - 日圓／新臺幣金額顯示
 - 社群推薦標示
 - 手機與桌面響應式版面
 - 使用瀏覽器保存部分操作紀錄
+- 商品價格來源與查證日期
 
 ## 專案結構
 
 ```text
 .
 ├── index.html
+├── map.html
+├── assets/
+│   ├── kij.css
+│   └── products.js
+├── skills/kij-shopping-list/
+│   └── SKILL.md
 ├── README.md
 └── images/
     ├── hoka/
@@ -94,6 +100,24 @@ vercel --prod
 1. 修改 `index.html`。
 2. Commit 並 Push 到 GitHub。
 3. Vercel 會自動重新部署。
+
+## 快速新增商品
+
+專案內建 `skills/kij-shopping-list`。安裝到 Codex Skills 目錄後，只要說「新增購物清單商品」或貼上商品網址，Skill 就會研究日本價格、來源、圖片與可證實店鋪關聯，寫入共用商品資料並驗證網站。
+
+安裝方式：
+
+```bash
+cp -R skills/kij-shopping-list ~/.codex/skills/
+```
+
+所有新增商品會寫入 `assets/products.js`，因此部署後會正式出現在清單；有可證實的店鋪關聯時，也會出現在地圖頁。
+
+資料變更後先執行：
+
+```bash
+npm run validate:data
+```
 
 ## 圖片建議
 
