@@ -9,20 +9,22 @@
 <body class="kij">
 <div id="app">
   <header class="kij-header">
-    <div class="title-row">
-      <b>北九州購物清單</b>
-      <span id="kijItemCount"></span>
+    <div class="kij-shell">
+      <div class="title-row">
+        <b>北九州購物清單</b>
+        <span id="kijItemCount"></span>
+      </div>
+      <div class="kij-progress">
+        <span class="label" id="kijProgressLabel"></span>
+        <span class="total" id="kijProgressTotal">¥0</span>
+      </div>
+      <nav class="kij-tabs" id="kijTabs">
+        <button type="button" class="kij-tab active" data-action="tab" data-group="all">全部</button>
+        <button type="button" class="kij-tab" data-action="tab" data-group="shopping">藥妝日用</button>
+        <button type="button" class="kij-tab" data-action="tab" data-group="dryer">吹風機</button>
+        <button type="button" class="kij-tab" data-action="tab" data-group="shoes">鞋款試穿</button>
+      </nav>
     </div>
-    <div class="kij-progress">
-      <span class="label" id="kijProgressLabel"></span>
-      <span class="total" id="kijProgressTotal">¥0</span>
-    </div>
-    <nav class="kij-tabs" id="kijTabs">
-      <button type="button" class="kij-tab active" data-action="tab" data-group="all">全部</button>
-      <button type="button" class="kij-tab" data-action="tab" data-group="shopping">藥妝日用</button>
-      <button type="button" class="kij-tab" data-action="tab" data-group="dryer">吹風機</button>
-      <button type="button" class="kij-tab" data-action="tab" data-group="shoes">鞋款試穿</button>
-    </nav>
   </header>
 
   <main id="kijMain">
@@ -47,23 +49,7 @@
     <a href="#" class="active" data-action="nav-list"><i>🛍️</i>清單</a>
     <a href="map.html"><i>🗺️</i>地圖</a>
     <button type="button" data-action="nav-checkout"><i>🧾</i>結算</button>
-    <button type="button" id="kijFavBtn" data-action="nav-fav"><i>⭐</i>收藏</button>
   </nav>
-
-  <!-- 需放在 #app 內：關閉鈕等點擊要靠下方掛在 appEl 上的事件委派才吃得到。 -->
-  <div class="kij-clerk-overlay" id="clerkOverlay">
-    <div class="bar">
-      <span>店員模式</span>
-      <button type="button" data-action="close-clerk" aria-label="關閉店員模式">✕</button>
-    </div>
-    <div class="big"><img alt="" src=""></div>
-    <div class="info">
-      <p class="jpn" hidden></p>
-      <p class="model" hidden></p>
-      <p class="ask">この商品を探しています。<br>置き場所を教えていただけますか？</p>
-      <p class="qty"></p>
-    </div>
-  </div>
 </div>
 
 <script type="module">
@@ -94,9 +80,6 @@ const CATEGORY_CHIP_CLASS = {
 function chipClassForCategory(category) {
   return CATEGORY_CHIP_CLASS[category] || 'kij-cat-shoe';
 }
-
-const viewState = { favOnly: false };
-let currentClerkProduct = null;
 
 /* ────────────────────────────────────────────────────────────────
  * localStorage 存取（讀不到一律回傳預設值，絕不拋錯中斷頁面）
@@ -138,36 +121,11 @@ function writeNum(key, val) {
   }
 }
 
-/* 舊版（v40_）只有「收藏」的鍵是可靠的一對一 id 對應（v40_fav_<id>），
- * 一次性搬到 kij_fav_<id> 後刪除舊鍵。
- * 已購買／數量／已試穿三種舊鍵是靠「卡片在全頁面的全域索引」湊出來的，
- * 新版商品順序已變（多了 3 項新商品），無法可靠對回同一件商品，
- * 依規格說明直接放棄遷移，讀不到新鍵就用預設值即可。 */
-function migrateFavorites() {
-  PRODUCTS.forEach((p) => {
-    try {
-      const newKey = `kij_fav_${p.id}`;
-      if (localStorage.getItem(newKey) !== null) return;
-      const oldKey = `v40_fav_${p.id}`;
-      const oldVal = localStorage.getItem(oldKey);
-      if (oldVal !== null) {
-        localStorage.setItem(newKey, oldVal === '1' ? '1' : '0');
-        localStorage.removeItem(oldKey);
-      }
-    } catch (err) {
-      /* localStorage 不可用時，略過遷移，之後一律用預設值 */
-    }
-  });
-}
-
 /* ────────────────────────────────────────────────────────────────
  * 狀態存取
  * ──────────────────────────────────────────────────────────────── */
 function isBought(id) { return readBool(`kij_bought_${id}`, false); }
 function setBought(id, val) { writeBool(`kij_bought_${id}`, val); }
-
-function isFav(id) { return readBool(`kij_fav_${id}`, false); }
-function setFav(id, val) { writeBool(`kij_fav_${id}`, val); }
 
 function isTried(id) { return readBool(`kij_tried_${id}`, false); }
 function setTried(id, val) { writeBool(`kij_tried_${id}`, val); }
@@ -220,14 +178,13 @@ function pillForProduct(product) {
   return null;
 }
 
-/* kij.css 沒有涵蓋「收藏愛心鈕」「數量加減鈕」「結算明細列」這三種元件，
- * 以下少量 inline style 只用來（1）滿足全域 44px 觸控門檻、（2）做基本排版，
- * 顏色一律引用既有 design token（--accent / --muted / --accent-soft / --line），
- * 沒有發明任何新色票或新間距值，也沒有寫進共用的 kij.css。 */
-const FAV_BTN_STYLE = 'min-width:var(--tap-min);min-height:var(--tap-min);background:none;border:none;font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;';
-const QTY_BTN_STYLE = 'min-width:var(--tap-min);min-height:var(--tap-min);border:none;background:var(--accent-soft);color:var(--accent);font-size:16px;font-weight:800;border-radius:8px;cursor:pointer;';
-const QTY_ROW_STYLE = 'display:flex;align-items:center;gap:8px;margin-top:8px;';
-const ACTIONS_COL_STYLE = 'display:flex;flex-direction:column;align-items:center;gap:6px;';
+const PRICE_KIND_LABEL = {
+  official: '官方定價',
+  'retailer-reference': '通路參考價',
+  'launch-reference': '上市參考價',
+  'legacy-reference': '參考價',
+  pending: '價格待確認',
+};
 
 /* ────────────────────────────────────────────────────────────────
  * 卡片渲染
@@ -241,46 +198,43 @@ function buildCardHtml(product) {
 
   let priceHtml = '';
   let controlsHtml = '';
-  const fav = isFav(product.id);
-  const favColor = fav ? 'var(--accent)' : 'var(--muted)';
-  const favBtnHtml = `<button type="button" class="kij-fav-btn" data-action="toggle-fav" aria-pressed="${fav}" aria-label="${fav ? '取消收藏' : '收藏'}" style="${FAV_BTN_STYLE}color:${favColor};">${fav ? '♥' : '♡'}</button>`;
+  const priceKindText = PRICE_KIND_LABEL[product.priceKind] || '參考價';
 
   if (product.tracking === 'buy') {
     const qty = getQty(product.id);
     const bought = isBought(product.id);
-    const yenText = product.yen != null ? `¥${product.yen.toLocaleString()}` : '價格請現場確認';
+    const yenText = product.yen != null ? `¥${product.yen.toLocaleString()}` : '價格待確認';
     const twdText = product.twdRef != null ? `約 NT$${product.twdRef.toLocaleString()}` : '';
     priceHtml = `
       <div class="price-row">
         <span class="yen">${yenText}</span>
         <span class="twd">${twdText}</span>
+        <span class="kij-price-kind">${priceKindText}</span>
       </div>
-      <div class="kij-qty-row" style="${QTY_ROW_STYLE}">
-        <button type="button" class="kij-qty-btn" data-action="qty-minus" aria-label="減少數量" style="${QTY_BTN_STYLE}">－</button>
+      <div class="kij-qty-row">
+        <button type="button" class="kij-qty-btn" data-action="qty-minus" aria-label="減少數量">－</button>
         <span class="kij-qty-value" aria-live="polite">${qty}</span>
-        <button type="button" class="kij-qty-btn" data-action="qty-plus" aria-label="增加數量" style="${QTY_BTN_STYLE}">＋</button>
+        <button type="button" class="kij-qty-btn" data-action="qty-plus" aria-label="增加數量">＋</button>
       </div>`;
     controlsHtml = `
-      ${favBtnHtml}
-      <button type="button" class="kij-checkbox${bought ? ' on' : ''}" data-action="toggle-bought" aria-pressed="${bought}" aria-label="標記已購買"></button>`;
+      <button type="button" class="kij-status-btn${bought ? ' on' : ''}" data-action="toggle-bought" aria-pressed="${bought}">${bought ? '已購買 ✓' : '標記已購買'}</button>`;
   } else {
     const tried = isTried(product.id);
-    const yenText = product.yen != null ? `參考價 ¥${product.yen.toLocaleString()}` : '官方目前無定價，現場請直接詢問門市';
+    const yenText = product.yen != null ? `¥${product.yen.toLocaleString()}` : '價格待確認';
     priceHtml = `
       <div class="price-row">
         <span class="yen">${yenText}</span>
-        <span class="twd"></span>
+        <span class="kij-price-kind">${priceKindText}</span>
       </div>`;
     controlsHtml = `
-      ${favBtnHtml}
-      <button type="button" class="kij-checkbox${tried ? ' on' : ''}" data-action="toggle-tried" aria-pressed="${tried}" aria-label="標記已試穿"></button>`;
+      <button type="button" class="kij-status-btn${tried ? ' on' : ''}" data-action="toggle-tried" aria-pressed="${tried}">${tried ? '已試穿 ✓' : '標記已試穿'}</button>`;
   }
 
   return `
     <div class="kij-card" id="${escapeHtml(product.id)}" data-id="${escapeHtml(product.id)}">
-      <button type="button" class="thumb" data-action="clerk" aria-label="放大看${escapeHtml(product.name)}圖片與求助句">
+      <div class="thumb">
         <img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" loading="lazy">
-      </button>
+      </div>
       <div class="mid">
         ${pillHtml}
         <h5>${escapeHtml(product.name)}</h5>
@@ -289,7 +243,7 @@ function buildCardHtml(product) {
         ${priceHtml}
         ${noteHtml}
       </div>
-      <div class="kij-card-actions" style="${ACTIONS_COL_STYLE}">
+      <div class="kij-card-actions">
         ${controlsHtml}
       </div>
     </div>`;
@@ -359,20 +313,12 @@ function renderSections() {
  * 局部更新（狀態變動後只補該卡片／該區塊，不整頁重繪，避免打斷目前的頁籤篩選視圖）
  * ──────────────────────────────────────────────────────────────── */
 function syncCardVisual(card, product) {
-  const favBtn = card.querySelector('.kij-fav-btn');
-  if (favBtn) {
-    const fav = isFav(product.id);
-    favBtn.textContent = fav ? '♥' : '♡';
-    favBtn.style.color = fav ? 'var(--accent)' : 'var(--muted)';
-    favBtn.setAttribute('aria-pressed', String(fav));
-    favBtn.setAttribute('aria-label', fav ? '取消收藏' : '收藏');
-  }
-
   if (product.tracking === 'buy') {
     const boughtBtn = card.querySelector('[data-action="toggle-bought"]');
     const bought = isBought(product.id);
     boughtBtn.classList.toggle('on', bought);
     boughtBtn.setAttribute('aria-pressed', String(bought));
+    boughtBtn.textContent = bought ? '已購買 ✓' : '標記已購買';
 
     const qty = getQty(product.id);
     const qtyValueEl = card.querySelector('.kij-qty-value');
@@ -382,10 +328,7 @@ function syncCardVisual(card, product) {
     const tried = isTried(product.id);
     triedBtn.classList.toggle('on', tried);
     triedBtn.setAttribute('aria-pressed', String(tried));
-  }
-
-  if (viewState.favOnly) {
-    card.hidden = !isFav(product.id);
+    triedBtn.textContent = tried ? '已試穿 ✓' : '標記已試穿';
   }
 }
 
@@ -421,7 +364,6 @@ function syncKijState() {
     bought: Object.fromEntries(PRODUCTS.filter((p) => p.tracking === 'buy').map((p) => [p.id, isBought(p.id)])),
     qty: Object.fromEntries(PRODUCTS.filter((p) => p.tracking === 'buy').map((p) => [p.id, getQty(p.id)])),
     tried: Object.fromEntries(PRODUCTS.filter((p) => p.tracking === 'try').map((p) => [p.id, isTried(p.id)])),
-    fav: Object.fromEntries(PRODUCTS.map((p) => [p.id, isFav(p.id)])),
     total: computeTotal(),
   };
 }
@@ -471,12 +413,8 @@ function focusProductById(id) {
   return false;
 }
 
-/* 讀取 map.html 帶過來的 URL 參數：?fav=1 套用收藏篩選、#<商品id> 定位捲動到該商品 */
+/* 讀取 map.html 帶過來的商品錨點，展開對應分區並定位。 */
 function applyUrlParams() {
-  const params = new URLSearchParams(location.search);
-  if (params.get('fav') === '1' && !viewState.favOnly) {
-    toggleFavOnly();
-  }
   if (location.hash.length > 1) {
     const id = decodeURIComponent(location.hash.slice(1));
     focusProductById(id);
@@ -495,75 +433,9 @@ function toggleSectionCollapse(section) {
 }
 
 function resetView() {
-  viewState.favOnly = false;
-  document.getElementById('kijFavBtn')?.classList.remove('active');
-  document.querySelectorAll('.kij-card').forEach((card) => { card.hidden = false; });
   document.querySelectorAll('.kij-tab').forEach((t) => t.classList.toggle('active', t.dataset.group === 'all'));
   focusSection('all');
   window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function toggleFavOnly() {
-  viewState.favOnly = !viewState.favOnly;
-  document.getElementById('kijFavBtn')?.classList.toggle('active', viewState.favOnly);
-  document.querySelectorAll('.kij-card').forEach((card) => {
-    const product = PRODUCTS_BY_ID.get(card.dataset.id);
-    card.hidden = viewState.favOnly ? !isFav(product.id) : false;
-  });
-  if (viewState.favOnly) {
-    focusSection('all');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-}
-
-/* ────────────────────────────────────────────────────────────────
- * 店員模式（brief 給定的確切邏輯，補上圖片載入失敗處理）
- * ──────────────────────────────────────────────────────────────── */
-function openClerkMode(product) {
-  currentClerkProduct = product;
-  const overlay = document.getElementById('clerkOverlay');
-  const big = overlay.querySelector('.big');
-  const oldFallback = big.querySelector('.kij-img-fallback');
-  if (oldFallback) oldFallback.remove();
-  let img = big.querySelector('img');
-  if (!img) {
-    img = document.createElement('img');
-    big.appendChild(img);
-  }
-  const fullImgSrc = product.image.replace('images/thumb/', 'images/full/');
-  img.alt = product.name;
-  img.onerror = () => {
-    img.replaceWith(makeFallback(product.name[0]));
-  };
-  img.src = fullImgSrc;
-
-  const jpnEl = overlay.querySelector('.jpn');
-  if (product.jaName) {
-    jpnEl.hidden = false;
-    jpnEl.textContent = product.jaName;
-  } else {
-    jpnEl.hidden = true;
-  }
-
-  overlay.querySelector('.model').textContent = product.model || '';
-  overlay.querySelector('.model').hidden = !product.model;
-
-  const qtyEl = overlay.querySelector('.qty');
-  if (product.tracking === 'buy') {
-    const qty = getQty(product.id);
-    qtyEl.textContent = product.yen != null
-      ? `要買 ${qty} 個・參考價 ¥${product.yen.toLocaleString()}`
-      : `要買 ${qty} 個`;
-  } else {
-    qtyEl.textContent = '想試穿的尺寸：現場記錄';
-  }
-
-  overlay.classList.add('show');
-}
-
-function closeClerkMode() {
-  document.getElementById('clerkOverlay').classList.remove('show');
-  currentClerkProduct = null;
 }
 
 /* ────────────────────────────────────────────────────────────────
@@ -607,13 +479,6 @@ appEl.addEventListener('click', (e) => {
       syncKijState();
       break;
     }
-    case 'toggle-fav': {
-      if (!product) return;
-      setFav(id, !isFav(id));
-      syncCardVisual(card, product);
-      syncKijState();
-      break;
-    }
     case 'qty-minus':
     case 'qty-plus': {
       if (!product) return;
@@ -623,14 +488,6 @@ appEl.addEventListener('click', (e) => {
       updateProgressBar();
       updateCheckoutSummary();
       syncKijState();
-      break;
-    }
-    case 'clerk': {
-      if (product) openClerkMode(product);
-      break;
-    }
-    case 'close-clerk': {
-      closeClerkMode();
       break;
     }
     case 'nav-list': {
@@ -643,14 +500,9 @@ appEl.addEventListener('click', (e) => {
       // 結算區塊的 data-group="checkout" 不屬於任何頁籤群組，若使用者當下停在
       // 非「全部」頁籤，結算區塊會被 focusSection 設成 hidden，導致 scrollIntoView
       // 對一個 display:none 的元素完全無效。先強制切回「全部」讓所有分區（含結算）
-      // 可見，再捲動，跟 toggleFavOnly() 開啟收藏篩選時的作法一致。
+      // 可見，再捲動，避免對隱藏區塊呼叫 scrollIntoView 而無效。
       focusSection('all');
       document.getElementById('kijCheckoutSection')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      break;
-    }
-    case 'nav-fav': {
-      e.preventDefault();
-      toggleFavOnly();
       break;
     }
     default:
@@ -667,14 +519,9 @@ appEl.addEventListener('keydown', (e) => {
   }
 });
 
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeClerkMode();
-});
-
 /* ────────────────────────────────────────────────────────────────
  * 初始化
  * ──────────────────────────────────────────────────────────────── */
-migrateFavorites();
 document.getElementById('kijItemCount').textContent = `共 ${PRODUCTS.length} 項商品`;
 renderSections();
 updateProgressBar();
