@@ -540,6 +540,34 @@ const BASE_PRODUCTS = [
 ];
 
 const PRICE_OVERRIDES = {
+  findmy: {
+    yen: 1100,
+    model: 'DG036-2102 / JAN 4560425562102',
+    source: 'docs/product-price-sources-2026-08-09.md',
+    priceKind: 'photo-reference',
+    priceSourceUrl: null,
+    priceCheckedAt: '2026-08-09',
+    priceNote: '原始照片包裝可辨識 DG036-2102、JAN 4560425562102 與 ¥1,100 標價。',
+    note: '照片確認為 DAISO 紛失防止タグ DG036-2102；包裝標價 ¥1,100（CR2032 電池另購）。',
+  },
+  kombu: {
+    yen: 220,
+    model: '25 g',
+    source: 'docs/product-price-sources-2026-08-09.md',
+    priceKind: 'official',
+    priceSourceUrl: 'https://www.kurakon.jp/products/01/genenshio.html',
+    priceCheckedAt: '2026-08-09',
+    note: '照片對應くらこん減塩塩こんぶ；官方標示 25 g、建議零售價 ¥200 未稅（含稅 ¥220）。',
+  },
+  'belt-fan': {
+    yen: 1980,
+    model: '2615-ITBF01-000',
+    source: 'docs/product-price-sources-2026-08-09.md',
+    priceKind: 'official',
+    priceSourceUrl: 'https://www.palcloset.jp/display/item/2615-ITBF01-000/',
+    priceCheckedAt: '2026-08-09',
+    note: '照片對應 3COINS ベルトファン；PAL CLOSET 官方售價 ¥1,980。',
+  },
   jinmart: {
     yen: 1098,
     model: '15 g',
@@ -586,13 +614,13 @@ const PRICE_OVERRIDES = {
     note: '照片對應アネロン「ニスキャップ」10 粒；松本清線上通路參考價 ¥1,628。',
   },
   moilip: {
-    yen: 1078,
+    yen: 1320,
     model: '8 g',
     source: 'docs/product-price-sources-2026-08-09.md',
     priceKind: 'retailer-reference',
     priceSourceUrl: 'https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4909978204440',
     priceCheckedAt: '2026-08-09',
-    note: '照片對應モアリップN 8 g；松本清線上通路參考價 ¥1,078。',
+    note: '照片對應モアリップN 8 g；松本清線上通路參考價 ¥1,320。',
   },
   pitas: {
     yen: 632,
@@ -744,35 +772,8 @@ const PRICE_OVERRIDES = {
   },
 };
 
-const PENDING_PRICE_IDS = new Set([
-  'kombu', 'findmy', 'belt-fan',
-]);
-
-const PENDING_PRICE_NOTES = {
-  jinmart: '卡片未載明品牌、容量或型號，無法可靠比對單一商品價格。',
-  roihi: '卡片未載明包裝規格，藥妝店價格會依貼數與促銷不同。',
-  atnon: '卡片未載明容量與型號，無法可靠比對單一商品價格。',
-  nature: '卡片未載明確切品名與包裝規格，無法可靠比對單一商品價格。',
-  anelon: '卡片未載明包裝規格，藥妝店價格會依錠數與促銷不同。',
-  moilip: '卡片未載明容量與型號，無法可靠比對單一商品價格。',
-  pitas: '卡片未載明貼片尺寸與入數，價格會依規格不同。',
-  soft: '卡片未載明硬度與包裝入數，無法可靠比對單一商品價格。',
-  kombu: '卡片未載明品牌與容量，無法可靠比對單一商品價格。',
-  findmy: '卡片未載明確切品牌與型號，無法可靠比對單一商品價格。',
-  'belt-fan': '卡片未載明品牌、電池容量與型號，無法可靠比對單一商品價格。',
-};
-
 export const PRODUCTS = BASE_PRODUCTS.map((product) => {
-  const pendingOverride = PENDING_PRICE_IDS.has(product.id)
-    ? {
-        yen: null,
-        priceKind: 'pending',
-        priceSourceUrl: null,
-        priceCheckedAt: null,
-        priceNote: PENDING_PRICE_NOTES[product.id],
-      }
-    : {};
-  const override = { ...pendingOverride, ...(PRICE_OVERRIDES[product.id] || {}) };
+  const override = PRICE_OVERRIDES[product.id] || {};
   const yen = Object.hasOwn(override, 'yen') ? override.yen : product.yen;
   return {
     ...product,

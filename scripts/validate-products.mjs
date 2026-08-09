@@ -17,7 +17,7 @@ function fail(errors) {
 
 const VALID_GROUP = new Set(['shopping', 'dryer', 'shoes']);
 const VALID_TRACKING = new Set(['buy', 'try']);
-const VALID_PRICE_KIND = new Set(['official', 'retailer-reference', 'launch-reference', 'pending']);
+const VALID_PRICE_KIND = new Set(['official', 'retailer-reference', 'launch-reference', 'photo-reference', 'pending']);
 
 const products = await loadProducts();
 const errors = [];
@@ -61,6 +61,12 @@ for (const p of products) {
   }
   if (['official', 'retailer-reference', 'launch-reference'].includes(p.priceKind) && p.priceSourceUrl === null) {
     errors.push(`${label}: ${p.priceKind} 價格必須附 priceSourceUrl`);
+  }
+  if (p.priceKind === 'photo-reference' && p.priceSourceUrl !== null) {
+    errors.push(`${label}: photo-reference 價格不得偽裝成外部商品頁`);
+  }
+  if (p.priceKind === 'photo-reference' && (typeof p.priceNote !== 'string' || p.priceNote.trim().length === 0)) {
+    errors.push(`${label}: photo-reference 商品必須在 priceNote 記錄照片辨識依據`);
   }
 
   if (p.tracking === 'buy') {

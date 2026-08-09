@@ -9,9 +9,12 @@
 | アットノンEX クリーム | 15 g | ¥1,430 | 小林製藥建議零售價（¥1,300 未稅） | [小林製藥](https://www.kobayashi.co.jp/seihin/anex_cream/) |
 | ネイチャーコンク 薬用フットケアローション | 40 ml | ¥803 | 松本清線上通路參考價 | [松本清](https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4955814710965) |
 | アネロン「ニスキャップ」 | 10 粒 | ¥1,628 | 松本清線上通路參考價 | [松本清](https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4987300029459) |
-| モアリップN | 8 g | ¥1,078 | 松本清線上通路參考價 | [松本清](https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4909978204440) |
+| モアリップN | 8 g | ¥1,320 | 松本清線上通路參考價 | [松本清](https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4909978204440) |
 | ピタス のどトローチL | 荔枝 12 枚 | ¥632 | 松本清線上通路參考價 | [松本清](https://www.matsukiyococokara-online.com/store/catalog/product/view/id/45209611) |
 | デオナチュレ ソフトストーンW | 20 g | ¥990 | 松本清線上通路參考價 | [松本清](https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4971825016582) |
+| くらこん減塩塩こんぶ | 25 g | ¥220 | 官方建議零售價（¥200 未稅） | [くらこん](https://www.kurakon.jp/products/01/genenshio.html) |
+| DAISO 紛失防止タグ | DG036-2102 | ¥1,100 | 照片包裝標價 | 圖片來源：`images/full/findmy.webp`；型號、JAN 與 Apple Find My 相容性見 [商品辨識資料](https://ichioshi.smt.docomo.ne.jp/articles/limited/31882) |
+| 3COINS ベルトファン | 2615-ITBF01-000 | ¥1,980 | 官方售價 | [PAL CLOSET](https://www.palcloset.jp/display/item/2615-ITBF01-000/) |
 
 松本清線上價格與實體門市可能不同；本表不以網路價格保證門市售價。
 

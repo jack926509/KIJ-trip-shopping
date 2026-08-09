@@ -13,7 +13,7 @@ description: 新增或更新北九州購物清單商品。當使用者說「新�
 
 1. 先讀 `assets/products.js`、`scripts/validate-products.mjs`、`references/source-policy.md` 與 `templates/product-record.js`。
 2. 確認商品的日本名稱、規格、包裝數與型號。名稱或型號不清楚時先問使用者，不能用相似商品代替。
-3. 研究價格：官方日本網站優先；官方未公開可讀價格時，使用可信日本通路並標記 `retailer-reference`；已停產舊款只能使用可追溯的上市價格並標記 `launch-reference`。
+3. 研究價格：官方日本網站優先；官方未公開可讀價格時，使用可信日本通路並標記 `retailer-reference`；已停產舊款只能使用可追溯的上市價格並標記 `launch-reference`。只有使用者提供的原始照片清楚拍到商品與價格標籤時，才可使用 `photo-reference`。
 4. 找到可合理使用的商品圖片，新增 `images/full/<id>.<ext>`，再執行 `npm run build:images` 產生縮圖。圖片來源與限制寫入本次來源紀錄。
 5. 以英文小寫連字號建立不可變更的 `id`。只在 `BASE_PRODUCTS` 最後追加資料；不要重排、改名或刪除現有商品 id。
 6. 填入完整資料。`priceKind`、`priceSourceUrl`、`priceCheckedAt` 必須和價格一起提供；沒有可靠價格時，使用 `yen: null`、`priceKind: 'pending'` 與非空白的 `priceNote`，在 `priceNote` 清楚寫明待確認原因。
@@ -31,6 +31,7 @@ description: 新增或更新北九州購物清單商品。當使用者說「新�
 - `official`：日本官方定價。
 - `retailer-reference`：可信日本通路的參考價，可能與門市不同。
 - `launch-reference`：已停產或舊款的上市參考價。
+- `photo-reference`：使用者提供的原始照片可同時辨識商品與標價；`priceSourceUrl` 必須是 `null`，並在 `priceNote` 註明照片中的型號或包裝資訊。這不是官方定價。
 - `pending`：尚無可靠價格，`yen` 必須是 `null`，且 `priceNote` 必填、說明無法確認的具體原因；有可靠價格時 `priceNote` 為 `null`。
 
 ## 禁止事項
