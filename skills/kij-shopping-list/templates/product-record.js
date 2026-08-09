@@ -15,5 +15,6 @@
   priceKind: 'official',
   priceSourceUrl: 'https://example.jp/product',
   priceCheckedAt: 'YYYY-MM-DD',
+  priceNote: null,
   stores: []
 }

@@ -710,6 +710,6 @@ export const PRODUCTS = BASE_PRODUCTS.map((product) => {
     priceKind: override.priceKind || product.priceKind || 'pending',
     priceSourceUrl: override.priceSourceUrl || product.priceSourceUrl || null,
     priceCheckedAt: override.priceCheckedAt || product.priceCheckedAt || (yen === null ? null : '2026-08-01'),
-    priceNote: override.priceNote || null,
+    priceNote: override.priceNote || product.priceNote || null,
   };
 });
