@@ -22,6 +22,9 @@ const VALID_PRICE_KIND = new Set(['official', 'retailer-reference', 'launch-refe
 const products = await loadProducts();
 const errors = [];
 const seenIds = new Set();
+const mapHtml = readFileSync(path.join(ROOT, 'map.html'), 'utf8');
+const indexHtml = readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+const mapStoreIds = new Set([...mapHtml.matchAll(/id:\s*'([^']+)'/g)].map((match) => match[1]));
 
 if (!Array.isArray(products) || products.length === 0) {
   fail(['PRODUCTS 必須是非空陣列']);
@@ -80,6 +83,9 @@ for (const p of products) {
   }
 
   if (!Array.isArray(p.stores)) errors.push(`${label}: stores 必須是陣列（無資料填 []，不得省略欄位）`);
+  for (const storeId of p.stores || []) {
+    if (!mapStoreIds.has(storeId)) errors.push(`${label}: stores 指向地圖不存在的店家（${storeId}）`);
+  }
 
   // 簡體字掃描（僅檢查中文欄位，粗略但足以攔截明顯誤植）
   const SIMPLIFIED_MARKERS = ['产', '业', '国', '这', '为', '来', '发', '经', '现', '会', '与', '实', '万', '价'];
@@ -89,6 +95,11 @@ for (const p of products) {
       errors.push(`${label}: ${field} 疑似含簡體字（"${val}"）`);
     }
   }
+}
+
+for (const forbiddenText of ['結算', '價格待確認原因']) {
+  if (indexHtml.includes(forbiddenText)) errors.push(`index.html: 不得保留「${forbiddenText}」`);
+  if (mapHtml.includes(forbiddenText)) errors.push(`map.html: 不得保留「${forbiddenText}」`);
 }
 
 if (errors.length > 0) fail(errors);
