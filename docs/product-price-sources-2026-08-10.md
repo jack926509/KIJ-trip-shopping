@@ -14,6 +14,7 @@
 | Wpc. IZA COMPACT | ZA020 無地 | ¥3,850 | 官方定價 | [Wpc. IZA 官方網站](https://wpc-iza.jp/) | ZA020／ZA028 無地款；花色款價格可能不同。 |
 | 博多華味鳥 10 種極香料 | 55 g | ¥708 | 通路參考 | [L-Breath 商品頁](https://www.supersports.com/ja-jp/lbreath/products/C-10910310101/) | 未找到品牌官方公開定價，保留為通路價。 |
 | 第一三共 LULU ATTACK EX | 第 2 類醫藥品、24 錠 | ¥2,200 | 官方定價 | [第一三共 Health Care 商品頁](https://www.daiichisankyo-hc.co.jp/products/details/lulu_attack_ex/) | 官方未稅 ¥2,000／含稅 ¥2,200；圖片對應 24 錠包裝。 |
+| 太田胃散〈分包〉S | 第 2 類醫藥品、50 包 | ¥2,079 | 官方定價 | [太田胃散官方發表資料](https://ohta-isan.co.jp/%E5%A4%AA%E7%94%B0%E8%83%83%E6%95%A3S%E3%83%BB%E5%A4%AA%E7%94%B0%E8%83%83%E6%95%A3%EF%BC%9C%E5%88%86%E5%8C%85%EF%BC%9ES_%E3%83%AA%E3%83%AA%E3%83%BC%E3%82%B9.pdf) | 圖片可辨識 50 包分包裝；官方建議零售價為含稅 ¥2,079。 |
 
 ## 已確認、價格維持
 

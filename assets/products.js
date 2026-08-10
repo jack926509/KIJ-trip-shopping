@@ -597,6 +597,14 @@ const BASE_PRODUCTS = [
     yen: 2200, twdRef: null, defaultQty: 1, image: 'images/thumb/lulu-attack-ex-24.webp',
     note: '第一三共的綜合感冒藥。使用者提供照片可辨識 24 錠包裝；請依包裝與藥師說明確認是否適用。', source: 'docs/product-price-sources-2026-08-10.md', stores: [],
     priceKind: 'official', priceSourceUrl: 'https://www.daiichisankyo-hc.co.jp/products/details/lulu_attack_ex/', priceCheckedAt: '2026-08-10', priceNote: null
+  },
+  {
+    id: 'ohta-isan-s-50',
+    group: 'shopping', tracking: 'buy', category: '旅途常備藥',
+    name: '太田胃散 S 分包', jaName: '太田胃散〈分包〉S', model: '第 2 類醫藥品・50 包',
+    yen: 2079, twdRef: null, defaultQty: 1, image: 'images/thumb/ohta-isan-s-50.webp',
+    note: '圖片確認為 50 包分包裝；請依包裝與藥師說明確認是否適用。', source: 'docs/product-price-sources-2026-08-10.md', stores: [],
+    priceKind: 'official', priceSourceUrl: 'https://ohta-isan.co.jp/%E5%A4%AA%E7%94%B0%E8%83%83%E6%95%A3S%E3%83%BB%E5%A4%AA%E7%94%B0%E8%83%83%E6%95%A3%EF%BC%9C%E5%88%86%E5%8C%85%EF%BC%9ES_%E3%83%AA%E3%83%AA%E3%83%BC%E3%82%B9.pdf', priceCheckedAt: '2026-08-10', priceNote: null
   }
 ];
 
