@@ -698,6 +698,14 @@ const BASE_PRODUCTS = [
     yen: 660, twdRef: null, defaultQty: 1, image: 'images/thumb/3coins-folding-camp-chair.webp',
     note: '適合排隊、露營與野餐的折疊椅；官方資料標示耐重 100 kg、含收納袋。實體店庫存請現場確認。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['3coins-plus-mina-tenjin', '3coins-plus-amu-plaza-kokura'],
     priceKind: 'official', priceSourceUrl: 'https://www.palcloset.jp/display/item/2525-DN9065-000/?b=3coins', priceCheckedAt: '2026-08-09', priceNote: null
+  },
+  {
+    id: 'lulu-attack-ex-24',
+    group: 'shopping', tracking: 'buy', category: '旅途常備藥',
+    name: '第一三共 LULU ATTACK EX 綜合感冒藥', jaName: 'ルルアタック EX', model: '第 2 類醫藥品・24 錠（4 日分）',
+    yen: 2200, twdRef: null, defaultQty: 1, image: 'images/thumb/lulu-attack-ex-24.webp',
+    note: '第一三共的綜合感冒藥。使用者提供照片可辨識 24 錠包裝；請依包裝與藥師說明確認是否適用。', source: 'docs/product-price-sources-2026-08-10.md', stores: [],
+    priceKind: 'official', priceSourceUrl: 'https://www.daiichisankyo-hc.co.jp/products/details/lulu_attack_ex/', priceCheckedAt: '2026-08-10', priceNote: null
   }
 ];
 
@@ -713,13 +721,14 @@ const PRICE_OVERRIDES = {
     note: '照片確認為 DAISO 紛失防止タグ DG036-2102；包裝標價 ¥1,100（CR2032 電池另購）。',
   },
   kombu: {
-    yen: 220,
+    yen: 216,
     model: '25 g',
-    source: 'docs/product-price-sources-2026-08-09.md',
+    source: 'docs/product-price-sources-2026-08-10.md',
     priceKind: 'official',
     priceSourceUrl: 'https://www.kurakon.jp/products/01/genenshio.html',
-    priceCheckedAt: '2026-08-09',
-    note: '照片對應くらこん減塩塩こんぶ；官方標示 25 g、建議零售價 ¥200 未稅（含稅 ¥220）。',
+    priceCheckedAt: '2026-08-10',
+    priceNote: null,
+    note: '照片對應くらこん減塩塩こんぶ 25 g；官方建議零售價為未稅 ¥200，食品消費稅 8% 換算為含稅 ¥216。',
   },
   'belt-fan': {
     yen: 1980,
@@ -818,41 +827,53 @@ const PRICE_OVERRIDES = {
     priceCheckedAt: '2026-08-01',
   },
   ramen: {
-    yen: 306,
+    yen: 322,
     priceKind: 'official',
-    priceSourceUrl: 'https://www.maruchan.co.jp/products/brand/maruchanseimen-cup/',
-    priceCheckedAt: '2026-08-01',
-    note: '東洋水產官方建議零售價 ¥278 未稅，含稅預算以 ¥306 計；門市促銷價可能不同。',
+    priceSourceUrl: 'https://www.maruchan.co.jp/news_topics/entry/2026/03/post_20211130.html',
+    priceCheckedAt: '2026-08-10',
+    source: 'docs/product-price-sources-2026-08-10.md',
+    priceNote: null,
+    note: '東洋水產 2026 年 7 月起建議零售價為未稅 ¥298；食品消費稅 8% 換算為含稅 ¥322，門市促銷價可能不同。',
   },
   ne7n: {
+    yen: 7680,
     priceKind: 'retailer-reference',
-    priceSourceUrl: 'https://kakaku.com/item/J0000048995/',
-    priceCheckedAt: '2026-08-01',
+    priceSourceUrl: 'https://www.biccamera.com/bc/category/?q=eh-ne7n',
+    priceCheckedAt: '2026-08-10',
+    source: 'docs/product-price-sources-2026-08-10.md',
+    note: 'BicCamera 線上參考價 ¥7,680；實體門市價格與點數回饋以結帳當日為準。',
   },
   ne5n: {
+    yen: 5180,
     priceKind: 'retailer-reference',
-    priceSourceUrl: 'https://review.kakaku.com/review/J0000048996/',
-    priceCheckedAt: '2026-08-01',
+    priceSourceUrl: 'https://kakaku.com/item/J0000048996/?lid=20190108pricemenu_ranking_2',
+    priceCheckedAt: '2026-08-10',
+    source: 'docs/product-price-sources-2026-08-10.md',
+    note: 'BicCamera 線上參考價 ¥5,180；實體門市價格與點數回饋以結帳當日為準。',
   },
   cloudsurfermax: {
     priceKind: 'official',
     priceSourceUrl: 'https://www.on.com/ja-jp/products/cloudsurfer-max-m-3mf3043',
-    priceCheckedAt: '2026-08-01',
+    priceCheckedAt: '2026-08-10',
+    source: 'docs/product-price-sources-2026-08-10.md',
   },
   cloudsurfer2: {
     priceKind: 'official',
     priceSourceUrl: 'https://www.on.com/ja-jp/products/cloudsurfer-2-3mf1012',
-    priceCheckedAt: '2026-08-01',
+    priceCheckedAt: '2026-08-10',
+    source: 'docs/product-price-sources-2026-08-10.md',
   },
   cloud6: {
     priceKind: 'official',
     priceSourceUrl: 'https://www.on.com/ja-jp/products/cloud-6-m-3mf1007/mens/',
-    priceCheckedAt: '2026-08-01',
+    priceCheckedAt: '2026-08-10',
+    source: 'docs/product-price-sources-2026-08-10.md',
   },
   cloudrunner3: {
     priceKind: 'official',
     priceSourceUrl: 'https://www.on.com/ja-jp/products/cloudrunner-3-m-3mg1007',
-    priceCheckedAt: '2026-08-01',
+    priceCheckedAt: '2026-08-10',
+    source: 'docs/product-price-sources-2026-08-10.md',
   },
   clifton11: {
     priceKind: 'official',
@@ -886,18 +907,18 @@ const PRICE_OVERRIDES = {
   },
   cloudtilt: {
     yen: 23100,
-    source: 'docs/product-price-sources-2026-08-09.md',
+    source: 'docs/product-price-sources-2026-08-10.md',
     priceKind: 'official',
     priceSourceUrl: 'https://www.on.com/ja-jp/products/cloudtilt-m-3me1010/mens/grain-white-shoes-3ME10105217',
-    priceCheckedAt: '2026-08-09',
+    priceCheckedAt: '2026-08-10',
     note: 'On 城市旅遊款，官方日本售價 ¥23,100；顏色與尺寸庫存依門市為準。',
   },
   bondi9: {
     yen: 24200,
-    source: 'docs/product-price-sources-2026-08-09.md',
+    source: 'docs/product-price-sources-2026-08-10.md',
     priceKind: 'official',
     priceSourceUrl: 'https://www.hoka.com/jp/bondi-9/1162011.html',
-    priceCheckedAt: '2026-08-09',
+    priceCheckedAt: '2026-08-10',
     note: 'HOKA 最大緩震款，官方日本定價 ¥24,200；實際庫存依門市為準。',
   },
   skyflow: {
@@ -932,6 +953,33 @@ const PRICE_OVERRIDES = {
     priceCheckedAt: '2026-08-09',
     note: '久原本家茅乃舍出品，單包官方售價 ¥237；加水加蛋即可製作茶碗蒸。',
   },
+  'protect-u-folding-umbrella': {
+    yen: 2178,
+    source: 'docs/product-price-sources-2026-08-10.md',
+    priceKind: 'official',
+    priceSourceUrl: 'https://www.id-official.com/products/protectu',
+    priceCheckedAt: '2026-08-10',
+    priceNote: null,
+    note: 'PROTECT U 官方折疊日傘系列定價 ¥2,178；照片未能辨識具體款式，顏色與骨長請在門市再核對。',
+  },
+  'wpc-iza-cool-compact': {
+    yen: 3850,
+    source: 'docs/product-price-sources-2026-08-10.md',
+    priceKind: 'official',
+    priceSourceUrl: 'https://wpc-iza.jp/',
+    priceCheckedAt: '2026-08-10',
+    priceNote: null,
+    note: 'Wpc. IZA ZA020／ZA028 COMPACT 無地款官方售價 ¥3,850；圖片僅能辨識 ZA020，花色款價格可能不同。',
+  },
+  'hanamidori-kiwami-spice': {
+    yen: 708,
+    source: 'docs/product-price-sources-2026-08-10.md',
+    priceKind: 'retailer-reference',
+    priceSourceUrl: 'https://www.supersports.com/ja-jp/lbreath/products/C-10910310101/',
+    priceCheckedAt: '2026-08-10',
+    priceNote: '現行 55 g 規格未見品牌官方定價；以日本通路標示價作參考。',
+    note: '博多華味鳥 10 種極香料 55 g；日本通路參考價 ¥708，門市售價可能不同。',
+  },
 };
 
 export const PRODUCTS = BASE_PRODUCTS.map((product) => {
@@ -944,6 +992,6 @@ export const PRODUCTS = BASE_PRODUCTS.map((product) => {
     priceKind: override.priceKind || product.priceKind || 'pending',
     priceSourceUrl: override.priceSourceUrl || product.priceSourceUrl || null,
     priceCheckedAt: override.priceCheckedAt || product.priceCheckedAt || (yen === null ? null : '2026-08-01'),
-    priceNote: override.priceNote || product.priceNote || null,
+    priceNote: Object.hasOwn(override, 'priceNote') ? override.priceNote : (product.priceNote || null),
   };
 });

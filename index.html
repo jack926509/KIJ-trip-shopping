@@ -244,14 +244,14 @@ function comparisonTableHtml(group, items) {
   </section>`;
 }
 
-function recommendedStoresHtml(product) {
-  if (product.group !== 'shopping') return '';
+function recommendedStoreText(product) {
+  if (product.group !== 'shopping') return null;
   if (['皮膚護理', '痠痛舒緩', '旅途常備藥'].includes(product.category)) {
-    return '<div class="kij-store-summary"><span>推薦店家</span>唐吉訶德／松本清／SUNDRUG</div>';
+    return '唐吉訶德／松本清／SUNDRUG';
   }
   const stores = product.stores.map((id) => STORE_SUMMARIES[id]).filter(Boolean);
-  if (stores.length === 0) return '';
-  return `<div class="kij-store-summary"><span>推薦店家</span>${stores.map((store) => escapeHtml(store.name)).join('／')}</div>`;
+  if (stores.length === 0) return null;
+  return stores.map((store) => store.name).join('／');
 }
 
 /* ────────────────────────────────────────────────────────────────
@@ -263,7 +263,7 @@ function buildCardHtml(product) {
   const jaHtml = product.jaName ? `<div class="ja">${escapeHtml(product.jaName)}</div>` : '';
   const modelHtml = product.model && product.group !== 'dryer' ? `<div class="ja">型號：${escapeHtml(product.model)}</div>` : '';
   const fullImage = product.image.replace('/thumb/', '/full/');
-  const storeHtml = recommendedStoresHtml(product);
+  const storeText = recommendedStoreText(product);
   const dryerSummaryHtml = product.group === 'dryer' ? `<div class="kij-dryer-summary">${escapeHtml(DRYER_SUMMARIES[product.id] || '')}</div>` : '';
 
   let priceHtml = '';
@@ -279,12 +279,14 @@ function buildCardHtml(product) {
     controlsHtml = '';
   } else if (product.tracking === 'buy') {
     const qty = getQty(product.id);
-    const bought = isBought(product.id);
     const yenText = product.yen != null ? `¥${product.yen.toLocaleString()}` : '價格待確認';
-    const twdText = product.twdRef != null ? `約 NT$${product.twdRef.toLocaleString()}` : '';
+    const twdText = product.twdRef != null ? `（約 NT$${product.twdRef.toLocaleString()}）` : '';
     priceHtml = product.group === 'shopping'
-      ? `<div class="kij-shopping-facts"><span>參考價格</span><strong>約 ${yenText}</strong>${twdText ? `<small>${twdText}</small>` : ''}</div>
-        <div class="kij-qty-row"><span>購買數量</span><button type="button" class="kij-qty-btn" data-action="qty-minus" aria-label="減少數量">－</button><span class="kij-qty-value" aria-live="polite">${qty}</span><button type="button" class="kij-qty-btn" data-action="qty-plus" aria-label="增加數量">＋</button></div>`
+      ? `<dl class="kij-shopping-details">
+          <dt>參考價格</dt><dd class="price">約 ${yenText} ${twdText}</dd>
+          <dt>購買數量</dt><dd><span class="kij-qty-control"><button type="button" class="kij-qty-btn" data-action="qty-minus" aria-label="減少數量">－</button><span class="kij-qty-value" aria-live="polite">${qty}</span><button type="button" class="kij-qty-btn" data-action="qty-plus" aria-label="增加數量">＋</button></span></dd>
+          ${storeText ? `<dt>推薦店家</dt><dd>${escapeHtml(storeText)}</dd>` : ''}
+        </dl>`
       : `<div class="price-row"><span class="yen">${yenText}</span><span class="twd">${twdText}</span><span class="kij-price-kind">${priceKindText}</span></div>`;
     controlsHtml = '';
   } else {
@@ -311,7 +313,6 @@ function buildCardHtml(product) {
         ${modelHtml}
         ${dryerSummaryHtml}
         ${priceHtml}
-        ${storeHtml}
       </div>
       <div class="kij-card-actions">
         ${controlsHtml}
@@ -396,9 +397,11 @@ function syncCardVisual(card, product) {
   if (product.tracking === 'buy') {
     const boughtBtn = card.querySelector('[data-action="toggle-bought"]');
     const bought = isBought(product.id);
-    boughtBtn.classList.toggle('on', bought);
-    boughtBtn.setAttribute('aria-pressed', String(bought));
-    boughtBtn.textContent = `${bought ? '☑' : '□'} 已購買`;
+    if (boughtBtn) {
+      boughtBtn.classList.toggle('on', bought);
+      boughtBtn.setAttribute('aria-pressed', String(bought));
+      boughtBtn.textContent = `${bought ? '☑' : '□'} 已購買`;
+    }
 
     const qty = getQty(product.id);
     const qtyValueEl = card.querySelector('.kij-qty-value');
