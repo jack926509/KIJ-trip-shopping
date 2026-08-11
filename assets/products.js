@@ -220,7 +220,8 @@ const BASE_PRODUCTS = [
     image: 'images/thumb/ne7n.webp',
     note: '雙倍礦物負離子吹風機，三段風溫可折疊，2025 年 LDK 讀者票選 Best Buy（得獎資訊見 docs/dryer-specs-and-reviews-2026-08-01.md）；想一次到位選這台。',
     source: 'docs/japan-product-prices-2026-08-01.md',
-    stores: ['biccamera-tenjin-1']
+    stores: ['biccamera-tenjin-1'],
+    storeCandidates: ['biccamera-tenjin-2', 'yodobashi-camera-hakata', 'bestdenki-kokura-ekimae']
   },
   {
     id: 'ne5n',
@@ -236,7 +237,8 @@ const BASE_PRODUCTS = [
     image: 'images/thumb/ne5n.webp',
     note: '負離子吹風機，功能與 NE7N 相近但少礦物負離子與離子充電面板，CP 值首選，比 NE7N 便宜約 ¥2,557。',
     source: 'docs/japan-product-prices-2026-08-01.md',
-    stores: ['biccamera-tenjin-1']
+    stores: ['biccamera-tenjin-1'],
+    storeCandidates: ['biccamera-tenjin-2', 'yodobashi-camera-hakata', 'bestdenki-kokura-ekimae']
   },
 
   // ── ON 鞋款（shoes，5 項）──
@@ -504,7 +506,8 @@ const BASE_PRODUCTS = [
     group: 'convenience', tracking: 'buy', category: '冰品', storeBrand: 'LAWSON',
     name: 'Morinaga 焦糖布丁冰淇淋', jaName: 'マミーレ キャラメリックプディング', model: null,
     yen: 321, twdRef: null, defaultQty: 1, image: 'images/thumb/morinaga-caramelic-pudding.webp',
-    note: '森永製菓 2026-05-18 上市的超商限定商品，80 ml；官方參考售價未稅 ¥298／含稅 ¥321。原紀錄採用照片層架價 ¥180（含稅 ¥194），與官方參考價差距過大且無法對應，改以官方新聞稿為準，門市實際售價仍請以冷凍櫃標價為準。', source: 'docs/product-price-sources-2026-08-11.md', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
+    note: '森永製菓 2026-05-18 上市的超商限定商品，80 ml，全國各大超商鋪貨（非 LAWSON 專屬）；官方參考售價未稅 ¥298／含稅 ¥321。原紀錄採用照片層架價 ¥180（含稅 ¥194），與官方參考價差距過大且無法對應，改以官方新聞稿為準，門市實際售價仍請以冷凍櫃標價為準。', source: 'docs/product-price-sources-2026-08-11.md', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
+    storeCandidates: ['seven-eleven-tenjin-underground', 'familymart-hakata-station', 'familymart-kokura-station'],
     priceKind: 'official', priceSourceUrl: 'https://prtimes.jp/main/html/rd/p/000000800.000019896.html', priceCheckedAt: '2026-08-11', priceNote: null
   },
   {
@@ -512,7 +515,7 @@ const BASE_PRODUCTS = [
     group: 'convenience', tracking: 'buy', category: '麵包甜點', storeBrand: 'LAWSON',
     name: '草莓巧克力菠蘿麵包', jaName: 'チョコ！メロンパン いちご', model: null,
     yen: 235, twdRef: null, defaultQty: 1, image: 'images/thumb/strawberry-chocolate-melon-pan.webp',
-    note: 'Lawson 圖片推薦新品；有效期限短，適合當日購買食用。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
+    note: 'LAWSON 自有品牌「ゴロチョコ！メロンパン いちご」，非其他超商共通商品；有效期限短，適合當日購買食用。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
     priceKind: 'photo-reference', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '使用者提供圖片可辨識包裝標價 ¥235。'
   },
   {
@@ -520,7 +523,8 @@ const BASE_PRODUCTS = [
     group: 'convenience', tracking: 'buy', category: '飲品', storeBrand: 'LAWSON',
     name: 'Asahi 十六茶', jaName: 'アサヒ 十六茶', model: '630 ml・無咖啡因',
     yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/jurokucha-630ml.webp',
-    note: 'Lawson 圖片推薦；630 ml、無咖啡因標示。日本清涼飲料為開放價格，超商售價以門市標示為準（同容量茶飲一般在 ¥160 上下）。', source: 'docs/product-price-sources-2026-08-11.md', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
+    note: 'Asahi 全國性品牌，非 LAWSON 專屬，各大超商鋪貨；630 ml、無咖啡因標示。日本清涼飲料為開放價格，超商售價以門市標示為準（同容量茶飲一般在 ¥160 上下）。', source: 'docs/product-price-sources-2026-08-11.md', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
+    storeCandidates: ['seven-eleven-tenjin-underground', 'familymart-hakata-station', 'familymart-kokura-station'],
     priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-11', priceNote: '開放價格商品：Asahi 未公布希望小売価格，超商與量販價差大。另 630 ml 對應無標籤瓶／濃味版等多個規格，照片無法確定為哪一款，故不填單一數字。此為最終判定，非待補資料。'
   },
   {
@@ -528,7 +532,8 @@ const BASE_PRODUCTS = [
     group: 'convenience', tracking: 'buy', category: '飲品', storeBrand: 'LAWSON',
     name: '午後紅茶 ICE MILK TEA', jaName: '午後の紅茶 ICE MILK TEA', model: null,
     yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/gogo-no-kocha-ice-milk-tea.webp',
-    note: 'Lawson 圖片推薦；冷藏飲品。日本清涼飲料為開放價格，超商售價以門市標示為準。', source: 'docs/product-price-sources-2026-08-11.md', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
+    note: 'KIRIN 全國性品牌，非 LAWSON 專屬，各大超商鋪貨；冷藏飲品。日本清涼飲料為開放價格，超商售價以門市標示為準。', source: 'docs/product-price-sources-2026-08-11.md', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
+    storeCandidates: ['seven-eleven-tenjin-underground', 'familymart-hakata-station', 'familymart-kokura-station'],
     priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-11', priceNote: '開放價格商品：KIRIN 官方頁明示希望小売価格僅供參考且不標示金額。午後の紅茶 ICE MILK TEA 亦查無對應此名稱的現行單一品項，無法指定容量與定價，故不填數字。此為最終判定，非待補資料。'
   },
   {
@@ -536,7 +541,7 @@ const BASE_PRODUCTS = [
     group: 'convenience', tracking: 'buy', category: '即食湯品', storeBrand: 'LAWSON',
     name: '蛤蜊味噌湯', jaName: 'あさりのおみそ汁', model: null,
     yen: 178, twdRef: null, defaultQty: 1, image: 'images/thumb/asari-miso-soup.webp',
-    note: 'Lawson 圖片推薦；可直接加熱食用，請以門市冷藏櫃實際庫存為準。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
+    note: 'LAWSON Select 自有品牌即食味噌湯，非其他超商共通商品；可直接加熱食用，請以門市冷藏櫃實際庫存為準。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
     priceKind: 'photo-reference', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '使用者提供圖片中的層架價標為 ¥165（含稅 ¥178）。'
   },
 
