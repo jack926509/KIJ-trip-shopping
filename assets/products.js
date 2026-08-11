@@ -503,9 +503,9 @@ const BASE_PRODUCTS = [
     id: 'morinaga-caramelic-pudding',
     group: 'convenience', tracking: 'buy', category: '冰品', storeBrand: 'LAWSON',
     name: 'Morinaga 焦糖布丁冰淇淋', jaName: 'マミーレ キャラメリックプディング', model: null,
-    yen: 180, twdRef: null, defaultQty: 1, image: 'images/thumb/morinaga-caramelic-pudding.webp',
-    note: 'Lawson 圖片推薦新品；請以門市冷凍櫃實際庫存為準。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
-    priceKind: 'photo-reference', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '使用者提供圖片中的層架價標為 ¥180（含稅 ¥194）。'
+    yen: 321, twdRef: null, defaultQty: 1, image: 'images/thumb/morinaga-caramelic-pudding.webp',
+    note: '森永製菓 2026-05-18 上市的超商限定商品，80 ml；官方參考售價未稅 ¥298／含稅 ¥321。原紀錄採用照片層架價 ¥180（含稅 ¥194），與官方參考價差距過大且無法對應，改以官方新聞稿為準，門市實際售價仍請以冷凍櫃標價為準。', source: 'docs/product-price-sources-2026-08-11.md', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
+    priceKind: 'official', priceSourceUrl: 'https://prtimes.jp/main/html/rd/p/000000800.000019896.html', priceCheckedAt: '2026-08-11', priceNote: null
   },
   {
     id: 'strawberry-chocolate-melon-pan',
@@ -721,7 +721,7 @@ const PRICE_OVERRIDES = {
     priceSourceUrl: 'https://kakaku.com/item/J0000048996/?lid=20190108pricemenu_ranking_2',
     priceCheckedAt: '2026-08-10',
     source: 'docs/product-price-sources-2026-08-10.md',
-    note: 'BicCamera 線上參考價 ¥5,180；實體門市價格與點數回饋以結帳當日為準。',
+    note: '價格.com 比價參考價 ¥5,180（來源為比價站而非 BicCamera 官方標價）；BicCamera 實體門市價格與點數回饋以結帳當日為準。',
   },
   cloudsurfermax: {
     priceKind: 'official',
@@ -749,8 +749,9 @@ const PRICE_OVERRIDES = {
   },
   clifton11: {
     priceKind: 'official',
-    priceSourceUrl: 'https://hoka-jp-api.hoka.com/',
-    priceCheckedAt: '2026-08-01',
+    priceSourceUrl: 'https://www.hoka.com/jp/clifton-11/1176572.html',
+    priceCheckedAt: '2026-08-11',
+    source: 'docs/product-price-sources-2026-08-11.md',
   },
   transport2: {
     priceKind: 'launch-reference',
@@ -844,13 +845,13 @@ const PRICE_OVERRIDES = {
     note: 'Wpc. IZA ZA020／ZA028 COMPACT 無地款官方售價 ¥3,850；圖片僅能辨識 ZA020，花色款價格可能不同。',
   },
   'hanamidori-kiwami-spice': {
-    yen: 708,
-    source: 'docs/product-price-sources-2026-08-10.md',
+    yen: 588,
+    source: 'docs/product-price-sources-2026-08-11.md',
     priceKind: 'retailer-reference',
-    priceSourceUrl: 'https://www.supersports.com/ja-jp/lbreath/products/C-10910310101/',
-    priceCheckedAt: '2026-08-10',
-    priceNote: '現行 55 g 規格未見品牌官方定價；以日本通路標示價作參考。',
-    note: '博多華味鳥 10 種極香料 55 g；日本通路參考價 ¥708，門市售價可能不同。',
+    priceSourceUrl: 'https://www.profoods.co.jp/i/0600551',
+    priceCheckedAt: '2026-08-11',
+    priceNote: '現行 55 g 規格未見品牌官方定價；以日本食品通路標示價作參考。原紀錄引用的來源網址為運動用品通路且無法對應本商品，已更換為規格相符的食品通路頁。',
+    note: 'トリゼンフーズ 博多華味鳥 10 種極香料 55 g；日本食品通路參考價 ¥588，門市售價可能不同。製造販售商官方商品頁：https://www.torizenfoods.jp/items/hanamidori/seasoning/kiwami-spice/',
   },
 };
 
