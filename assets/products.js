@@ -639,8 +639,8 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '3C 配件',
     name: 'CIO SMARTCOBY SLIMII Wireless 2.2 8K 行動電源', jaName: 'SMARTCOBY SLIMII Wireless2.2 8K Special Edition Set', model: 'CIO-MB30W1C-8K-S2W25-EE-BK・黑色',
     yen: 8980, twdRef: null, defaultQty: 1, image: 'images/thumb/cio-smartcoby-slimii-wireless-2-2-8k-special-edition.webp',
-    note: '8,000 mAh、Qi2.2 無線 25 W、USB-C 有線 30 W；約 12 mm、170 g，含專用網狀收納袋。', source: 'docs/product-price-sources-2026-08-11.md', stores: [], storeCandidates: ['biccamera-tenjin-2'],
-    priceKind: 'retailer-reference', priceSourceUrl: 'https://www.biccamera.com/bc/item/15238470/', priceCheckedAt: '2026-08-11', priceNote: '照片可辨識 Special Edition Set 黑色型號 CIO-MB30W1C-8K-S2W25-EE-BK；含收納袋版本以 BicCamera 通路價為參考。'
+    note: '8,000 mAh、Qi2.2 無線 25 W、USB-C 有線 30 W；約 12 mm、170 g，含專用網狀收納袋。', source: 'docs/product-price-sources-2026-08-11.md', stores: ['biccamera-tenjin-2'], storeCandidates: [],
+    priceKind: 'retailer-reference', priceSourceUrl: 'https://www.biccamera.com/bc/item/15238470/', priceCheckedAt: '2026-08-11', priceNote: '照片可辨識 Special Edition Set 黑色型號 CIO-MB30W1C-8K-S2W25-EE-BK；BicCamera 線上含稅 ¥8,980、點數 898 點，天神 2 號館購買前請先確認該型號店庫存。'
   }
 ];
 

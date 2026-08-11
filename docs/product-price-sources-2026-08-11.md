@@ -149,3 +149,4 @@
 
 - [CIO 官方產品頁](https://connectinternationalone.co.jp/cioproduct/mobilebattery/smartcoby/cio-mb30w1c-8k-s2w25/) 確認基本型號的容量 8,000 mAh、尺寸約 102 × 70 × 12 mm、重量約 170 g、Qi2.2 無線最大 25 W、USB-C 最大 30 W。
 - 本次照片為含專用網狀收納袋的 Special Edition Set，故價格採對應的 BicCamera 商品頁，而不使用基本型號的官方 ¥7,980 定價。
+- 網頁推薦店家更新為「BicCamera 天神 2 號館」；BicCamera 商品頁列出套組 ¥8,980、10% 點數（898 點）及線上在庫。該訊息不等同於天神 2 號館的即時店庫存，購買前應以型號確認。
