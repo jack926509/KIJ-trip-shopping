@@ -184,6 +184,11 @@ for (const p of products) {
   }
 }
 
+/* 只在店家層級（縮排 6 格）的 `{` 切開。
+ * 不能用 /\n\s*\{/，那會連 officialSources 裡縮排 10 格的內層物件一起切，
+ * 使 mapsQuery 被分到別的區塊，樓層一致性檢查就永遠比不到。 */
+const storeBlocksAll = mapHtml.slice(mapHtml.indexOf('const STORES = [')).split(/\n {6}\{/).slice(1);
+
 /* ──────────────────────────────────────────────────────────────
  * 地圖店家檢查
  * ────────────────────────────────────────────────────────────── */
@@ -199,11 +204,31 @@ for (const storeId of mapStoreIds) {
   }
 }
 
+/* 7. 每個店家分類都必須同時具備：篩選標籤、地圖標記色、圖例色、卡片標籤色。
+ * 漏掉圖例色時該色點會變成透明，看起來就像「後面幾個分類沒有圖例」，
+ * 而地圖上的標記其實是有顏色的——兩邊不同步且不會有任何錯誤訊息。 */
+const categoryLabels = [...(mapHtml.match(/const CATEGORY_LABELS = \{[^}]*\}/) || [''])[0]
+  .matchAll(/'?([a-z-]+)'?\s*:\s*'/g)].map((m) => m[1]);
+const usedCategories = new Set(
+  storeBlocksAll.map((b) => (b.match(/category:\s*'([a-z-]+)'/) || [])[1]).filter(Boolean)
+);
+for (const category of categoryLabels) {
+  for (const [what, pattern] of [
+    ['地圖標記色 .map-pin--', new RegExp(`\\.map-pin--${category}\\s*\\{`)],
+    ['圖例色 .legend .', new RegExp(`\\.legend \\.${category}\\s*\\{`)],
+    ['卡片標籤色 .category-', new RegExp(`\\.category-${category}\\s*\\{`)],
+  ]) {
+    if (!pattern.test(mapHtml)) errors.push(`map.html: 分類 ${category} 缺少${what}${category} 的樣式`);
+  }
+}
+for (const category of usedCategories) {
+  if (!categoryLabels.includes(category)) {
+    errors.push(`map.html: 店家使用了 CATEGORY_LABELS 未定義的分類（${category}）`);
+  }
+}
+
 // 6. 營業時間不得只寫「依公告」這類空泛字樣，樓層寫法也不得自我矛盾。
-/* 只在店家層級（縮排 6 格）的 `{` 切開。
- * 不能用 /\n\s*\{/，那會連 officialSources 裡縮排 10 格的內層物件一起切，
- * 使 mapsQuery 被分到別的區塊，樓層一致性檢查就永遠比不到。 */
-const storeBlocks = mapHtml.slice(mapHtml.indexOf('const STORES = [')).split(/\n {6}\{/).slice(1);
+const storeBlocks = storeBlocksAll;
 for (const block of storeBlocks) {
   const id = (block.match(/id:\s*'([a-z0-9-]+)'/) || [])[1];
   if (!id || !mapStoreIds.has(id)) continue;

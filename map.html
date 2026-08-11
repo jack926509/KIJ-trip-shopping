@@ -214,11 +214,16 @@
       border-radius: 50%;
     }
 
-    /* 分類色票與 assets/kij.css 的 .kij-cat-* 文字色保持一致，不在本檔另建一套色票 */
+    /* 分類色票與 assets/kij.css 的 .kij-cat-* 文字色保持一致，不在本檔另建一套色票。
+     * 每一色必須與下方對應的 .map-pin--* 相同，否則圖例會與地圖上的標記對不起來；
+     * 七個分類要全部列出，漏掉任何一個該色點會變成透明（看起來像沒有圖例）。 */
     .legend .shoe { background: #1f5fa8; } /* 對應 .kij-cat-shoe */
     .legend .drug { background: #0a7a6a; } /* 對應 .kij-cat-drug */
     .legend .daily { background: #a04a10; } /* 對應 .kij-cat-food（daily／supermarket 皆為橘色系） */
     .legend .supermarket { background: #a04a10; } /* 對應 .kij-cat-food */
+    .legend .convenience { background: #b23a48; }
+    .legend .electronics { background: #6552a4; }
+    .legend .gift-food { background: #8b6500; }
 
     .content-grid {
       display: grid;
