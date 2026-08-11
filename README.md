@@ -10,7 +10,7 @@
 - 商品名稱與品牌搜尋
 - 購買完成勾選
 - 數量與價格計算
-- 日圓／新臺幣金額顯示
+- 日圓／新臺幣金額顯示（台幣由 `assets/products.js` 的 `JPY_TWD_RATE` 單一匯率換算）
 - 社群推薦標示
 - 手機與桌面響應式版面
 - 使用瀏覽器保存部分操作紀錄
@@ -20,46 +20,39 @@
 
 ```text
 .
-├── index.html
-├── map.html
+├── index.html                  # 採購清單主頁
+├── map.html                    # 購物地圖（內含 STORES 店家資料）
+├── package.json
 ├── assets/
-│   ├── kij.css
-│   └── products.js
-├── skills/kij-shopping-list/
-│   └── SKILL.md
-├── README.md
+│   ├── kij.css                 # 兩頁共用樣式
+│   └── products.js             # 單一商品資料源＋JPY_TWD_RATE 匯率
+├── scripts/
+│   ├── validate-products.mjs   # 資料驗證器
+│   ├── build-images.mjs        # 由原圖產生 thumb／full
+│   └── extract-embedded-images.mjs
+├── skills/kij-shopping-list/   # 新增商品用的 Skill
+├── docs/                       # 價格與店家的查證紀錄
+├── .github/workflows/          # push／PR 時自動跑驗證
 └── images/
-    ├── hoka/
-    │   ├── clifton-11.jpeg
-    │   └── ...
-    └── on/
-        ├── cloud-6-side.avif
-        └── ...
+    ├── thumb/<id>.webp         # 卡片縮圖，檔名必須等於商品 id
+    ├── full/<id>.webp          # 放大圖
+    ├── source/                 # 原始圖（不直接使用）
+    ├── build-manifest.json     # id → 原圖來源對照
+    ├── hoka/ · on/ · dryer/    # 品牌官方圖
+    └── products/
 ```
 
-若後續改用獨立圖片檔案，建議使用：
-
-```text
-.
-├── index.html
-├── README.md
-└── images/
-    ├── product-01.webp
-    ├── product-02.webp
-    └── ...
-```
-
-HTML 圖片路徑範例：
-
-```html
-<img src="./images/product-01.webp" alt="商品名稱">
-```
+`index.html` 與 `map.html` 都以 ES module 從 `assets/products.js` 讀取同一份商品資料，**不得各自維護副本**。
 
 ## 在本機開啟
 
-直接使用 Chrome、Edge、Safari 或 Firefox 開啟 `index.html`。
+因為使用 ES module，直接以 `file://` 開啟 `index.html` 會被瀏覽器的跨來源限制擋下。請起一個本機伺服器：
 
-部分瀏覽器對本機檔案的 JavaScript 或跨網域請求有限制，因此正式測試建議部署至 Vercel。
+```bash
+python3 -m http.server 8000
+```
+
+然後開啟 <http://localhost:8000/index.html>。
 
 ## 部署至 Vercel
 
@@ -113,13 +106,60 @@ cp -R skills/kij-shopping-list ~/.codex/skills/
 
 所有新增商品會寫入 `assets/products.js`，因此部署後會正式出現在清單；有可證實的店鋪關聯時，也會出現在地圖頁。
 
-資料變更後先執行：
+## 資料驗證
+
+**任何資料變更後都要執行：**
 
 ```bash
 npm run validate:data
 ```
 
-## 圖片建議
+`.github/workflows/validate-data.yml` 也會在 push 與 PR 時自動執行同一份檢查。
+
+驗證器除了檢查欄位格式，也會攔截「同一筆資料的兩個欄位互相矛盾」這類過去只能靠人工複查才找得到的問題：
+
+| 檢查 | 說明 |
+| --- | --- |
+| 通路名稱 vs 來源網域 | `priceNote` 若點名 BicCamera、LOHACO、Costco 等通路，`priceSourceUrl` 網域必須相符 |
+| 含稅金額 vs `yen` | `priceNote` 若寫「含稅 ¥N」，N 必須等於 `yen`（全站一律存含稅價） |
+| 來源必須是單品頁 | `official`／`retailer-reference` 不得使用網站首頁或站內搜尋頁 |
+| 台幣換算 | `twdRef` 必須等於 `yen × JPY_TWD_RATE`，禁止手寫值 |
+| 地圖店家覆蓋 | 每家店都必須至少被一項商品連結，不留只畫在地圖上的標記 |
+| 營業時間 | 不得只寫「依…公告」這類空泛字樣 |
+| 樓層一致性 | 店家 `address` 與 `mapsQuery` 的樓層寫法不得互相矛盾 |
+
+其他既有檢查：id 唯一、`stores` 必須指向地圖上存在的店家、有價格就必須有 `source` 檔案、每項商品都要有 `images/thumb/<id>.webp`、中文欄位不得混入簡體字。
+
+## 匯率
+
+台幣金額由 `assets/products.js` 的單一常數換算，各商品**不得自帶手寫的 `twdRef`**：
+
+```js
+export const JPY_TWD_RATE = 0.2035;
+export const JPY_TWD_RATE_CHECKED_AT = '2026-08-10';
+```
+
+更新匯率只需改這兩個值再跑一次驗證。（先前兩筆手寫值曾各用 0.311 與 0.322 兩套匯率而互相矛盾，改為單一來源即為此。）
+
+## 價格慣例
+
+- `yen` 一律存**含稅價**。
+- `priceKind` 表示佐證強度：`official`（品牌官方）、`retailer-reference`（通路標價）、`launch-reference`（上市報導）、`photo-reference`（現場照片，此時 `priceSourceUrl` 必須為 `null`）、`pending`（未定價）。
+- 屬**開放價格**（廠商不定價）而無法給出單一數字的商品，維持 `pending` 並在 `priceNote` 寫明原因；這是最終判定，不是待補資料。
+
+## 圖片
+
+縮圖與放大圖由原圖自動產生：
+
+```bash
+npm run build:images
+```
+
+原圖放在 `images/source/`（或 `images/products/`、品牌資料夾），並在 `images/build-manifest.json` 登記 `商品 id → 原圖路徑`，產出 `images/thumb/<id>.webp` 與 `images/full/<id>.webp`。**縮圖檔名必須等於商品 id**，驗證器會檢查。
+
+商品下架時，記得一併刪除 `thumb`／`full`／原圖與 manifest 項目，避免留下無人引用的孤兒圖片。
+
+建議：
 
 - 優先使用 WebP 格式。
 - 單張圖片建議控制在 100–300 KB。
