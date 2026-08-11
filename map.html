@@ -329,6 +329,9 @@
 
     .area-tag { background: var(--soft); color: var(--green); }
     .category-tag { background: #f2eee8; color: #665e54; }
+    .category-convenience { background: #fff1f1; color: #b23a48; }
+    .category-electronics { background: #f0edff; color: #6552a4; }
+    .category-gift-food { background: #fff7dd; color: #8b6500; }
 
     .store-name {
       display: block;
@@ -507,6 +510,9 @@
     .map-pin--drug { background: #0a7a6a; } /* 對應 .kij-cat-drug */
     .map-pin--daily { background: #a04a10; } /* 對應 .kij-cat-food（daily／supermarket 皆為橘色系） */
     .map-pin--supermarket { background: #a04a10; } /* 對應 .kij-cat-food */
+    .map-pin--convenience { background: #b23a48; }
+    .map-pin--electronics { background: #6552a4; }
+    .map-pin--gift-food { background: #8b6500; }
 
     .popup-content { min-width: 180px; }
     .popup-content strong { display: block; margin-bottom: 4px; font-size: 14px; }
@@ -566,6 +572,9 @@
         <button type="button" data-category="drug" aria-pressed="false">藥妝</button>
         <button type="button" data-category="daily" aria-pressed="false">生活雜貨</button>
         <button type="button" data-category="supermarket" aria-pressed="false">超市</button>
+        <button type="button" data-category="convenience" aria-pressed="false">便利商店</button>
+        <button type="button" data-category="electronics" aria-pressed="false">家電</button>
+        <button type="button" data-category="gift-food" aria-pressed="false">食品伴手禮</button>
       </div>
     </section>
 
@@ -576,6 +585,9 @@
         <span><i class="drug"></i>藥妝</span>
         <span><i class="daily"></i>生活雜貨</span>
         <span><i class="supermarket"></i>超市</span>
+        <span><i class="convenience"></i>便利商店</span>
+        <span><i class="electronics"></i>家電</span>
+        <span><i class="gift-food"></i>食品伴手禮</span>
       </div>
     </div>
 
@@ -978,16 +990,26 @@
         lat: 33.58664,
         lng: 130.39606,
         mapsQuery: 'ドン・キホーテ 福岡天神本店'
-      }
+      },
+      { id: 'lawson-hakata', name: 'LAWSON 博多店', brand: 'LAWSON', category: 'convenience', area: 'hakata', address: '福岡県福岡市博多区博多駅前 2-6-12', hours: '24 小時營業', note: 'LAWSON 商品的博多補貨點；冷藏、冷凍與限定商品庫存請以店內為準。', lat: 33.5918, lng: 130.4162, officialUrl: 'https://www.lawson.co.jp/service/others/in/', officialSources: [{ label: 'LAWSON 官方門市資訊', url: 'https://www.lawson.co.jp/service/others/in/' }], mapsQuery: 'ローソン 博多店 福岡県福岡市博多区博多駅前 2-6-12' },
+      { id: 'lawson-nishitetsu-fukuoka-tenjin-south', name: 'LAWSON 西鐵福岡天神站南口店', brand: 'LAWSON', category: 'convenience', area: 'tenjin', address: '福岡県福岡市中央区天神 2-2-67', hours: '24 小時營業', note: '天神購物動線上的 LAWSON；冷藏、冷凍與限定商品庫存請以店內為準。', lat: 33.5887, lng: 130.3979, officialUrl: 'https://www.lawson.co.jp/service/others/in/', officialSources: [{ label: 'LAWSON 官方門市資訊', url: 'https://www.lawson.co.jp/service/others/in/' }], mapsQuery: 'ローソン 西鉄福岡天神駅南口店 福岡県福岡市中央区天神 2-2-67' },
+      { id: 'lawson-kokura-uomachi-2chome', name: 'LAWSON 小倉魚町二丁目店', brand: 'LAWSON', category: 'convenience', area: 'kokura', address: '福岡県北九州市小倉北区魚町 2-4-18', hours: '24 小時營業', note: '魚町銀天街旁的 LAWSON；冷藏、冷凍與限定商品庫存請以店內為準。', lat: 33.8835, lng: 130.8798, officialUrl: 'https://www.lawson.co.jp/service/others/in/', officialSources: [{ label: 'LAWSON 官方門市資訊', url: 'https://www.lawson.co.jp/service/others/in/' }], mapsQuery: 'ローソン 小倉魚町二丁目店 福岡県北九州市小倉北区魚町 2-4-18' },
+      { id: 'biccamera-tenjin-1', name: 'BicCamera 天神 1 號館', brand: 'BicCamera', category: 'electronics', area: 'tenjin', address: '福岡県福岡市中央区今泉 1-25-1', hours: '10:00–21:00', note: 'Panasonic 吹風機的主要採買點；型號、電壓規格、庫存與免稅資格請結帳前確認。', lat: 33.5880, lng: 130.3971, officialUrl: 'https://biccamera.co.jp/language/chinese-tenjin.html', officialSources: [{ label: 'BicCamera 天神官方店鋪資訊', url: 'https://biccamera.co.jp/language/chinese-tenjin.html' }], mapsQuery: 'ビックカメラ 天神1号館 福岡県福岡市中央区今泉 1-25-1' },
+      { id: 'kayanoya-hakata-station-daitos', name: '茅乃舍 博多站 DEITOS 店', brand: '茅乃舍', category: 'gift-food', area: 'hakata', address: '福岡県福岡市博多区博多駅中央街 1-1 博多デイトス', hours: '依博多 DEITOS 當日公告', note: '茅乃舍高湯包與茶碗蒸し的素的博多採買點；季節商品與禮盒請以店內為準。', lat: 33.5900, lng: 130.4201, officialUrl: 'https://www.kubara.jp/shoplist/kayanoya/?wh=pc_menu', officialSources: [{ label: '茅乃舍官方店鋪列表', url: 'https://www.kubara.jp/shoplist/kayanoya/?wh=pc_menu' }], mapsQuery: '茅乃舎 博多駅デイトス店 福岡県福岡市博多区博多駅中央街 1-1' },
+      { id: 'kayanoya-kokura-izutsuya', name: '茅乃舍 小倉井筒屋店', brand: '茅乃舍', category: 'gift-food', area: 'kokura', address: '福岡県北九州市小倉北区船場町 1-1 井筒屋小倉店', hours: '依井筒屋當日公告', note: '小倉逛街動線上的茅乃舍據點；季節商品與禮盒請以店內為準。', lat: 33.8834, lng: 130.8807, officialUrl: 'https://www.kubara.jp/shoplist/kayanoya/?wh=pc_menu', officialSources: [{ label: '茅乃舍官方店鋪列表', url: 'https://www.kubara.jp/shoplist/kayanoya/?wh=pc_menu' }], mapsQuery: '茅乃舎 小倉井筒屋店 福岡県北九州市小倉北区船場町 1-1' },
+      { id: 'hands-hakata', name: 'HANDS 博多店', brand: 'HANDS', category: 'daily', area: 'hakata', address: '福岡県福岡市博多区博多駅中央街 1-1 アミュプラザ博多 1–5F', hours: '10:00–20:00', note: '晴雨傘與日用品的到店確認點；品項、顏色與庫存不保證，請以店內查詢為準。', lat: 33.5903, lng: 130.4205, officialUrl: 'https://store.hands.net/hakata/', officialSources: [{ label: 'HANDS 博多店官方資訊', url: 'https://store.hands.net/hakata/' }], mapsQuery: 'ハンズ博多店 福岡県福岡市博多区博多駅中央街 1-1' }
     ];
 
     const AREA_LABELS = { hakata: '博多', tenjin: '天神', kokura: '小倉' };
-    const CATEGORY_LABELS = { shoe: '鞋款', drug: '藥妝', daily: '生活雜貨', supermarket: '超市' };
+    const CATEGORY_LABELS = { shoe: '鞋款', drug: '藥妝', daily: '生活雜貨', supermarket: '超市', convenience: '便利商店', electronics: '家電', 'gift-food': '食品伴手禮' };
     const MARKER_HTML = {
       shoe: '<span class="map-pin map-pin--shoe"><span aria-hidden="true"></span></span>',
       drug: '<span class="map-pin map-pin--drug"><span aria-hidden="true"></span></span>',
       daily: '<span class="map-pin map-pin--daily"><span aria-hidden="true"></span></span>',
-      supermarket: '<span class="map-pin map-pin--supermarket"><span aria-hidden="true"></span></span>'
+      supermarket: '<span class="map-pin map-pin--supermarket"><span aria-hidden="true"></span></span>',
+      convenience: '<span class="map-pin map-pin--convenience"><span aria-hidden="true"></span></span>',
+      electronics: '<span class="map-pin map-pin--electronics"><span aria-hidden="true"></span></span>',
+      'gift-food': '<span class="map-pin map-pin--gift-food"><span aria-hidden="true"></span></span>'
     };
 
     let activeArea = 'all';
