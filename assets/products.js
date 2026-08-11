@@ -633,6 +633,14 @@ const BASE_PRODUCTS = [
     yen: 1980, twdRef: null, defaultQty: 1, image: 'images/thumb/cp-lip-lip-essence.webp',
     note: '6 mL 保濕唇部美容液（アステリ CPリップ＜唇用美容液＞），可作唇部打底、精華與唇蜜使用。製造販售商官方站：https://www.astery.jp/', source: 'docs/product-price-sources-2026-08-11.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
     priceKind: 'official', priceSourceUrl: 'https://www.astery.jp/en/category/all-products', priceCheckedAt: '2026-08-11', priceNote: '原來源為品牌首頁，已改指官方商品列表頁。¥1,980 沿用前一輪研究結果，本輪未能在官方頁上重新驗證金額，到店請以架上標價為準。'
+  },
+  {
+    id: 'cio-smartcoby-slimii-wireless-2-2-8k-special-edition',
+    group: 'shopping', tracking: 'buy', category: '3C 配件',
+    name: 'CIO SMARTCOBY SLIMII Wireless 2.2 8K 行動電源', jaName: 'SMARTCOBY SLIMII Wireless2.2 8K Special Edition Set', model: 'CIO-MB30W1C-8K-S2W25-EE-BK・黑色',
+    yen: 8980, twdRef: null, defaultQty: 1, image: 'images/thumb/cio-smartcoby-slimii-wireless-2-2-8k-special-edition.webp',
+    note: '8,000 mAh、Qi2.2 無線 25 W、USB-C 有線 30 W；約 12 mm、170 g，含專用網狀收納袋。', source: 'docs/product-price-sources-2026-08-11.md', stores: [], storeCandidates: ['biccamera-tenjin-2'],
+    priceKind: 'retailer-reference', priceSourceUrl: 'https://www.biccamera.com/bc/item/15238470/', priceCheckedAt: '2026-08-11', priceNote: '照片可辨識 Special Edition Set 黑色型號 CIO-MB30W1C-8K-S2W25-EE-BK；含收納袋版本以 BicCamera 通路價為參考。'
   }
 ];
 

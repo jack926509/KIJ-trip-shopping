@@ -140,3 +140,12 @@
 - 無孤兒店家、無孤兒圖片、無空泛營業時間、無手寫匯率。
 - `pending` 價格 2 項，皆為開放價格商品的最終判定並已載明理由。
 - 唯二未能本輪重新驗證金額的是 `wpc-iza-cool-compact` 與 `cp-lip-lip-essence`，已在資料本身的 `priceNote` 標示，不是隱含的待辦。
+
+## 新增：CIO SMARTCOBY SLIMII Wireless2.2 8K Special Edition Set
+
+| 品項 | 規格 | 顯示價格 | 類型 | 直接來源 | 核對結果 |
+| --- | --- | ---: | --- | --- | --- |
+| CIO SMARTCOBY SLIMII Wireless2.2 8K Special Edition Set | 黑色、型號 CIO-MB30W1C-8K-S2W25-EE-BK、含網狀收納袋 | ¥8,980 | BicCamera 通路參考 | [BicCamera 商品頁](https://www.biccamera.com/bc/item/15238470/) | 使用者照片可辨識型號、8,000 mAh、Qi2.2 25 W、USB-C 30 W 與收納袋；通路頁標示含稅 ¥8,980。 |
+
+- [CIO 官方產品頁](https://connectinternationalone.co.jp/cioproduct/mobilebattery/smartcoby/cio-mb30w1c-8k-s2w25/) 確認基本型號的容量 8,000 mAh、尺寸約 102 × 70 × 12 mm、重量約 170 g、Qi2.2 無線最大 25 W、USB-C 最大 30 W。
+- 本次照片為含專用網狀收納袋的 Special Edition Set，故價格採對應的 BicCamera 商品頁，而不使用基本型號的官方 ¥7,980 定價。
