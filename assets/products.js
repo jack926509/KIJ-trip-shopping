@@ -605,6 +605,22 @@ const BASE_PRODUCTS = [
     yen: 2079, twdRef: null, defaultQty: 1, image: 'images/thumb/ohta-isan-s-50.webp',
     note: '圖片確認為 50 包分包裝；請依包裝與藥師說明確認是否適用。', source: 'docs/product-price-sources-2026-08-10.md', stores: [],
     priceKind: 'official', priceSourceUrl: 'https://ohta-isan.co.jp/%E5%A4%AA%E7%94%B0%E8%83%83%E6%95%A3S%E3%83%BB%E5%A4%AA%E7%94%B0%E8%83%83%E6%95%A3%EF%BC%9C%E5%88%86%E5%8C%85%EF%BC%9ES_%E3%83%AA%E3%83%AA%E3%83%BC%E3%82%B9.pdf', priceCheckedAt: '2026-08-10', priceNote: null
+  },
+  {
+    id: 'daiso-toy-story-pendulum-clock',
+    group: 'shopping', tracking: 'buy', category: '日用品',
+    name: 'DAISO 玩具總動員振子掛鐘', jaName: '振り子時計（トイ・ストーリー）', model: null,
+    yen: 770, twdRef: null, defaultQty: 1, image: 'images/thumb/daiso-toy-story-pendulum-clock.webp',
+    note: '玩具總動員角色振子掛鐘；圖片可辨識艾利三眼怪造型擺錘。', source: 'docs/product-price-sources-2026-08-10.md', stores: [],
+    priceKind: 'official', priceSourceUrl: 'https://jp.daisonet.com/collections/disney-design-collection-br-toy-story-br-toys-in-action', priceCheckedAt: '2026-08-11', priceNote: null
+  },
+  {
+    id: 'cp-lip-lip-essence',
+    group: 'shopping', tracking: 'buy', category: '皮膚護理',
+    name: 'Cp-Lip 唇部美容液', jaName: 'Cp-Lip Lip Essence', model: '6 mL',
+    yen: 1980, twdRef: null, defaultQty: 1, image: 'images/thumb/cp-lip-lip-essence.webp',
+    note: '6 mL 保濕唇部美容液，可作唇部打底、精華與唇蜜使用。', source: 'docs/product-price-sources-2026-08-10.md', stores: [],
+    priceKind: 'official', priceSourceUrl: 'https://www.astery.jp/en', priceCheckedAt: '2026-08-11', priceNote: null
   }
 ];
 
