@@ -119,7 +119,7 @@ const BASE_PRODUCTS = [
     note: '官方頁面確認為一般刷毛（ふつう）版本，黑／棕兩色，現場需核對色號庫存。原卡片「螺旋刷毛」與「一般刷毛」兩處說法矛盾，以 LOHACO 官方頁確認的一般刷毛版本為準。',
     source: 'docs/japan-product-prices-2026-08-01.md',
     stores: [],
-    storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south']
+    storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street']
   },
   {
     id: 'lion-stain-rescue',
@@ -136,7 +136,7 @@ const BASE_PRODUCTS = [
     note: '衣物局部去漬液，17 ml，現場確認是單支或 2 支組。',
     source: 'docs/japan-product-prices-2026-08-01.md',
     stores: [],
-    storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south']
+    storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street']
   },
   {
     id: 'golden-seasoning',
@@ -170,10 +170,10 @@ const BASE_PRODUCTS = [
     note: 'EBISU 極上濃密寬頭牙刷 6 支組，硬度需現場選「ふつう／ソフト」；來源頁未標示 P61 型號，購買前請核對包裝。',
     source: 'docs/japan-product-prices-2026-08-01.md',
     stores: [],
-    storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south']
+    storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street']
   },
   {
-    id: '3coins-luggage-bag',
+    id: '3coins-luggage-band',
     group: 'shopping',
     tracking: 'buy',
     category: '日用品',
@@ -183,7 +183,7 @@ const BASE_PRODUCTS = [
     yen: 550,
     twdRef: null,
     defaultQty: 1,
-    image: 'images/thumb/3coins-luggage-bag.webp',
+    image: 'images/thumb/3coins-luggage-band.webp',
     note: '固定手提袋於行李箱拉桿的綁帶，長度可調，線上／門市庫存請現場確認。',
     source: 'docs/japan-product-prices-2026-08-01.md',
     stores: ['3coins-plus-mina-tenjin']
@@ -215,7 +215,7 @@ const BASE_PRODUCTS = [
     jaName: null,
     model: 'EH-NE7N',
     yen: 6630,
-    twdRef: 2390,
+    twdRef: null,
     defaultQty: 1,
     image: 'images/thumb/ne7n.webp',
     note: '雙倍礦物負離子吹風機，三段風溫可折疊，2025 年 LDK 讀者票選 Best Buy（得獎資訊見 docs/dryer-specs-and-reviews-2026-08-01.md）；想一次到位選這台。',
@@ -231,7 +231,7 @@ const BASE_PRODUCTS = [
     jaName: null,
     model: 'EH-NE5N',
     yen: 4073,
-    twdRef: 1669,
+    twdRef: null,
     defaultQty: 1,
     image: 'images/thumb/ne5n.webp',
     note: '負離子吹風機，功能與 NE7N 相近但少礦物負離子與離子充電面板，CP 值首選，比 NE7N 便宜約 ¥2,557。',
@@ -485,17 +485,17 @@ const BASE_PRODUCTS = [
     id: 'pabron-ace-pro-x-36',
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '大正百保能 ACE Pro-X 錠', jaName: 'パブロンエースPro-X錠', model: '第 2 類醫藥品・36 錠',
-    yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/pabron-ace-pro-x-36.webp',
-    note: '第 2 類醫藥品；包裝標示 36 錠與 ibuprofen 最大 600 mg 配方。購買與使用前請閱讀說明書，並向藥師／登錄販售者確認。', source: '', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south'],
-    priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '圖片未顯示可辨識的售價。'
+    yen: 1495, twdRef: null, defaultQty: 1, image: 'images/thumb/pabron-ace-pro-x-36.webp',
+    note: '第 2 類醫藥品；包裝標示 36 錠與 ibuprofen 最大 600 mg 配方。日本通路比價參考價 ¥1,495，門市售價可能不同。購買與使用前請閱讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-11.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
+    priceKind: 'retailer-reference', priceSourceUrl: 'https://kakaku.com/medicine-item/K0001623006/', priceCheckedAt: '2026-08-11', priceNote: '大正製藥未對 36 錠規格公布希望小売価格（日本 OTC 藥品多為開放價格），改以比價站最低價作參考。'
   },
   {
     id: 'taisho-kampo-stomach-48',
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '大正漢方胃腸藥（微粒）', jaName: '大正漢方胃腸薬〈微粒〉', model: '第 2 類醫藥品・48 包',
-    yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/taisho-kampo-stomach-48.webp',
-    note: '第 2 類醫藥品；依圖片為 48 包微粒包裝。購買與使用前請閱讀說明書，並向藥師／登錄販售者確認。', source: '', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south'],
-    priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '圖片未顯示可辨識的售價。'
+    yen: 1760, twdRef: null, defaultQty: 1, image: 'images/thumb/taisho-kampo-stomach-48.webp',
+    note: '第 2 類醫藥品；依圖片為 48 包微粒包裝。日本通路比價參考價 ¥1,760，門市售價可能不同。購買與使用前請閱讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-11.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
+    priceKind: 'retailer-reference', priceSourceUrl: 'https://kakaku.com/medicine-item/K0000544212/', priceCheckedAt: '2026-08-11', priceNote: '大正製藥未公布本規格希望小売価格（日本 OTC 藥品多為開放價格），改以比價站最低價作參考。'
   },
 
   // ── Lawson 便利商店必買必吃（2026-08-09，使用者提供圖片）──
@@ -520,16 +520,16 @@ const BASE_PRODUCTS = [
     group: 'convenience', tracking: 'buy', category: '飲品', storeBrand: 'LAWSON',
     name: 'Asahi 十六茶', jaName: 'アサヒ 十六茶', model: '630 ml・無咖啡因',
     yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/jurokucha-630ml.webp',
-    note: 'Lawson 圖片推薦新品；630 ml、無咖啡因標示，價格以門市為準。', source: '', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
-    priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '圖片中的層架售價無法清楚辨識。'
+    note: 'Lawson 圖片推薦；630 ml、無咖啡因標示。日本清涼飲料為開放價格，超商售價以門市標示為準（同容量茶飲一般在 ¥160 上下）。', source: 'docs/product-price-sources-2026-08-11.md', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
+    priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-11', priceNote: '開放價格商品：Asahi 未公布希望小売価格，超商與量販價差大。另 630 ml 對應無標籤瓶／濃味版等多個規格，照片無法確定為哪一款，故不填單一數字。此為最終判定，非待補資料。'
   },
   {
     id: 'gogo-no-kocha-ice-milk-tea',
     group: 'convenience', tracking: 'buy', category: '飲品', storeBrand: 'LAWSON',
     name: '午後紅茶 ICE MILK TEA', jaName: '午後の紅茶 ICE MILK TEA', model: null,
     yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/gogo-no-kocha-ice-milk-tea.webp',
-    note: 'Lawson 圖片推薦新品；冷藏飲品，價格以門市為準。', source: '', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
-    priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '圖片中的層架售價無法清楚辨識。'
+    note: 'Lawson 圖片推薦；冷藏飲品。日本清涼飲料為開放價格，超商售價以門市標示為準。', source: 'docs/product-price-sources-2026-08-11.md', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
+    priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-11', priceNote: '開放價格商品：KIRIN 官方頁明示希望小売価格僅供參考且不標示金額。午後の紅茶 ICE MILK TEA 亦查無對應此名稱的現行單一品項，無法指定容量與定價，故不填數字。此為最終判定，非待補資料。'
   },
   {
     id: 'asari-miso-soup',
@@ -554,7 +554,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '小林製藥塗抹式 ZUKKINON 軟膏', jaName: '塗るズッキノン軟膏', model: '第 3 類醫藥品・15 g',
     yen: 1100, twdRef: null, defaultQty: 1, image: 'images/thumb/kobayashi-zukkinon-ointment.webp',
-    note: '肩頸僵硬伴隨頭痛時使用的外用軟膏；請依說明書使用，不可塗於太陽穴、眼周、黏膜或傷口。', source: 'docs/product-price-sources-2026-08-09.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south'],
+    note: '肩頸僵硬伴隨頭痛時使用的外用軟膏；請依說明書使用，不可塗於太陽穴、眼周、黏膜或傷口。', source: 'docs/product-price-sources-2026-08-09.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
     priceKind: 'official', priceSourceUrl: 'https://www.kobayashi.co.jp/seihin/zkn_n/index.html', priceCheckedAt: '2026-08-09', priceNote: null
   },
   {
@@ -602,7 +602,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '第一三共 LULU ATTACK EX 綜合感冒藥', jaName: 'ルルアタック EX', model: '第 2 類醫藥品・24 錠（4 日分）',
     yen: 2200, twdRef: null, defaultQty: 1, image: 'images/thumb/lulu-attack-ex-24.webp',
-    note: '第一三共的綜合感冒藥。使用者提供照片可辨識 24 錠包裝；請依包裝與藥師說明確認是否適用。', source: 'docs/product-price-sources-2026-08-10.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south'],
+    note: '第一三共的綜合感冒藥。使用者提供照片可辨識 24 錠包裝；請依包裝與藥師說明確認是否適用。', source: 'docs/product-price-sources-2026-08-10.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
     priceKind: 'official', priceSourceUrl: 'https://www.daiichisankyo-hc.co.jp/products/details/lulu_attack_ex/', priceCheckedAt: '2026-08-10', priceNote: null
   },
   {
@@ -610,7 +610,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '太田胃散 S 分包', jaName: '太田胃散〈分包〉S', model: '第 2 類醫藥品・50 包',
     yen: 2079, twdRef: null, defaultQty: 1, image: 'images/thumb/ohta-isan-s-50.webp',
-    note: '圖片確認為 50 包分包裝；請依包裝與藥師說明確認是否適用。', source: 'docs/product-price-sources-2026-08-10.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south'],
+    note: '圖片確認為 50 包分包裝；請依包裝與藥師說明確認是否適用。', source: 'docs/product-price-sources-2026-08-10.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
     priceKind: 'official', priceSourceUrl: 'https://ohta-isan.co.jp/%E5%A4%AA%E7%94%B0%E8%83%83%E6%95%A3S%E3%83%BB%E5%A4%AA%E7%94%B0%E8%83%83%E6%95%A3%EF%BC%9C%E5%88%86%E5%8C%85%EF%BC%9ES_%E3%83%AA%E3%83%AA%E3%83%BC%E3%82%B9.pdf', priceCheckedAt: '2026-08-10', priceNote: null
   },
   {
@@ -626,8 +626,8 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '皮膚護理',
     name: 'Cp-Lip 唇部美容液', jaName: 'Cp-Lip Lip Essence', model: '6 mL',
     yen: 1980, twdRef: null, defaultQty: 1, image: 'images/thumb/cp-lip-lip-essence.webp',
-    note: '6 mL 保濕唇部美容液，可作唇部打底、精華與唇蜜使用。', source: 'docs/product-price-sources-2026-08-10.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south'],
-    priceKind: 'official', priceSourceUrl: 'https://www.astery.jp/en', priceCheckedAt: '2026-08-11', priceNote: null
+    note: '6 mL 保濕唇部美容液（アステリ CPリップ＜唇用美容液＞），可作唇部打底、精華與唇蜜使用。製造販售商官方站：https://www.astery.jp/', source: 'docs/product-price-sources-2026-08-11.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
+    priceKind: 'official', priceSourceUrl: 'https://www.astery.jp/en/category/all-products', priceCheckedAt: '2026-08-11', priceNote: '原來源為品牌首頁，已改指官方商品列表頁。¥1,980 沿用前一輪研究結果，本輪未能在官方頁上重新驗證金額，到店請以架上標價為準。'
   }
 ];
 
@@ -710,7 +710,7 @@ const PRICE_OVERRIDES = {
   ne7n: {
     yen: 7680,
     priceKind: 'retailer-reference',
-    priceSourceUrl: 'https://www.biccamera.com/bc/category/?q=eh-ne7n',
+    priceSourceUrl: 'https://www.biccamera.com/bc/item/14481338/',
     priceCheckedAt: '2026-08-10',
     source: 'docs/product-price-sources-2026-08-10.md',
     note: 'BicCamera 線上參考價 ¥7,680；實體門市價格與點數回饋以結帳當日為準。',
@@ -759,16 +759,19 @@ const PRICE_OVERRIDES = {
     priceCheckedAt: '2026-08-01',
   },
   'golden-seasoning': {
-    priceKind: 'official',
-    priceSourceUrl: 'https://horinishi.jp/lineup/',
-    priceCheckedAt: '2026-08-01',
+    priceKind: 'retailer-reference',
+    priceSourceUrl: 'https://www.yodobashi.com/product/100000001006781218/',
+    priceCheckedAt: '2026-08-11',
+    source: 'docs/product-price-sources-2026-08-11.md',
+    priceNote: '品牌官方站僅有系列頁未列單品定價，改以規格相符（瓶裝 100 g）的日本通路單品頁為準；¥1,590 經多家通路一致標示。',
+    note: 'HORINISHI 萬能調味鹽「ほりにしプレミアム（金のほりにし）」，100 g 白松露鹽口味，露營、居家料理皆可用。品牌官方站：https://horinishi.jp/lineup/',
   },
   'toothbrush-p61': {
     priceKind: 'retailer-reference',
     priceSourceUrl: 'https://www.costco.co.jp/c/EBiSU-Premium-Care-Series-Toothbrush-6-PK/p/83612',
     priceCheckedAt: '2026-08-01',
   },
-  '3coins-luggage-bag': {
+  '3coins-luggage-band': {
     priceKind: 'retailer-reference',
     priceSourceUrl: 'https://ure.pia.co.jp/articles/-/3063302',
     priceCheckedAt: '2026-08-01',
@@ -822,7 +825,7 @@ const PRICE_OVERRIDES = {
     yen: 237,
     source: 'docs/product-price-sources-2026-08-09.md',
     priceKind: 'official',
-    priceSourceUrl: 'https://www.kubara.jp/item/search/%E8%8C%B6%E7%A2%97%E8%92%B8%E3%81%97',
+    priceSourceUrl: 'https://www.kubara.jp/kayanoya/ryorinomoto/wafu/184700/',
     priceCheckedAt: '2026-08-09',
     note: '久原本家茅乃舍出品，單包官方售價 ¥237；加水加蛋即可製作茶碗蒸。',
   },
@@ -839,10 +842,10 @@ const PRICE_OVERRIDES = {
     yen: 3850,
     source: 'docs/product-price-sources-2026-08-10.md',
     priceKind: 'official',
-    priceSourceUrl: 'https://wpc-iza.jp/',
-    priceCheckedAt: '2026-08-10',
-    priceNote: null,
-    note: 'Wpc. IZA ZA020／ZA028 COMPACT 無地款官方售價 ¥3,850；圖片僅能辨識 ZA020，花色款價格可能不同。',
+    priceSourceUrl: 'https://www.wpc-store.com/c/iza/za003',
+    priceCheckedAt: '2026-08-11',
+    priceNote: '原來源為品牌首頁而非商品頁，已改指官方線上商店的 IZA COMPACT 無地款商品頁。¥3,850 為品牌定價；本輪查得通路實售有低於定價者（例：ZA020 約 ¥3,277），到店價格以現場為準。',
+    note: 'Wpc. IZA COMPACT 無地款，品牌定價 ¥3,850。照片僅能辨識「ZA020」，而 Wpc. 的 COMPACT 系列橫跨 ZA003／ZA020／ZA028 等型號，實際 SKU 未能確認；花色款價格可能不同，購買前請核對包裝型號。',
   },
   'hanamidori-kiwami-spice': {
     yen: 588,
@@ -855,6 +858,13 @@ const PRICE_OVERRIDES = {
   },
 };
 
+/* 日圓兌新臺幣參考匯率。
+ * 台幣金額一律由此常數換算，各商品不得自帶手寫的 twdRef，
+ * 否則會像先前 ne7n（0.311）與 ne5n（0.322）那樣各用一套匯率而互相矛盾。
+ * 更新匯率只需改這裡兩個值，並跑 npm run validate:data。 */
+export const JPY_TWD_RATE = 0.2035;
+export const JPY_TWD_RATE_CHECKED_AT = '2026-08-10';
+
 export const PRODUCTS = BASE_PRODUCTS.map((product) => {
   const override = PRICE_OVERRIDES[product.id] || {};
   const yen = Object.hasOwn(override, 'yen') ? override.yen : product.yen;
@@ -862,6 +872,8 @@ export const PRODUCTS = BASE_PRODUCTS.map((product) => {
     ...product,
     ...override,
     yen,
+    // twdRef 一律由 yen 與單一匯率推導，忽略任何手寫值。
+    twdRef: yen === null ? null : Math.round(yen * JPY_TWD_RATE),
     priceKind: override.priceKind || product.priceKind || 'pending',
     priceSourceUrl: override.priceSourceUrl || product.priceSourceUrl || null,
     priceCheckedAt: override.priceCheckedAt || product.priceCheckedAt || (yen === null ? null : '2026-08-01'),
