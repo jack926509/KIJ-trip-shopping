@@ -121,6 +121,10 @@
       border-radius: 18px;
       box-shadow: 0 7px 20px rgba(55, 48, 39, .06);
       backdrop-filter: blur(12px);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+      gap: 14px 22px;
+      align-items: center;
     }
 
     .filter-group {
@@ -131,7 +135,7 @@
       scrollbar-width: none;
     }
 
-    .filter-group + .filter-group { margin-top: 10px; }
+    .filter-group + .filter-group { margin-top: 0; }
     .filter-group::-webkit-scrollbar { display: none; }
 
     .filter-label {
@@ -160,6 +164,19 @@
     .filter-group button.active {
       background: var(--green);
       color: #fff;
+    }
+
+    .store-type-select {
+      width: min(100%, 330px);
+      min-height: 44px;
+      padding: 9px 38px 9px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      color: var(--text);
+      font: inherit;
+      font-size: 13px;
+      font-weight: 800;
     }
 
     .result-line {
@@ -205,7 +222,7 @@
 
     .content-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.25fr) minmax(350px, .75fr);
+      grid-template-columns: minmax(0, 1.12fr) minmax(380px, .88fr);
       gap: 18px;
       align-items: start;
     }
@@ -238,8 +255,8 @@
 
     #map {
       width: 100%;
-      height: min(68vh, 720px);
-      min-height: 500px;
+      height: min(64vh, 660px);
+      min-height: 520px;
       background: #e8ece8;
     }
 
@@ -277,6 +294,14 @@
       line-height: 1.7;
     }
 
+    .store-list-panel {
+      max-height: min(64vh, 660px);
+      padding-right: 4px;
+      overflow-y: auto;
+      scrollbar-color: #c9c3b8 transparent;
+      scrollbar-width: thin;
+    }
+
     #storeList {
       display: grid;
       gap: 12px;
@@ -296,6 +321,12 @@
       transform: translateY(-2px);
       border-color: rgba(47, 109, 94, .55);
       box-shadow: 0 12px 28px rgba(55, 48, 39, .10);
+    }
+
+    .store-card.is-focused {
+      border-width: 2px;
+      border-color: #2f6d5e;
+      background: linear-gradient(135deg, #ffffff, #f0f7f4);
     }
 
     .store-focus {
@@ -332,6 +363,10 @@
     .category-convenience { background: #fff1f1; color: #b23a48; }
     .category-electronics { background: #f0edff; color: #6552a4; }
     .category-gift-food { background: #fff7dd; color: #8b6500; }
+    .category-shoe { background: #e7f0ff; color: #28639d; }
+    .category-drug { background: #e7f6f2; color: #0a7a6a; }
+    .category-daily { background: #fff2df; color: #a55b09; }
+    .category-supermarket { background: #fff0e7; color: #a04a10; }
 
     .store-name {
       display: block;
@@ -383,6 +418,14 @@
       gap: 8px;
       margin-top: 14px;
     }
+
+    .maps-link {
+      background: #26302c;
+      border-color: #26302c;
+      color: #fff;
+    }
+
+    .maps-link:hover { background: #101714; border-color: #101714; }
 
     .action-link {
       display: inline-flex;
@@ -521,10 +564,11 @@
     @media (max-width: 820px) {
       .wrap { width: min(100% - 18px, 1240px); padding-top: 10px; }
       .hero { padding: 21px 18px; }
-      .filter-panel { top: 0; margin: 12px 0; padding: 11px 12px; border-radius: 15px; }
+      .filter-panel { top: 0; margin: 12px 0; padding: 11px 12px; border-radius: 15px; grid-template-columns: 1fr; gap: 10px; }
       .filter-label { width: 38px; }
       .content-grid { grid-template-columns: 1fr; }
       .map-panel { position: static; }
+      .store-list-panel { max-height: none; padding-right: 0; overflow: visible; }
       #map { height: 52vh; min-height: 390px; }
       #mapFallback { min-height: 390px; }
       .fallback-icon { margin-top: 25px; }
@@ -565,16 +609,18 @@
         <button type="button" data-area="hakata" aria-pressed="false">博多</button>
         <button type="button" data-area="tenjin" aria-pressed="false">天神</button>
       </div>
-      <div class="filter-group" aria-label="類別篩選">
-        <span class="filter-label">類別</span>
-        <button class="active" type="button" data-category="all" aria-pressed="true">全部</button>
-        <button type="button" data-category="shoe" aria-pressed="false">鞋款</button>
-        <button type="button" data-category="drug" aria-pressed="false">藥妝</button>
-        <button type="button" data-category="daily" aria-pressed="false">生活雜貨</button>
-        <button type="button" data-category="supermarket" aria-pressed="false">超市</button>
-        <button type="button" data-category="convenience" aria-pressed="false">便利商店</button>
-        <button type="button" data-category="electronics" aria-pressed="false">家電</button>
-        <button type="button" data-category="gift-food" aria-pressed="false">食品伴手禮</button>
+      <div class="filter-group" aria-label="店家分類篩選">
+        <label class="filter-label" for="storeTypeFilter">店家</label>
+        <select id="storeTypeFilter" class="store-type-select">
+          <option value="all">全部店家分類</option>
+          <option value="shoe">鞋店</option>
+          <option value="drug">藥妝</option>
+          <option value="daily">生活雜貨（3COINS／DAISO）</option>
+          <option value="supermarket">超市／賣場</option>
+          <option value="convenience">便利商店</option>
+          <option value="electronics">家電</option>
+          <option value="gift-food">食品伴手禮</option>
+        </select>
       </div>
     </section>
 
@@ -602,7 +648,7 @@
         </div>
       </section>
 
-      <section aria-label="店家清單">
+      <section class="store-list-panel" aria-label="店家清單">
         <div id="storeList"></div>
         <div id="emptyState" hidden>
           <strong>沒有符合條件的店家</strong>
@@ -1109,7 +1155,7 @@
       tagRow.className = 'tag-row';
       tagRow.append(
         makeTextElement('span', 'tag area-tag', AREA_LABELS[store.area]),
-        makeTextElement('span', 'tag category-tag', CATEGORY_LABELS[store.category])
+        makeTextElement('span', `tag category-tag category-${store.category}`, CATEGORY_LABELS[store.category])
       );
 
       const title = makeTextElement('span', 'store-name', store.name);
@@ -1184,7 +1230,7 @@
         });
         const marker = L.marker([store.lat, store.lng], { icon, title: store.name });
         marker.bindPopup(createPopup(store));
-        marker.on('click', () => focusStore(store.id));
+        marker.on('click', () => focusStore(store.id, { scrollCard: true }));
         marker.addTo(markerLayer);
         markers.set(store.id, marker);
       });
@@ -1210,13 +1256,17 @@
       renderStores();
     }
 
-    function focusStore(id) {
+    function focusStore(id, { scrollCard = false } = {}) {
       const store = STORES.find(item => item.id === id);
       if (!store) return;
 
       document.querySelectorAll('.store-card').forEach(card => {
         card.classList.toggle('is-focused', card.dataset.storeId === id);
       });
+
+      if (scrollCard) {
+        document.querySelector(`.store-card[data-store-id="${CSS.escape(id)}"]`)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
 
       if (!map || !markers.has(id)) return;
       map.setView([store.lat, store.lng], Math.max(map.getZoom(), 16), { animate: true });
@@ -1227,9 +1277,26 @@
       document.querySelectorAll('[data-area]').forEach(button => {
         button.addEventListener('click', () => applyFilters('area', button.dataset.area));
       });
-      document.querySelectorAll('[data-category]').forEach(button => {
-        button.addEventListener('click', () => applyFilters('category', button.dataset.category));
+      document.getElementById('storeTypeFilter').addEventListener('change', event => {
+        applyFilters('category', event.target.value);
       });
+    }
+
+    function applyStoreUrlParam() {
+      const storeId = new URLSearchParams(location.search).get('store');
+      if (!storeId) return;
+      const store = STORES.find(item => item.id === storeId);
+      if (!store) return;
+      activeArea = store.area;
+      activeCategory = store.category;
+      document.querySelectorAll('[data-area]').forEach(button => {
+        const isActive = button.dataset.area === store.area;
+        button.classList.toggle('active', isActive);
+        button.setAttribute('aria-pressed', String(isActive));
+      });
+      document.getElementById('storeTypeFilter').value = store.category;
+      renderStores();
+      focusStore(store.id);
     }
 
     function initMap() {
@@ -1251,6 +1318,7 @@
     document.getElementById('resetFiltersBtn').addEventListener('click', () => {
       applyFilters('area', 'all');
       applyFilters('category', 'all');
+      document.getElementById('storeTypeFilter').value = 'all';
     });
     renderStores();
 
@@ -1259,6 +1327,7 @@
     } catch (error) {
       showMapFallback();
     }
+    applyStoreUrlParam();
   </script>
 </body>
 </html>

@@ -36,23 +36,6 @@ const BASE_PRODUCTS = [
     priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '既有來源紀錄未載容量，無法確認同一款。'
   },
   {
-    id: 'atnon',
-    group: 'shopping',
-    tracking: 'buy',
-    category: '皮膚護理',
-    name: '除疤乳膏',
-    jaName: 'アットノン EX クリーム',
-    model: null,
-    yen: null,
-    twdRef: null,
-    defaultQty: 1,
-    image: 'images/thumb/atnon.webp',
-    note: '疤痕修護乳膏，建議帶 1 條；唐吉訶德／松本清／SUNDRUG 常見鋪貨。',
-    source: '',
-    stores: ['don-quijote-nakasu', 'matsumoto-kiyoshi-hakata-station-underground'],
-    priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '既有來源紀錄未載容量，不能共用不同克數售價。'
-  },
-  {
     id: 'nature',
     group: 'shopping',
     tracking: 'buy',
@@ -85,74 +68,6 @@ const BASE_PRODUCTS = [
     source: '',
     stores: ['don-quijote-nakasu', 'matsumoto-kiyoshi-hakata-station-underground'],
     priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '既有來源紀錄未載粒數。'
-  },
-  {
-    id: 'moilip',
-    group: 'shopping',
-    tracking: 'buy',
-    category: '皮膚護理',
-    name: '藥用護唇膏',
-    jaName: 'モアリップ / MOILIP',
-    model: null,
-    yen: null,
-    twdRef: null,
-    defaultQty: 2,
-    image: 'images/thumb/moilip.webp',
-    note: '藥用護唇膏，建議帶 2 支；松本清／SUNDRUG／大國藥妝常見鋪貨。',
-    source: '',
-    stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building'],
-    priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '既有來源紀錄未載支數與版本。'
-  },
-  {
-    id: 'pitas',
-    group: 'shopping',
-    tracking: 'buy',
-    category: '旅途常備藥',
-    name: '喉嚨貼片',
-    jaName: 'ぴたっと PITAS',
-    model: null,
-    yen: null,
-    twdRef: null,
-    defaultQty: 1,
-    image: 'images/thumb/pitas.webp',
-    note: '喉嚨貼片，建議帶 1–2 盒；唐吉訶德／松本清／SUNDRUG 常見鋪貨。',
-    source: '',
-    stores: ['don-quijote-nakasu', 'matsumoto-kiyoshi-hakata-station-underground'],
-    priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '既有來源紀錄未載口味與枚數。'
-  },
-  {
-    id: 'soft',
-    group: 'shopping',
-    tracking: 'buy',
-    category: '日用品',
-    name: '止汗膏',
-    jaName: null,
-    model: null,
-    yen: null,
-    twdRef: null,
-    defaultQty: 2,
-    image: 'images/thumb/soft.webp',
-    note: '止汗膏，建議帶 2–3 個；唐吉訶德／松本清／SUNDRUG 常見鋪貨。',
-    source: '',
-    stores: ['don-quijote-nakasu', 'matsumoto-kiyoshi-hakata-station-underground'],
-    priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '既有來源紀錄未載容量與香味。'
-  },
-  {
-    id: 'ramen',
-    group: 'shopping',
-    tracking: 'buy',
-    category: '食品伴手禮',
-    name: '蒜香鹽味擔擔麵',
-    jaName: 'マルちゃん正麺 にんにく塩担々麺',
-    model: null,
-    yen: 306,
-    twdRef: null,
-    defaultQty: 2,
-    image: 'images/thumb/ramen.webp',
-    note: '蒜香鹽味擔擔麵泡麵，建議帶 2–4 碗；AEON／MaxValu 等大型超市常見鋪貨。',
-    source: 'docs/japan-product-prices-2026-08-01.md',
-    stores: ['maxvalu-express-hakata-gion'],
-    priceKind: 'official', priceSourceUrl: 'https://www.maruchan.co.jp/products/brand/maruchanseimen-cup/', priceCheckedAt: '2026-08-09', priceNote: '官方建議含稅價 ¥306；門市促銷價可能不同。'
   },
   {
     id: 'kombu',
@@ -217,22 +132,6 @@ const BASE_PRODUCTS = [
     defaultQty: 1,
     image: 'images/thumb/lion-stain-rescue.webp',
     note: '衣物局部去漬液，17 ml，現場確認是單支或 2 支組。',
-    source: 'docs/japan-product-prices-2026-08-01.md',
-    stores: []
-  },
-  {
-    id: 'kobayashi-ichiteki',
-    group: 'shopping',
-    tracking: 'buy',
-    category: '日用品',
-    name: '小林製藥一滴消臭元',
-    jaName: '1滴消臭元',
-    model: null,
-    yen: 360,
-    twdRef: null,
-    defaultQty: 1,
-    image: 'images/thumb/kobayashi-ichiteki.webp',
-    note: '馬桶除臭滴劑，外出如廁前滴入馬桶水面，薄荷／甜玫瑰兩種香味。',
     source: 'docs/japan-product-prices-2026-08-01.md',
     stores: []
   },
@@ -576,14 +475,6 @@ const BASE_PRODUCTS = [
     priceKind: 'photo-reference', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '使用者提供的包裝照片可辨識「2,980 円（税込）」與 55 cm 規格。'
   },
   {
-    id: 'tsumura-bofutsushosan-42',
-    group: 'shopping', tracking: 'buy', category: '旅途常備藥',
-    name: '津村漢方防風通聖散', jaName: 'ツムラ漢方 防風通聖散料 エキス顆粒', model: '第 2 類醫藥品・2.5 g × 42 包',
-    yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/tsumura-bofutsushosan-42.webp',
-    note: '第 2 類醫藥品；依包裝標示為 2.5 g × 42 包。購買與使用前請閱讀說明書，並向藥師／登錄販售者確認。', source: '', stores: [],
-    priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '圖片未顯示可辨識的售價。'
-  },
-  {
     id: 'pabron-ace-pro-x-36',
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '大正百保能 ACE Pro-X 錠', jaName: 'パブロンエースPro-X錠', model: '第 2 類醫藥品・36 錠',
@@ -603,7 +494,7 @@ const BASE_PRODUCTS = [
   // ── Lawson 便利商店必買必吃（2026-08-09，使用者提供圖片）──
   {
     id: 'morinaga-caramelic-pudding',
-    group: 'convenience', tracking: 'buy', category: '冰品',
+    group: 'convenience', tracking: 'buy', category: '冰品', storeBrand: 'LAWSON',
     name: 'Morinaga 焦糖布丁冰淇淋', jaName: 'マミーレ キャラメリックプディング', model: null,
     yen: 180, twdRef: null, defaultQty: 1, image: 'images/thumb/morinaga-caramelic-pudding.webp',
     note: 'Lawson 圖片推薦新品；請以門市冷凍櫃實際庫存為準。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
@@ -611,7 +502,7 @@ const BASE_PRODUCTS = [
   },
   {
     id: 'strawberry-chocolate-melon-pan',
-    group: 'convenience', tracking: 'buy', category: '麵包甜點',
+    group: 'convenience', tracking: 'buy', category: '麵包甜點', storeBrand: 'LAWSON',
     name: '草莓巧克力菠蘿麵包', jaName: 'チョコ！メロンパン いちご', model: null,
     yen: 235, twdRef: null, defaultQty: 1, image: 'images/thumb/strawberry-chocolate-melon-pan.webp',
     note: 'Lawson 圖片推薦新品；有效期限短，適合當日購買食用。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
@@ -619,7 +510,7 @@ const BASE_PRODUCTS = [
   },
   {
     id: 'jurokucha-630ml',
-    group: 'convenience', tracking: 'buy', category: '飲品',
+    group: 'convenience', tracking: 'buy', category: '飲品', storeBrand: 'LAWSON',
     name: 'Asahi 十六茶', jaName: 'アサヒ 十六茶', model: '630 ml・無咖啡因',
     yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/jurokucha-630ml.webp',
     note: 'Lawson 圖片推薦新品；630 ml、無咖啡因標示，價格以門市為準。', source: '', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
@@ -627,7 +518,7 @@ const BASE_PRODUCTS = [
   },
   {
     id: 'gogo-no-kocha-ice-milk-tea',
-    group: 'convenience', tracking: 'buy', category: '飲品',
+    group: 'convenience', tracking: 'buy', category: '飲品', storeBrand: 'LAWSON',
     name: '午後紅茶 ICE MILK TEA', jaName: '午後の紅茶 ICE MILK TEA', model: null,
     yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/gogo-no-kocha-ice-milk-tea.webp',
     note: 'Lawson 圖片推薦新品；冷藏飲品，價格以門市為準。', source: '', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
@@ -635,11 +526,101 @@ const BASE_PRODUCTS = [
   },
   {
     id: 'asari-miso-soup',
-    group: 'convenience', tracking: 'buy', category: '即食湯品',
+    group: 'convenience', tracking: 'buy', category: '即食湯品', storeBrand: 'LAWSON',
     name: '蛤蜊味噌湯', jaName: 'あさりのおみそ汁', model: null,
     yen: 178, twdRef: null, defaultQty: 1, image: 'images/thumb/asari-miso-soup.webp',
     note: 'Lawson 圖片推薦；可直接加熱食用，請以門市冷藏櫃實際庫存為準。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
     priceKind: 'photo-reference', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '使用者提供圖片中的層架價標為 ¥165（含稅 ¥178）。'
+  },
+
+  // ── 追加：調味料與常備藥（2026-08-09，使用者提供圖片）──
+  {
+    id: 'hanamidori-kiwami-spice',
+    group: 'shopping', tracking: 'buy', category: '食品伴手禮',
+    name: '博多華味鳥 10 種極香料', jaName: '博多華味鳥 10種の極スパイス', model: '55 g（現行規格）',
+    yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/hanamidori-kiwami-spice.webp',
+    note: '黑胡椒、大蒜、芝麻等 10 種香料調和，適合雞肉、魚類與炒菜。2026 年現行規格由 60 g 改為 55 g，外包裝可能與照片略有不同。', source: '', stores: [],
+    priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '現行 55 g 規格的官方定價與可直接驗證的單瓶通路價格均未顯示。'
+  },
+  {
+    id: 'kobayashi-zukkinon-ointment',
+    group: 'shopping', tracking: 'buy', category: '旅途常備藥',
+    name: '小林製藥塗抹式 ZUKKINON 軟膏', jaName: '塗るズッキノン軟膏', model: '第 3 類醫藥品・15 g',
+    yen: 1100, twdRef: null, defaultQty: 1, image: 'images/thumb/kobayashi-zukkinon-ointment.webp',
+    note: '肩頸僵硬伴隨頭痛時使用的外用軟膏；請依說明書使用，不可塗於太陽穴、眼周、黏膜或傷口。', source: 'docs/product-price-sources-2026-08-09.md', stores: [],
+    priceKind: 'official', priceSourceUrl: 'https://www.kobayashi.co.jp/seihin/zkn_n/index.html', priceCheckedAt: '2026-08-09', priceNote: null
+  },
+  {
+    id: 'jojoen-salad-sauce',
+    group: 'shopping', tracking: 'buy', category: '食品伴手禮',
+    name: '敘敘苑芝麻風味沙拉醬', jaName: '敘々苑 野菜サラダのたれ［ごま風味］', model: '300 ml',
+    yen: 702, twdRef: null, defaultQty: 1, image: 'images/thumb/jojoen-salad-sauce.webp',
+    note: '醬油與芝麻風味沙拉醬，建議先放入碗中再與蔬菜充分拌合，不是直接淋上的一般沙拉醋。', source: 'docs/product-price-sources-2026-08-09.md', stores: [],
+    priceKind: 'official', priceSourceUrl: 'https://j-products.net/products/salad-tare.html', priceCheckedAt: '2026-08-09', priceNote: null
+  },
+  {
+    id: 'fundokin-ao-yuzu-kosho',
+    group: 'shopping', tracking: 'buy', category: '食品伴手禮',
+    name: 'FUNDOKIN 青柚子胡椒', jaName: 'フンドーキン 青柚子こしょう', model: '50 g 瓶裝',
+    yen: 443, twdRef: null, defaultQty: 1, image: 'images/thumb/fundokin-ao-yuzu-kosho.webp',
+    note: '大分特產調味料，使用日本產青柚子果皮與青辣椒；適合鍋物、烏龍麵、味噌湯與炒菜。開封後須冷藏。', source: 'docs/product-price-sources-2026-08-09.md', stores: [],
+    priceKind: 'official', priceSourceUrl: 'https://www.fundokin.co.jp/sp/products/yuzukosyo/', priceCheckedAt: '2026-08-09', priceNote: null
+  },
+  {
+    id: 'higashimaru-oyster-dashi-shoyu',
+    group: 'shopping', tracking: 'buy', category: '食品伴手禮',
+    name: 'HIGASHIMARU 牡蠣高湯醬油', jaName: 'ヒガシマル 牡蠣だし醤油', model: '400 ml',
+    yen: 421, twdRef: null, defaultQty: 1, image: 'images/thumb/higashimaru-oyster-dashi-shoyu.webp',
+    note: '使用瀨戶內產真牡蠣精華，搭配柴魚與昆布高湯；鹽分較一般濃口醬油少 25%，可用於拌飯、炒物與燉煮。', source: 'docs/product-price-sources-2026-08-09.md', stores: [],
+    priceKind: 'official', priceSourceUrl: 'https://www.higashimaru.co.jp/products/detail/pdt0103.html', priceCheckedAt: '2026-08-09', priceNote: null
+  },
+  {
+    id: '3coins-defrosting-plate',
+    group: 'shopping', tracking: 'buy', category: '廚房用品',
+    name: '3COINS KITINTO 解凍盤', jaName: '解凍プレート／KITINTO', model: '2412-KR542-0000・約直徑19.6 × 厚み0.3 cm',
+    yen: 1100, twdRef: null, defaultQty: 1, image: 'images/thumb/3coins-defrosting-plate.webp',
+    note: '鋁合金解凍盤；生肉、魚類解凍用。圖片標價為 ¥1,100，本品為 3COINS 商品，実體店庫存請現場確認。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['3coins-plus-mina-tenjin', '3coins-plus-amu-plaza-kokura'],
+    priceKind: 'photo-reference', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '使用者提供的層架照片可辨識 KITINTO 解凍盤與 ¥1,100（含稅）標價。'
+  },
+  {
+    id: '3coins-folding-camp-chair',
+    group: 'shopping', tracking: 'buy', category: '戶外用品',
+    name: '3COINS 折疊式迷你露營椅', jaName: '折りたたみコンパクトチェア', model: '2525-DN9065-000・黑色',
+    yen: 660, twdRef: null, defaultQty: 1, image: 'images/thumb/3coins-folding-camp-chair.webp',
+    note: '適合排隊、露營與野餐的折疊椅；官方資料標示耐重 100 kg、含收納袋。實體店庫存請現場確認。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['3coins-plus-mina-tenjin', '3coins-plus-amu-plaza-kokura'],
+    priceKind: 'official', priceSourceUrl: 'https://www.palcloset.jp/display/item/2525-DN9065-000/?b=3coins', priceCheckedAt: '2026-08-09', priceNote: null
+  },
+  {
+    id: 'lulu-attack-ex-24',
+    group: 'shopping', tracking: 'buy', category: '旅途常備藥',
+    name: '第一三共 LULU ATTACK EX 綜合感冒藥', jaName: 'ルルアタック EX', model: '第 2 類醫藥品・24 錠（4 日分）',
+    yen: 2200, twdRef: null, defaultQty: 1, image: 'images/thumb/lulu-attack-ex-24.webp',
+    note: '第一三共的綜合感冒藥。使用者提供照片可辨識 24 錠包裝；請依包裝與藥師說明確認是否適用。', source: 'docs/product-price-sources-2026-08-10.md', stores: [],
+    priceKind: 'official', priceSourceUrl: 'https://www.daiichisankyo-hc.co.jp/products/details/lulu_attack_ex/', priceCheckedAt: '2026-08-10', priceNote: null
+  },
+  {
+    id: 'ohta-isan-s-50',
+    group: 'shopping', tracking: 'buy', category: '旅途常備藥',
+    name: '太田胃散 S 分包', jaName: '太田胃散〈分包〉S', model: '第 2 類醫藥品・50 包',
+    yen: 2079, twdRef: null, defaultQty: 1, image: 'images/thumb/ohta-isan-s-50.webp',
+    note: '圖片確認為 50 包分包裝；請依包裝與藥師說明確認是否適用。', source: 'docs/product-price-sources-2026-08-10.md', stores: [],
+    priceKind: 'official', priceSourceUrl: 'https://ohta-isan.co.jp/%E5%A4%AA%E7%94%B0%E8%83%83%E6%95%A3S%E3%83%BB%E5%A4%AA%E7%94%B0%E8%83%83%E6%95%A3%EF%BC%9C%E5%88%86%E5%8C%85%EF%BC%9ES_%E3%83%AA%E3%83%AA%E3%83%BC%E3%82%B9.pdf', priceCheckedAt: '2026-08-10', priceNote: null
+  },
+  {
+    id: 'daiso-toy-story-pendulum-clock',
+    group: 'shopping', tracking: 'buy', category: '日用品',
+    name: 'DAISO 玩具總動員振子掛鐘', jaName: '振り子時計（トイ・ストーリー）', model: null,
+    yen: 770, twdRef: null, defaultQty: 1, image: 'images/thumb/daiso-toy-story-pendulum-clock.webp',
+    note: '玩具總動員角色振子掛鐘；圖片可辨識艾利三眼怪造型擺錘。', source: 'docs/product-price-sources-2026-08-10.md', stores: [],
+    priceKind: 'official', priceSourceUrl: 'https://jp.daisonet.com/collections/disney-design-collection-br-toy-story-br-toys-in-action', priceCheckedAt: '2026-08-11', priceNote: null
+  },
+  {
+    id: 'cp-lip-lip-essence',
+    group: 'shopping', tracking: 'buy', category: '皮膚護理',
+    name: 'Cp-Lip 唇部美容液', jaName: 'Cp-Lip Lip Essence', model: '6 mL',
+    yen: 1980, twdRef: null, defaultQty: 1, image: 'images/thumb/cp-lip-lip-essence.webp',
+    note: '6 mL 保濕唇部美容液，可作唇部打底、精華與唇蜜使用。', source: 'docs/product-price-sources-2026-08-10.md', stores: [],
+    priceKind: 'official', priceSourceUrl: 'https://www.astery.jp/en', priceCheckedAt: '2026-08-11', priceNote: null
   }
 ];
 
@@ -655,13 +636,14 @@ const PRICE_OVERRIDES = {
     note: '照片確認為 DAISO 紛失防止タグ DG036-2102；包裝標價 ¥1,100（CR2032 電池另購）。',
   },
   kombu: {
-    yen: 220,
+    yen: 216,
     model: '25 g',
-    source: 'docs/product-price-sources-2026-08-09.md',
+    source: 'docs/product-price-sources-2026-08-10.md',
     priceKind: 'official',
     priceSourceUrl: 'https://www.kurakon.jp/products/01/genenshio.html',
-    priceCheckedAt: '2026-08-09',
-    note: '照片對應くらこん減塩塩こんぶ；官方標示 25 g、建議零售價 ¥200 未稅（含稅 ¥220）。',
+    priceCheckedAt: '2026-08-10',
+    priceNote: null,
+    note: '照片對應くらこん減塩塩こんぶ 25 g；官方建議零售價為未稅 ¥200，食品消費稅 8% 換算為含稅 ¥216。',
   },
   'belt-fan': {
     yen: 1980,
@@ -690,15 +672,6 @@ const PRICE_OVERRIDES = {
     priceCheckedAt: '2026-08-09',
     note: '照片對應ロイヒクリームフェルビ 80 g；松本清線上通路參考價 ¥2,618。',
   },
-  atnon: {
-    yen: 1430,
-    model: '15 g',
-    source: 'docs/product-price-sources-2026-08-09.md',
-    priceKind: 'official',
-    priceSourceUrl: 'https://www.kobayashi.co.jp/seihin/anex_cream/',
-    priceCheckedAt: '2026-08-09',
-    note: '照片對應アットノンEX クリーム 15 g；小林製藥建議零售價 ¥1,300 未稅（含稅 ¥1,430）。',
-  },
   nature: {
     yen: 803,
     model: '40 ml',
@@ -717,33 +690,6 @@ const PRICE_OVERRIDES = {
     priceCheckedAt: '2026-08-09',
     note: '照片對應アネロン「ニスキャップ」10 粒；松本清線上通路參考價 ¥1,628。',
   },
-  moilip: {
-    yen: 1320,
-    model: '8 g',
-    source: 'docs/product-price-sources-2026-08-09.md',
-    priceKind: 'retailer-reference',
-    priceSourceUrl: 'https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4909978204440',
-    priceCheckedAt: '2026-08-09',
-    note: '照片對應モアリップN 8 g；松本清線上通路參考價 ¥1,320。',
-  },
-  pitas: {
-    yen: 632,
-    model: 'ライチ 12 個',
-    source: 'docs/product-price-sources-2026-08-09.md',
-    priceKind: 'retailer-reference',
-    priceSourceUrl: 'https://www.matsukiyococokara-online.com/store/catalog/product/view/id/45209611',
-    priceCheckedAt: '2026-08-09',
-    note: '照片對應ピタス のどトローチL（荔枝）12 枚；松本清線上通路參考價 ¥632。',
-  },
-  soft: {
-    yen: 990,
-    model: '20 g',
-    source: 'docs/product-price-sources-2026-08-09.md',
-    priceKind: 'retailer-reference',
-    priceSourceUrl: 'https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4971825016582',
-    priceCheckedAt: '2026-08-09',
-    note: '照片對應デオナチュレ ソフトストーンW 20 g；松本清線上通路參考價 ¥990。',
-  },
   'hareno-toothbrush': {
     priceKind: 'retailer-reference',
     priceSourceUrl: 'https://lohaco.yahoo.co.jp/store/h-lohaco/item/xw29088/',
@@ -754,47 +700,45 @@ const PRICE_OVERRIDES = {
     priceSourceUrl: 'https://lohaco.yahoo.co.jp/store/h-lohaco/item/aa53310/',
     priceCheckedAt: '2026-08-01',
   },
-  'kobayashi-ichiteki': {
-    priceKind: 'retailer-reference',
-    priceSourceUrl: 'https://lohaco.yahoo.co.jp/store/h-lohaco/item/9046790/',
-    priceCheckedAt: '2026-08-01',
-  },
-  ramen: {
-    yen: 306,
-    priceKind: 'official',
-    priceSourceUrl: 'https://www.maruchan.co.jp/products/brand/maruchanseimen-cup/',
-    priceCheckedAt: '2026-08-01',
-    note: '東洋水產官方建議零售價 ¥278 未稅，含稅預算以 ¥306 計；門市促銷價可能不同。',
-  },
   ne7n: {
+    yen: 7680,
     priceKind: 'retailer-reference',
-    priceSourceUrl: 'https://kakaku.com/item/J0000048995/',
-    priceCheckedAt: '2026-08-01',
+    priceSourceUrl: 'https://www.biccamera.com/bc/category/?q=eh-ne7n',
+    priceCheckedAt: '2026-08-10',
+    source: 'docs/product-price-sources-2026-08-10.md',
+    note: 'BicCamera 線上參考價 ¥7,680；實體門市價格與點數回饋以結帳當日為準。',
   },
   ne5n: {
+    yen: 5180,
     priceKind: 'retailer-reference',
-    priceSourceUrl: 'https://review.kakaku.com/review/J0000048996/',
-    priceCheckedAt: '2026-08-01',
+    priceSourceUrl: 'https://kakaku.com/item/J0000048996/?lid=20190108pricemenu_ranking_2',
+    priceCheckedAt: '2026-08-10',
+    source: 'docs/product-price-sources-2026-08-10.md',
+    note: 'BicCamera 線上參考價 ¥5,180；實體門市價格與點數回饋以結帳當日為準。',
   },
   cloudsurfermax: {
     priceKind: 'official',
     priceSourceUrl: 'https://www.on.com/ja-jp/products/cloudsurfer-max-m-3mf3043',
-    priceCheckedAt: '2026-08-01',
+    priceCheckedAt: '2026-08-10',
+    source: 'docs/product-price-sources-2026-08-10.md',
   },
   cloudsurfer2: {
     priceKind: 'official',
     priceSourceUrl: 'https://www.on.com/ja-jp/products/cloudsurfer-2-3mf1012',
-    priceCheckedAt: '2026-08-01',
+    priceCheckedAt: '2026-08-10',
+    source: 'docs/product-price-sources-2026-08-10.md',
   },
   cloud6: {
     priceKind: 'official',
     priceSourceUrl: 'https://www.on.com/ja-jp/products/cloud-6-m-3mf1007/mens/',
-    priceCheckedAt: '2026-08-01',
+    priceCheckedAt: '2026-08-10',
+    source: 'docs/product-price-sources-2026-08-10.md',
   },
   cloudrunner3: {
     priceKind: 'official',
     priceSourceUrl: 'https://www.on.com/ja-jp/products/cloudrunner-3-m-3mg1007',
-    priceCheckedAt: '2026-08-01',
+    priceCheckedAt: '2026-08-10',
+    source: 'docs/product-price-sources-2026-08-10.md',
   },
   clifton11: {
     priceKind: 'official',
@@ -828,18 +772,18 @@ const PRICE_OVERRIDES = {
   },
   cloudtilt: {
     yen: 23100,
-    source: 'docs/product-price-sources-2026-08-09.md',
+    source: 'docs/product-price-sources-2026-08-10.md',
     priceKind: 'official',
     priceSourceUrl: 'https://www.on.com/ja-jp/products/cloudtilt-m-3me1010/mens/grain-white-shoes-3ME10105217',
-    priceCheckedAt: '2026-08-09',
+    priceCheckedAt: '2026-08-10',
     note: 'On 城市旅遊款，官方日本售價 ¥23,100；顏色與尺寸庫存依門市為準。',
   },
   bondi9: {
     yen: 24200,
-    source: 'docs/product-price-sources-2026-08-09.md',
+    source: 'docs/product-price-sources-2026-08-10.md',
     priceKind: 'official',
     priceSourceUrl: 'https://www.hoka.com/jp/bondi-9/1162011.html',
-    priceCheckedAt: '2026-08-09',
+    priceCheckedAt: '2026-08-10',
     note: 'HOKA 最大緩震款，官方日本定價 ¥24,200；實際庫存依門市為準。',
   },
   skyflow: {
@@ -874,6 +818,33 @@ const PRICE_OVERRIDES = {
     priceCheckedAt: '2026-08-09',
     note: '久原本家茅乃舍出品，單包官方售價 ¥237；加水加蛋即可製作茶碗蒸。',
   },
+  'protect-u-folding-umbrella': {
+    yen: 2178,
+    source: 'docs/product-price-sources-2026-08-10.md',
+    priceKind: 'official',
+    priceSourceUrl: 'https://www.id-official.com/products/protectu',
+    priceCheckedAt: '2026-08-10',
+    priceNote: null,
+    note: 'PROTECT U 官方折疊日傘系列定價 ¥2,178；照片未能辨識具體款式，顏色與骨長請在門市再核對。',
+  },
+  'wpc-iza-cool-compact': {
+    yen: 3850,
+    source: 'docs/product-price-sources-2026-08-10.md',
+    priceKind: 'official',
+    priceSourceUrl: 'https://wpc-iza.jp/',
+    priceCheckedAt: '2026-08-10',
+    priceNote: null,
+    note: 'Wpc. IZA ZA020／ZA028 COMPACT 無地款官方售價 ¥3,850；圖片僅能辨識 ZA020，花色款價格可能不同。',
+  },
+  'hanamidori-kiwami-spice': {
+    yen: 708,
+    source: 'docs/product-price-sources-2026-08-10.md',
+    priceKind: 'retailer-reference',
+    priceSourceUrl: 'https://www.supersports.com/ja-jp/lbreath/products/C-10910310101/',
+    priceCheckedAt: '2026-08-10',
+    priceNote: '現行 55 g 規格未見品牌官方定價；以日本通路標示價作參考。',
+    note: '博多華味鳥 10 種極香料 55 g；日本通路參考價 ¥708，門市售價可能不同。',
+  },
 };
 
 export const PRODUCTS = BASE_PRODUCTS.map((product) => {
@@ -886,6 +857,6 @@ export const PRODUCTS = BASE_PRODUCTS.map((product) => {
     priceKind: override.priceKind || product.priceKind || 'pending',
     priceSourceUrl: override.priceSourceUrl || product.priceSourceUrl || null,
     priceCheckedAt: override.priceCheckedAt || product.priceCheckedAt || (yen === null ? null : '2026-08-01'),
-    priceNote: override.priceNote || product.priceNote || null,
+    priceNote: Object.hasOwn(override, 'priceNote') ? override.priceNote : (product.priceNote || null),
   };
 });

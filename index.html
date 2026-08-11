@@ -67,6 +67,8 @@ const CATEGORY_CHIP_CLASS = {
   '麵包甜點': 'kij-cat-food',
   '飲品': 'kij-cat-food',
   '即食湯品': 'kij-cat-food',
+  '廚房用品': 'kij-cat-food',
+  '戶外用品': 'kij-cat-shoe',
 };
 function chipClassForCategory(category) {
   return CATEGORY_CHIP_CLASS[category] || 'kij-cat-shoe';
@@ -151,14 +153,17 @@ function makeFallback(letter) {
  * dryer／shoes 群組沒有 category，改用「這個群組本身」對應最貼近的色票，
  * 讓吹風機（家電）落在 kij-cat-electronics、鞋款落在 kij-cat-shoe，維持一致規則。 */
 function pillForProduct(product) {
-  if ((product.group === 'shopping' || product.group === 'convenience') && product.category) {
+  if (product.group === 'convenience' && product.storeBrand) {
+    return { text: product.storeBrand, cls: 'kij-cat-food' };
+  }
+  if (product.group === 'shopping' && product.category) {
     return { text: product.category, cls: chipClassForCategory(product.category) };
   }
   if (product.group === 'dryer') {
-    return { text: '家電', cls: 'kij-cat-electronics' };
+    return { text: 'Panasonic', cls: 'kij-cat-electronics' };
   }
   if (product.group === 'shoes') {
-    return { text: '鞋款', cls: 'kij-cat-shoe' };
+    return { text: SHOE_BRANDS[product.id] || '鞋款', cls: 'kij-cat-shoe' };
   }
   return null;
 }
@@ -171,38 +176,82 @@ const PRICE_KIND_LABEL = {
   pending: '價格待確認',
 };
 
-const COMPARE_DETAILS = {
-  ne7n: ['1.6 m³/min', 'W Mineral＋負離子', '約 550 g・可折疊', 'AC 100 V／1200 W', '重視髮絲照護'],
-  ne5n: ['1.6 m³/min', '負離子', '約 545 g・可折疊', 'AC 100 V／1200 W', '想要輕巧好收納'],
-  cloudtilt: ['CloudTec Phase', '城市旅遊', '輕量日常步行', '¥23,100', '通勤、城市走路'],
-  cloudsurfermax: ['CloudTec Phase', '長距離緩震', '柔軟滾動感', '以店頭為準', '長時間步行'],
-  cloudsurfer2: ['CloudTec Phase', '日常跑步', '平衡緩震', '以店頭為準', '慢跑與旅遊兼用'],
-  cloud6: ['CloudTec', '日常生活', '輕量好穿脫', '以店頭為準', '城市旅行'],
-  cloudrunner3: ['CloudTec', '穩定支撐', '中性至支撐型', '以店頭為準', '需要支撐感'],
-  clifton11: ['EVA 中底', '均衡緩震', '輕量舒適', '以店頭為準', '全天走路'],
-  bondi9: ['厚底泡棉', '高緩震', '柔軟厚實', '¥24,200', '腳底想要更軟'],
-  skyflow: ['EVA 泡棉', '日常緩震', '平衡支撐', '¥22,000', '旅遊與慢跑'],
-  transport2: ['HOKA 緩震中底', '城市健走', '耐走外底', '以店頭為準', '旅行健走'],
-  gaviota5: ['H-Frame', '高穩定緩震', '寬楦支撐', '¥27,500', '需要穩定支撐'],
+const STORE_SUMMARIES = {
+  '3coins-plus-amu-plaza-kokura': { type: '生活雜貨（3COINS／DAISO）', name: '3COINS+plus AMU PLAZA 小倉店' },
+  '3coins-plus-mina-tenjin': { type: '生活雜貨（3COINS／DAISO）', name: '3COINS+plus ミーナ天神店' },
+  'daikoku-drug-tenjin-building': { type: '藥妝', name: '大國藥妝天神大樓店' },
+  'don-quijote-nakasu': { type: '藥妝', name: '唐吉訶德中洲店' },
+  'hoka-fukuoka-tenjin': { type: '鞋店', name: 'HOKA Fukuoka Tenjin' },
+  'matsumoto-kiyoshi-hakata-station-underground': { type: '藥妝', name: '松本清博多站地下街店' },
+  'maxvalu-express-hakata-gion': { type: '超市／賣場', name: 'MaxValu Express 博多祇園店' },
+  'murasaki-sports-canal-city-hakata': { type: '鞋店', name: 'ムラサキスポーツキャナルシティ博多店' },
+  'sports-depo-canal-city-hakata': { type: '鞋店', name: 'SPORTS DEPO キャナルシティ博多店' },
 };
 
+const DRYER_SUMMARIES = {
+  ne7n: 'W 礦物＋負離子・可折疊',
+  ne5n: '負離子・可折疊',
+};
+
+const SHOE_BRANDS = {
+  cloudtilt: 'ON', cloudsurfermax: 'ON', cloudsurfer2: 'ON', cloud6: 'ON', cloudrunner3: 'ON',
+  clifton11: 'HOKA', bondi9: 'HOKA', skyflow: 'HOKA', transport2: 'HOKA', gaviota5: 'HOKA',
+};
+
+const DRYER_COMPARISON_ROWS = {
+  ne7n: ['EH-NE7N', '1.6 m³/min', '3.3 m³/min（Panasonic 自家基準）', 'TURBO 90°C／CARE 65°C／COLD', 'W Mineral＋負離子、離子充電面板', '約 550 g・可折疊', 'AC 100 V・1200 W'],
+  ne5n: ['EH-NE5N', '1.6 m³/min', '3.0 m³/min（Panasonic 自家基準）', 'TURBO 90°C／CARE／COLD', '外置負離子', '約 545 g・可折疊', 'AC 100 V・1200 W'],
+};
+
+const SHOE_COMPARISON_ROWS = {
+  cloudtilt: ['On', '¥23,100', '城市步行、日常穿搭', '前掌空間與長時間步行穩定感'],
+  cloudsurfermax: ['On', '¥23,100', '厚緩震跑步／長距離步行', '足弓、後跟鎖定與厚底穩定性'],
+  cloudsurfer2: ['On', '¥20,900', '日常跑步與步行', '中底回彈、鞋面包覆與轉彎感'],
+  cloud6: ['On', '¥19,800', '通勤、日常穿搭', '腳背高度與鞋帶包覆'],
+  cloudrunner3: ['On', '¥18,700', '需要支撐的走跑', '內側支撐是否自然、標準與寬楦'],
+  clifton11: ['HOKA', '¥19,800', '日常跑步與長時間步行', '鞋楦、後跟與中足支撐'],
+  bondi9: ['HOKA', '¥24,200', '最大緩震、長時間站走', '厚底下轉彎時的穩定性'],
+  skyflow: ['HOKA', '¥22,000', '平順步行／跑步', '前掌彎折、後跟固定'],
+  transport2: ['HOKA', '¥22,000', '旅遊通勤、城市步行', '鞋底抓地與鞋面耐候需求'],
+  gaviota5: ['HOKA', '¥27,500', '穩定支撐、足弓需求較高', '內側支撐不會頂腳'],
+};
+
+function tableHtml(headings, rows) {
+  return `<div class="kij-compare-scroll"><table><thead><tr>${headings.map((heading) => `<th>${escapeHtml(heading)}</th>`).join('')}</tr></thead><tbody>${rows.map((row) => `<tr>${row.map((value) => `<td>${escapeHtml(value)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+}
+
 function comparisonTableHtml(group, items) {
-  const isDryer = group === 'dryer';
-  const headings = isDryer
-    ? ['型號', '風量', '護髮功能', '重量／收納', '電壓／功率', '適合誰']
-    : ['鞋款', '中底／科技', '走路感受', '穿著取向', '參考價', '適合誰'];
-  const rows = items.map((product) => {
-    const details = COMPARE_DETAILS[product.id] || [];
-    const cells = [product.name, ...details].map((value) => `<td>${escapeHtml(value || '待確認')}</td>`).join('');
-    return `<tr>${cells}</tr>`;
-  }).join('');
-  const note = isDryer
-    ? '規格以日本 Panasonic 官方資料為準；海外使用前請確認電壓。'
-    : '鞋楦與實際腳感因人而異，建議在店內試穿後再決定。';
-  return `<section class="kij-compare" aria-label="${escapeHtml(GROUP_META[group].label)}比較表">
-    <p class="kij-compare-note">${escapeHtml(note)}</p>
-    <div class="kij-compare-scroll"><table><thead><tr>${headings.map((heading) => `<th>${escapeHtml(heading)}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>
+  if (group === 'dryer') {
+    const [ne7n, ne5n] = items.map((product) => DRYER_COMPARISON_ROWS[product.id]);
+    const rowLabels = ['JIS 風量', '髮絲受風量', '模式', '離子／礦物', '重量／收納', '電壓／功率'];
+    const rows = rowLabels.map((label, index) => [label, ne7n[index + 1], ne5n[index + 1]]);
+    return `<section class="kij-compare kij-dryer-compare" aria-label="吹風機完整比較表">
+      <p class="kij-compare-note"><strong>電壓提醒：</strong>兩款皆為 AC 100 V，不可因插頭相同就視為可直插台灣 110 V。</p>
+      ${tableHtml(['項目', ne7n[0], ne5n[0]], rows)}
+    </section>`;
+  }
+  const onRows = items.filter((product) => SHOE_COMPARISON_ROWS[product.id]?.[0] === 'On').map((product) => [product.name, ...SHOE_COMPARISON_ROWS[product.id].slice(1)]);
+  const hokaRows = items.filter((product) => SHOE_COMPARISON_ROWS[product.id]?.[0] === 'HOKA').map((product) => [product.name, ...SHOE_COMPARISON_ROWS[product.id].slice(1)]);
+  const headings = ['鞋款', '日本參考價', '官方定位', '試穿時確認重點'];
+  return `<section class="kij-compare kij-shoe-compare" aria-label="鞋款完整比較表">
+    <p class="kij-compare-note">鞋楦、腳型與腳感因人而異；穿著旅行豆子同時試左右腳，走直線與轉彎各至少一分鐘。</p>
+    <section class="kij-shoe-brand kij-shoe-brand-on" aria-label="ON 鞋款">
+      <h3 class="kij-compare-title">ON <span>城市步行與輕量緩震</span></h3>${tableHtml(headings, onRows)}
+    </section>
+    <section class="kij-shoe-brand kij-shoe-brand-hoka" aria-label="HOKA 鞋款">
+      <h3 class="kij-compare-title">HOKA <span>厚底緩震與穩定支撐</span></h3>${tableHtml(headings, hokaRows)}
+    </section>
   </section>`;
+}
+
+function recommendedStoreText(product) {
+  if (product.group !== 'shopping') return null;
+  if (['皮膚護理', '痠痛舒緩', '旅途常備藥'].includes(product.category)) {
+    return '唐吉訶德／松本清／SUNDRUG';
+  }
+  const stores = product.stores.map((id) => STORE_SUMMARIES[id]).filter(Boolean);
+  if (stores.length === 0) return null;
+  return stores.map((store) => store.name).join('／');
 }
 
 /* ────────────────────────────────────────────────────────────────
@@ -212,39 +261,34 @@ function buildCardHtml(product) {
   const pill = pillForProduct(product);
   const pillHtml = pill ? `<span class="kij-pill ${pill.cls}">${escapeHtml(pill.text)}</span>` : '';
   const jaHtml = product.jaName ? `<div class="ja">${escapeHtml(product.jaName)}</div>` : '';
-  const modelHtml = product.model ? `<div class="ja">型號：${escapeHtml(product.model)}</div>` : '';
-  const noteHtml = product.note ? `<div class="ja">${escapeHtml(product.note)}</div>` : '';
-  const sourceHtml = product.priceSourceUrl
-    ? `<a class="ja kij-price-source" href="${escapeHtml(product.priceSourceUrl)}" target="_blank" rel="noopener noreferrer">查看價格來源 ↗</a>`
-    : '';
-  const researchHtml = product.group === 'dryer'
-    ? `<a class="ja kij-price-source" href="docs/dryer-specs-and-reviews-2026-08-01.md" target="_blank">完整規格與評價 ↗</a>`
-    : product.group === 'shoes'
-      ? `<a class="ja kij-price-source" href="docs/shoe-research-2026-08-09.md" target="_blank">十款推薦與評價 ↗</a>`
-      : '';
+  const modelHtml = product.model && product.group !== 'dryer' ? `<div class="ja">型號：${escapeHtml(product.model)}</div>` : '';
+  const fullImage = product.image.replace('/thumb/', '/full/');
+  const storeText = recommendedStoreText(product);
+  const dryerSummaryHtml = product.group === 'dryer' ? `<div class="kij-dryer-summary">${escapeHtml(DRYER_SUMMARIES[product.id] || '')}</div>` : '';
 
   let priceHtml = '';
   let controlsHtml = '';
   const priceKindText = PRICE_KIND_LABEL[product.priceKind] || '參考價';
 
-  if (product.tracking === 'buy') {
-    const qty = getQty(product.id);
-    const bought = isBought(product.id);
+  if (product.group === 'convenience') {
+    priceHtml = '';
+    controlsHtml = '';
+  } else if (product.group === 'dryer') {
     const yenText = product.yen != null ? `¥${product.yen.toLocaleString()}` : '價格待確認';
-    const twdText = product.twdRef != null ? `約 NT$${product.twdRef.toLocaleString()}` : '';
-    priceHtml = `
-      <div class="price-row">
-        <span class="yen">${yenText}</span>
-        <span class="twd">${twdText}</span>
-        <span class="kij-price-kind">${priceKindText}</span>
-      </div>
-      <div class="kij-qty-row">
-        <button type="button" class="kij-qty-btn" data-action="qty-minus" aria-label="減少數量">－</button>
-        <span class="kij-qty-value" aria-live="polite">${qty}</span>
-        <button type="button" class="kij-qty-btn" data-action="qty-plus" aria-label="增加數量">＋</button>
-      </div>`;
-    controlsHtml = `
-      <button type="button" class="kij-status-btn${bought ? ' on' : ''}" data-action="toggle-bought" aria-pressed="${bought}">${bought ? '已購買 ✓' : '未購買'}</button>`;
+    priceHtml = `<div class="price-row"><span class="yen">${yenText}</span><span class="kij-price-kind">通路參考價</span></div>`;
+    controlsHtml = '';
+  } else if (product.tracking === 'buy') {
+    const qty = getQty(product.id);
+    const yenText = product.yen != null ? `¥${product.yen.toLocaleString()}` : '價格待確認';
+    const twdText = product.twdRef != null ? `（約 NT$${product.twdRef.toLocaleString()}）` : '';
+    priceHtml = product.group === 'shopping'
+      ? `<dl class="kij-shopping-details">
+          <dt>參考價格</dt><dd class="price">約 ${yenText} ${twdText}</dd>
+          <dt>購買數量</dt><dd><span class="kij-qty-control"><button type="button" class="kij-qty-btn" data-action="qty-minus" aria-label="減少數量">－</button><span class="kij-qty-value" aria-live="polite">${qty}</span><button type="button" class="kij-qty-btn" data-action="qty-plus" aria-label="增加數量">＋</button></span></dd>
+          ${storeText ? `<dt>推薦店家</dt><dd>${escapeHtml(storeText)}</dd>` : ''}
+        </dl>`
+      : `<div class="price-row"><span class="yen">${yenText}</span><span class="twd">${twdText}</span><span class="kij-price-kind">${priceKindText}</span></div>`;
+    controlsHtml = '';
   } else {
     const tried = isTried(product.id);
     const yenText = product.yen != null ? `¥${product.yen.toLocaleString()}` : '價格待確認';
@@ -258,19 +302,17 @@ function buildCardHtml(product) {
   }
 
   return `
-    <div class="kij-card" id="${escapeHtml(product.id)}" data-id="${escapeHtml(product.id)}">
+    <div class="kij-card kij-card-${escapeHtml(product.group)}" id="${escapeHtml(product.id)}" data-id="${escapeHtml(product.id)}">
       <div class="thumb">
-        <img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" loading="lazy">
+        <a class="kij-image-link" href="${escapeHtml(fullImage)}" target="_blank" rel="noopener noreferrer" aria-label="放大查看 ${escapeHtml(product.name)} 圖片"><img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" loading="lazy"></a>
       </div>
       <div class="mid">
         ${pillHtml}
         <h5>${escapeHtml(product.name)}</h5>
         ${jaHtml}
         ${modelHtml}
+        ${dryerSummaryHtml}
         ${priceHtml}
-        ${noteHtml}
-        ${sourceHtml}
-        ${researchHtml}
       </div>
       <div class="kij-card-actions">
         ${controlsHtml}
@@ -290,7 +332,7 @@ function buildSectionHtml(group) {
   const collapsed = isSectionCollapsed(group);
   let bodyInner;
 
-  if (group === 'shopping' || group === 'convenience') {
+  if (group === 'shopping') {
     // 分類清單只從實際出現在 PRODUCTS 裡的 category 動態推算，不寫死清單。
     const categories = [...new Set(items.map((p) => p.category))];
     bodyInner = categories.map((category) => {
@@ -304,6 +346,14 @@ function buildSectionHtml(group) {
           </div>
           ${catItems.map(buildCardHtml).join('')}
         </div>`;
+    }).join('');
+  } else if (group === 'shoes') {
+    bodyInner = ['ON', 'HOKA'].map((brand) => {
+      const brandItems = items.filter((product) => SHOE_BRANDS[product.id] === brand);
+      return `<div class="kij-shoe-card-group kij-shoe-card-group-${brand.toLowerCase()}">
+        <h3>${brand}</h3>
+        <div class="kij-shoe-card-grid">${brandItems.map(buildCardHtml).join('')}</div>
+      </div>`;
     }).join('');
   } else {
     bodyInner = items.map(buildCardHtml).join('');
@@ -347,9 +397,11 @@ function syncCardVisual(card, product) {
   if (product.tracking === 'buy') {
     const boughtBtn = card.querySelector('[data-action="toggle-bought"]');
     const bought = isBought(product.id);
-    boughtBtn.classList.toggle('on', bought);
-    boughtBtn.setAttribute('aria-pressed', String(bought));
-    boughtBtn.textContent = bought ? '已購買 ✓' : '未購買';
+    if (boughtBtn) {
+      boughtBtn.classList.toggle('on', bought);
+      boughtBtn.setAttribute('aria-pressed', String(bought));
+      boughtBtn.textContent = `${bought ? '☑' : '□'} 已購買`;
+    }
 
     const qty = getQty(product.id);
     const qtyValueEl = card.querySelector('.kij-qty-value');
