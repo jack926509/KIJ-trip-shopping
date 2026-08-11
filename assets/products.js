@@ -101,6 +101,7 @@ const BASE_PRODUCTS = [
     note: '泛指相容 Apple Find My 的防丟器，卡片未載明確品牌型號，實際商品請現場核對包裝再購買。',
     source: '',
     stores: [],
+    storeCandidates: ['daiso-hakata-bus-terminal', 'daiso-lachic-fukuoka-tenjin', 'daiso-amu-plaza-kokura'],
     priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '既有來源紀錄未能確認品牌與型號。'
   },
   {
@@ -117,7 +118,8 @@ const BASE_PRODUCTS = [
     image: 'images/thumb/hareno-toothbrush.webp',
     note: '官方頁面確認為一般刷毛（ふつう）版本，黑／棕兩色，現場需核對色號庫存。原卡片「螺旋刷毛」與「一般刷毛」兩處說法矛盾，以 LOHACO 官方頁確認的一般刷毛版本為準。',
     source: 'docs/japan-product-prices-2026-08-01.md',
-    stores: []
+    stores: [],
+    storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south']
   },
   {
     id: 'lion-stain-rescue',
@@ -133,7 +135,8 @@ const BASE_PRODUCTS = [
     image: 'images/thumb/lion-stain-rescue.webp',
     note: '衣物局部去漬液，17 ml，現場確認是單支或 2 支組。',
     source: 'docs/japan-product-prices-2026-08-01.md',
-    stores: []
+    stores: [],
+    storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south']
   },
   {
     id: 'golden-seasoning',
@@ -149,7 +152,8 @@ const BASE_PRODUCTS = [
     image: 'images/thumb/golden-seasoning.webp',
     note: 'HORINISHI 萬能調味鹽，100 g 白松露鹽口味，露營、居家料理皆可用。',
     source: 'docs/japan-product-prices-2026-08-01.md',
-    stores: []
+    stores: [],
+    storeCandidates: ['sports-depo-canal-city-hakata']
   },
   {
     id: 'toothbrush-p61',
@@ -165,7 +169,8 @@ const BASE_PRODUCTS = [
     image: 'images/thumb/toothbrush-p61.webp',
     note: 'EBISU 極上濃密寬頭牙刷 6 支組，硬度需現場選「ふつう／ソフト」；來源頁未標示 P61 型號，購買前請核對包裝。',
     source: 'docs/japan-product-prices-2026-08-01.md',
-    stores: []
+    stores: [],
+    storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south']
   },
   {
     id: '3coins-luggage-bag',
@@ -413,7 +418,8 @@ const BASE_PRODUCTS = [
     image: 'images/thumb/hasameru-sponge.webp',
     note: '水沖就能去污垢的浴室海綿，掛在水龍頭上方便晾乾。',
     source: '',
-    stores: []
+    stores: [],
+    storeCandidates: ['hands-hakata']
   },
   {
     id: 'belt-fan',
@@ -430,6 +436,7 @@ const BASE_PRODUCTS = [
     note: '手拿風扇太占手，這款夾在腰帶上把風送進衣服裡，雙手能空出來。',
     source: '',
     stores: [],
+    storeCandidates: ['hands-hakata', '3coins-plus-mina-tenjin', '3coins-plus-amu-plaza-kokura'],
     priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '既有資料未有可追溯的同規格售價來源。'
   },
   {
@@ -455,7 +462,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '晴雨傘',
     name: 'PROTECT U 晴雨兩用折疊傘', jaName: 'PROTECT U 晴雨兼用折りたたみ傘', model: null,
     yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/protect-u-folding-umbrella.webp',
-    note: '使用者提供圖片顯示：遮熱 55%、UV-cut 99.9%、遮光 99.99%，可晴雨兩用；現場確認顏色與標價。', source: '', stores: [],
+    note: '使用者提供圖片顯示：遮熱 55%、UV-cut 99.9%、遮光 99.99%，可晴雨兩用；現場確認顏色與標價。', source: '', stores: [], storeCandidates: ['hands-hakata'],
     priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '圖片未顯示可辨識的售價。'
   },
   {
@@ -463,7 +470,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '晴雨傘',
     name: 'Wpc. IZA COOL & COMPACT 晴雨傘', jaName: 'Wpc. IZA COOL & COMPACT', model: 'ZA020',
     yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/wpc-iza-cool-compact.webp',
-    note: '男用晴雨兩用款，53 cm；圖片標示完全遮光與 UV-cut 率 100%，頭頂表面溫度差最高 22.2°C。', source: '', stores: [],
+    note: '男用晴雨兩用款，53 cm；圖片標示完全遮光與 UV-cut 率 100%，頭頂表面溫度差最高 22.2°C。', source: '', stores: [], storeCandidates: ['hands-hakata'],
     priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '圖片未顯示可辨識的售價。'
   },
   {
@@ -471,7 +478,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '晴雨傘',
     name: 'Coleman 晴雨兩用自動折疊傘', jaName: 'Coleman 晴雨兼用・自動開閉 折りたたみ傘', model: '55 cm',
     yen: 2980, twdRef: null, defaultQty: 1, image: 'images/thumb/coleman-auto-folding-umbrella.webp',
-    note: '55 cm 自動開閉款；圖片標示遮光率約 90%、UV-cut 99.9% 以上，附耐風標示。', source: 'docs/product-price-sources-2026-08-09.md', stores: [],
+    note: '55 cm 自動開閉款；圖片標示遮光率約 90%、UV-cut 99.9% 以上，附耐風標示。', source: 'docs/product-price-sources-2026-08-09.md', stores: [], storeCandidates: ['hands-hakata'],
     priceKind: 'photo-reference', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '使用者提供的包裝照片可辨識「2,980 円（税込）」與 55 cm 規格。'
   },
   {
@@ -479,7 +486,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '大正百保能 ACE Pro-X 錠', jaName: 'パブロンエースPro-X錠', model: '第 2 類醫藥品・36 錠',
     yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/pabron-ace-pro-x-36.webp',
-    note: '第 2 類醫藥品；包裝標示 36 錠與 ibuprofen 最大 600 mg 配方。購買與使用前請閱讀說明書，並向藥師／登錄販售者確認。', source: '', stores: [],
+    note: '第 2 類醫藥品；包裝標示 36 錠與 ibuprofen 最大 600 mg 配方。購買與使用前請閱讀說明書，並向藥師／登錄販售者確認。', source: '', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south'],
     priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '圖片未顯示可辨識的售價。'
   },
   {
@@ -487,7 +494,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '大正漢方胃腸藥（微粒）', jaName: '大正漢方胃腸薬〈微粒〉', model: '第 2 類醫藥品・48 包',
     yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/taisho-kampo-stomach-48.webp',
-    note: '第 2 類醫藥品；依圖片為 48 包微粒包裝。購買與使用前請閱讀說明書，並向藥師／登錄販售者確認。', source: '', stores: [],
+    note: '第 2 類醫藥品；依圖片為 48 包微粒包裝。購買與使用前請閱讀說明書，並向藥師／登錄販售者確認。', source: '', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south'],
     priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '圖片未顯示可辨識的售價。'
   },
 
@@ -539,7 +546,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '食品伴手禮',
     name: '博多華味鳥 10 種極香料', jaName: '博多華味鳥 10種の極スパイス', model: '55 g（現行規格）',
     yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/hanamidori-kiwami-spice.webp',
-    note: '黑胡椒、大蒜、芝麻等 10 種香料調和，適合雞肉、魚類與炒菜。2026 年現行規格由 60 g 改為 55 g，外包裝可能與照片略有不同。', source: '', stores: [],
+    note: '黑胡椒、大蒜、芝麻等 10 種香料調和，適合雞肉、魚類與炒菜。2026 年現行規格由 60 g 改為 55 g，外包裝可能與照片略有不同。', source: '', stores: [], storeCandidates: ['maxvalu-express-hakata-gion', 'don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi'],
     priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '現行 55 g 規格的官方定價與可直接驗證的單瓶通路價格均未顯示。'
   },
   {
@@ -547,7 +554,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '小林製藥塗抹式 ZUKKINON 軟膏', jaName: '塗るズッキノン軟膏', model: '第 3 類醫藥品・15 g',
     yen: 1100, twdRef: null, defaultQty: 1, image: 'images/thumb/kobayashi-zukkinon-ointment.webp',
-    note: '肩頸僵硬伴隨頭痛時使用的外用軟膏；請依說明書使用，不可塗於太陽穴、眼周、黏膜或傷口。', source: 'docs/product-price-sources-2026-08-09.md', stores: [],
+    note: '肩頸僵硬伴隨頭痛時使用的外用軟膏；請依說明書使用，不可塗於太陽穴、眼周、黏膜或傷口。', source: 'docs/product-price-sources-2026-08-09.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south'],
     priceKind: 'official', priceSourceUrl: 'https://www.kobayashi.co.jp/seihin/zkn_n/index.html', priceCheckedAt: '2026-08-09', priceNote: null
   },
   {
@@ -555,7 +562,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '食品伴手禮',
     name: '敘敘苑芝麻風味沙拉醬', jaName: '敘々苑 野菜サラダのたれ［ごま風味］', model: '300 ml',
     yen: 702, twdRef: null, defaultQty: 1, image: 'images/thumb/jojoen-salad-sauce.webp',
-    note: '醬油與芝麻風味沙拉醬，建議先放入碗中再與蔬菜充分拌合，不是直接淋上的一般沙拉醋。', source: 'docs/product-price-sources-2026-08-09.md', stores: [],
+    note: '醬油與芝麻風味沙拉醬，建議先放入碗中再與蔬菜充分拌合，不是直接淋上的一般沙拉醋。', source: 'docs/product-price-sources-2026-08-09.md', stores: [], storeCandidates: ['maxvalu-express-hakata-gion', 'don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi'],
     priceKind: 'official', priceSourceUrl: 'https://j-products.net/products/salad-tare.html', priceCheckedAt: '2026-08-09', priceNote: null
   },
   {
@@ -563,7 +570,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '食品伴手禮',
     name: 'FUNDOKIN 青柚子胡椒', jaName: 'フンドーキン 青柚子こしょう', model: '50 g 瓶裝',
     yen: 443, twdRef: null, defaultQty: 1, image: 'images/thumb/fundokin-ao-yuzu-kosho.webp',
-    note: '大分特產調味料，使用日本產青柚子果皮與青辣椒；適合鍋物、烏龍麵、味噌湯與炒菜。開封後須冷藏。', source: 'docs/product-price-sources-2026-08-09.md', stores: [],
+    note: '大分特產調味料，使用日本產青柚子果皮與青辣椒；適合鍋物、烏龍麵、味噌湯與炒菜。開封後須冷藏。', source: 'docs/product-price-sources-2026-08-09.md', stores: [], storeCandidates: ['maxvalu-express-hakata-gion', 'don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi'],
     priceKind: 'official', priceSourceUrl: 'https://www.fundokin.co.jp/sp/products/yuzukosyo/', priceCheckedAt: '2026-08-09', priceNote: null
   },
   {
@@ -571,7 +578,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '食品伴手禮',
     name: 'HIGASHIMARU 牡蠣高湯醬油', jaName: 'ヒガシマル 牡蠣だし醤油', model: '400 ml',
     yen: 421, twdRef: null, defaultQty: 1, image: 'images/thumb/higashimaru-oyster-dashi-shoyu.webp',
-    note: '使用瀨戶內產真牡蠣精華，搭配柴魚與昆布高湯；鹽分較一般濃口醬油少 25%，可用於拌飯、炒物與燉煮。', source: 'docs/product-price-sources-2026-08-09.md', stores: [],
+    note: '使用瀨戶內產真牡蠣精華，搭配柴魚與昆布高湯；鹽分較一般濃口醬油少 25%，可用於拌飯、炒物與燉煮。', source: 'docs/product-price-sources-2026-08-09.md', stores: [], storeCandidates: ['maxvalu-express-hakata-gion', 'don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi'],
     priceKind: 'official', priceSourceUrl: 'https://www.higashimaru.co.jp/products/detail/pdt0103.html', priceCheckedAt: '2026-08-09', priceNote: null
   },
   {
@@ -595,7 +602,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '第一三共 LULU ATTACK EX 綜合感冒藥', jaName: 'ルルアタック EX', model: '第 2 類醫藥品・24 錠（4 日分）',
     yen: 2200, twdRef: null, defaultQty: 1, image: 'images/thumb/lulu-attack-ex-24.webp',
-    note: '第一三共的綜合感冒藥。使用者提供照片可辨識 24 錠包裝；請依包裝與藥師說明確認是否適用。', source: 'docs/product-price-sources-2026-08-10.md', stores: [],
+    note: '第一三共的綜合感冒藥。使用者提供照片可辨識 24 錠包裝；請依包裝與藥師說明確認是否適用。', source: 'docs/product-price-sources-2026-08-10.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south'],
     priceKind: 'official', priceSourceUrl: 'https://www.daiichisankyo-hc.co.jp/products/details/lulu_attack_ex/', priceCheckedAt: '2026-08-10', priceNote: null
   },
   {
@@ -603,7 +610,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '太田胃散 S 分包', jaName: '太田胃散〈分包〉S', model: '第 2 類醫藥品・50 包',
     yen: 2079, twdRef: null, defaultQty: 1, image: 'images/thumb/ohta-isan-s-50.webp',
-    note: '圖片確認為 50 包分包裝；請依包裝與藥師說明確認是否適用。', source: 'docs/product-price-sources-2026-08-10.md', stores: [],
+    note: '圖片確認為 50 包分包裝；請依包裝與藥師說明確認是否適用。', source: 'docs/product-price-sources-2026-08-10.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south'],
     priceKind: 'official', priceSourceUrl: 'https://ohta-isan.co.jp/%E5%A4%AA%E7%94%B0%E8%83%83%E6%95%A3S%E3%83%BB%E5%A4%AA%E7%94%B0%E8%83%83%E6%95%A3%EF%BC%9C%E5%88%86%E5%8C%85%EF%BC%9ES_%E3%83%AA%E3%83%AA%E3%83%BC%E3%82%B9.pdf', priceCheckedAt: '2026-08-10', priceNote: null
   },
   {
@@ -611,7 +618,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '日用品',
     name: 'DAISO 玩具總動員振子掛鐘', jaName: '振り子時計（トイ・ストーリー）', model: null,
     yen: 770, twdRef: null, defaultQty: 1, image: 'images/thumb/daiso-toy-story-pendulum-clock.webp',
-    note: '玩具總動員角色振子掛鐘；圖片可辨識艾利三眼怪造型擺錘。', source: 'docs/product-price-sources-2026-08-10.md', stores: [],
+    note: '玩具總動員角色振子掛鐘；圖片可辨識艾利三眼怪造型擺錘。', source: 'docs/product-price-sources-2026-08-10.md', stores: [], storeCandidates: ['daiso-hakata-bus-terminal', 'daiso-lachic-fukuoka-tenjin', 'daiso-amu-plaza-kokura'],
     priceKind: 'official', priceSourceUrl: 'https://jp.daisonet.com/collections/disney-design-collection-br-toy-story-br-toys-in-action', priceCheckedAt: '2026-08-11', priceNote: null
   },
   {
@@ -619,7 +626,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '皮膚護理',
     name: 'Cp-Lip 唇部美容液', jaName: 'Cp-Lip Lip Essence', model: '6 mL',
     yen: 1980, twdRef: null, defaultQty: 1, image: 'images/thumb/cp-lip-lip-essence.webp',
-    note: '6 mL 保濕唇部美容液，可作唇部打底、精華與唇蜜使用。', source: 'docs/product-price-sources-2026-08-10.md', stores: [],
+    note: '6 mL 保濕唇部美容液，可作唇部打底、精華與唇蜜使用。', source: 'docs/product-price-sources-2026-08-10.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south'],
     priceKind: 'official', priceSourceUrl: 'https://www.astery.jp/en', priceCheckedAt: '2026-08-11', priceNote: null
   }
 ];

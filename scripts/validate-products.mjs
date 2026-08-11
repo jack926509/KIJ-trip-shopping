@@ -92,6 +92,13 @@ for (const p of products) {
   for (const storeId of p.stores || []) {
     if (!mapStoreIds.has(storeId)) errors.push(`${label}: stores 指向地圖不存在的店家（${storeId}）`);
   }
+  if (p.storeCandidates !== undefined && !Array.isArray(p.storeCandidates)) {
+    errors.push(`${label}: storeCandidates 必須是陣列`);
+  }
+  for (const storeId of p.storeCandidates || []) {
+    if (!mapStoreIds.has(storeId)) errors.push(`${label}: storeCandidates 指向地圖不存在的店家（${storeId}）`);
+    if (p.stores.includes(storeId)) errors.push(`${label}: ${storeId} 不得同時列入 stores 與 storeCandidates`);
+  }
 
   // 簡體字掃描（僅檢查中文欄位，粗略但足以攔截明顯誤植）
   const SIMPLIFIED_MARKERS = ['产', '业', '国', '这', '为', '来', '发', '经', '现', '会', '与', '实', '万', '价'];

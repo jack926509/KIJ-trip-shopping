@@ -1117,8 +1117,9 @@
       return link;
     }
 
-    function productsForStore(storeId) {
-      return PRODUCTS.filter((p) => p.stores.includes(storeId));
+    function productsForStore(storeId, relation) {
+      const field = relation === 'candidate' ? 'storeCandidates' : 'stores';
+      return PRODUCTS.filter((product) => (product[field] || []).includes(storeId));
     }
 
     /* 對齊 index.html 的圖片載入失敗 fallback（顯示商品名稱首字色塊），
@@ -1130,13 +1131,11 @@
       return div;
     }
 
-    function renderStoreProducts(store, container) {
-      const items = productsForStore(store.id);
-      if (items.length === 0) return; // 無對應商品時不顯示區塊，不顯示「可買 0 項」
-
+    function renderProductGroup(items, label, container) {
+      if (items.length === 0) return;
       const wrap = document.createElement('div');
       wrap.className = 'store-products';
-      wrap.append(makeTextElement('span', 'store-products-label', `這裡可買 ${items.length} 項`));
+      wrap.append(makeTextElement('span', 'store-products-label', `${label} ${items.length} 項`));
 
       const shown = items.slice(0, 5);
       const thumbRow = document.createElement('div');
@@ -1159,6 +1158,11 @@
       }
       wrap.append(thumbRow);
       container.append(wrap);
+    }
+
+    function renderStoreProducts(store, container) {
+      renderProductGroup(productsForStore(store.id, 'confirmed'), '已連結商品', container);
+      renderProductGroup(productsForStore(store.id, 'candidate'), '建議到店確認', container);
     }
 
     function createStoreCard(store) {
