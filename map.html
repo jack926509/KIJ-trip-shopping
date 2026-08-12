@@ -207,6 +207,13 @@
 
     .result-line strong { color: var(--green); }
 
+    .map-focus-hint {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
     .legend {
       display: flex;
       align-items: center;
@@ -1298,6 +1305,11 @@
         document.createTextNode(` 間店家（共 ${STORES.length} 間）`)
       );
 
+      // 選「全部」時地圖只對焦博多／天神，講明白小倉在哪，不然會以為漏掉了
+      if (activeArea === 'all' && stores.some(store => store.area === 'kokura')) {
+        resultCount.append(makeTextElement('span', 'map-focus-hint', '地圖先對焦博多・天神；小倉請按上方「小倉」'));
+      }
+
       if (map && markerLayer) renderMarkers(stores);
     }
 
@@ -1336,10 +1348,19 @@
         markers.set(store.id, marker);
       });
 
-      if (stores.length > 1) {
-        map.fitBounds(L.latLngBounds(stores.map(store => [store.lat, store.lng])), { padding: [34, 34], maxZoom: 15 });
-      } else if (stores.length === 1) {
-        map.setView([stores[0].lat, stores[0].lng], 16);
+      /* 區域選「全部」時只框住博多／天神那一簇。
+       * 小倉離福岡約 40 公里，兩簇一起框會縮到看得見整個九州、店家全擠成一團；
+       * 小倉的圖釘仍在地圖上，往東捲或按「小倉」就會重新對焦過去。 */
+      const framed = activeArea === 'all'
+        ? (stores.filter(store => store.area !== 'kokura').length > 0
+            ? stores.filter(store => store.area !== 'kokura')
+            : stores)
+        : stores;
+
+      if (framed.length > 1) {
+        map.fitBounds(L.latLngBounds(framed.map(store => [store.lat, store.lng])), { padding: [34, 34], maxZoom: 15 });
+      } else if (framed.length === 1) {
+        map.setView([framed[0].lat, framed[0].lng], 16);
       } else {
         map.setView([33.591, 130.405], 13);
       }
