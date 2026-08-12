@@ -1,1 +1,33 @@
-aW1wb3J0IHsgcmVhZEZpbGVTeW5jIH0gZnJvbSAnbm9kZTpmcyc7CmltcG9ydCB7IGZpbGVVUkxUb1BhdGggfSBmcm9tICdub2RlOnVybCc7CmltcG9ydCBwYXRoIGZyb20gJ25vZGU6cGF0aCc7CmltcG9ydCB7IFBST0RVQ1RTIH0gZnJvbSAnLi4vYXNzZXRzL3Byb2R1Y3RzLmpzJzsKCmNvbnN0IFJPT1QgPSBwYXRoLmRpcm5hbWUocGF0aC5kaXJuYW1lKGZpbGVVUkxUb1BhdGgoaW1wb3J0Lm1ldGEudXJsKSkpOwpjb25zdCBpbmRleEh0bWwgPSByZWFkRmlsZVN5bmMocGF0aC5qb2luKFJPT1QsICdpbmRleC5odG1sJyksICd1dGY4Jyk7CmNvbnN0IGZhaWx1cmVzID0gW107CgppZiAoIS88YnV0dG9uW14+XStkYXRhLWFjdGlvbj0idG9nZ2xlLWJvdWdodCIvLnRlc3QoaW5kZXhIdG1sKSkgewogIGZhaWx1cmVzLnB1c2goJ+WPr+izvOiyt+WVhuWTgeaykuaciei8uOWHuiBkYXRhLWFjdGlvbj0idG9nZ2xlLWJvdWdodCIg5oyJ6YiVJyk7Cn0KCmlmIChpbmRleEh0bWwuaW5jbHVkZXMoInJldHVybiAn5ZSQ5ZCJ6Ki25b6377yP5p2+5pys5riF77yPU1VORFJVRyc7IikpIHsKICBmYWlsdXJlcy5wdXNoKCfmjqjolqblupflrrbku43ku6Xlk4HpoZ7lr6vmrbvvvIzmnIPmiormnKrnorroqo3lupflrrboqqTmqJnngrrlj6/os7zosrcnKTsKfQoKY29uc3Qgc3VtbWFyeUJsb2NrID0gaW5kZXhIdG1sLm1hdGNoKC9jb25zdCBTVE9SRV9TVU1NQVJJRVMgPSBceyhbXHNcU10qPylcblx9Oy8pOwppZiAoIXN1bW1hcnlCbG9jaykgewogIGZhaWx1cmVzLnB1c2goJ+aJvuS4jeWIsCBTVE9SRV9TVU1NQVJJRVMnKTsKfSBlbHNlIHsKICBjb25zdCBzdW1tYXJ5SWRzID0gbmV3IFNldChbLi4uc3VtbWFyeUJsb2NrWzFdLm1hdGNoQWxsKC8nKFteJ10rKSdccyo6L2cpXS5tYXAoKG1hdGNoKSA9PiBtYXRjaFsxXSkpOwogIGNvbnN0IG1pc3NpbmcgPSBbLi4ubmV3IFNldChQUk9EVUNUUy5maWx0ZXIoKHByb2R1Y3QpID0+IHByb2R1Y3QuZ3JvdXAgPT09ICdzaG9wcGluZycpLmZsYXRNYXAoKHByb2R1Y3QpID0+IHByb2R1Y3Quc3RvcmVzKSldCiAgICAuZmlsdGVyKChzdG9yZUlkKSA9PiAhc3VtbWFyeUlkcy5oYXMoc3RvcmVJZCkpOwogIGlmIChtaXNzaW5nLmxlbmd0aCA+IDApIGZhaWx1cmVzLnB1c2goYOW3sueiuuiqjeaOqOiWpuW6l+Wutue8uuWwkemhr+ekuuWQjeeose+8miR7bWlzc2luZy5qb2luKCfjgIEnKX1gKTsKfQoKaWYgKGZhaWx1cmVzLmxlbmd0aCA+IDApIHsKICBjb25zb2xlLmVycm9yKGDinJcg5riF5Zau5LqS5YuV6IiH5bqX5a626aGv56S65aWR57SE5aSx5pWX77yaXG4ke2ZhaWx1cmVzLm1hcCgoZmFpbHVyZSkgPT4gYCAgLSAke2ZhaWx1cmV9YCkuam9pbignXG4nKX1gKTsKICBwcm9jZXNzLmV4aXQoMSk7Cn0KCmNvbnNvbGUubG9nKCfinJMg5riF5Zau5LqS5YuV6IiH5bqX5a626aGv56S65aWR57SE6YCa6YGOJyk7Cg==
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+import { PRODUCTS } from '../assets/products.js';
+
+const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+const indexHtml = readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+const failures = [];
+
+if (!/<button[^>]+data-action="toggle-bought"/.test(indexHtml)) {
+  failures.push('可購買商品沒有輸出 data-action="toggle-bought" 按鈕');
+}
+
+if (indexHtml.includes("return '唐吉訶德／松本清／SUNDRUG';")) {
+  failures.push('推薦店家仍以品類寫死，會把未確認店家誤標為可購買');
+}
+
+const summaryBlock = indexHtml.match(/const STORE_SUMMARIES = \{([\s\S]*?)\n\};/);
+if (!summaryBlock) {
+  failures.push('找不到 STORE_SUMMARIES');
+} else {
+  const summaryIds = new Set([...summaryBlock[1].matchAll(/'([^']+)'\s*:/g)].map((match) => match[1]));
+  const missing = [...new Set(PRODUCTS.filter((product) => product.group === 'shopping').flatMap((product) => product.stores))]
+    .filter((storeId) => !summaryIds.has(storeId));
+  if (missing.length > 0) failures.push(`已確認推薦店家缺少顯示名稱：${missing.join('、')}`);
+}
+
+if (failures.length > 0) {
+  console.error(`✗ 清單互動與店家顯示契約失敗：\n${failures.map((failure) => `  - ${failure}`).join('\n')}`);
+  process.exit(1);
+}
+
+console.log('✓ 清單互動與店家顯示契約通過');
