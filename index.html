@@ -14,16 +14,7 @@
         <b>北九州購物清單</b>
         <span id="kijItemCount"></span>
       </div>
-      <div class="kij-progress">
-        <div class="kij-progress-head">
-          <span class="label" id="kijProgressLabel"></span>
-          <span class="kij-progress-sum" id="kijProgressSum"></span>
-        </div>
-        <div class="kij-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="購物完成進度">
-          <div class="kij-progress-fill" id="kijProgressFill"></div>
-        </div>
-        <p class="kij-progress-note" id="kijProgressNote"></p>
-      </div>
+      <p class="kij-status-line" id="kijStatusLine" aria-live="polite"></p>
       <nav class="kij-tabs" id="kijTabs">
         <button type="button" class="kij-tab active" data-action="tab" data-group="shopping">藥妝日用</button>
         <button type="button" class="kij-tab" data-action="tab" data-group="convenience">便利商店必買必吃</button>
@@ -332,10 +323,10 @@ function buildCardHtml(product) {
     controlsHtml = triedToggleHtml(product);
   }
 
-  // 商品頁連結：行前比價時直接開來源頁確認規格與現價，站內不重複維護這些內容
-  const sourceLinkHtml = product.priceSourceUrl
-    ? `<a class="kij-source-link" href="${escapeHtml(product.priceSourceUrl)}" target="_blank" rel="noopener noreferrer">商品頁<span aria-hidden="true"> ↗</span></a>`
-    : '';
+  // 品名本身就是商品頁連結，不再另外放按鈕；沒有來源網址的品項維持純文字
+  const nameHtml = product.priceSourceUrl
+    ? `<h5><a class="kij-name-link" href="${escapeHtml(product.priceSourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(product.name)}<span class="kij-ext" aria-hidden="true">↗</span></a></h5>`
+    : `<h5>${escapeHtml(product.name)}</h5>`;
 
   return `
     <div class="kij-card kij-card-${escapeHtml(product.group)}${product.tracking === 'buy' && isBought(product.id) ? ' is-bought' : ''}" id="${escapeHtml(product.id)}" data-id="${escapeHtml(product.id)}">
@@ -347,14 +338,13 @@ function buildCardHtml(product) {
         ${controlsHtml}
       </div>
       <div class="mid">
-        <h5>${escapeHtml(product.name)}</h5>
+        ${nameHtml}
         ${jaHtml}
         ${modelHtml}
         ${dryerSummaryHtml}
       </div>
       <div class="kij-card-detail">
         ${priceHtml}
-        ${sourceLinkHtml}
       </div>
     </div>`;
 }
@@ -456,32 +446,17 @@ function syncCardVisual(card, product) {
   }
 }
 
+/* 頁首只留一行狀態文字：使用者要的是「還剩幾項沒買」，
+   不要進度條也不要金額試算。另註明比較參考的項數，
+   否則「共 49 項」與「已買 x / 39」兩個數字對不上會讓人困惑。 */
 function updateProgressBar() {
   const buyItems = PRODUCTS.filter((p) => p.tracking === 'buy');
   const boughtCount = buyItems.filter((p) => isBought(p.id)).length;
-  const percent = buyItems.length === 0 ? 0 : Math.round((boughtCount / buyItems.length) * 100);
-
-  document.getElementById('kijProgressLabel').textContent = `已買 ${boughtCount} / ${buyItems.length} 項`;
-
-  const fill = document.getElementById('kijProgressFill');
-  fill.style.width = `${percent}%`;
-  const track = fill.parentElement;
-  track.setAttribute('aria-valuenow', String(percent));
-  track.setAttribute('aria-valuetext', `已買 ${boughtCount} 項，共 ${buyItems.length} 項，完成 ${percent}%`);
-
-  // 尚未購買的預估金額：行前比價與抓預算用，已買的不再計入
-  const remaining = buyItems.filter((p) => !isBought(p.id));
-  const yenSum = remaining.reduce((sum, p) => sum + (p.yen != null ? p.yen * getQty(p.id) : 0), 0);
-  const twdSum = remaining.reduce((sum, p) => sum + (p.twdRef != null ? p.twdRef * getQty(p.id) : 0), 0);
-  const missingPrice = remaining.filter((p) => p.yen == null).length;
-  document.getElementById('kijProgressSum').textContent = boughtCount === buyItems.length
-    ? '全部買齊了'
-    : `待買約 ¥${yenSum.toLocaleString()}（約 NT$${twdSum.toLocaleString()}）`;
-
   const refCount = PRODUCTS.length - buyItems.length;
-  const notes = refCount > 0 ? [`另 ${refCount} 項為比較參考，不計入進度`] : [];
-  if (missingPrice > 0) notes.push(`${missingPrice} 項價格待確認`);
-  document.getElementById('kijProgressNote').textContent = notes.join('・');
+
+  const parts = [`已買 ${boughtCount} / ${buyItems.length} 項`];
+  if (refCount > 0) parts.push(`另 ${refCount} 項為比較參考`);
+  document.getElementById('kijStatusLine').textContent = parts.join('　·　');
 }
 
 function updateShoeSectionCount() {
