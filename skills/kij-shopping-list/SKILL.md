@@ -12,9 +12,9 @@ description: 新增或更新北九州購物清單商品。當使用者說「新�
 ## 工作流程
 
 1. 先讀 `assets/products.js`、`scripts/validate-products.mjs`、`references/source-policy.md` 與 `templates/product-record.js`。
-2. 確認商品的日本名稱、規格、包裝數與型號。名稱或型號不清楚時先問使用者，不能用相似商品代替。
+2. 確認商品的日本名稱、規格、包裝數與型號。截圖資訊不清楚時，先查日本官方網站，再查可信日本通路補齊；仍無法確定時才詢問使用者，不能用相似商品代替。
 3. 研究價格：官方日本網站優先；官方未公開可讀價格時，使用可信日本通路並標記 `retailer-reference`；已停產舊款只能使用可追溯的上市價格並標記 `launch-reference`。只有使用者提供的原始照片清楚拍到商品與價格標籤時，才可使用 `photo-reference`。
-4. 找到可合理使用的商品圖片，新增 `images/full/<id>.<ext>`，再執行 `npm run build:images` 產生縮圖。圖片來源與限制寫入本次來源紀錄。
+4. 使用者上傳截圖時，保留原始檔於 `images/source/<id>.<ext>`，並直接作為商品圖片來源，建立 `images/full/<id>.webp` 與縮圖；一張圖有多項商品時，先裁切成各商品圖片。沒有可用使用者圖片時，再找可合理使用的官方圖片。圖片來源與限制寫入本次來源紀錄。
 5. 以英文小寫連字號建立不可變更的 `id`。只在 `BASE_PRODUCTS` 最後追加資料；不要重排、改名或刪除現有商品 id。
 6. 填入完整資料。`priceKind`、`priceSourceUrl`、`priceCheckedAt` 必須和價格一起提供；沒有可靠價格時，使用 `yen: null`、`priceKind: 'pending'` 與非空白的 `priceNote`，在 `priceNote` 清楚寫明待確認原因。
 7. `stores` 只有在品牌或店家官方資料可以證實時才加入。沒有可靠證據必須為空陣列，不能以距離、搜尋結果或推測填入。
