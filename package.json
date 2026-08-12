@@ -1,12 +1,1 @@
-{
-  "name": "kij-trip-shopping",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "build:images": "node scripts/build-images.mjs",
-    "validate:data": "node scripts/validate-products.mjs"
-  },
-  "devDependencies": {
-    "sharp": "^0.33.5"
-  }
-}
+ewogICJuYW1lIjogImtpai10cmlwLXNob3BwaW5nIiwKICAicHJpdmF0ZSI6IHRydWUsCiAgInR5cGUiOiAibW9kdWxlIiwKICAic2NyaXB0cyI6IHsKICAgICJidWlsZDppbWFnZXMiOiAibm9kZSBzY3JpcHRzL2J1aWxkLWltYWdlcy5tanMiLAogICAgInRlc3QiOiAibm9kZSBzY3JpcHRzL3Rlc3QtbGlzdC11aS5tanMiLAogICAgInZhbGlkYXRlOmRhdGEiOiAibm9kZSBzY3JpcHRzL3ZhbGlkYXRlLXByb2R1Y3RzLm1qcyIKICB9LAogICJkZXZEZXBlbmRlbmNpZXMiOiB7CiAgICAic2hhcnAiOiAiXjAuMzMuNSIKICB9Cn0K
