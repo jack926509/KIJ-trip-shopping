@@ -255,8 +255,30 @@ body.kij {
   background: var(--surface);
 }
 
+.kij-progress { display: block; }
 .kij-progress .label { color: var(--accent); font-size: 13px; }
 .kij-progress .total { color: var(--accent); font-size: 22px; }
+.kij-progress-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.kij-progress-sum { color: var(--text); font-size: 13px; font-weight: 700; text-align: right; }
+
+/* 進度改為看得見長度的實體條，取代改版前只有一行字的空白框 */
+.kij-progress-track {
+  height: 8px;
+  margin-top: 9px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  overflow: hidden;
+}
+.kij-progress-fill {
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .kij-progress-fill { transition: width .3s ease; }
+}
+.kij-progress-note { margin: 8px 0 0; color: var(--muted); font-size: 11.5px; line-height: 1.5; }
 .kij-tabs { padding: 0; gap: 9px; }
 .kij-tab { flex: 0 0 auto; min-height: 44px; }
 .kij-tab { background: #ece8e1; color: #4e5652; }
@@ -302,6 +324,18 @@ body.kij {
 .kij-purchase-toggle { white-space: nowrap; }
 .kij-card-shopping .thumb { width: 174px; height: 174px; margin: 0 16px 0 4px; }
 .kij-card-shopping .mid { padding-left: 4px; }
+
+/* 已購買：整張卡片降階，讓「還沒買的」在店裡一眼跳出來。
+   動作區維持全對比，確保還能被看見與取消勾選。 */
+.kij-card.is-bought { background: #f7f6f3; border-color: #ded8cd; box-shadow: none; }
+.kij-card.is-bought .thumb,
+.kij-card.is-bought .mid,
+.kij-card.is-bought .kij-card-detail { opacity: .5; }
+.kij-card.is-bought h5 { text-decoration: line-through; text-decoration-thickness: 2px; }
+@media (prefers-reduced-motion: no-preference) {
+  .kij-card { transition: background-color .18s ease, border-color .18s ease; }
+  .kij-card .thumb, .kij-card .mid, .kij-card .kij-card-detail { transition: opacity .18s ease; }
+}
 .kij-status-btn {
   min-height: var(--tap-min);
   padding: 8px 12px;
@@ -358,8 +392,24 @@ body.kij {
 
 @media (max-width: 540px) {
   .kij-shell, #kijMain { width: min(100% - 24px, 1180px); }
-  .kij-header { padding-top: 12px; }
-  .kij-header .title-row b { font-size: 23px; }
+  .kij-header { padding: 12px 0 10px; }
+  .kij-header .title-row { padding-bottom: 9px; }
+  .kij-header .title-row b { font-size: 22px; }
+  .kij-progress { margin-bottom: 10px; padding: 11px 13px; }
+
+  /* 往下捲動後頁首收合：改版前頁首固定佔手機螢幕約 22%，
+     收合後把空間還給商品，但保留分頁與進度條這兩個隨時要用的控制項。 */
+  .kij-header.is-compact { padding-top: 8px; }
+  .kij-header.is-compact .title-row { padding-bottom: 7px; }
+  .kij-header.is-compact .title-row b { font-size: 16px; }
+  .kij-header.is-compact .title-row b::before { display: none; }
+  .kij-header.is-compact .kij-progress { margin-bottom: 8px; padding: 0; border: 0; background: none; }
+  .kij-header.is-compact .kij-progress-head { display: none; }
+  .kij-header.is-compact .kij-progress-note { display: none; }
+  .kij-header.is-compact .kij-progress-track { margin-top: 0; }
+  @media (prefers-reduced-motion: no-preference) {
+    .kij-header .title-row b { transition: font-size .18s ease; }
+  }
   /* 手機：卡片改直式堆疊。縮圖與品名並排一列，明細與動作各自佔滿整寬，
      避免明細值欄被壓縮到逐字換行（改版前僅剩約 30px）。 */
   .kij-card {

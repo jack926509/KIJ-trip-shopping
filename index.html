@@ -15,7 +15,14 @@
         <span id="kijItemCount"></span>
       </div>
       <div class="kij-progress">
-        <span class="label" id="kijProgressLabel"></span>
+        <div class="kij-progress-head">
+          <span class="label" id="kijProgressLabel"></span>
+          <span class="kij-progress-sum" id="kijProgressSum"></span>
+        </div>
+        <div class="kij-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="購物完成進度">
+          <div class="kij-progress-fill" id="kijProgressFill"></div>
+        </div>
+        <p class="kij-progress-note" id="kijProgressNote"></p>
       </div>
       <nav class="kij-tabs" id="kijTabs">
         <button type="button" class="kij-tab active" data-action="tab" data-group="shopping">藥妝日用</button>
@@ -310,7 +317,7 @@ function buildCardHtml(product) {
   }
 
   return `
-    <div class="kij-card kij-card-${escapeHtml(product.group)}" id="${escapeHtml(product.id)}" data-id="${escapeHtml(product.id)}">
+    <div class="kij-card kij-card-${escapeHtml(product.group)}${product.tracking === 'buy' && isBought(product.id) ? ' is-bought' : ''}" id="${escapeHtml(product.id)}" data-id="${escapeHtml(product.id)}">
       <div class="thumb">
         <a class="kij-image-link" href="${escapeHtml(fullImage)}" target="_blank" rel="noopener noreferrer" aria-label="放大查看 ${escapeHtml(product.name)} 圖片"><img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" loading="lazy"></a>
       </div>
@@ -412,6 +419,8 @@ function syncCardVisual(card, product) {
       boughtBtn.setAttribute('aria-pressed', String(bought));
       boughtBtn.textContent = `${bought ? '☑' : '□'} 已購買`;
     }
+    // 整張卡片反映已購買狀態，讓使用者在店裡一眼掃出還沒買的品項
+    card.classList.toggle('is-bought', bought);
 
     const qty = getQty(product.id);
     const qtyValueEl = card.querySelector('.kij-qty-value');
@@ -428,7 +437,29 @@ function syncCardVisual(card, product) {
 function updateProgressBar() {
   const buyItems = PRODUCTS.filter((p) => p.tracking === 'buy');
   const boughtCount = buyItems.filter((p) => isBought(p.id)).length;
+  const percent = buyItems.length === 0 ? 0 : Math.round((boughtCount / buyItems.length) * 100);
+
   document.getElementById('kijProgressLabel').textContent = `已買 ${boughtCount} / ${buyItems.length} 項`;
+
+  const fill = document.getElementById('kijProgressFill');
+  fill.style.width = `${percent}%`;
+  const track = fill.parentElement;
+  track.setAttribute('aria-valuenow', String(percent));
+  track.setAttribute('aria-valuetext', `已買 ${boughtCount} 項，共 ${buyItems.length} 項，完成 ${percent}%`);
+
+  // 尚未購買的預估金額：行前比價與抓預算用，已買的不再計入
+  const remaining = buyItems.filter((p) => !isBought(p.id));
+  const yenSum = remaining.reduce((sum, p) => sum + (p.yen != null ? p.yen * getQty(p.id) : 0), 0);
+  const twdSum = remaining.reduce((sum, p) => sum + (p.twdRef != null ? p.twdRef * getQty(p.id) : 0), 0);
+  const missingPrice = remaining.filter((p) => p.yen == null).length;
+  document.getElementById('kijProgressSum').textContent = boughtCount === buyItems.length
+    ? '全部買齊了'
+    : `待買約 ¥${yenSum.toLocaleString()}（約 NT$${twdSum.toLocaleString()}）`;
+
+  const refCount = PRODUCTS.length - buyItems.length;
+  const notes = refCount > 0 ? [`另 ${refCount} 項為比較參考，不計入進度`] : [];
+  if (missingPrice > 0) notes.push(`${missingPrice} 項價格待確認`);
+  document.getElementById('kijProgressNote').textContent = notes.join('・');
 }
 
 function updateShoeSectionCount() {
@@ -564,6 +595,23 @@ appEl.addEventListener('keydown', (e) => {
  * 初始化
  * ──────────────────────────────────────────────────────────────── */
 document.getElementById('kijItemCount').textContent = `共 ${PRODUCTS.length} 項商品`;
+
+/* 捲動後收合頁首，把螢幕還給商品。用 rAF 節流，避免捲動時反覆觸發版面計算。 */
+(() => {
+  const headerEl = document.querySelector('.kij-header');
+  let ticking = false;
+  const sync = () => {
+    headerEl.classList.toggle('is-compact', window.scrollY > 72);
+    ticking = false;
+  };
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(sync);
+  }, { passive: true });
+  sync();
+})();
+
 renderSections();
 updateProgressBar();
 syncKijState();
