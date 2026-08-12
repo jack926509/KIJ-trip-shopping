@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>小倉・博多・天神購物地圖｜北九州之旅</title>
   <meta name="description" content="北九州之旅的小倉、博多與天神購物地圖，可依區域與店家類別篩選。">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#2f6d5e">
   <script>
     window.__mapFallbackRequested = false;
     function showMapFallback() {
@@ -59,12 +61,7 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    button:focus-visible,
-    a:focus-visible,
-    button:focus-visible {
-      outline: 3px solid rgba(47, 109, 94, .32);
-      outline-offset: 3px;
-    }
+    /* 焦點樣式沿用 assets/kij.css 的 :focus-visible 規則，本檔不另訂一套 */
 
     .wrap {
       width: min(1240px, calc(100% - 32px));
