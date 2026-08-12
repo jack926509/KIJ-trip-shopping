@@ -116,8 +116,9 @@ body.kij {
 .kij-section-header b { font-size: 14.5px; font-weight: 800; }
 .kij-section-header .count { font-size: 11.5px; color: var(--muted); font-weight: 600; }
 
-/* 卡片採 grid 版面：桌機為「縮圖｜標題｜動作」三欄、明細跨欄置於標題下方；
-   手機（≤540px）改為直式堆疊，避免明細欄被壓到只剩十餘 px 而逐字換行。 */
+/* 卡片採 grid 版面：左欄放大圖，右欄由上到下是「分類＋已購買 → 品名 → 明細」。
+   row-gap 設 0、間距改由各區塊自己的 margin 負責，這樣某一區塊沒有內容時
+   （例如超商小物沒有價格明細）不會留下一條空白列。 */
 .kij-card {
   background: var(--surface);
   border-radius: var(--radius-card);
@@ -125,18 +126,30 @@ body.kij {
   box-shadow: var(--shadow-card);
   margin-bottom: 10px;
   display: grid;
-  gap: 11px;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  column-gap: 13px;
+  row-gap: 0;
+  grid-template-columns: auto minmax(0, 1fr);
   grid-template-areas:
-    "thumb mid actions"
-    "thumb detail detail";
+    "thumb head"
+    "thumb mid"
+    "thumb detail";
   align-content: start;
 }
 
 .kij-card > .thumb { grid-area: thumb; }
+.kij-card > .kij-card-head { grid-area: head; }
 .kij-card > .mid { grid-area: mid; }
 .kij-card > .kij-card-detail { grid-area: detail; min-width: 0; }
-.kij-card > .kij-card-actions { grid-area: actions; }
+
+/* 分類標籤靠左、已購買勾選釘在卡片右上角 */
+.kij-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: var(--tap-min);
+}
+.kij-card-head > :last-child { margin-left: auto; }
 
 .kij-card .thumb {
   width: 66px;
@@ -296,7 +309,7 @@ body.kij {
 .kij-card {
   min-width: 0;
   margin: 0;
-  gap: 15px;
+  column-gap: 18px;
   padding: 15px;
   border: 1px solid var(--line);
   border-radius: 18px;
@@ -304,8 +317,8 @@ body.kij {
 }
 
 .kij-card .thumb {
-  width: 132px;
-  height: 132px;
+  width: 156px;
+  height: 156px;
   border: 1px solid var(--line);
   border-radius: 12px;
   background: #f7f4ed;
@@ -315,39 +328,86 @@ body.kij {
 .kij-image-link { display: block; width: 100%; height: 100%; cursor: zoom-in; }
 .kij-image-link img { width: 100%; height: 100%; object-fit: cover; transition: transform .18s ease; }
 .kij-image-link:hover img { transform: scale(1.05); }
-.kij-card h5 { margin: 7px 0 3px; font-size: 18px; line-height: 1.3; }
-.kij-card .ja { font-size: 12px; line-height: 1.55; }
+.kij-card h5 { margin: 4px 0 3px; font-size: 21px; line-height: 1.25; letter-spacing: -.01em; }
+.kij-card .ja { font-size: 12.5px; line-height: 1.55; color: var(--accent); font-weight: 700; }
 .kij-card .price-row { flex-wrap: wrap; margin-top: 9px; }
 .kij-card .yen { color: var(--accent); font-size: 23px; }
 .kij-card .twd, .kij-price-kind { font-size: 11px; color: var(--muted); }
-.kij-card-actions { display: flex; flex-direction: column; align-items: stretch; gap: 12px; min-width: 102px; }
-.kij-purchase-toggle { white-space: nowrap; }
-.kij-card-shopping .thumb { width: 174px; height: 174px; margin: 0 16px 0 4px; }
-.kij-card-shopping .mid { padding-left: 4px; }
+.kij-card-shopping .thumb { width: 186px; height: 186px; }
+.kij-card-head .kij-pill { font-size: 11.5px; padding: 5px 12px; }
 
 /* 已購買：整張卡片降階，讓「還沒買的」在店裡一眼跳出來。
-   動作區維持全對比，確保還能被看見與取消勾選。 */
+   勾選框維持全對比，確保還看得見、還能取消勾選。 */
 .kij-card.is-bought { background: #f7f6f3; border-color: #ded8cd; box-shadow: none; }
 .kij-card.is-bought .thumb,
 .kij-card.is-bought .mid,
+.kij-card.is-bought .kij-pill,
 .kij-card.is-bought .kij-card-detail { opacity: .5; }
 .kij-card.is-bought h5 { text-decoration: line-through; text-decoration-thickness: 2px; }
 @media (prefers-reduced-motion: no-preference) {
   .kij-card { transition: background-color .18s ease, border-color .18s ease; }
-  .kij-card .thumb, .kij-card .mid, .kij-card .kij-card-detail { transition: opacity .18s ease; }
+  .kij-card .thumb, .kij-card .mid, .kij-card .kij-pill, .kij-card .kij-card-detail { transition: opacity .18s ease; }
 }
+
+/* 勾選框式的狀態控制項：外觀是「方框＋文字」，但整塊都是可按範圍，
+   高度撐到 --tap-min，確保在店裡單手也按得到。 */
 .kij-status-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   min-height: var(--tap-min);
-  padding: 8px 12px;
-  border: 1px solid var(--accent);
-  border-radius: 10px;
-  background: #fff;
-  color: var(--accent);
-  font-size: 13px;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 14px;
   font-weight: 800;
+  white-space: nowrap;
   cursor: pointer;
 }
-.kij-status-btn.on { background: var(--accent); color: #fff; }
+.kij-status-btn:hover { background: var(--accent-soft); }
+.kij-status-btn.on { color: var(--accent); }
+.kij-check {
+  position: relative;
+  flex: none;
+  width: 21px;
+  height: 21px;
+  border: 2px solid #c8c1b3;
+  border-radius: 7px;
+  background: #fff;
+}
+.kij-status-btn.on .kij-check { background: var(--accent); border-color: var(--accent); }
+.kij-status-btn.on .kij-check::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 4px;
+  height: 9px;
+  border: solid #fff;
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .kij-check { transition: background-color .15s ease, border-color .15s ease; }
+}
+
+/* 商品頁：次要動作，做成低調的外框膠囊，不跟右上角的勾選搶注意力 */
+.kij-source-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  margin-top: 12px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  color: var(--muted);
+  font-size: 12.5px;
+  font-weight: 800;
+  text-decoration: none;
+}
+.kij-source-link:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
 .kij-map-open {
   display: inline-flex;
   align-items: center;
@@ -373,19 +433,31 @@ body.kij {
   font-size: 14px;
   line-height: 1.45;
 }
-.kij-shopping-details dt { color: var(--muted); font-weight: 400; }
-.kij-shopping-details dd { margin: 0; color: var(--text); font-weight: 400; }
+.kij-shopping-details dt { color: var(--muted); font-weight: 400; align-self: center; }
+.kij-shopping-details dd { margin: 0; color: var(--text); font-weight: 400; align-self: center; }
 .kij-shopping-details .price { color: var(--text); }
-.kij-qty-control { display: inline-flex; align-items: center; gap: 9px; }
-.kij-qty-btn { min-width: 34px; min-height: 34px; border: none; border-radius: 8px; background: var(--accent-soft); color: var(--accent); font-size: 18px; font-weight: 700; cursor: pointer; }
-.kij-qty-value { min-width: 18px; text-align: center; font-weight: 400; }
+.kij-qty-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  vertical-align: middle;
+}
+.kij-qty-btn { min-width: 38px; min-height: 36px; border: none; background: #faf8f4; color: var(--accent); font-size: 18px; font-weight: 700; cursor: pointer; }
+.kij-qty-btn:hover { background: var(--accent-soft); }
+.kij-qty-value { min-width: 34px; text-align: center; font-weight: 800; font-variant-numeric: tabular-nums; }
+/* 小計跟著數量按鈕走，加減完不必移開視線就看得到金額變化 */
+.kij-qty-sum { margin-left: 12px; color: var(--accent); font-size: 13.5px; font-weight: 800; white-space: nowrap; }
 .kij-dryer-summary { margin-top: 4px; color: var(--muted); font-size: 13px; font-weight: 700; }
 .kij-checkout-row { display:flex; justify-content:space-between; gap:16px; padding:10px 4px; border-bottom:1px solid var(--line); font-size:14px; }
 
 .kij-bottombar { background: rgba(255, 255, 255, .96); border-top-color: var(--line); }
 .kij-bottombar .active { color: var(--accent); }
 
-@media (min-width: 760px) {
+/* 兩欄門檻設在 1000px：圖放大到 186px 後，760px 時分兩欄會讓右側明細只剩約 130px。 */
+@media (min-width: 1000px) {
   .kij-section-body { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .kij-section[data-group="shopping"] .kij-subcat-heading { grid-column: 1 / -1; }
 }
@@ -410,26 +482,36 @@ body.kij {
   @media (prefers-reduced-motion: no-preference) {
     .kij-header .title-row b { transition: font-size .18s ease; }
   }
-  /* 手機：卡片改直式堆疊。縮圖與品名並排一列，明細與動作各自佔滿整寬，
-     避免明細值欄被壓縮到逐字換行（改版前僅剩約 30px）。 */
+  /* 手機：圖與「分類＋已購買＋品名」並排一列，明細獨佔整寬。
+     明細不跟圖擠同一列，值欄才不會被壓到逐字換行（改版前僅剩約 30px）。 */
   .kij-card {
-    gap: 10px 12px;
+    column-gap: 12px;
     padding: 13px;
-    grid-template-columns: 92px minmax(0, 1fr);
+    grid-template-columns: 108px minmax(0, 1fr);
     grid-template-areas:
+      "thumb head"
       "thumb mid"
-      "detail detail"
-      "actions actions";
+      "detail detail";
   }
-  .kij-card .thumb { width: 92px; height: 92px; }
-  .kij-card-shopping .thumb { width: 92px; height: 92px; margin: 0; }
-  .kij-card-shopping .mid { padding-left: 0; }
-  .kij-shopping-details { grid-template-columns: 76px minmax(0, 1fr); gap: 10px 12px; margin-top: 0; padding-top: 12px; font-size: 14px; }
+  /* 只有一行價格的卡片（鞋款、吹風機、超商）明細很短，留在右欄跟品名同一段落比較好讀；
+     只有藥妝日用那種多列明細才需要整寬。 */
+  .kij-card:not(.kij-card-shopping) {
+    grid-template-areas:
+      "thumb head"
+      "thumb mid"
+      "thumb detail";
+  }
+  .kij-card .thumb,
+  .kij-card-shopping .thumb { width: 108px; height: 108px; }
+  .kij-card-head { min-height: 40px; gap: 6px; }
+  .kij-card-head .kij-pill { font-size: 11px; padding: 4px 9px; }
+  .kij-status-btn { gap: 6px; padding: 6px 4px 6px 8px; font-size: 13px; }
+  .kij-shopping-details { grid-template-columns: 72px minmax(0, 1fr); gap: 11px 10px; margin-top: 13px; padding-top: 12px; font-size: 14px; }
   .kij-qty-btn { min-width: var(--tap-min); min-height: var(--tap-min); font-size: 20px; }
-  .kij-card h5 { font-size: 17px; }
+  .kij-qty-sum { display: block; margin: 6px 0 0; }
+  .kij-card h5 { font-size: 18px; margin-top: 2px; }
   .kij-card .yen { font-size: 20px; }
-  .kij-card-actions { min-width: 0; }
-  .kij-card-actions .kij-status-btn { width: 100%; min-height: var(--tap-min); padding: 10px 12px; font-size: 14px; }
+  .kij-source-link { min-height: var(--tap-min); }
 }
 
 .kij-compare {

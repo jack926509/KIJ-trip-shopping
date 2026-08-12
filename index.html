@@ -264,9 +264,27 @@ function recommendedStoreText(product) {
   return stores.map((store) => store.name).join('／');
 }
 
+/* 勾選框樣式的狀態按鈕：方框由 CSS 畫，切換時只改 class，
+   不重寫按鈕內容，避免把方框元素洗掉。 */
 function purchaseToggleHtml(product) {
   const bought = isBought(product.id);
-  return `<button type="button" class="kij-status-btn kij-purchase-toggle${bought ? ' on' : ''}" data-action="toggle-bought" aria-pressed="${bought}">${bought ? '☑ 已購買' : '□ 已購買'}</button>`;
+  return `<button type="button" class="kij-status-btn${bought ? ' on' : ''}" data-action="toggle-bought" aria-pressed="${bought}"><span class="kij-check" aria-hidden="true"></span>已購買</button>`;
+}
+
+function triedToggleHtml(product) {
+  const tried = isTried(product.id);
+  return `<button type="button" class="kij-status-btn${tried ? ' on' : ''}" data-action="toggle-tried" aria-pressed="${tried}"><span class="kij-check" aria-hidden="true"></span>已試穿</button>`;
+}
+
+// 小計＝參考單價×購買數量，讓「買 3 條要多少錢」不用自己心算
+function subtotalText(product, qty) {
+  if (product.yen == null) return '';
+  return `小計 ¥${(product.yen * qty).toLocaleString()}`;
+}
+
+function subtotalHtml(product, qty) {
+  const text = subtotalText(product, qty);
+  return text ? `<span class="kij-qty-sum">${text}</span>` : '';
 }
 
 /* ────────────────────────────────────────────────────────────────
@@ -298,31 +316,37 @@ function buildCardHtml(product) {
     const twdText = product.twdRef != null ? `（約 NT$${product.twdRef.toLocaleString()}）` : '';
     priceHtml = product.group === 'shopping'
       ? `<dl class="kij-shopping-details">
+          <dt>購買數量</dt><dd><span class="kij-qty-control"><button type="button" class="kij-qty-btn" data-action="qty-minus" aria-label="減少數量">－</button><span class="kij-qty-value" aria-live="polite">${qty}</span><button type="button" class="kij-qty-btn" data-action="qty-plus" aria-label="增加數量">＋</button></span>${subtotalHtml(product, qty)}</dd>
           <dt>參考價格</dt><dd class="price">約 ${yenText} ${twdText}</dd>
-          <dt>購買數量</dt><dd><span class="kij-qty-control"><button type="button" class="kij-qty-btn" data-action="qty-minus" aria-label="減少數量">－</button><span class="kij-qty-value" aria-live="polite">${qty}</span><button type="button" class="kij-qty-btn" data-action="qty-plus" aria-label="增加數量">＋</button></span></dd>
           ${storeText ? `<dt>推薦店家</dt><dd>${escapeHtml(storeText)}</dd>` : ''}
         </dl>`
       : `<div class="price-row"><span class="yen">${yenText}</span><span class="twd">${twdText}</span><span class="kij-price-kind">${priceKindText}</span></div>`;
     controlsHtml = purchaseToggleHtml(product);
   } else {
-    const tried = isTried(product.id);
     const yenText = product.yen != null ? `¥${product.yen.toLocaleString()}` : '價格待確認';
     priceHtml = `
       <div class="price-row">
         <span class="yen">${yenText}</span>
         <span class="kij-price-kind">${priceKindText}</span>
       </div>`;
-    controlsHtml = `
-      <button type="button" class="kij-status-btn${tried ? ' on' : ''}" data-action="toggle-tried" aria-pressed="${tried}">${tried ? '已試穿 ✓' : '未試穿'}</button>`;
+    controlsHtml = triedToggleHtml(product);
   }
+
+  // 商品頁連結：行前比價時直接開來源頁確認規格與現價，站內不重複維護這些內容
+  const sourceLinkHtml = product.priceSourceUrl
+    ? `<a class="kij-source-link" href="${escapeHtml(product.priceSourceUrl)}" target="_blank" rel="noopener noreferrer">商品頁<span aria-hidden="true"> ↗</span></a>`
+    : '';
 
   return `
     <div class="kij-card kij-card-${escapeHtml(product.group)}${product.tracking === 'buy' && isBought(product.id) ? ' is-bought' : ''}" id="${escapeHtml(product.id)}" data-id="${escapeHtml(product.id)}">
       <div class="thumb">
         <a class="kij-image-link" href="${escapeHtml(fullImage)}" target="_blank" rel="noopener noreferrer" aria-label="放大查看 ${escapeHtml(product.name)} 圖片"><img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" loading="lazy"></a>
       </div>
+      <div class="kij-card-head">
+        ${pillHtml || '<span></span>'}
+        ${controlsHtml}
+      </div>
       <div class="mid">
-        ${pillHtml}
         <h5>${escapeHtml(product.name)}</h5>
         ${jaHtml}
         ${modelHtml}
@@ -330,9 +354,7 @@ function buildCardHtml(product) {
       </div>
       <div class="kij-card-detail">
         ${priceHtml}
-      </div>
-      <div class="kij-card-actions">
-        ${controlsHtml}
+        ${sourceLinkHtml}
       </div>
     </div>`;
 }
@@ -417,7 +439,6 @@ function syncCardVisual(card, product) {
     if (boughtBtn) {
       boughtBtn.classList.toggle('on', bought);
       boughtBtn.setAttribute('aria-pressed', String(bought));
-      boughtBtn.textContent = `${bought ? '☑' : '□'} 已購買`;
     }
     // 整張卡片反映已購買狀態，讓使用者在店裡一眼掃出還沒買的品項
     card.classList.toggle('is-bought', bought);
@@ -425,12 +446,13 @@ function syncCardVisual(card, product) {
     const qty = getQty(product.id);
     const qtyValueEl = card.querySelector('.kij-qty-value');
     if (qtyValueEl) qtyValueEl.textContent = String(qty);
+    const qtySumEl = card.querySelector('.kij-qty-sum');
+    if (qtySumEl) qtySumEl.textContent = subtotalText(product, qty);
   } else {
     const triedBtn = card.querySelector('[data-action="toggle-tried"]');
     const tried = isTried(product.id);
     triedBtn.classList.toggle('on', tried);
     triedBtn.setAttribute('aria-pressed', String(tried));
-    triedBtn.textContent = tried ? '已試穿 ✓' : '未試穿';
   }
 }
 
