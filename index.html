@@ -248,11 +248,22 @@ function comparisonTableHtml(group, items) {
   </section>`;
 }
 
-function recommendedStoreText(product) {
-  if (product.group !== 'shopping') return null;
-  const stores = product.stores.map((id) => STORE_SUMMARIES[id]).filter(Boolean);
-  if (stores.length === 0) return null;
-  return stores.map((store) => store.name).join('／');
+function recommendedStores(product) {
+  if (product.group !== 'shopping') return [];
+  return product.stores
+    .map((id) => (STORE_SUMMARIES[id] ? { id, ...STORE_SUMMARIES[id] } : null))
+    .filter(Boolean);
+}
+
+/* 推薦店家做成可點的標籤，點下去跳到地圖並自動選中那家店，
+   對應「到店前想確認這東西在哪買」的情境。 */
+function storeChipsHtml(product) {
+  const stores = recommendedStores(product);
+  if (stores.length === 0) return '';
+  const chips = stores
+    .map((store) => `<a class="kij-store-chip" href="map.html?store=${encodeURIComponent(store.id)}"><span class="kij-store-chip-pin" aria-hidden="true"></span>${escapeHtml(store.name)}</a>`)
+    .join('');
+  return `<dt>推薦店家</dt><dd class="kij-store-chips">${chips}</dd>`;
 }
 
 /* 勾選框樣式的狀態按鈕：方框由 CSS 畫，切換時只改 class，
@@ -287,7 +298,6 @@ function buildCardHtml(product) {
   const jaHtml = product.jaName ? `<div class="ja">${escapeHtml(product.jaName)}</div>` : '';
   const modelHtml = product.model && product.group !== 'dryer' ? `<div class="ja">型號：${escapeHtml(product.model)}</div>` : '';
   const fullImage = product.image.replace('/thumb/', '/full/');
-  const storeText = recommendedStoreText(product);
   const dryerSummaryHtml = product.group === 'dryer' ? `<div class="kij-dryer-summary">${escapeHtml(DRYER_SUMMARIES[product.id] || '')}</div>` : '';
 
   let priceHtml = '';
@@ -309,7 +319,7 @@ function buildCardHtml(product) {
       ? `<dl class="kij-shopping-details">
           <dt>購買數量</dt><dd><span class="kij-qty-control"><button type="button" class="kij-qty-btn" data-action="qty-minus" aria-label="減少數量">－</button><span class="kij-qty-value" aria-live="polite">${qty}</span><button type="button" class="kij-qty-btn" data-action="qty-plus" aria-label="增加數量">＋</button></span>${subtotalHtml(product, qty)}</dd>
           <dt>參考價格</dt><dd class="price">約 ${yenText} ${twdText}</dd>
-          ${storeText ? `<dt>推薦店家</dt><dd>${escapeHtml(storeText)}</dd>` : ''}
+          ${storeChipsHtml(product)}
         </dl>`
       : `<div class="price-row"><span class="yen">${yenText}</span><span class="twd">${twdText}</span><span class="kij-price-kind">${priceKindText}</span></div>`;
     controlsHtml = purchaseToggleHtml(product);

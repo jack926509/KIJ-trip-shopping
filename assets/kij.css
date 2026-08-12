@@ -411,8 +411,33 @@ body.kij {
 .kij-qty-value { min-width: 34px; text-align: center; font-weight: 800; font-variant-numeric: tabular-nums; }
 /* 小計跟著數量按鈕走，加減完不必移開視線就看得到金額變化 */
 .kij-qty-sum { margin-left: 12px; color: var(--accent); font-size: 13.5px; font-weight: 800; white-space: nowrap; }
+/* 推薦店家做成可點標籤：點下去開地圖並選中該店。
+   用地圖圖釘記號表示「這會跳到地圖」，跟品名的 ↗（外部商品頁）區隔開。 */
+.kij-store-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.kij-store-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 5px 11px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fbfaf7;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.3;
+  text-decoration: none;
+}
+.kij-store-chip:hover { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+.kij-store-chip-pin {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--accent);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+}
 .kij-dryer-summary { margin-top: 4px; color: var(--muted); font-size: 13px; font-weight: 700; }
-.kij-checkout-row { display:flex; justify-content:space-between; gap:16px; padding:10px 4px; border-bottom:1px solid var(--line); font-size:14px; }
 
 .kij-bottombar { background: rgba(255, 255, 255, .96); border-top-color: var(--line); }
 .kij-bottombar .active { color: var(--accent); }
