@@ -317,10 +317,12 @@ function buildCardHtml(product) {
     const qty = getQty(product.id);
     const yenText = product.yen != null ? `¥${product.yen.toLocaleString()}` : '價格待確認';
     const twdText = product.twdRef != null ? `（約 NT$${product.twdRef.toLocaleString()}）` : '';
+    // 沒有價格時不要寫成「約 價格待確認」；有價格才加「約」
+    const priceText = product.yen != null ? `約 ${yenText} ${twdText}` : yenText;
     priceHtml = product.group === 'shopping'
       ? `<dl class="kij-shopping-details">
           <dt>購買數量</dt><dd><span class="kij-qty-control"><button type="button" class="kij-qty-btn" data-action="qty-minus" aria-label="減少數量">－</button><span class="kij-qty-value" aria-live="polite">${qty}</span><button type="button" class="kij-qty-btn" data-action="qty-plus" aria-label="增加數量">＋</button></span>${subtotalHtml(product, qty)}</dd>
-          <dt>參考價格</dt><dd class="price">約 ${yenText} ${twdText}</dd>
+          <dt>參考價格</dt><dd class="price">${priceText}</dd>
           ${storeChipsHtml(product)}
         </dl>`
       : `<div class="price-row"><span class="yen">${yenText}</span><span class="twd">${twdText}</span><span class="kij-price-kind">${priceKindText}</span></div>`;
