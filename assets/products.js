@@ -654,9 +654,9 @@ const BASE_PRODUCTS = [
     id: 'salonpas-ae-240',
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '久光 Salonpas Ae 止痛貼布', jaName: 'サロンパスAe', model: '第 3 類醫藥品・240 枚・4.2 × 6.5 cm',
-    yen: 2838, twdRef: null, defaultQty: 1, image: 'images/thumb/salonpas-ae-240.webp',
-    note: '240 枚一般尺寸，附保存盒。官方建議零售價為 ¥3,410；照片中的店頭價為未稅 ¥2,580、含稅 ¥2,838。購買與使用前請詳讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-13.md', stores: [], storeCandidates: [],
-    priceKind: 'photo-reference', priceSourceUrl: null, priceCheckedAt: '2026-08-13', priceNote: '使用者提供的層架與包裝照片可辨識サロンパスAe、240 枚與「¥2,580（含稅 ¥2,838）」標價；官方建議零售價為 ¥3,410。'
+    yen: 3410, twdRef: null, defaultQty: 1, image: 'images/thumb/salonpas-ae-240.webp',
+    note: '240 枚一般尺寸，附保存盒。官方建議零售價為含稅 ¥3,410；實體門市售價可能不同。購買與使用前請詳讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-13.md', stores: [], storeCandidates: [],
+    priceKind: 'official', priceSourceUrl: 'https://www.hisamitsu.co.jp/healthcare/products/001.html', priceCheckedAt: '2026-08-13', priceNote: null
   },
   {
     id: 'passtime-lx-premium-21',
