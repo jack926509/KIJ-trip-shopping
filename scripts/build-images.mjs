@@ -18,7 +18,9 @@ for (const [id, relSrc] of Object.entries(manifest)) {
     continue;
   }
   try {
-    await sharp(srcPath).resize({ width: 200, height: 200, fit: 'inside' }).webp({ quality: 82 })
+    /* 縮圖 400px：手機卡片的圖片是 156 CSS px，手機幾乎都是 2x～3x 螢幕，
+       原本的 200px 在 2x 上就已經不夠、看起來糊。400px 蓋得住 156@2x（312）。 */
+    await sharp(srcPath).resize({ width: 400, height: 400, fit: 'inside' }).webp({ quality: 82 })
       .toFile(path.join(ROOT, `images/thumb/${id}.webp`));
     await sharp(srcPath).resize({ width: 1200, height: 1200, fit: 'inside' }).webp({ quality: 85 })
       .toFile(path.join(ROOT, `images/full/${id}.webp`));

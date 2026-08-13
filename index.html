@@ -157,6 +157,7 @@ const PRICE_KIND_LABEL = {
 const STORE_SUMMARIES = {
   '3coins-plus-amu-plaza-kokura': { type: '生活雜貨（3COINS／DAISO）', name: '3COINS+plus AMU PLAZA 小倉店' },
   '3coins-plus-mina-tenjin': { type: '生活雜貨（3COINS／DAISO）', name: '3COINS+plus ミーナ天神店' },
+  'biccamera-tenjin-1': { type: '家電', name: 'BicCamera 天神 1 號館' },
   'biccamera-tenjin-2': { type: '家電', name: 'BicCamera 天神 2 號館' },
   'daiso-amu-plaza-kokura': { type: '生活雜貨', name: 'DAISO AMU PLAZA 小倉店' },
   'daiso-hakata-bus-terminal': { type: '生活雜貨', name: 'DAISO 博多巴士總站店' },
@@ -166,6 +167,9 @@ const STORE_SUMMARIES = {
   'hands-hakata': { type: '生活雜貨', name: 'HANDS 博多店' },
   'kayanoya-hakata-station-daitos': { type: '食品／伴手禮', name: '茅乃舍 博多站 DEITOS 店' },
   'kayanoya-kokura-izutsuya': { type: '食品／伴手禮', name: '茅乃舍 小倉井筒屋店' },
+  'lawson-hakata': { type: '便利商店', name: 'LAWSON 博多店' },
+  'lawson-kokura-uomachi-2chome': { type: '便利商店', name: 'LAWSON 小倉魚町二丁目店' },
+  'lawson-nishitetsu-fukuoka-tenjin-south': { type: '便利商店', name: 'LAWSON 西鐵福岡天神站南口店' },
   'matsumoto-kiyoshi-hakata-station-underground': { type: '藥妝', name: '松本清博多站地下街店' },
   'maxvalu-express-hakata-gion': { type: '超市／賣場', name: 'MaxValu Express 博多祇園店' },
   'murasaki-sports-canal-city-hakata': { type: '鞋店', name: 'ムラサキスポーツキャナルシティ博多店' },
@@ -228,9 +232,12 @@ function comparisonTableHtml(group, items) {
   </section>`;
 }
 
+/* 原本只有藥妝日用會顯示店家，但便利商店與吹風機的 stores 資料一直都在，
+   只是沒有被讀出來——站在博多站要找「哪一家 LAWSON」時反而查不到。
+   鞋款是到店試穿、店家已寫在品牌分區標題，這裡不重複。 */
 function recommendedStores(product) {
-  if (product.group !== 'shopping') return [];
-  return product.stores
+  if (product.group === 'shoes') return [];
+  return (product.stores ?? [])
     .map((id) => (STORE_SUMMARIES[id] ? { id, ...STORE_SUMMARIES[id] } : null))
     .filter(Boolean);
 }
@@ -285,10 +292,12 @@ function buildCardHtml(product) {
     priceHtml = product.yen != null
       ? `<div class="price-row"><span class="yen">¥${product.yen.toLocaleString()}</span><span class="kij-price-kind">${priceKindText}</span></div>`
       : '';
+    priceHtml += storeLinksHtml(product);
     controlsHtml = purchaseToggleHtml(product);
   } else if (product.group === 'dryer') {
     const yenText = product.yen != null ? `¥${product.yen.toLocaleString()}` : '價格待確認';
     priceHtml = `<div class="price-row"><span class="yen">${yenText}</span><span class="kij-price-kind">通路參考價</span></div>`;
+    priceHtml += storeLinksHtml(product);
     controlsHtml = purchaseToggleHtml(product);
   } else if (product.tracking === 'buy') {
     const yenText = product.yen != null ? `¥${product.yen.toLocaleString()}` : '價格待確認';

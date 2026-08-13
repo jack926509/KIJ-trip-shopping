@@ -19,8 +19,12 @@ const summaryBlock = indexHtml.match(/const STORE_SUMMARIES = \{([\s\S]*?)\n\};/
 if (!summaryBlock) {
   failures.push('找不到 STORE_SUMMARIES');
 } else {
+  /* 涵蓋所有分類，不能只查 shopping。
+     只查 shopping 時，便利商店與吹風機的商品即使寫了 stores，
+     少了顯示名稱就整條連結不會渲染，畫面上完全看不出漏掉——
+     實際發生過：7 項商品的店家連結靜靜消失了一段時間。 */
   const summaryIds = new Set([...summaryBlock[1].matchAll(/'([^']+)'\s*:/g)].map((match) => match[1]));
-  const missing = [...new Set(PRODUCTS.filter((product) => product.group === 'shopping').flatMap((product) => product.stores))]
+  const missing = [...new Set(PRODUCTS.flatMap((product) => product.stores ?? []))]
     .filter((storeId) => !summaryIds.has(storeId));
   if (missing.length > 0) failures.push(`已確認推薦店家缺少顯示名稱：${missing.join('、')}`);
 }
