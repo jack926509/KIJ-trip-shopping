@@ -1,19 +1,26 @@
 /* KIJ 共用設計系統：index.html、map.html 皆引用此檔，顏色與間距不得在頁面內覆寫 */
 :root {
-  --bg: #fffdf8;
+  --bg: #f4f1eb;
   --surface: #ffffff;
-  --accent: #ff6b45;
-  --accent-soft: #fff4ec;
-  --text: #2b2118;
-  --muted: #9c9086;
-  --line: #f2e8dc;
+  --accent: #2f6d5e;
+  --accent-soft: #e8f2ee;
+  --text: #26302c;
+  --muted: #727874;
+  --line: #e7e1d8;
   --radius-card: 16px;
   --radius-pill: 99px;
-  --shadow-card: 0 3px 12px rgba(180, 120, 80, .13);
+  --shadow-card: 0 8px 22px rgba(55, 48, 39, .08);
   --tap-min: 44px;
 }
 
 * { box-sizing: border-box; }
+
+/* 鍵盤操作要看得到目前焦點在哪。與 map.html 的 focus 樣式同一套。 */
+:where(a, button, summary, [tabindex]):focus-visible {
+  outline: 3px solid rgba(47, 109, 94, .32);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
 
 body.kij {
   margin: 0;
@@ -62,19 +69,6 @@ body.kij {
   color: var(--muted);
 }
 
-.kij-progress {
-  margin: 0 15px 12px;
-  background: var(--accent-soft);
-  border-radius: 14px;
-  padding: 11px 14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.kij-progress .label { font-size: 12px; color: #a04a10; font-weight: 700; }
-.kij-progress .total { font-size: 19px; font-weight: 800; color: var(--accent); }
-
 .kij-tabs {
   display: flex;
   gap: 8px;
@@ -116,16 +110,42 @@ body.kij {
 .kij-section-header b { font-size: 14.5px; font-weight: 800; }
 .kij-section-header .count { font-size: 11.5px; color: var(--muted); font-weight: 600; }
 
+/* 卡片採 grid 版面：左欄放大圖，右欄由上到下是「分類＋已購買 → 品名 → 明細」。
+   row-gap 設 0、間距改由各區塊自己的 margin 負責，這樣某一區塊沒有內容時
+   （例如超商小物沒有價格明細）不會留下一條空白列。 */
 .kij-card {
   background: var(--surface);
   border-radius: var(--radius-card);
   padding: 11px;
   box-shadow: var(--shadow-card);
   margin-bottom: 10px;
-  display: flex;
-  gap: 11px;
-  align-items: flex-start;
+  display: grid;
+  column-gap: 13px;
+  row-gap: 0;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas:
+    "thumb head"
+    "thumb mid"
+    "thumb detail";
+  align-content: start;
 }
+
+/* 圖在左欄上下置中：右欄內容長短不一（有的有型號、有的推薦店家兩行），
+   圖靠上會讓整排卡片看起來高低不齊。 */
+.kij-card > .thumb { grid-area: thumb; align-self: center; }
+.kij-card > .kij-card-head { grid-area: head; }
+.kij-card > .mid { grid-area: mid; }
+.kij-card > .kij-card-detail { grid-area: detail; min-width: 0; }
+
+/* 分類標籤靠左、已購買勾選釘在卡片右上角 */
+.kij-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: var(--tap-min);
+}
+.kij-card-head > :last-child { margin-left: auto; }
 
 .kij-card .thumb {
   width: 66px;
@@ -204,15 +224,8 @@ body.kij {
 }
 
 /* 購物清單頁：採地圖頁相同的米白、深綠與留白節奏。 */
+/* 色票已統一在檔頭 :root，這裡只留清單頁專屬的漸層底 */
 body.kij {
-  --bg: #f4f1eb;
-  --surface: #ffffff;
-  --accent: #2f6d5e;
-  --accent-soft: #e8f2ee;
-  --text: #26302c;
-  --muted: #727874;
-  --line: #e7e1d8;
-  --shadow-card: 0 8px 22px rgba(55, 48, 39, .08);
   background: linear-gradient(180deg, #faf9f6, var(--bg));
 }
 
@@ -236,16 +249,14 @@ body.kij {
 .kij-header .title-row b::before { content: "KIJ SHOPPING LIST"; display: block; margin-bottom: 5px; color: var(--accent); font-size: 10px; letter-spacing: .14em; }
 .kij-header .title-row span { font-size: 13px; font-weight: 700; }
 
-.kij-progress {
+/* 頁首狀態：一行字帶過，不做進度條也不做金額試算 */
+.kij-status-line {
   margin: 0 0 13px;
-  padding: 13px 16px;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  background: var(--surface);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.5;
 }
-
-.kij-progress .label { color: var(--accent); font-size: 13px; }
-.kij-progress .total { color: var(--accent); font-size: 22px; }
 .kij-tabs { padding: 0; gap: 9px; }
 .kij-tab { flex: 0 0 auto; min-height: 44px; }
 .kij-tab { background: #ece8e1; color: #4e5652; }
@@ -263,7 +274,7 @@ body.kij {
 .kij-card {
   min-width: 0;
   margin: 0;
-  gap: 15px;
+  column-gap: 18px;
   padding: 15px;
   border: 1px solid var(--line);
   border-radius: 18px;
@@ -271,8 +282,8 @@ body.kij {
 }
 
 .kij-card .thumb {
-  width: 132px;
-  height: 132px;
+  width: 156px;
+  height: 156px;
   border: 1px solid var(--line);
   border-radius: 12px;
   background: #f7f4ed;
@@ -282,89 +293,178 @@ body.kij {
 .kij-image-link { display: block; width: 100%; height: 100%; cursor: zoom-in; }
 .kij-image-link img { width: 100%; height: 100%; object-fit: cover; transition: transform .18s ease; }
 .kij-image-link:hover img { transform: scale(1.05); }
-.kij-card h5 { margin: 7px 0 3px; font-size: 18px; line-height: 1.3; }
-.kij-card .ja { font-size: 12px; line-height: 1.55; }
+.kij-card h5 { margin: 4px 0 3px; font-size: 21px; line-height: 1.25; letter-spacing: -.01em; }
+.kij-card .ja { font-size: 12.5px; line-height: 1.55; color: var(--accent); font-weight: 700; }
 .kij-card .price-row { flex-wrap: wrap; margin-top: 9px; }
 .kij-card .yen { color: var(--accent); font-size: 23px; }
 .kij-card .twd, .kij-price-kind { font-size: 11px; color: var(--muted); }
-.kij-card-actions { display: flex; flex-direction: column; justify-content: space-between; gap: 12px; min-width: 102px; }
-.kij-card-convenience .mid,
-.kij-card-dryer .mid { align-self: center; }
-.kij-purchase-toggle { align-self: flex-end; white-space: nowrap; }
-.kij-card-shopping { align-items: center; min-height: 196px; }
-.kij-card-shopping .thumb { width: 174px; height: 174px; margin: 0 16px 0 4px; align-self: center; }
-.kij-card-shopping .mid { padding-left: 4px; }
-.kij-card-shopping .kij-card-actions { display: flex; }
-.kij-card-shopping .kij-purchase-toggle { min-height: 32px; padding: 5px 8px; border-radius: 8px; font-size: 11px; }
-.kij-status-btn {
-  min-height: var(--tap-min);
-  padding: 8px 12px;
-  border: 1px solid var(--accent);
-  border-radius: 10px;
-  background: #fff;
-  color: var(--accent);
-  font-size: 13px;
-  font-weight: 800;
-  cursor: pointer;
+.kij-card-shopping .thumb { width: 186px; height: 186px; }
+.kij-card-head .kij-pill { font-size: 11.5px; padding: 5px 12px; }
+
+/* 已購買：整張卡片降階，讓「還沒買的」在店裡一眼跳出來。
+   勾選框維持全對比，確保還看得見、還能取消勾選。 */
+.kij-card.is-bought { background: #f7f6f3; border-color: #ded8cd; box-shadow: none; }
+.kij-card.is-bought .thumb,
+.kij-card.is-bought .mid,
+.kij-card.is-bought .kij-pill,
+.kij-card.is-bought .kij-card-detail { opacity: .5; }
+.kij-card.is-bought h5 { text-decoration: line-through; text-decoration-thickness: 2px; }
+@media (prefers-reduced-motion: no-preference) {
+  .kij-card { transition: background-color .18s ease, border-color .18s ease; }
+  .kij-card .thumb, .kij-card .mid, .kij-card .kij-pill, .kij-card .kij-card-detail { transition: opacity .18s ease; }
 }
-.kij-status-btn.on { background: var(--accent); color: #fff; }
-.kij-map-open {
+
+/* 勾選框式的狀態控制項：外觀是「方框＋文字」，但整塊都是可按範圍，
+   高度撐到 --tap-min，確保在店裡單手也按得到。 */
+.kij-status-btn {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  min-height: 36px;
-  padding: 8px 10px;
-  border-radius: 10px;
-  background: var(--accent-soft);
-  color: var(--accent);
-  font-size: 12px;
-  font-weight: 850;
-  text-decoration: none;
+  gap: 8px;
+  min-height: var(--tap-min);
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 800;
   white-space: nowrap;
+  cursor: pointer;
 }
-.kij-map-open:hover { background: var(--accent); color: #fff; }
+.kij-status-btn:hover { background: var(--accent-soft); }
+.kij-status-btn.on { color: var(--accent); }
+.kij-check {
+  position: relative;
+  flex: none;
+  width: 21px;
+  height: 21px;
+  border: 2px solid #c8c1b3;
+  border-radius: 7px;
+  background: #fff;
+}
+.kij-status-btn.on .kij-check { background: var(--accent); border-color: var(--accent); }
+.kij-status-btn.on .kij-check::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 4px;
+  height: 9px;
+  border: solid #fff;
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .kij-check { transition: background-color .15s ease, border-color .15s ease; }
+}
+
+/* 品名即商品頁連結：平常看起來就是標題，只用一個小箭頭表示點得開 */
+.kij-name-link { color: inherit; text-decoration: none; }
+.kij-name-link:hover { color: var(--accent); }
+.kij-name-link:hover .kij-ext { color: var(--accent); }
+.kij-ext {
+  margin-left: 6px;
+  color: #b9b1a3;
+  font-size: .68em;
+  font-weight: 700;
+  vertical-align: 2px;
+}
+/* 明細改為單純的直排：欄位標籤已拿掉，價格與店家各自成一行。
+   手機右欄只有約 172px，原本 84px 的標籤欄會吃掉一半。 */
 .kij-shopping-details {
-  display: grid;
-  grid-template-columns: 84px minmax(0, 1fr);
-  gap: 9px 14px;
-  margin: 13px 0 0;
-  padding-top: 13px;
+  margin: 11px 0 0;
+  padding-top: 11px;
   border-top: 1px dashed var(--line);
   font-size: 14px;
   line-height: 1.45;
 }
-.kij-shopping-details dt { color: var(--muted); font-weight: 400; }
-.kij-shopping-details dd { margin: 0; color: var(--text); font-weight: 400; }
-.kij-shopping-details .price { color: var(--text); }
-.kij-qty-control { display: inline-flex; align-items: center; gap: 9px; }
-.kij-qty-btn { min-width: 34px; min-height: 34px; border: none; border-radius: 8px; background: var(--accent-soft); color: var(--accent); font-size: 18px; font-weight: 700; cursor: pointer; }
-.kij-qty-value { min-width: 18px; text-align: center; font-weight: 400; }
+.kij-price-line { color: var(--text); font-weight: 800; }
+.kij-price-line .kij-twd { color: var(--muted); font-size: .86em; font-weight: 600; }
+
+/* 推薦店家：文字超連結，頓號分隔。點下去開地圖並選中該店。
+   前面的小圖釘表示「這會跳到地圖」，跟品名的 ↗（外部商品頁）區隔開。
+   註：這比膠囊標籤省很多版面，代價是可點高度回不到 --tap-min，
+   所以行高放寬到 1.9，讓實際可按範圍盡量大。 */
+/* 用 flex-wrap 而非純文字流：每個店名是一個 flex item，放不下會整個換到下一行，
+   不會像行內文字那樣從店名中間斷開（「松本清／博多站地下街店」）。 */
+.kij-store-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px 12px;
+  margin-top: 5px;
+  font-size: 13px;
+  line-height: 1.9;
+}
+.kij-store-links a {
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+.kij-store-links a::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 5px;
+  border: 2px solid var(--accent);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  vertical-align: 1px;
+}
+.kij-store-links a:hover { text-decoration-thickness: 2px; }
 .kij-dryer-summary { margin-top: 4px; color: var(--muted); font-size: 13px; font-weight: 700; }
-.kij-checkout-row { display:flex; justify-content:space-between; gap:16px; padding:10px 4px; border-bottom:1px solid var(--line); font-size:14px; }
 
 .kij-bottombar { background: rgba(255, 255, 255, .96); border-top-color: var(--line); }
 .kij-bottombar .active { color: var(--accent); }
 
-@media (min-width: 760px) {
+/* 兩欄門檻設在 1000px：圖放大到 186px 後，760px 時分兩欄會讓右側明細只剩約 130px。 */
+@media (min-width: 1000px) {
   .kij-section-body { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .kij-section[data-group="shopping"] .kij-subcat-heading { grid-column: 1 / -1; }
 }
 
 @media (max-width: 540px) {
   .kij-shell, #kijMain { width: min(100% - 24px, 1180px); }
-  .kij-header { padding-top: 12px; }
-  .kij-header .title-row b { font-size: 23px; }
-  .kij-card { gap: 11px; padding: 12px; }
-  .kij-card .thumb { width: 108px; height: 108px; }
-  .kij-card-shopping { min-height: 134px; }
-  .kij-card-shopping .thumb { width: 122px; height: 122px; margin-right: 4px; }
-  .kij-card-shopping .mid { padding-left: 0; }
-  .kij-shopping-details { grid-template-columns: 70px minmax(0, 1fr); gap: 8px 10px; margin-top: 10px; padding-top: 10px; font-size: 13px; }
-  .kij-qty-btn { min-width: 32px; min-height: 32px; }
-  .kij-card h5 { font-size: 16px; }
-  .kij-card .yen { font-size: 20px; }
-  .kij-card-actions { min-width: 82px; }
-  .kij-status-btn { padding: 7px 8px; font-size: 12px; }
+  .kij-header { padding: 12px 0 10px; }
+  .kij-header .title-row { padding-bottom: 9px; }
+  .kij-header .title-row b { font-size: 22px; }
+  .kij-status-line { margin-bottom: 10px; }
+
+  /* 往下捲動後頁首收合：改版前頁首固定佔手機螢幕約 22%，
+     收合後把空間還給商品，只保留分頁這個隨時要用的控制項。 */
+  .kij-header.is-compact { padding-top: 8px; }
+  .kij-header.is-compact .title-row { padding-bottom: 7px; }
+  .kij-header.is-compact .title-row b { font-size: 16px; }
+  .kij-header.is-compact .title-row b::before { display: none; }
+  .kij-header.is-compact .kij-status-line { display: none; }
+  @media (prefers-reduced-motion: no-preference) {
+    .kij-header .title-row b { transition: font-size .18s ease; }
+  }
+  /* 手機：大圖在左、文字全部在右（使用者 2026-08-13 指定的乙案）。
+     卡片內部可用寬 340px＝圖 156 ＋ 間距 12 ＋ 右欄 172。
+     數量列已移除，右欄只剩「分類＋已購買 / 品名 / 價格 / 店家」四段，
+     172px 排得下且不必逐字換行。 */
+  .kij-card {
+    column-gap: 12px;
+    padding: 13px;
+    /* 必須與下方 .thumb 的 156px 一致，否則圖片會溢出自己的軌道、吃掉 column-gap */
+    grid-template-columns: 156px minmax(0, 1fr);
+    grid-template-areas:
+      "thumb head"
+      "thumb mid"
+      "thumb detail";
+  }
+  .kij-card .thumb,
+  .kij-card-shopping .thumb { width: 156px; height: 156px; }
+  .kij-card-head { min-height: var(--tap-min); gap: 6px; }
+  .kij-card-head .kij-pill { font-size: 11px; padding: 4px 8px; }
+  .kij-status-btn { gap: 5px; padding: 6px 2px 6px 6px; font-size: 12.5px; }
+  /* 右欄 172px：品名與價格各縮 1px，長品名才不會被擠成五、六行 */
+  .kij-card h5 { font-size: 16px; margin-top: 2px; }
+  .kij-shopping-details { margin-top: 9px; padding-top: 9px; font-size: 14px; }
+  .kij-card .yen { font-size: 19px; }
 }
 
 .kij-compare {
@@ -412,8 +512,6 @@ body.kij {
 .kij-shoe-card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 
 @media (max-width: 540px) {
-  .kij-card-actions { min-width: 88px; }
-  .kij-map-open { min-height: 34px; padding: 7px 8px; font-size: 11px; }
   .kij-compare th:first-child,
   .kij-compare td:first-child { position: sticky; left: 0; z-index: 1; }
   .kij-compare th:first-child { background: var(--accent-soft); }

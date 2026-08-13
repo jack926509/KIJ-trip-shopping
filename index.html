@@ -4,6 +4,8 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>北九州之旅購物清單</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#2f6d5e">
 <link rel="stylesheet" href="assets/kij.css">
 </head>
 <body class="kij">
@@ -14,12 +16,10 @@
         <b>北九州購物清單</b>
         <span id="kijItemCount"></span>
       </div>
-      <div class="kij-progress">
-        <span class="label" id="kijProgressLabel"></span>
-      </div>
+      <p class="kij-status-line" id="kijStatusLine" aria-live="polite"></p>
       <nav class="kij-tabs" id="kijTabs">
         <button type="button" class="kij-tab active" data-action="tab" data-group="shopping">藥妝日用</button>
-        <button type="button" class="kij-tab" data-action="tab" data-group="convenience">便利商店必買必吃</button>
+        <button type="button" class="kij-tab" data-action="tab" data-group="convenience">便利商店</button>
         <button type="button" class="kij-tab" data-action="tab" data-group="dryer">吹風機</button>
         <button type="button" class="kij-tab" data-action="tab" data-group="shoes">鞋款</button>
       </nav>
@@ -46,7 +46,7 @@ const PRODUCTS_BY_ID = new Map(PRODUCTS.map((p) => [p.id, p]));
 const GROUPS = ['shopping', 'convenience', 'dryer', 'shoes'];
 const GROUP_META = {
   shopping: { label: '藥妝日用', icon: '🛍️' },
-  convenience: { label: '便利商店必買必吃', icon: '🏪' },
+  convenience: { label: '便利商店', icon: '🏪' },
   dryer: { label: '吹風機', icon: '💨' },
   shoes: { label: '鞋款試穿', icon: '👟' },
 };
@@ -95,25 +95,6 @@ function writeBool(key, val) {
   }
 }
 
-function readNum(key, fallback) {
-  try {
-    const v = localStorage.getItem(key);
-    if (v === null || v === '') return fallback;
-    const n = Number(v);
-    return Number.isFinite(n) ? n : fallback;
-  } catch (err) {
-    return fallback;
-  }
-}
-
-function writeNum(key, val) {
-  try {
-    localStorage.setItem(key, String(val));
-  } catch (err) {
-    /* 同上，忽略寫入失敗 */
-  }
-}
-
 /* ────────────────────────────────────────────────────────────────
  * 狀態存取
  * ──────────────────────────────────────────────────────────────── */
@@ -123,12 +104,9 @@ function setBought(id, val) { writeBool(`kij_bought_${id}`, val); }
 function isTried(id) { return readBool(`kij_tried_${id}`, false); }
 function setTried(id, val) { writeBool(`kij_tried_${id}`, val); }
 
-function getQty(id) {
-  const product = PRODUCTS_BY_ID.get(id);
-  const fallback = product && product.defaultQty != null ? product.defaultQty : 1;
-  return readNum(`kij_qty_${id}`, fallback);
-}
-function setQty(id, val) { writeNum(`kij_qty_${id}`, Math.max(0, val)); }
+/* 購買數量已於 2026-08-13 移除：數量只餵給小計一個地方，而總金額試算更早就撤掉了，
+   等於整條數量列在店裡沒有作用，卻吃掉窄卡片近三分之一的高度。
+   現在每項只有「買了／沒買」兩種狀態。products.js 的 defaultQty 欄位保留但不再讀取。 */
 
 function isSectionCollapsed(group) { return readBool(`kij_section_${group}_collapsed`, false); }
 function setSectionCollapsed(group, val) { writeBool(`kij_section_${group}_collapsed`, val); }
@@ -250,16 +228,35 @@ function comparisonTableHtml(group, items) {
   </section>`;
 }
 
-function recommendedStoreText(product) {
-  if (product.group !== 'shopping') return null;
-  const stores = product.stores.map((id) => STORE_SUMMARIES[id]).filter(Boolean);
-  if (stores.length === 0) return null;
-  return stores.map((store) => store.name).join('／');
+function recommendedStores(product) {
+  if (product.group !== 'shopping') return [];
+  return product.stores
+    .map((id) => (STORE_SUMMARIES[id] ? { id, ...STORE_SUMMARIES[id] } : null))
+    .filter(Boolean);
 }
 
+/* 推薦店家：點下去跳到地圖並自動選中那家店，對應「到店前想確認這東西在哪買」的情境。
+   用文字超連結而非標籤卡片——手機卡片右欄只有 172px，兩家店的膠囊標籤會各佔一整列。
+   前面的小圖釘表示「這會開地圖」，與品名的 ↗（外部商品頁）區隔開。 */
+function storeLinksHtml(product) {
+  const stores = recommendedStores(product);
+  if (stores.length === 0) return '';
+  const links = stores
+    .map((store) => `<a href="map.html?store=${encodeURIComponent(store.id)}">${escapeHtml(store.name)}</a>`)
+    .join('');
+  return `<div class="kij-store-links">${links}</div>`;
+}
+
+/* 勾選框樣式的狀態按鈕：方框由 CSS 畫，切換時只改 class，
+   不重寫按鈕內容，避免把方框元素洗掉。 */
 function purchaseToggleHtml(product) {
   const bought = isBought(product.id);
-  return `<button type="button" class="kij-status-btn kij-purchase-toggle${bought ? ' on' : ''}" data-action="toggle-bought" aria-pressed="${bought}">${bought ? '☑ 已購買' : '□ 已購買'}</button>`;
+  return `<button type="button" class="kij-status-btn${bought ? ' on' : ''}" data-action="toggle-bought" aria-pressed="${bought}"><span class="kij-check" aria-hidden="true"></span>已購買</button>`;
+}
+
+function triedToggleHtml(product) {
+  const tried = isTried(product.id);
+  return `<button type="button" class="kij-status-btn${tried ? ' on' : ''}" data-action="toggle-tried" aria-pressed="${tried}"><span class="kij-check" aria-hidden="true"></span>已試穿</button>`;
 }
 
 /* ────────────────────────────────────────────────────────────────
@@ -268,10 +265,14 @@ function purchaseToggleHtml(product) {
 function buildCardHtml(product) {
   const pill = pillForProduct(product);
   const pillHtml = pill ? `<span class="kij-pill ${pill.cls}">${escapeHtml(pill.text)}</span>` : '';
-  const jaHtml = product.jaName ? `<div class="ja">${escapeHtml(product.jaName)}</div>` : '';
-  const modelHtml = product.model && product.group !== 'dryer' ? `<div class="ja">型號：${escapeHtml(product.model)}</div>` : '';
+  /* 日文名與型號併成一行（用「・」分隔），省下窄卡片的一整列。
+     吹風機的型號本身就是品名，不重複顯示。 */
+  const subParts = [];
+  if (product.jaName) subParts.push(escapeHtml(product.jaName));
+  if (product.model && product.group !== 'dryer') subParts.push(escapeHtml(product.model));
+  const jaHtml = subParts.length > 0 ? `<div class="ja">${subParts.join('・')}</div>` : '';
+  const modelHtml = '';
   const fullImage = product.image.replace('/thumb/', '/full/');
-  const storeText = recommendedStoreText(product);
   const dryerSummaryHtml = product.group === 'dryer' ? `<div class="kij-dryer-summary">${escapeHtml(DRYER_SUMMARIES[product.id] || '')}</div>` : '';
 
   let priceHtml = '';
@@ -279,51 +280,62 @@ function buildCardHtml(product) {
   const priceKindText = PRICE_KIND_LABEL[product.priceKind] || '參考價';
 
   if (product.group === 'convenience') {
-    priceHtml = '';
+    /* 超商品項多是隨手拿的小東西，原本刻意不顯示價格；
+       但站在冷藏櫃前還是會想知道大概多少錢，所以查得到價的就顯示，查不到的維持留白。 */
+    priceHtml = product.yen != null
+      ? `<div class="price-row"><span class="yen">¥${product.yen.toLocaleString()}</span><span class="kij-price-kind">${priceKindText}</span></div>`
+      : '';
     controlsHtml = purchaseToggleHtml(product);
   } else if (product.group === 'dryer') {
     const yenText = product.yen != null ? `¥${product.yen.toLocaleString()}` : '價格待確認';
     priceHtml = `<div class="price-row"><span class="yen">${yenText}</span><span class="kij-price-kind">通路參考價</span></div>`;
     controlsHtml = purchaseToggleHtml(product);
   } else if (product.tracking === 'buy') {
-    const qty = getQty(product.id);
     const yenText = product.yen != null ? `¥${product.yen.toLocaleString()}` : '價格待確認';
-    const twdText = product.twdRef != null ? `（約 NT$${product.twdRef.toLocaleString()}）` : '';
+    const twdText = product.twdRef != null ? `<span class="kij-twd">（約 NT$${product.twdRef.toLocaleString()}）</span>` : '';
+    /* 沒有價格時不要寫成「約 價格待確認」；有價格才加「約」。
+       欄位標籤（參考價格／推薦店家）已拿掉——手機右欄只剩 172px，
+       標籤欄要吃掉三分之一，而 ¥ 開頭就是價格、圖釘後面就是店家，看得出來。 */
+    const priceText = product.yen != null ? `約 ${yenText} ${twdText}` : yenText;
     priceHtml = product.group === 'shopping'
-      ? `<dl class="kij-shopping-details">
-          <dt>參考價格</dt><dd class="price">約 ${yenText} ${twdText}</dd>
-          <dt>購買數量</dt><dd><span class="kij-qty-control"><button type="button" class="kij-qty-btn" data-action="qty-minus" aria-label="減少數量">－</button><span class="kij-qty-value" aria-live="polite">${qty}</span><button type="button" class="kij-qty-btn" data-action="qty-plus" aria-label="增加數量">＋</button></span></dd>
-          ${storeText ? `<dt>推薦店家</dt><dd>${escapeHtml(storeText)}</dd>` : ''}
-        </dl>`
-      : `<div class="price-row"><span class="yen">${yenText}</span><span class="twd">${twdText}</span><span class="kij-price-kind">${priceKindText}</span></div>`;
+      ? `<div class="kij-shopping-details">
+          <div class="kij-price-line">${priceText}</div>
+          ${storeLinksHtml(product)}
+        </div>`
+      : `<div class="price-row"><span class="yen">${yenText}</span><span class="twd">${product.twdRef != null ? `（約 NT$${product.twdRef.toLocaleString()}）` : ''}</span><span class="kij-price-kind">${priceKindText}</span></div>`;
     controlsHtml = purchaseToggleHtml(product);
   } else {
-    const tried = isTried(product.id);
     const yenText = product.yen != null ? `¥${product.yen.toLocaleString()}` : '價格待確認';
     priceHtml = `
       <div class="price-row">
         <span class="yen">${yenText}</span>
         <span class="kij-price-kind">${priceKindText}</span>
       </div>`;
-    controlsHtml = `
-      <button type="button" class="kij-status-btn${tried ? ' on' : ''}" data-action="toggle-tried" aria-pressed="${tried}">${tried ? '已試穿 ✓' : '未試穿'}</button>`;
+    controlsHtml = triedToggleHtml(product);
   }
 
+  // 品名本身就是商品頁連結，不再另外放按鈕；沒有來源網址的品項維持純文字
+  const nameHtml = product.priceSourceUrl
+    ? `<h5><a class="kij-name-link" href="${escapeHtml(product.priceSourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(product.name)}<span class="kij-ext" aria-hidden="true">↗</span></a></h5>`
+    : `<h5>${escapeHtml(product.name)}</h5>`;
+
   return `
-    <div class="kij-card kij-card-${escapeHtml(product.group)}" id="${escapeHtml(product.id)}" data-id="${escapeHtml(product.id)}">
+    <div class="kij-card kij-card-${escapeHtml(product.group)}${product.tracking === 'buy' && isBought(product.id) ? ' is-bought' : ''}" id="${escapeHtml(product.id)}" data-id="${escapeHtml(product.id)}">
       <div class="thumb">
         <a class="kij-image-link" href="${escapeHtml(fullImage)}" target="_blank" rel="noopener noreferrer" aria-label="放大查看 ${escapeHtml(product.name)} 圖片"><img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" loading="lazy"></a>
       </div>
+      <div class="kij-card-head">
+        ${pillHtml || '<span></span>'}
+        ${controlsHtml}
+      </div>
       <div class="mid">
-        ${pillHtml}
-        <h5>${escapeHtml(product.name)}</h5>
+        ${nameHtml}
         ${jaHtml}
         ${modelHtml}
         ${dryerSummaryHtml}
-        ${priceHtml}
       </div>
-      <div class="kij-card-actions">
-        ${controlsHtml}
+      <div class="kij-card-detail">
+        ${priceHtml}
       </div>
     </div>`;
 }
@@ -408,25 +420,38 @@ function syncCardVisual(card, product) {
     if (boughtBtn) {
       boughtBtn.classList.toggle('on', bought);
       boughtBtn.setAttribute('aria-pressed', String(bought));
-      boughtBtn.textContent = `${bought ? '☑' : '□'} 已購買`;
     }
-
-    const qty = getQty(product.id);
-    const qtyValueEl = card.querySelector('.kij-qty-value');
-    if (qtyValueEl) qtyValueEl.textContent = String(qty);
+    // 整張卡片反映已購買狀態，讓使用者在店裡一眼掃出還沒買的品項
+    card.classList.toggle('is-bought', bought);
   } else {
     const triedBtn = card.querySelector('[data-action="toggle-tried"]');
     const tried = isTried(product.id);
     triedBtn.classList.toggle('on', tried);
     triedBtn.setAttribute('aria-pressed', String(tried));
-    triedBtn.textContent = tried ? '已試穿 ✓' : '未試穿';
   }
 }
 
+/* 頁首只留一行狀態文字：使用者要的是「還剩幾項沒買」，不要進度條也不要金額試算。
+   分母跟著目前分頁走——畫面上只顯示一個分類，卻寫全站的 45 項，
+   站在藥妝店裡會對不上眼前的清單（實際只有 37 項）。
+   後半保留全站進度，才知道整趟還剩多少沒買。
+   鞋款是到店試穿、沒有「買了沒」，所以那一頁改講試穿雙數。 */
 function updateProgressBar() {
-  const buyItems = PRODUCTS.filter((p) => p.tracking === 'buy');
-  const boughtCount = buyItems.filter((p) => isBought(p.id)).length;
-  document.getElementById('kijProgressLabel').textContent = `已買 ${boughtCount} / ${buyItems.length} 項`;
+  const groupItems = PRODUCTS.filter((p) => p.group === activeGroup);
+  const allBuyItems = PRODUCTS.filter((p) => p.tracking === 'buy');
+  const allBoughtCount = allBuyItems.filter((p) => isBought(p.id)).length;
+
+  let headText;
+  if (activeGroup === 'shoes') {
+    const triedCount = groupItems.filter((p) => isTried(p.id)).length;
+    headText = `已試穿 ${triedCount} / ${groupItems.length} 雙`;
+  } else {
+    const boughtCount = groupItems.filter((p) => isBought(p.id)).length;
+    headText = `${GROUP_META[activeGroup].label}　已買 ${boughtCount} / ${groupItems.length} 項`;
+  }
+
+  document.getElementById('kijStatusLine').textContent =
+    `${headText}　·　全站已買 ${allBoughtCount} / ${allBuyItems.length} 項`;
 }
 
 function updateShoeSectionCount() {
@@ -437,7 +462,6 @@ function updateShoeSectionCount() {
 function syncKijState() {
   window.__kijState = {
     bought: Object.fromEntries(PRODUCTS.filter((p) => p.tracking === 'buy').map((p) => [p.id, isBought(p.id)])),
-    qty: Object.fromEntries(PRODUCTS.filter((p) => p.tracking === 'buy').map((p) => [p.id, getQty(p.id)])),
     tried: Object.fromEntries(PRODUCTS.filter((p) => p.tracking === 'try').map((p) => [p.id, isTried(p.id)])),
   };
 }
@@ -449,6 +473,7 @@ function focusSection(group) {
   activeGroup = group;
   document.querySelectorAll('.kij-tab').forEach((tab) => tab.classList.toggle('active', tab.dataset.group === group));
   renderSections();
+  updateProgressBar(); // 分母跟著分頁走，切頁後必須重算
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -526,16 +551,7 @@ appEl.addEventListener('click', (e) => {
       setTried(id, !isTried(id));
       syncCardVisual(card, product);
       updateShoeSectionCount();
-      syncKijState();
-      break;
-    }
-    case 'qty-minus':
-    case 'qty-plus': {
-      if (!product) return;
-      const delta = action === 'qty-plus' ? 1 : -1;
-      setQty(id, Math.max(0, getQty(id) + delta));
-      syncCardVisual(card, product);
-      updateProgressBar();
+      updateProgressBar(); // 鞋款頁的狀態文字講的是試穿雙數，勾了要同步
       syncKijState();
       break;
     }
@@ -562,6 +578,23 @@ appEl.addEventListener('keydown', (e) => {
  * 初始化
  * ──────────────────────────────────────────────────────────────── */
 document.getElementById('kijItemCount').textContent = `共 ${PRODUCTS.length} 項商品`;
+
+/* 捲動後收合頁首，把螢幕還給商品。用 rAF 節流，避免捲動時反覆觸發版面計算。 */
+(() => {
+  const headerEl = document.querySelector('.kij-header');
+  let ticking = false;
+  const sync = () => {
+    headerEl.classList.toggle('is-compact', window.scrollY > 72);
+    ticking = false;
+  };
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(sync);
+  }, { passive: true });
+  sync();
+})();
+
 renderSections();
 updateProgressBar();
 syncKijState();
