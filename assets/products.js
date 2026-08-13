@@ -641,6 +641,54 @@ const BASE_PRODUCTS = [
     yen: 8980, twdRef: null, defaultQty: 1, image: 'images/thumb/cio-smartcoby-slimii-wireless-2-2-8k-special-edition.webp',
     note: '8,000 mAh、Qi2.2 無線 25 W、USB-C 有線 30 W；約 12 mm、170 g，含專用網狀收納袋。', source: 'docs/product-price-sources-2026-08-11.md', stores: ['biccamera-tenjin-2'], storeCandidates: [],
     priceKind: 'retailer-reference', priceSourceUrl: 'https://www.biccamera.com/bc/item/15238470/', priceCheckedAt: '2026-08-11', priceNote: '照片可辨識 Special Edition Set 黑色型號 CIO-MB30W1C-8K-S2W25-EE-BK；BicCamera 線上含稅 ¥8,980、點數 898 點，天神 2 號館購買前請先確認該型號店庫存。'
+  },
+  {
+    id: 'kinui-calm-7-soothing-serum',
+    group: 'shopping', tracking: 'buy', category: '皮膚護理',
+    name: 'KINUI CALM-7 舒緩精華', jaName: 'KINUI カームセブンスージングセラム', model: '30 ml・JAN 4595123166154',
+    yen: 2970, twdRef: null, defaultQty: 1, image: 'images/thumb/kinui-calm-7-soothing-serum.webp',
+    note: '含 CICA、植物性 PDRN、菸鹼醯胺與泛醇等 7 種整肌成分；官方售價為含稅 ¥2,970。實體店庫存須現場確認。', source: 'docs/product-price-sources-2026-08-13.md', stores: [], storeCandidates: [],
+    priceKind: 'official', priceSourceUrl: 'https://kinui.tokyo/shop/products/sing_C7SS_default', priceCheckedAt: '2026-08-13', priceNote: null
+  },
+  {
+    id: 'salonpas-ae-240',
+    group: 'shopping', tracking: 'buy', category: '旅途常備藥',
+    name: '久光 Salonpas Ae 止痛貼布', jaName: 'サロンパスAe', model: '第 3 類醫藥品・240 枚・4.2 × 6.5 cm',
+    yen: 2838, twdRef: null, defaultQty: 1, image: 'images/thumb/salonpas-ae-240.webp',
+    note: '240 枚一般尺寸，附保存盒。官方建議零售價為 ¥3,410；照片中的店頭價為未稅 ¥2,580、含稅 ¥2,838。購買與使用前請詳讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-13.md', stores: [], storeCandidates: [],
+    priceKind: 'photo-reference', priceSourceUrl: null, priceCheckedAt: '2026-08-13', priceNote: '使用者提供的層架與包裝照片可辨識サロンパスAe、240 枚與「¥2,580（含稅 ¥2,838）」標價；官方建議零售價為 ¥3,410。'
+  },
+  {
+    id: 'passtime-lx-premium-21',
+    group: 'shopping', tracking: 'buy', category: '旅途常備藥',
+    name: 'Passtime LX Premium 止痛貼布', jaName: 'パスタイムLXプレミアム', model: '第 2 類醫藥品・21 枚・7 × 10 cm・JAN 4987235024451',
+    yen: 1918, twdRef: null, defaultQty: 1, image: 'images/thumb/passtime-lx-premium-21.webp',
+    note: '含ロキソプロフェン Na 水和物、l-メントール與維生素 E 的外用貼布；包裝標示 24 小時持續。日本通路單品參考價 ¥1,918；購買與使用前請詳讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-13.md', stores: [], storeCandidates: [],
+    priceKind: 'retailer-reference', priceSourceUrl: 'https://item.rakuten.co.jp/q-bazar/8134659/', priceCheckedAt: '2026-08-13', priceNote: '21 枚單品的通路參考價 ¥1,918；不含運費，實體門市售價可能不同。'
+  },
+  {
+    id: 'cainz-bottle-cleaner-200g',
+    group: 'shopping', tracking: 'buy', category: '廚房用品',
+    name: 'CAINZ 搖一搖水壺清潔粉', jaName: 'カインズ ふるだけボトルクリーナー', model: '200 g・JAN 4549509621584',
+    yen: 498, twdRef: null, defaultQty: 1, image: 'images/thumb/cainz-bottle-cleaner-200g.webp',
+    note: '將清潔粉與水放入水壺後密封搖晃使用；照片為 200 g 包裝。通路參考價 ¥498，店頭與線上價格可能不同。', source: 'docs/product-price-sources-2026-08-13.md', stores: [], storeCandidates: [],
+    priceKind: 'retailer-reference', priceSourceUrl: 'https://product.rakuten.co.jp/product/-/21980fda081b389cd9d2a4d5e779342b/', priceCheckedAt: '2026-08-13', priceNote: 'CAINZ 官方頁確認同一 200 g、JAN 4549509621584；可追溯通路參考價為 ¥498，官方頁亦明示店頭與網路價格可能不同。'
+  },
+  {
+    id: 'toraku-royal-custard-pudding',
+    group: 'convenience', tracking: 'buy', category: '麵包甜點',
+    name: 'TORAKU 皇家卡士達布丁', jaName: '神戸シェフクラブ ロイヤルカスタードプリン', model: '布丁 105 g＋焦糖醬 6 g',
+    yen: 226, twdRef: null, defaultQty: 1, image: 'images/thumb/toraku-royal-custard-pudding.webp',
+    note: '冷藏甜點，食用前淋上附的焦糖醬；照片層架標價為未稅 ¥210、含稅 ¥226。有效期限短，適合當日購買食用。', source: 'docs/product-price-sources-2026-08-13.md', stores: [], storeCandidates: [],
+    priceKind: 'photo-reference', priceSourceUrl: null, priceCheckedAt: '2026-08-13', priceNote: '使用者提供的包裝與層架照片可辨識神戸シェフクラブ ロイヤルカスタードプリン及「¥210（含稅 ¥226）」標價。'
+  },
+  {
+    id: 'seasoning-container-pair',
+    group: 'shopping', tracking: 'buy', category: '廚房用品',
+    name: '附量匙調味料收納盒（兩入）', jaName: null, model: null,
+    yen: 300, twdRef: null, defaultQty: 1, image: 'images/thumb/seasoning-container-pair.webp',
+    note: '透明罐身、掀蓋與內附量匙的兩入調味料盒。影片字卡顯示兩個合計 ¥300；照片未顯示品牌、店家或型號，購買前請核對實物。', source: 'docs/product-price-sources-2026-08-13.md', stores: [], storeCandidates: [],
+    priceKind: 'photo-reference', priceSourceUrl: null, priceCheckedAt: '2026-08-13', priceNote: '使用者提供照片的字卡清楚標示「兩個只要 300 日幣」，但未拍到品牌、店家與型號。'
   }
 ];
 
