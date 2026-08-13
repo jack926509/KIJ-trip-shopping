@@ -95,25 +95,6 @@ function writeBool(key, val) {
   }
 }
 
-function readNum(key, fallback) {
-  try {
-    const v = localStorage.getItem(key);
-    if (v === null || v === '') return fallback;
-    const n = Number(v);
-    return Number.isFinite(n) ? n : fallback;
-  } catch (err) {
-    return fallback;
-  }
-}
-
-function writeNum(key, val) {
-  try {
-    localStorage.setItem(key, String(val));
-  } catch (err) {
-    /* 同上，忽略寫入失敗 */
-  }
-}
-
 /* ────────────────────────────────────────────────────────────────
  * 狀態存取
  * ──────────────────────────────────────────────────────────────── */
@@ -123,12 +104,9 @@ function setBought(id, val) { writeBool(`kij_bought_${id}`, val); }
 function isTried(id) { return readBool(`kij_tried_${id}`, false); }
 function setTried(id, val) { writeBool(`kij_tried_${id}`, val); }
 
-function getQty(id) {
-  const product = PRODUCTS_BY_ID.get(id);
-  const fallback = product && product.defaultQty != null ? product.defaultQty : 1;
-  return readNum(`kij_qty_${id}`, fallback);
-}
-function setQty(id, val) { writeNum(`kij_qty_${id}`, Math.max(0, val)); }
+/* 購買數量已於 2026-08-13 移除：數量只餵給小計一個地方，而總金額試算更早就撤掉了，
+   等於整條數量列在店裡沒有作用，卻吃掉窄卡片近三分之一的高度。
+   現在每項只有「買了／沒買」兩種狀態。products.js 的 defaultQty 欄位保留但不再讀取。 */
 
 function isSectionCollapsed(group) { return readBool(`kij_section_${group}_collapsed`, false); }
 function setSectionCollapsed(group, val) { writeBool(`kij_section_${group}_collapsed`, val); }
@@ -257,15 +235,16 @@ function recommendedStores(product) {
     .filter(Boolean);
 }
 
-/* 推薦店家做成可點的標籤，點下去跳到地圖並自動選中那家店，
-   對應「到店前想確認這東西在哪買」的情境。 */
-function storeChipsHtml(product) {
+/* 推薦店家：點下去跳到地圖並自動選中那家店，對應「到店前想確認這東西在哪買」的情境。
+   用文字超連結而非標籤卡片——手機卡片右欄只有 172px，兩家店的膠囊標籤會各佔一整列。
+   前面的小圖釘表示「這會開地圖」，與品名的 ↗（外部商品頁）區隔開。 */
+function storeLinksHtml(product) {
   const stores = recommendedStores(product);
   if (stores.length === 0) return '';
-  const chips = stores
-    .map((store) => `<a class="kij-store-chip" href="map.html?store=${encodeURIComponent(store.id)}"><span class="kij-store-chip-pin" aria-hidden="true"></span>${escapeHtml(store.name)}</a>`)
+  const links = stores
+    .map((store) => `<a href="map.html?store=${encodeURIComponent(store.id)}">${escapeHtml(store.name)}</a>`)
     .join('');
-  return `<dt>推薦店家</dt><dd class="kij-store-chips">${chips}</dd>`;
+  return `<div class="kij-store-links">${links}</div>`;
 }
 
 /* 勾選框樣式的狀態按鈕：方框由 CSS 畫，切換時只改 class，
@@ -280,25 +259,19 @@ function triedToggleHtml(product) {
   return `<button type="button" class="kij-status-btn${tried ? ' on' : ''}" data-action="toggle-tried" aria-pressed="${tried}"><span class="kij-check" aria-hidden="true"></span>已試穿</button>`;
 }
 
-// 小計＝參考單價×購買數量，讓「買 3 條要多少錢」不用自己心算
-function subtotalText(product, qty) {
-  if (product.yen == null) return '';
-  return `小計 ¥${(product.yen * qty).toLocaleString()}`;
-}
-
-function subtotalHtml(product, qty) {
-  const text = subtotalText(product, qty);
-  return text ? `<span class="kij-qty-sum">${text}</span>` : '';
-}
-
 /* ────────────────────────────────────────────────────────────────
  * 卡片渲染
  * ──────────────────────────────────────────────────────────────── */
 function buildCardHtml(product) {
   const pill = pillForProduct(product);
   const pillHtml = pill ? `<span class="kij-pill ${pill.cls}">${escapeHtml(pill.text)}</span>` : '';
-  const jaHtml = product.jaName ? `<div class="ja">${escapeHtml(product.jaName)}</div>` : '';
-  const modelHtml = product.model && product.group !== 'dryer' ? `<div class="ja">型號：${escapeHtml(product.model)}</div>` : '';
+  /* 日文名與型號併成一行（用「・」分隔），省下窄卡片的一整列。
+     吹風機的型號本身就是品名，不重複顯示。 */
+  const subParts = [];
+  if (product.jaName) subParts.push(escapeHtml(product.jaName));
+  if (product.model && product.group !== 'dryer') subParts.push(escapeHtml(product.model));
+  const jaHtml = subParts.length > 0 ? `<div class="ja">${subParts.join('・')}</div>` : '';
+  const modelHtml = '';
   const fullImage = product.image.replace('/thumb/', '/full/');
   const dryerSummaryHtml = product.group === 'dryer' ? `<div class="kij-dryer-summary">${escapeHtml(DRYER_SUMMARIES[product.id] || '')}</div>` : '';
 
@@ -318,18 +291,18 @@ function buildCardHtml(product) {
     priceHtml = `<div class="price-row"><span class="yen">${yenText}</span><span class="kij-price-kind">通路參考價</span></div>`;
     controlsHtml = purchaseToggleHtml(product);
   } else if (product.tracking === 'buy') {
-    const qty = getQty(product.id);
     const yenText = product.yen != null ? `¥${product.yen.toLocaleString()}` : '價格待確認';
-    const twdText = product.twdRef != null ? `（約 NT$${product.twdRef.toLocaleString()}）` : '';
-    // 沒有價格時不要寫成「約 價格待確認」；有價格才加「約」
+    const twdText = product.twdRef != null ? `<span class="kij-twd">（約 NT$${product.twdRef.toLocaleString()}）</span>` : '';
+    /* 沒有價格時不要寫成「約 價格待確認」；有價格才加「約」。
+       欄位標籤（參考價格／推薦店家）已拿掉——手機右欄只剩 172px，
+       標籤欄要吃掉三分之一，而 ¥ 開頭就是價格、圖釘後面就是店家，看得出來。 */
     const priceText = product.yen != null ? `約 ${yenText} ${twdText}` : yenText;
     priceHtml = product.group === 'shopping'
-      ? `<dl class="kij-shopping-details">
-          <dt>購買數量</dt><dd><span class="kij-qty-control"><button type="button" class="kij-qty-btn" data-action="qty-minus" aria-label="減少數量">－</button><span class="kij-qty-value" aria-live="polite">${qty}</span><button type="button" class="kij-qty-btn" data-action="qty-plus" aria-label="增加數量">＋</button></span>${subtotalHtml(product, qty)}</dd>
-          <dt>參考價格</dt><dd class="price">${priceText}</dd>
-          ${storeChipsHtml(product)}
-        </dl>`
-      : `<div class="price-row"><span class="yen">${yenText}</span><span class="twd">${twdText}</span><span class="kij-price-kind">${priceKindText}</span></div>`;
+      ? `<div class="kij-shopping-details">
+          <div class="kij-price-line">${priceText}</div>
+          ${storeLinksHtml(product)}
+        </div>`
+      : `<div class="price-row"><span class="yen">${yenText}</span><span class="twd">${product.twdRef != null ? `（約 NT$${product.twdRef.toLocaleString()}）` : ''}</span><span class="kij-price-kind">${priceKindText}</span></div>`;
     controlsHtml = purchaseToggleHtml(product);
   } else {
     const yenText = product.yen != null ? `¥${product.yen.toLocaleString()}` : '價格待確認';
@@ -450,12 +423,6 @@ function syncCardVisual(card, product) {
     }
     // 整張卡片反映已購買狀態，讓使用者在店裡一眼掃出還沒買的品項
     card.classList.toggle('is-bought', bought);
-
-    const qty = getQty(product.id);
-    const qtyValueEl = card.querySelector('.kij-qty-value');
-    if (qtyValueEl) qtyValueEl.textContent = String(qty);
-    const qtySumEl = card.querySelector('.kij-qty-sum');
-    if (qtySumEl) qtySumEl.textContent = subtotalText(product, qty);
   } else {
     const triedBtn = card.querySelector('[data-action="toggle-tried"]');
     const tried = isTried(product.id);
@@ -485,7 +452,6 @@ function updateShoeSectionCount() {
 function syncKijState() {
   window.__kijState = {
     bought: Object.fromEntries(PRODUCTS.filter((p) => p.tracking === 'buy').map((p) => [p.id, isBought(p.id)])),
-    qty: Object.fromEntries(PRODUCTS.filter((p) => p.tracking === 'buy').map((p) => [p.id, getQty(p.id)])),
     tried: Object.fromEntries(PRODUCTS.filter((p) => p.tracking === 'try').map((p) => [p.id, isTried(p.id)])),
   };
 }
@@ -574,16 +540,6 @@ appEl.addEventListener('click', (e) => {
       setTried(id, !isTried(id));
       syncCardVisual(card, product);
       updateShoeSectionCount();
-      syncKijState();
-      break;
-    }
-    case 'qty-minus':
-    case 'qty-plus': {
-      if (!product) return;
-      const delta = action === 'qty-plus' ? 1 : -1;
-      setQty(id, Math.max(0, getQty(id) + delta));
-      syncCardVisual(card, product);
-      updateProgressBar();
       syncKijState();
       break;
     }
