@@ -460,8 +460,9 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 36px;
-      padding: 8px 11px;
+      /* 「Google Maps 導航」是站在店門口最常按的連結，維持在手指按得到的尺寸 */
+      min-height: var(--tap-min);
+      padding: 8px 13px;
       border: 1px solid var(--line);
       border-radius: 999px;
       color: var(--green-dark);
