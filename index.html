@@ -19,7 +19,7 @@
       <p class="kij-status-line" id="kijStatusLine" aria-live="polite"></p>
       <nav class="kij-tabs" id="kijTabs">
         <button type="button" class="kij-tab active" data-action="tab" data-group="shopping">藥妝日用</button>
-        <button type="button" class="kij-tab" data-action="tab" data-group="convenience">便利商店必買必吃</button>
+        <button type="button" class="kij-tab" data-action="tab" data-group="convenience">便利商店</button>
         <button type="button" class="kij-tab" data-action="tab" data-group="dryer">吹風機</button>
         <button type="button" class="kij-tab" data-action="tab" data-group="shoes">鞋款</button>
       </nav>
@@ -46,7 +46,7 @@ const PRODUCTS_BY_ID = new Map(PRODUCTS.map((p) => [p.id, p]));
 const GROUPS = ['shopping', 'convenience', 'dryer', 'shoes'];
 const GROUP_META = {
   shopping: { label: '藥妝日用', icon: '🛍️' },
-  convenience: { label: '便利商店必買必吃', icon: '🏪' },
+  convenience: { label: '便利商店', icon: '🏪' },
   dryer: { label: '吹風機', icon: '💨' },
   shoes: { label: '鞋款試穿', icon: '👟' },
 };
@@ -431,17 +431,27 @@ function syncCardVisual(card, product) {
   }
 }
 
-/* 頁首只留一行狀態文字：使用者要的是「還剩幾項沒買」，
-   不要進度條也不要金額試算。另註明比較參考的項數，
-   否則「共 49 項」與「已買 x / 39」兩個數字對不上會讓人困惑。 */
+/* 頁首只留一行狀態文字：使用者要的是「還剩幾項沒買」，不要進度條也不要金額試算。
+   分母跟著目前分頁走——畫面上只顯示一個分類，卻寫全站的 45 項，
+   站在藥妝店裡會對不上眼前的清單（實際只有 37 項）。
+   後半保留全站進度，才知道整趟還剩多少沒買。
+   鞋款是到店試穿、沒有「買了沒」，所以那一頁改講試穿雙數。 */
 function updateProgressBar() {
-  const buyItems = PRODUCTS.filter((p) => p.tracking === 'buy');
-  const boughtCount = buyItems.filter((p) => isBought(p.id)).length;
-  const refCount = PRODUCTS.length - buyItems.length;
+  const groupItems = PRODUCTS.filter((p) => p.group === activeGroup);
+  const allBuyItems = PRODUCTS.filter((p) => p.tracking === 'buy');
+  const allBoughtCount = allBuyItems.filter((p) => isBought(p.id)).length;
 
-  const parts = [`已買 ${boughtCount} / ${buyItems.length} 項`];
-  if (refCount > 0) parts.push(`另 ${refCount} 項為比較參考`);
-  document.getElementById('kijStatusLine').textContent = parts.join('　·　');
+  let headText;
+  if (activeGroup === 'shoes') {
+    const triedCount = groupItems.filter((p) => isTried(p.id)).length;
+    headText = `已試穿 ${triedCount} / ${groupItems.length} 雙`;
+  } else {
+    const boughtCount = groupItems.filter((p) => isBought(p.id)).length;
+    headText = `${GROUP_META[activeGroup].label}　已買 ${boughtCount} / ${groupItems.length} 項`;
+  }
+
+  document.getElementById('kijStatusLine').textContent =
+    `${headText}　·　全站已買 ${allBoughtCount} / ${allBuyItems.length} 項`;
 }
 
 function updateShoeSectionCount() {
@@ -463,6 +473,7 @@ function focusSection(group) {
   activeGroup = group;
   document.querySelectorAll('.kij-tab').forEach((tab) => tab.classList.toggle('active', tab.dataset.group === group));
   renderSections();
+  updateProgressBar(); // 分母跟著分頁走，切頁後必須重算
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -540,6 +551,7 @@ appEl.addEventListener('click', (e) => {
       setTried(id, !isTried(id));
       syncCardVisual(card, product);
       updateShoeSectionCount();
+      updateProgressBar(); // 鞋款頁的狀態文字講的是試穿雙數，勾了要同步
       syncKijState();
       break;
     }
