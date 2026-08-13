@@ -654,9 +654,9 @@ const BASE_PRODUCTS = [
     id: 'salonpas-ae-240',
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '久光 Salonpas Ae 止痛貼布', jaName: 'サロンパスAe', model: '第 3 類醫藥品・240 枚・4.2 × 6.5 cm',
-    yen: 2838, twdRef: null, defaultQty: 1, image: 'images/thumb/salonpas-ae-240.webp',
-    note: '240 枚一般尺寸，附保存盒。官方建議零售價為 ¥3,410；照片中的店頭價為未稅 ¥2,580、含稅 ¥2,838。購買與使用前請詳讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-13.md', stores: [], storeCandidates: [],
-    priceKind: 'photo-reference', priceSourceUrl: null, priceCheckedAt: '2026-08-13', priceNote: '使用者提供的層架與包裝照片可辨識サロンパスAe、240 枚與「¥2,580（含稅 ¥2,838）」標價；官方建議零售價為 ¥3,410。'
+    yen: 3410, twdRef: null, defaultQty: 1, image: 'images/thumb/salonpas-ae-240.webp',
+    note: '240 枚一般尺寸，附保存盒。官方建議零售價為含稅 ¥3,410；實體門市售價可能不同。購買與使用前請詳讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-13.md', stores: [], storeCandidates: [],
+    priceKind: 'official', priceSourceUrl: 'https://www.hisamitsu.co.jp/healthcare/products/001.html', priceCheckedAt: '2026-08-13', priceNote: null
   },
   {
     id: 'passtime-lx-premium-21',
@@ -670,9 +670,9 @@ const BASE_PRODUCTS = [
     id: 'cainz-bottle-cleaner-200g',
     group: 'shopping', tracking: 'buy', category: '廚房用品',
     name: 'CAINZ 搖一搖水壺清潔粉', jaName: 'カインズ ふるだけボトルクリーナー', model: '200 g・JAN 4549509621584',
-    yen: 498, twdRef: null, defaultQty: 1, image: 'images/thumb/cainz-bottle-cleaner-200g.webp',
-    note: '將清潔粉與水放入水壺後密封搖晃使用；照片為 200 g 包裝。通路參考價 ¥498，店頭與線上價格可能不同。', source: 'docs/product-price-sources-2026-08-13.md', stores: [], storeCandidates: [],
-    priceKind: 'retailer-reference', priceSourceUrl: 'https://product.rakuten.co.jp/product/-/21980fda081b389cd9d2a4d5e779342b/', priceCheckedAt: '2026-08-13', priceNote: 'CAINZ 官方頁確認同一 200 g、JAN 4549509621584；可追溯通路參考價為 ¥498，官方頁亦明示店頭與網路價格可能不同。'
+    yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/cainz-bottle-cleaner-200g.webp',
+    note: '將清潔粉與水放入水壺後密封搖晃使用；照片為 200 g 包裝。官方頁可確認規格，但未公開可直接核對的當前價格。', source: '', stores: [], storeCandidates: [],
+    priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-13', priceNote: 'CAINZ 官方商品頁可辨識 200 g 與 JAN 4549509621584，但未顯示可直接核對的當前價格；現行通路頁價格受運費與通路影響，不能作為單品現價。'
   },
   {
     id: 'toraku-royal-custard-pudding',
