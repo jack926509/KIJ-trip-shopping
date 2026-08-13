@@ -307,7 +307,11 @@ function buildCardHtml(product) {
   const priceKindText = PRICE_KIND_LABEL[product.priceKind] || '參考價';
 
   if (product.group === 'convenience') {
-    priceHtml = '';
+    /* 超商品項多是隨手拿的小東西，原本刻意不顯示價格；
+       但站在冷藏櫃前還是會想知道大概多少錢，所以查得到價的就顯示，查不到的維持留白。 */
+    priceHtml = product.yen != null
+      ? `<div class="price-row"><span class="yen">¥${product.yen.toLocaleString()}</span><span class="kij-price-kind">${priceKindText}</span></div>`
+      : '';
     controlsHtml = purchaseToggleHtml(product);
   } else if (product.group === 'dryer') {
     const yenText = product.yen != null ? `¥${product.yen.toLocaleString()}` : '價格待確認';

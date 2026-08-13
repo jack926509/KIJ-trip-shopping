@@ -369,21 +369,6 @@ body.kij {
   font-weight: 700;
   vertical-align: 2px;
 }
-.kij-map-open {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 36px;
-  padding: 8px 10px;
-  border-radius: 10px;
-  background: var(--accent-soft);
-  color: var(--accent);
-  font-size: 12px;
-  font-weight: 850;
-  text-decoration: none;
-  white-space: nowrap;
-}
-.kij-map-open:hover { background: var(--accent); color: #fff; }
 .kij-shopping-details {
   display: grid;
   grid-template-columns: 84px minmax(0, 1fr);
@@ -418,8 +403,9 @@ body.kij {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-height: 34px;
-  padding: 5px 11px;
+  /* 站在店裡單手點開地圖的主要入口，按得到比較重要——不縮小於 --tap-min */
+  min-height: var(--tap-min);
+  padding: 5px 13px;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: #fbfaf7;
@@ -470,7 +456,8 @@ body.kij {
   .kij-card {
     column-gap: 12px;
     padding: 13px;
-    grid-template-columns: 108px minmax(0, 1fr);
+    /* 必須與下方 .thumb 的 118px 一致，否則圖片會溢出自己的軌道、吃掉 column-gap */
+    grid-template-columns: 118px minmax(0, 1fr);
     grid-template-areas:
       "thumb head"
       "thumb mid"
@@ -541,7 +528,6 @@ body.kij {
 .kij-shoe-card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 
 @media (max-width: 540px) {
-  .kij-map-open { min-height: var(--tap-min); padding: 9px 12px; font-size: 13px; }
   .kij-compare th:first-child,
   .kij-compare td:first-child { position: sticky; left: 0; z-index: 1; }
   .kij-compare th:first-child { background: var(--accent-soft); }

@@ -162,7 +162,8 @@
 
     .filter-group button {
       flex: 0 0 auto;
-      min-height: 38px;
+      /* 手指按得到：手機轉橫（寬 844px）時不會落回 38px */
+      min-height: var(--tap-min);
       padding: 7px 13px;
       border: 0;
       border-radius: 999px;
@@ -626,7 +627,7 @@
       .filter-panel { margin: 10px 0; padding: 9px 10px; gap: 7px; }
       .filter-label { width: 34px; font-size: 11px; }
       .filter-group { gap: 6px; }
-      .filter-group button { min-height: var(--tap-min); padding: 7px 12px; }
+      .filter-group button { padding: 7px 12px; }
       .result-line { margin-bottom: 10px; }
       #map { height: 58vh; min-height: 400px; }
       #mapFallback { min-height: 400px; padding: 28px 20px; }
@@ -1289,6 +1290,16 @@
       return card;
     }
 
+    /* 區域選「全部」時只框住博多／天神那一簇。
+     * 小倉離福岡約 40 公里，兩簇一起框會縮到看得見整個九州、店家全擠成一團；
+     * 小倉的圖釘仍在地圖上，往東捲或按「小倉」就會重新對焦過去。
+     * 若篩完剩下的全是小倉的店，就照常框小倉。 */
+    function framedStores(stores) {
+      if (activeArea !== 'all') return stores;
+      const nonKokura = stores.filter(store => store.area !== 'kokura');
+      return nonKokura.length > 0 ? nonKokura : stores;
+    }
+
     function renderStores() {
       const stores = visibleStores();
       const list = document.getElementById('storeList');
@@ -1305,8 +1316,9 @@
         document.createTextNode(` 間店家（共 ${STORES.length} 間）`)
       );
 
-      // 選「全部」時地圖只對焦博多／天神，講明白小倉在哪，不然會以為漏掉了
-      if (activeArea === 'all' && stores.some(store => store.area === 'kokura')) {
+      /* 有店家被排除在框選之外時才提示，講明白小倉在哪，不然會以為漏掉了。
+         條件與 framedStores 綁在一起：若篩完只剩小倉的店，地圖本來就對焦小倉，不該出現這句。 */
+      if (framedStores(stores).length !== stores.length) {
         resultCount.append(makeTextElement('span', 'map-focus-hint', '地圖先對焦博多・天神；小倉請按上方「小倉」'));
       }
 
@@ -1348,14 +1360,7 @@
         markers.set(store.id, marker);
       });
 
-      /* 區域選「全部」時只框住博多／天神那一簇。
-       * 小倉離福岡約 40 公里，兩簇一起框會縮到看得見整個九州、店家全擠成一團；
-       * 小倉的圖釘仍在地圖上，往東捲或按「小倉」就會重新對焦過去。 */
-      const framed = activeArea === 'all'
-        ? (stores.filter(store => store.area !== 'kokura').length > 0
-            ? stores.filter(store => store.area !== 'kokura')
-            : stores)
-        : stores;
+      const framed = framedStores(stores);
 
       if (framed.length > 1) {
         map.fitBounds(L.latLngBounds(framed.map(store => [store.lat, store.lng])), { padding: [34, 34], maxZoom: 15 });
@@ -1408,13 +1413,18 @@
      * 從網址參數進來時選中的那顆可能在畫面外。 */
     function revealActiveFilter(selector) {
       document.querySelector(`${selector}.active`)?.scrollIntoView({ block: 'nearest', inline: 'center' });
+      markScrollableRows();
     }
 
-    function applyStoreUrlParam() {
+    /* 從清單頁的「推薦店家」標籤進來時，必須在建立地圖「之前」就把篩選設好。
+     * 若等地圖建好再改篩選：initMap 的第一次 fitBounds 會把縮放動畫排到下一個 frame，
+     * 同一個 tick 內後續的 setView 會被那個動畫覆蓋回博多預設視野，
+     * 圖釘就落在畫面外（實測 ?store=kayanoya-kokura-izutsuya 完全看不到店）。 */
+    function readStoreUrlParam() {
       const storeId = new URLSearchParams(location.search).get('store');
-      if (!storeId) return;
+      if (!storeId) return null;
       const store = STORES.find(item => item.id === storeId);
-      if (!store) return;
+      if (!store) return null;
       activeArea = store.area;
       activeCategory = store.category;
       [['area', store.area], ['category', store.category]].forEach(([type, value]) => {
@@ -1424,9 +1434,7 @@
           button.setAttribute('aria-pressed', String(isActive));
         });
       });
-      renderStores();
-      revealActiveFilter('[data-category]');
-      focusStore(store.id);
+      return store;
     }
 
     function initMap() {
@@ -1444,20 +1452,27 @@
       renderMarkers(visibleStores());
     }
 
-    /* 只有真的捲得動時才掛右緣淡出，否則最後一顆 pill 會無故被淡掉 */
+    /* 只有「右邊還有沒露出來的東西」時才掛右緣淡出。
+     * 只看 scrollWidth > clientWidth 的話，捲到底最後一顆 pill 仍是淡的——
+     * 而 revealActiveFilter 正好常把選中的那顆送到最右邊。 */
     function markScrollableRows() {
       document.querySelectorAll('.filter-group, .legend').forEach((row) => {
-        row.classList.toggle('is-scrollable', row.scrollWidth > row.clientWidth + 1);
+        row.classList.toggle('is-scrollable', row.scrollWidth - row.clientWidth - row.scrollLeft > 1);
       });
     }
 
     bindFilterButtons();
     markScrollableRows();
     window.addEventListener('resize', markScrollableRows);
+    document.querySelectorAll('.filter-group, .legend').forEach((row) => {
+      row.addEventListener('scroll', markScrollableRows, { passive: true });
+    });
     document.getElementById('resetFiltersBtn').addEventListener('click', () => {
       applyFilters('area', 'all');
       applyFilters('category', 'all');
     });
+    // 先讀網址參數設好篩選，initMap 的第一次框選才會直接對焦到指定店家
+    const urlStore = readStoreUrlParam();
     renderStores();
 
     try {
@@ -1465,7 +1480,17 @@
     } catch (error) {
       showMapFallback();
     }
-    applyStoreUrlParam();
+
+    if (urlStore) {
+      revealActiveFilter('[data-category]');
+      focusStore(urlStore.id);
+    }
+
+    /* iOS Safari 按「上一頁」回來走 bfcache，script 不會重跑。
+     * 使用者在清單頁勾了幾項再回地圖，「還沒買 N 項」必須跟著更新。 */
+    window.addEventListener('pageshow', (event) => {
+      if (event.persisted) renderStores();
+    });
   </script>
 </body>
 </html>
