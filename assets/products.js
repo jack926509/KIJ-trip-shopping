@@ -707,6 +707,24 @@ const BASE_PRODUCTS = [
     yen: 2541, twdRef: null, defaultQty: 1, image: 'images/thumb/kobayashi-harenurse-18.webp',
     note: '第 3 類醫藥品；顆粒 18 包，免配水直接服用，方便隨身攜帶。適應症為扁桃炎（喉嚨腫、喉嚨痛）、咽頭炎、口內炎。同系列另有 9 包試用規格。購買與服用前請閱讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-14.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
     priceKind: 'retailer-reference', priceSourceUrl: 'https://www.askul.co.jp/p/P102166/', priceCheckedAt: '2026-08-14', priceNote: '通路單品頁標示廠商希望售價含稅 ¥2,541；該站自身折扣價 ¥2,434、比價站最低價帶 ¥1,871–2,392，連鎖藥妝常有折扣，門市標價為準。'
+  },
+
+  // ── 清潔小物（2026-08-14，使用者提供圖片）──
+  {
+    id: 'muji-3layer-sponge-grey',
+    group: 'shopping', tracking: 'buy', category: '廚房用品',
+    name: '無印三層海綿（灰・3 入）', jaName: 'ウレタンフォーム三層スポンジ／グレー', model: '3 個入・約 6×12×3.5 cm',
+    yen: 299, twdRef: null, defaultQty: 1, image: 'images/thumb/muji-3layer-sponge-grey.webp',
+    note: '無印良品長銷洗碗海綿的灰色版：上層不織布刮汙、中層高密度發泡起泡、下層粗孔易瀝乾。灰色不易看出染色，可依用途分開使用。注意本站地圖尚未收錄福岡／北九州的無印良品門市。', source: 'docs/product-price-sources-2026-08-14.md', stores: [], storeCandidates: [],
+    priceKind: 'official', priceSourceUrl: 'https://www.muji.com/jp/ja/store/cmdty/detail/4550512975038', priceCheckedAt: '2026-08-14', priceNote: '使用者拍到的無印良品層架標籤即為官方定價，標示「消費税込 299 円」，與官方商品頁一致。'
+  },
+  {
+    id: 'daiso-basin-cleaner-cloth',
+    group: 'shopping', tracking: 'buy', category: '日用品',
+    name: '大創洗面台清潔布', jaName: '洗面台クリーナー（落ち落ちＶ）', model: '1 個入・10×10×0.75 cm',
+    yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/daiso-basin-cleaner-cloth.webp',
+    note: '大創「落ち落ちＶ」系列，正反兩面各有分工：正面細凹凸刮出黏滑與灰塵，背面微纖維擦乾水痕，一般只用清水即可，頑垢再搭配中性洗劑。適合洗手台與水龍頭的水垢。', source: '', stores: ['daiso-hakata-bus-terminal', 'daiso-amu-plaza-kokura', 'daiso-lachic-fukuoka-tenjin'], storeCandidates: [],
+    priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-14', priceNote: '大創官方商品頁只列材質與尺寸、未標售價；該系列多數品項為 110 日圓（税込），但也有 330 日圓的手柄款，無法從官方頁確認本品屬於哪一種，請以門市標價為準。'
   }
 ];
 
