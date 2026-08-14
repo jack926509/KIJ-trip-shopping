@@ -689,6 +689,24 @@ const BASE_PRODUCTS = [
     yen: 300, twdRef: null, defaultQty: 1, image: 'images/thumb/seasoning-container-pair.webp',
     note: '透明罐身、掀蓋與內附量匙的兩入調味料盒。影片字卡顯示兩個合計 ¥300；照片未顯示品牌、店家或型號，購買前請核對實物。', source: 'docs/product-price-sources-2026-08-13.md', stores: [], storeCandidates: [],
     priceKind: 'photo-reference', priceSourceUrl: null, priceCheckedAt: '2026-08-13', priceNote: '使用者提供照片的字卡清楚標示「兩個只要 300 日幣」，但未拍到品牌、店家與型號。'
+  },
+
+  // ── 小林製藥 ハレナース 系列（2026-08-14，使用者提供圖片；同一藥同兩種劑型）──
+  {
+    id: 'kobayashi-harenurse-spray',
+    group: 'shopping', tracking: 'buy', category: '旅途常備藥',
+    name: '小林製藥扁桃腺發炎噴霧', jaName: 'ハレナーススプレー', model: '第 3 類醫藥品・15 mL',
+    yen: 798, twdRef: null, defaultQty: 1, image: 'images/thumb/kobayashi-harenurse-spray.webp',
+    note: '第 3 類醫藥品；抗炎成分アズレンスルホン酸ナトリウム加殺菌成分セチルピリジニウム，直接噴在喉嚨患部、冷感速效。與同系列藥粉功效相同，噴霧體積大，適合放在住宿處使用。購買與服用前請閱讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-14.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
+    priceKind: 'retailer-reference', priceSourceUrl: 'https://www.askul.co.jp/p/APW1472/', priceCheckedAt: '2026-08-14', priceNote: '小林製藥官方未公布本品希望小売価格（日本 OTC 藥品多採開放價格），改以日本通路單品頁含稅 ¥798 作參考；各家藥妝實售約 ¥726–880，門市標價為準。'
+  },
+  {
+    id: 'kobayashi-harenurse-18',
+    group: 'shopping', tracking: 'buy', category: '旅途常備藥',
+    name: '小林製藥扁桃腺發炎藥粉', jaName: 'ハレナース', model: '第 3 類醫藥品・18 包',
+    yen: 2541, twdRef: null, defaultQty: 1, image: 'images/thumb/kobayashi-harenurse-18.webp',
+    note: '第 3 類醫藥品；顆粒 18 包，免配水直接服用，方便隨身攜帶。適應症為扁桃炎（喉嚨腫、喉嚨痛）、咽頭炎、口內炎。同系列另有 9 包試用規格。購買與服用前請閱讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-14.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
+    priceKind: 'retailer-reference', priceSourceUrl: 'https://www.askul.co.jp/p/P102166/', priceCheckedAt: '2026-08-14', priceNote: '通路單品頁標示廠商希望售價含稅 ¥2,541；該站自身折扣價 ¥2,434、比價站最低價帶 ¥1,871–2,392，連鎖藥妝常有折扣，門市標價為準。'
   }
 ];
 
