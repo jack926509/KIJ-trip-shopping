@@ -717,6 +717,17 @@ const BASE_PRODUCTS = [
     yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/daiso-basin-cleaner-cloth.webp',
     note: '大創「落ち落ちＶ」系列，正反兩面各有分工：正面細凹凸刮出黏滑與灰塵，背面微纖維擦乾水痕，一般只用清水即可，頑垢再搭配中性洗劑。適合洗手台與水龍頭的水垢。', source: '', stores: ['daiso-hakata-bus-terminal', 'daiso-amu-plaza-kokura', 'daiso-lachic-fukuoka-tenjin'], storeCandidates: [],
     priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-14', priceNote: '大創官方商品頁只列材質與尺寸、未標售價；該系列多數品項為 110 日圓（税込），但也有 330 日圓的手柄款，無法從官方頁確認本品屬於哪一種，請以門市標價為準。'
+  },
+
+  // ── 追加：Calbee 地瓜脆片（2026-08-15，使用者提供圖片）──
+  {
+    id: 'calbee-satsumaimo-chips',
+    group: 'convenience', tracking: 'buy', category: '零食', storeBrand: 'LAWSON',
+    name: 'Calbee 原味地瓜脆片', jaName: '素材がおいしい さつまいも', model: '38 g・味付けなし',
+    yen: 181, twdRef: null, defaultQty: 1, image: 'images/thumb/calbee-satsumaimo-chips.webp',
+    note: '素揚げ地瓜片，無調味（味付けなし）；全國性商品，非 LAWSON 專屬，超市與各大超商鋪貨，門市售價可能不同。', source: 'docs/product-price-sources-2026-08-15.md', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
+    storeCandidates: ['seven-eleven-tenjin-underground', 'familymart-hakata-station', 'familymart-kokura-station'],
+    priceKind: 'retailer-reference', priceSourceUrl: 'https://ns.tokyu-bell.jp/shop/g/g16834866/', priceCheckedAt: '2026-08-15', priceNote: null
   }
 ];
 
