@@ -464,7 +464,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '晴雨傘',
     name: 'PROTECT U 晴雨兩用折疊傘', jaName: 'PROTECT U 晴雨兼用折りたたみ傘', model: null,
     yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/protect-u-folding-umbrella.webp',
-    note: '使用者提供圖片顯示：遮熱 55%、UV-cut 99.9%、遮光 99.99%，可晴雨兩用；現場確認顏色與標價。', source: '', stores: ['hands-hakata'], storeCandidates: [],
+    note: '使用者提供圖片顯示：遮熱 55%、UV-cut 99.9%、遮光 99.99%，可晴雨兩用；現場確認顏色與標價。', source: '', stores: ['hands-hakata', 'loft-mina-tenjin'], storeCandidates: [],
     priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '圖片未顯示可辨識的售價。'
   },
   {
@@ -472,7 +472,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '晴雨傘',
     name: 'Wpc. IZA COOL & COMPACT 晴雨傘', jaName: 'Wpc. IZA COOL & COMPACT', model: 'ZA020',
     yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/wpc-iza-cool-compact.webp',
-    note: '男用晴雨兩用款，53 cm；圖片標示完全遮光與 UV-cut 率 100%，頭頂表面溫度差最高 22.2°C。', source: '', stores: ['hands-hakata'], storeCandidates: [],
+    note: '男用晴雨兩用款，53 cm；圖片標示完全遮光與 UV-cut 率 100%，頭頂表面溫度差最高 22.2°C。', source: '', stores: ['hands-hakata', 'loft-mina-tenjin'], storeCandidates: [],
     priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '圖片未顯示可辨識的售價。'
   },
   {
@@ -480,7 +480,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '晴雨傘',
     name: 'Coleman 晴雨兩用自動折疊傘', jaName: 'Coleman 晴雨兼用・自動開閉 折りたたみ傘', model: '55 cm',
     yen: 2980, twdRef: null, defaultQty: 1, image: 'images/thumb/coleman-auto-folding-umbrella.webp',
-    note: '55 cm 自動開閉款；圖片標示遮光率約 90%、UV-cut 99.9% 以上，附耐風標示。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['hands-hakata'], storeCandidates: [],
+    note: '55 cm 自動開閉款；圖片標示遮光率約 90%、UV-cut 99.9% 以上，附耐風標示。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['hands-hakata', 'lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'], storeCandidates: [],
     priceKind: 'photo-reference', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '使用者提供的包裝照片可辨識「2,980 円（税込）」與 55 cm 規格。'
   },
   {
