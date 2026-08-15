@@ -100,8 +100,8 @@ const BASE_PRODUCTS = [
     image: 'images/thumb/findmy.webp',
     note: '泛指相容 Apple Find My 的防丟器，卡片未載明確品牌型號，實際商品請現場核對包裝再購買。',
     source: '',
-    stores: [],
-    storeCandidates: ['daiso-hakata-bus-terminal', 'daiso-lachic-fukuoka-tenjin', 'daiso-amu-plaza-kokura'],
+    stores: ['daiso-hakata-bus-terminal', 'daiso-lachic-fukuoka-tenjin', 'daiso-amu-plaza-kokura'],
+    storeCandidates: [],
     priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '既有來源紀錄未能確認品牌與型號。'
   },
   {
@@ -118,8 +118,8 @@ const BASE_PRODUCTS = [
     image: 'images/thumb/hareno-toothbrush.webp',
     note: '官方頁面確認為一般刷毛（ふつう）版本，黑／棕兩色，現場需核對色號庫存。原卡片「螺旋刷毛」與「一般刷毛」兩處說法矛盾，以 LOHACO 官方頁確認的一般刷毛版本為準。',
     source: 'docs/japan-product-prices-2026-08-01.md',
-    stores: [],
-    storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street']
+    stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'],
+    storeCandidates: ['welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street']
   },
   {
     id: 'lion-stain-rescue',
@@ -135,8 +135,8 @@ const BASE_PRODUCTS = [
     image: 'images/thumb/lion-stain-rescue.webp',
     note: '衣物局部去漬液，17 ml，現場確認是單支或 2 支組。',
     source: 'docs/japan-product-prices-2026-08-01.md',
-    stores: [],
-    storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street']
+    stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'],
+    storeCandidates: ['welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street']
   },
   {
     id: 'golden-seasoning',
@@ -152,8 +152,8 @@ const BASE_PRODUCTS = [
     image: 'images/thumb/golden-seasoning.webp',
     note: 'HORINISHI 萬能調味鹽，100 g 白松露鹽口味，露營、居家料理皆可用。',
     source: 'docs/japan-product-prices-2026-08-01.md',
-    stores: [],
-    storeCandidates: ['sports-depo-canal-city-hakata']
+    stores: ['sports-depo-canal-city-hakata'],
+    storeCandidates: []
   },
   {
     id: 'toothbrush-p61',
@@ -169,8 +169,8 @@ const BASE_PRODUCTS = [
     image: 'images/thumb/toothbrush-p61.webp',
     note: 'EBISU 極上濃密寬頭牙刷 6 支組，硬度需現場選「ふつう／ソフト」；來源頁未標示 P61 型號，購買前請核對包裝。',
     source: 'docs/japan-product-prices-2026-08-01.md',
-    stores: [],
-    storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street']
+    stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'],
+    storeCandidates: ['welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street']
   },
   {
     id: '3coins-luggage-band',
@@ -420,8 +420,8 @@ const BASE_PRODUCTS = [
     image: 'images/thumb/hasameru-sponge.webp',
     note: '水沖就能去污垢的浴室海綿，掛在水龍頭上方便晾乾。',
     source: '',
-    stores: [],
-    storeCandidates: ['hands-hakata']
+    stores: ['hands-hakata'],
+    storeCandidates: []
   },
   {
     id: 'belt-fan',
@@ -437,8 +437,8 @@ const BASE_PRODUCTS = [
     image: 'images/thumb/belt-fan.webp',
     note: '手拿風扇太占手，這款夾在腰帶上把風送進衣服裡，雙手能空出來。',
     source: '',
-    stores: [],
-    storeCandidates: ['hands-hakata', '3coins-plus-mina-tenjin', '3coins-plus-amu-plaza-kokura'],
+    stores: ['hands-hakata'],
+    storeCandidates: ['3coins-plus-mina-tenjin', '3coins-plus-amu-plaza-kokura'],
     priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '既有資料未有可追溯的同規格售價來源。'
   },
   {
@@ -464,7 +464,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '晴雨傘',
     name: 'PROTECT U 晴雨兩用折疊傘', jaName: 'PROTECT U 晴雨兼用折りたたみ傘', model: null,
     yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/protect-u-folding-umbrella.webp',
-    note: '使用者提供圖片顯示：遮熱 55%、UV-cut 99.9%、遮光 99.99%，可晴雨兩用；現場確認顏色與標價。', source: '', stores: [], storeCandidates: ['hands-hakata'],
+    note: '使用者提供圖片顯示：遮熱 55%、UV-cut 99.9%、遮光 99.99%，可晴雨兩用；現場確認顏色與標價。', source: '', stores: ['hands-hakata'], storeCandidates: [],
     priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '圖片未顯示可辨識的售價。'
   },
   {
@@ -472,7 +472,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '晴雨傘',
     name: 'Wpc. IZA COOL & COMPACT 晴雨傘', jaName: 'Wpc. IZA COOL & COMPACT', model: 'ZA020',
     yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/wpc-iza-cool-compact.webp',
-    note: '男用晴雨兩用款，53 cm；圖片標示完全遮光與 UV-cut 率 100%，頭頂表面溫度差最高 22.2°C。', source: '', stores: [], storeCandidates: ['hands-hakata'],
+    note: '男用晴雨兩用款，53 cm；圖片標示完全遮光與 UV-cut 率 100%，頭頂表面溫度差最高 22.2°C。', source: '', stores: ['hands-hakata'], storeCandidates: [],
     priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '圖片未顯示可辨識的售價。'
   },
   {
@@ -480,7 +480,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '晴雨傘',
     name: 'Coleman 晴雨兩用自動折疊傘', jaName: 'Coleman 晴雨兼用・自動開閉 折りたたみ傘', model: '55 cm',
     yen: 2980, twdRef: null, defaultQty: 1, image: 'images/thumb/coleman-auto-folding-umbrella.webp',
-    note: '55 cm 自動開閉款；圖片標示遮光率約 90%、UV-cut 99.9% 以上，附耐風標示。', source: 'docs/product-price-sources-2026-08-09.md', stores: [], storeCandidates: ['hands-hakata'],
+    note: '55 cm 自動開閉款；圖片標示遮光率約 90%、UV-cut 99.9% 以上，附耐風標示。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['hands-hakata'], storeCandidates: [],
     priceKind: 'photo-reference', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '使用者提供的包裝照片可辨識「2,980 円（税込）」與 55 cm 規格。'
   },
   {
@@ -488,7 +488,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '大正百保能 ACE Pro-X 錠', jaName: 'パブロンエースPro-X錠', model: '第 2 類醫藥品・36 錠',
     yen: 1495, twdRef: null, defaultQty: 1, image: 'images/thumb/pabron-ace-pro-x-36.webp',
-    note: '第 2 類醫藥品；包裝標示 36 錠與 ibuprofen 最大 600 mg 配方。日本通路比價參考價 ¥1,495，門市售價可能不同。購買與使用前請閱讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-11.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
+    note: '第 2 類醫藥品；包裝標示 36 錠與 ibuprofen 最大 600 mg 配方。日本通路比價參考價 ¥1,495，門市售價可能不同。購買與使用前請閱讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-11.md', stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'], storeCandidates: ['welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
     priceKind: 'retailer-reference', priceSourceUrl: 'https://kakaku.com/medicine-item/K0001623006/', priceCheckedAt: '2026-08-11', priceNote: '大正製藥未對 36 錠規格公布希望小売価格（日本 OTC 藥品多為開放價格），改以比價站最低價作參考。'
   },
   {
@@ -496,7 +496,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '大正漢方胃腸藥（微粒）', jaName: '大正漢方胃腸薬〈微粒〉', model: '第 2 類醫藥品・48 包',
     yen: 1760, twdRef: null, defaultQty: 1, image: 'images/thumb/taisho-kampo-stomach-48.webp',
-    note: '第 2 類醫藥品；依圖片為 48 包微粒包裝。日本通路比價參考價 ¥1,760，門市售價可能不同。購買與使用前請閱讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-11.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
+    note: '第 2 類醫藥品；依圖片為 48 包微粒包裝。日本通路比價參考價 ¥1,760，門市售價可能不同。購買與使用前請閱讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-11.md', stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'], storeCandidates: ['welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
     priceKind: 'retailer-reference', priceSourceUrl: 'https://kakaku.com/medicine-item/K0000544212/', priceCheckedAt: '2026-08-11', priceNote: '大正製藥未公布本規格希望小売価格（日本 OTC 藥品多為開放價格），改以比價站最低價作參考。'
   },
 
@@ -559,7 +559,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '小林製藥塗抹式 ZUKKINON 軟膏', jaName: '塗るズッキノン軟膏', model: '第 3 類醫藥品・15 g',
     yen: 1100, twdRef: null, defaultQty: 1, image: 'images/thumb/kobayashi-zukkinon-ointment.webp',
-    note: '肩頸僵硬伴隨頭痛時使用的外用軟膏；請依說明書使用，不可塗於太陽穴、眼周、黏膜或傷口。', source: 'docs/product-price-sources-2026-08-09.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
+    note: '肩頸僵硬伴隨頭痛時使用的外用軟膏；請依說明書使用，不可塗於太陽穴、眼周、黏膜或傷口。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'], storeCandidates: ['welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
     priceKind: 'official', priceSourceUrl: 'https://www.kobayashi.co.jp/seihin/zkn_n/index.html', priceCheckedAt: '2026-08-09', priceNote: null
   },
   {
@@ -567,7 +567,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '食品伴手禮',
     name: '敘敘苑芝麻風味沙拉醬', jaName: '敘々苑 野菜サラダのたれ［ごま風味］', model: '300 ml',
     yen: 702, twdRef: null, defaultQty: 1, image: 'images/thumb/jojoen-salad-sauce.webp',
-    note: '醬油與芝麻風味沙拉醬，建議先放入碗中再與蔬菜充分拌合，不是直接淋上的一般沙拉醋。', source: 'docs/product-price-sources-2026-08-09.md', stores: [], storeCandidates: ['maxvalu-express-hakata-gion', 'don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi'],
+    note: '醬油與芝麻風味沙拉醬，建議先放入碗中再與蔬菜充分拌合，不是直接淋上的一般沙拉醋。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['maxvalu-express-hakata-gion', 'don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi'], storeCandidates: [],
     priceKind: 'official', priceSourceUrl: 'https://j-products.net/products/salad-tare.html', priceCheckedAt: '2026-08-09', priceNote: null
   },
   {
@@ -575,7 +575,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '食品伴手禮',
     name: 'FUNDOKIN 青柚子胡椒', jaName: 'フンドーキン 青柚子こしょう', model: '50 g 瓶裝',
     yen: 443, twdRef: null, defaultQty: 1, image: 'images/thumb/fundokin-ao-yuzu-kosho.webp',
-    note: '大分特產調味料，使用日本產青柚子果皮與青辣椒；適合鍋物、烏龍麵、味噌湯與炒菜。開封後須冷藏。', source: 'docs/product-price-sources-2026-08-09.md', stores: [], storeCandidates: ['maxvalu-express-hakata-gion', 'don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi'],
+    note: '大分特產調味料，使用日本產青柚子果皮與青辣椒；適合鍋物、烏龍麵、味噌湯與炒菜。開封後須冷藏。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['maxvalu-express-hakata-gion', 'don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi'], storeCandidates: [],
     priceKind: 'official', priceSourceUrl: 'https://www.fundokin.co.jp/sp/products/yuzukosyo/', priceCheckedAt: '2026-08-09', priceNote: null
   },
   {
@@ -583,7 +583,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '食品伴手禮',
     name: 'HIGASHIMARU 牡蠣高湯醬油', jaName: 'ヒガシマル 牡蠣だし醤油', model: '400 ml',
     yen: 421, twdRef: null, defaultQty: 1, image: 'images/thumb/higashimaru-oyster-dashi-shoyu.webp',
-    note: '使用瀨戶內產真牡蠣精華，搭配柴魚與昆布高湯；鹽分較一般濃口醬油少 25%，可用於拌飯、炒物與燉煮。', source: 'docs/product-price-sources-2026-08-09.md', stores: [], storeCandidates: ['maxvalu-express-hakata-gion', 'don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi'],
+    note: '使用瀨戶內產真牡蠣精華，搭配柴魚與昆布高湯；鹽分較一般濃口醬油少 25%，可用於拌飯、炒物與燉煮。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['maxvalu-express-hakata-gion', 'don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi'], storeCandidates: [],
     priceKind: 'official', priceSourceUrl: 'https://www.higashimaru.co.jp/products/detail/pdt0103.html', priceCheckedAt: '2026-08-09', priceNote: null
   },
   {
@@ -607,7 +607,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '第一三共 LULU ATTACK EX 綜合感冒藥', jaName: 'ルルアタック EX', model: '第 2 類醫藥品・24 錠（4 日分）',
     yen: 2200, twdRef: null, defaultQty: 1, image: 'images/thumb/lulu-attack-ex-24.webp',
-    note: '第一三共的綜合感冒藥。使用者提供照片可辨識 24 錠包裝；請依包裝與藥師說明確認是否適用。', source: 'docs/product-price-sources-2026-08-10.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
+    note: '第一三共的綜合感冒藥。使用者提供照片可辨識 24 錠包裝；請依包裝與藥師說明確認是否適用。', source: 'docs/product-price-sources-2026-08-10.md', stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'], storeCandidates: ['welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
     priceKind: 'official', priceSourceUrl: 'https://www.daiichisankyo-hc.co.jp/products/details/lulu_attack_ex/', priceCheckedAt: '2026-08-10', priceNote: null
   },
   {
@@ -615,7 +615,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '太田胃散 S 分包', jaName: '太田胃散〈分包〉S', model: '第 2 類醫藥品・50 包',
     yen: 2079, twdRef: null, defaultQty: 1, image: 'images/thumb/ohta-isan-s-50.webp',
-    note: '圖片確認為 50 包分包裝；請依包裝與藥師說明確認是否適用。', source: 'docs/product-price-sources-2026-08-10.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
+    note: '圖片確認為 50 包分包裝；請依包裝與藥師說明確認是否適用。', source: 'docs/product-price-sources-2026-08-10.md', stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'], storeCandidates: ['welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
     priceKind: 'official', priceSourceUrl: 'https://ohta-isan.co.jp/%E5%A4%AA%E7%94%B0%E8%83%83%E6%95%A3S%E3%83%BB%E5%A4%AA%E7%94%B0%E8%83%83%E6%95%A3%EF%BC%9C%E5%88%86%E5%8C%85%EF%BC%9ES_%E3%83%AA%E3%83%AA%E3%83%BC%E3%82%B9.pdf', priceCheckedAt: '2026-08-10', priceNote: null
   },
   {
@@ -623,7 +623,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '日用品',
     name: 'DAISO 玩具總動員振子掛鐘', jaName: '振り子時計（トイ・ストーリー）', model: null,
     yen: 770, twdRef: null, defaultQty: 1, image: 'images/thumb/daiso-toy-story-pendulum-clock.webp',
-    note: '玩具總動員角色振子掛鐘；圖片可辨識艾利三眼怪造型擺錘。', source: 'docs/product-price-sources-2026-08-10.md', stores: [], storeCandidates: ['daiso-hakata-bus-terminal', 'daiso-lachic-fukuoka-tenjin', 'daiso-amu-plaza-kokura'],
+    note: '玩具總動員角色振子掛鐘；圖片可辨識艾利三眼怪造型擺錘。', source: 'docs/product-price-sources-2026-08-10.md', stores: ['daiso-hakata-bus-terminal', 'daiso-amu-plaza-kokura', 'daiso-lachic-fukuoka-tenjin'], storeCandidates: [],
     priceKind: 'official', priceSourceUrl: 'https://jp.daisonet.com/collections/disney-design-collection-br-toy-story-br-toys-in-action', priceCheckedAt: '2026-08-11', priceNote: null
   },
   {
@@ -631,7 +631,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '皮膚護理',
     name: 'Cp-Lip 唇部美容液', jaName: 'Cp-Lip Lip Essence', model: '6 mL',
     yen: 1980, twdRef: null, defaultQty: 1, image: 'images/thumb/cp-lip-lip-essence.webp',
-    note: '6 mL 保濕唇部美容液（アステリ CPリップ＜唇用美容液＞），可作唇部打底、精華與唇蜜使用。製造販售商官方站：https://www.astery.jp/', source: 'docs/product-price-sources-2026-08-11.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
+    note: '6 mL 保濕唇部美容液（アステリ CPリップ＜唇用美容液＞），可作唇部打底、精華與唇蜜使用。製造販售商官方站：https://www.astery.jp/', source: 'docs/product-price-sources-2026-08-11.md', stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'], storeCandidates: ['welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
     priceKind: 'official', priceSourceUrl: 'https://www.astery.jp/en/category/all-products', priceCheckedAt: '2026-08-11', priceNote: '原來源為品牌首頁，已改指官方商品列表頁。¥1,980 沿用前一輪研究結果，本輪未能在官方頁上重新驗證金額，到店請以架上標價為準。'
   },
   {
@@ -647,7 +647,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '皮膚護理',
     name: 'KINUI CALM-7 舒緩精華', jaName: 'KINUI カームセブンスージングセラム', model: '30 ml・JAN 4595123166154',
     yen: 2970, twdRef: null, defaultQty: 1, image: 'images/thumb/kinui-calm-7-soothing-serum.webp',
-    note: '含 CICA、植物性 PDRN、菸鹼醯胺與泛醇等 7 種整肌成分；官方售價為含稅 ¥2,970。實體店庫存須現場確認。', source: 'docs/product-price-sources-2026-08-13.md', stores: [], storeCandidates: [],
+    note: '含 CICA、植物性 PDRN、菸鹼醯胺與泛醇等 7 種整肌成分；官方售價為含稅 ¥2,970。⚠️ 2026-08-15 查證：本品以品牌官方電商為主，實體鋪貨（LOFT／PLAZA）極不穩定、唐吉訶德基本未進貨，福岡無法確認任何一間有貨的門市，建議直接網購，不要為了這項特地跑店。', source: 'docs/product-price-sources-2026-08-13.md', stores: [], storeCandidates: [],
     priceKind: 'official', priceSourceUrl: 'https://kinui.tokyo/shop/products/sing_C7SS_default', priceCheckedAt: '2026-08-13', priceNote: null
   },
   {
@@ -655,7 +655,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '久光 Salonpas Ae 止痛貼布', jaName: 'サロンパスAe', model: '第 3 類醫藥品・240 枚・4.2 × 6.5 cm',
     yen: 3410, twdRef: null, defaultQty: 1, image: 'images/thumb/salonpas-ae-240.webp',
-    note: '240 枚一般尺寸，附保存盒。官方建議零售價為含稅 ¥3,410；實體門市售價可能不同。購買與使用前請詳讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-13.md', stores: [], storeCandidates: [],
+    note: '240 枚一般尺寸，附保存盒。官方建議零售價為含稅 ¥3,410；實體門市售價可能不同。購買與使用前請詳讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-13.md', stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'], storeCandidates: [],
     priceKind: 'official', priceSourceUrl: 'https://www.hisamitsu.co.jp/healthcare/products/001.html', priceCheckedAt: '2026-08-13', priceNote: null
   },
   {
@@ -663,7 +663,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: 'Passtime LX Premium 止痛貼布', jaName: 'パスタイムLXプレミアム', model: '第 2 類醫藥品・21 枚・7 × 10 cm・JAN 4987235024451',
     yen: 1918, twdRef: null, defaultQty: 1, image: 'images/thumb/passtime-lx-premium-21.webp',
-    note: '含ロキソプロフェン Na 水和物、l-メントール與維生素 E 的外用貼布；包裝標示 24 小時持續。日本通路單品參考價 ¥1,918；購買與使用前請詳讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-13.md', stores: [], storeCandidates: [],
+    note: '含ロキソプロフェン Na 水和物、l-メントール與維生素 E 的外用貼布；包裝標示 24 小時持續。日本通路單品參考價 ¥1,918；購買與使用前請詳讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-13.md', stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'], storeCandidates: [],
     priceKind: 'retailer-reference', priceSourceUrl: 'https://item.rakuten.co.jp/q-bazar/8134659/', priceCheckedAt: '2026-08-13', priceNote: '21 枚單品的通路參考價 ¥1,918；不含運費，實體門市售價可能不同。'
   },
   {
@@ -671,7 +671,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '廚房用品',
     name: 'CAINZ 搖一搖水壺清潔粉', jaName: 'カインズ ふるだけボトルクリーナー', model: '200 g・JAN 4549509621584',
     yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/cainz-bottle-cleaner-200g.webp',
-    note: '將清潔粉與水放入水壺後密封搖晃使用；照片為 200 g 包裝。官方頁可確認規格，但未公開可直接核對的當前價格。', source: '', stores: [], storeCandidates: [],
+    note: '將清潔粉與水放入水壺後密封搖晃使用；照片為 200 g 包裝。官方頁可確認規格，但未公開可直接核對的當前價格。⚠️ 2026-08-15 查證：CAINZ 在福岡市與北九州市區皆無門市（最近的直方店距離太遠不划算），本趟買不到。建議網購，或到 LOFT 天神、HANDS 博多找同類的發泡式水壺清潔錠替代（庫存未確認）。', source: '', stores: [], storeCandidates: [],
     priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-13', priceNote: 'CAINZ 官方商品頁可辨識 200 g 與 JAN 4549509621584，但未顯示可直接核對的當前價格；現行通路頁價格受運費與通路影響，不能作為單品現價。'
   },
   {
@@ -679,7 +679,7 @@ const BASE_PRODUCTS = [
     group: 'convenience', tracking: 'buy', category: '麵包甜點',
     name: 'TORAKU 皇家卡士達布丁', jaName: '神戸シェフクラブ ロイヤルカスタードプリン', model: '布丁 105 g＋焦糖醬 6 g',
     yen: 226, twdRef: null, defaultQty: 1, image: 'images/thumb/toraku-royal-custard-pudding.webp',
-    note: '冷藏甜點，食用前淋上附的焦糖醬；照片層架標價為未稅 ¥210、含稅 ¥226。有效期限短，適合當日購買食用。', source: 'docs/product-price-sources-2026-08-13.md', stores: [], storeCandidates: [],
+    note: '冷藏甜點，食用前淋上附的焦糖醬；照片層架標價為未稅 ¥210、含稅 ¥226。有效期限短，適合當日購買食用。', source: 'docs/product-price-sources-2026-08-13.md', stores: ['seven-eleven-tenjin-underground', 'familymart-hakata-station', 'familymart-kokura-station', 'lawson-hakata'], storeCandidates: [],
     priceKind: 'photo-reference', priceSourceUrl: null, priceCheckedAt: '2026-08-13', priceNote: '使用者提供的包裝與層架照片可辨識神戸シェフクラブ ロイヤルカスタードプリン及「¥210（含稅 ¥226）」標價。'
   },
   {
@@ -697,7 +697,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '小林製藥扁桃腺發炎噴霧', jaName: 'ハレナーススプレー', model: '第 3 類醫藥品・15 mL',
     yen: 798, twdRef: null, defaultQty: 1, image: 'images/thumb/kobayashi-harenurse-spray.webp',
-    note: '第 3 類醫藥品；抗炎成分アズレンスルホン酸ナトリウム加殺菌成分セチルピリジニウム，直接噴在喉嚨患部、冷感速效。與同系列藥粉功效相同，噴霧體積大，適合放在住宿處使用。購買與服用前請閱讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-14.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
+    note: '第 3 類醫藥品；抗炎成分アズレンスルホン酸ナトリウム加殺菌成分セチルピリジニウム，直接噴在喉嚨患部、冷感速效。與同系列藥粉功效相同，噴霧體積大，適合放在住宿處使用。購買與服用前請閱讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-14.md', stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'], storeCandidates: ['welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
     priceKind: 'retailer-reference', priceSourceUrl: 'https://www.askul.co.jp/p/APW1472/', priceCheckedAt: '2026-08-14', priceNote: '小林製藥官方未公布本品希望小売価格（日本 OTC 藥品多採開放價格），改以日本通路單品頁含稅 ¥798 作參考；各家藥妝實售約 ¥726–880，門市標價為準。'
   },
   {
@@ -705,7 +705,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '小林製藥扁桃腺發炎藥粉', jaName: 'ハレナース', model: '第 3 類醫藥品・18 包',
     yen: 2541, twdRef: null, defaultQty: 1, image: 'images/thumb/kobayashi-harenurse-18.webp',
-    note: '第 3 類醫藥品；顆粒 18 包，免配水直接服用，方便隨身攜帶。適應症為扁桃炎（喉嚨腫、喉嚨痛）、咽頭炎、口內炎。同系列另有 9 包試用規格。購買與服用前請閱讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-14.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-kokura-station-south', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
+    note: '第 3 類醫藥品；顆粒 18 包，免配水直接服用，方便隨身攜帶。適應症為扁桃炎（喉嚨腫、喉嚨痛）、咽頭炎、口內炎。同系列另有 9 包試用規格。購買與服用前請閱讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-14.md', stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'], storeCandidates: ['welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
     priceKind: 'retailer-reference', priceSourceUrl: 'https://www.askul.co.jp/p/P102166/', priceCheckedAt: '2026-08-14', priceNote: '通路單品頁標示廠商希望售價含稅 ¥2,541；該站自身折扣價 ¥2,434、比價站最低價帶 ¥1,871–2,392，連鎖藥妝常有折扣，門市標價為準。'
   },
 
@@ -715,7 +715,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '廚房用品',
     name: '無印三層海綿（灰・3 入）', jaName: 'ウレタンフォーム三層スポンジ／グレー', model: '3 個入・約 6×12×3.5 cm',
     yen: 299, twdRef: null, defaultQty: 1, image: 'images/thumb/muji-3layer-sponge-grey.webp',
-    note: '無印良品長銷洗碗海綿的灰色版：上層不織布刮汙、中層高密度發泡起泡、下層粗孔易瀝乾。灰色不易看出染色，可依用途分開使用。注意本站地圖尚未收錄福岡／北九州的無印良品門市。', source: 'docs/product-price-sources-2026-08-14.md', stores: [], storeCandidates: [],
+    note: '無印良品長銷洗碗海綿的灰色版：上層不織布刮汙、中層高密度發泡起泡、下層粗孔易瀝乾。灰色不易看出染色，可依用途分開使用。', source: 'docs/product-price-sources-2026-08-14.md', stores: ['muji-tenjin-shoppers-fukuoka', 'muji-sent-city-kitakyushu'], storeCandidates: [],
     priceKind: 'official', priceSourceUrl: 'https://www.muji.com/jp/ja/store/cmdty/detail/4550512975038', priceCheckedAt: '2026-08-14', priceNote: '使用者拍到的無印良品層架標籤即為官方定價，標示「消費税込 299 円」，與官方商品頁一致。'
   },
   {
@@ -951,7 +951,7 @@ const PRICE_OVERRIDES = {
     priceSourceUrl: 'https://www.profoods.co.jp/i/0600551',
     priceCheckedAt: '2026-08-11',
     priceNote: '現行 55 g 規格未見品牌官方定價；以日本食品通路標示價作參考。原紀錄引用的來源網址為運動用品通路且無法對應本商品，已更換為規格相符的食品通路頁。',
-    note: 'トリゼンフーズ 博多華味鳥 10 種極香料 55 g；日本食品通路參考價 ¥588，門市售價可能不同。製造販售商官方商品頁：https://www.torizenfoods.jp/items/hanamidori/seasoning/kiwami-spice/',
+    note: 'トリゼンフーズ 博多華味鳥 10 種極香料 55 g；日本食品通路參考價 ¥588，門市售價可能不同。⚠️ 2026-08-15 查證：品牌官網伴手禮清單未收錄本品，查不到官方確認的實體零售點，通路以網購為主，建議出發前先網購；若想現場碰運氣，大丸福岡天神店的「博多華味鳥」櫃位有機會，但未經證實。製造販售商官方商品頁：https://www.torizenfoods.jp/items/hanamidori/seasoning/kiwami-spice/',
   },
 };
 
