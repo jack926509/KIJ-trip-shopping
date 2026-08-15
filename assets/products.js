@@ -83,7 +83,7 @@ const BASE_PRODUCTS = [
     image: 'images/thumb/kombu.webp',
     note: '減鹽鹽昆布，建議帶 2 包；AEON／MaxValu／YouMe 常見鋪貨。',
     source: '',
-    stores: ['maxvalu-express-hakata-gion'],
+    stores: ['maxvalu-express-hakata-gion', 'reganet-tenjin', 'youme-mart-kokura'],
     priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '既有來源紀錄未載克數。'
   },
   {
@@ -551,7 +551,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '食品伴手禮',
     name: '博多華味鳥 10 種極香料', jaName: '博多華味鳥 10種の極スパイス', model: '55 g（現行規格）',
     yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/hanamidori-kiwami-spice.webp',
-    note: '黑胡椒、大蒜、芝麻等 10 種香料調和，適合雞肉、魚類與炒菜。2026 年現行規格由 60 g 改為 55 g，外包裝可能與照片略有不同。', source: '', stores: [], storeCandidates: ['maxvalu-express-hakata-gion', 'don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi'],
+    note: '黑胡椒、大蒜、芝麻等 10 種香料調和，適合雞肉、魚類與炒菜。2026 年現行規格由 60 g 改為 55 g，外包裝可能與照片略有不同。', source: '', stores: ['maxvalu-express-hakata-gion', 'reganet-tenjin', 'youme-mart-kokura'], storeCandidates: ['don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi'],
     priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '現行 55 g 規格的官方定價與可直接驗證的單瓶通路價格均未顯示。'
   },
   {
@@ -567,7 +567,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '食品伴手禮',
     name: '敘敘苑芝麻風味沙拉醬', jaName: '敘々苑 野菜サラダのたれ［ごま風味］', model: '300 ml',
     yen: 702, twdRef: null, defaultQty: 1, image: 'images/thumb/jojoen-salad-sauce.webp',
-    note: '醬油與芝麻風味沙拉醬，建議先放入碗中再與蔬菜充分拌合，不是直接淋上的一般沙拉醋。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['maxvalu-express-hakata-gion', 'don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi'], storeCandidates: [],
+    note: '醬油與芝麻風味沙拉醬，建議先放入碗中再與蔬菜充分拌合，不是直接淋上的一般沙拉醋。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['maxvalu-express-hakata-gion', 'reganet-tenjin', 'youme-mart-kokura', 'don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi'], storeCandidates: [],
     priceKind: 'official', priceSourceUrl: 'https://j-products.net/products/salad-tare.html', priceCheckedAt: '2026-08-09', priceNote: null
   },
   {
@@ -575,7 +575,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '食品伴手禮',
     name: 'FUNDOKIN 青柚子胡椒', jaName: 'フンドーキン 青柚子こしょう', model: '50 g 瓶裝',
     yen: 443, twdRef: null, defaultQty: 1, image: 'images/thumb/fundokin-ao-yuzu-kosho.webp',
-    note: '大分特產調味料，使用日本產青柚子果皮與青辣椒；適合鍋物、烏龍麵、味噌湯與炒菜。開封後須冷藏。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['maxvalu-express-hakata-gion', 'don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi'], storeCandidates: [],
+    note: '大分特產調味料，使用日本產青柚子果皮與青辣椒；適合鍋物、烏龍麵、味噌湯與炒菜。開封後須冷藏。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['maxvalu-express-hakata-gion', 'reganet-tenjin', 'youme-mart-kokura', 'don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi'], storeCandidates: [],
     priceKind: 'official', priceSourceUrl: 'https://www.fundokin.co.jp/sp/products/yuzukosyo/', priceCheckedAt: '2026-08-09', priceNote: null
   },
   {
@@ -583,7 +583,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '食品伴手禮',
     name: 'HIGASHIMARU 牡蠣高湯醬油', jaName: 'ヒガシマル 牡蠣だし醤油', model: '400 ml',
     yen: 421, twdRef: null, defaultQty: 1, image: 'images/thumb/higashimaru-oyster-dashi-shoyu.webp',
-    note: '使用瀨戶內產真牡蠣精華，搭配柴魚與昆布高湯；鹽分較一般濃口醬油少 25%，可用於拌飯、炒物與燉煮。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['maxvalu-express-hakata-gion', 'don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi'], storeCandidates: [],
+    note: '使用瀨戶內產真牡蠣精華，搭配柴魚與昆布高湯；鹽分較一般濃口醬油少 25%，可用於拌飯、炒物與燉煮。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['maxvalu-express-hakata-gion', 'reganet-tenjin', 'youme-mart-kokura', 'don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi'], storeCandidates: [],
     priceKind: 'official', priceSourceUrl: 'https://www.higashimaru.co.jp/products/detail/pdt0103.html', priceCheckedAt: '2026-08-09', priceNote: null
   },
   {
@@ -591,7 +591,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '廚房用品',
     name: '3COINS KITINTO 解凍盤', jaName: '解凍プレート／KITINTO', model: '2412-KR542-0000・約直徑19.6 × 厚み0.3 cm',
     yen: 1100, twdRef: null, defaultQty: 1, image: 'images/thumb/3coins-defrosting-plate.webp',
-    note: '鋁合金解凍盤；生肉、魚類解凍用。圖片標價為 ¥1,100，本品為 3COINS 商品，実體店庫存請現場確認。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['3coins-plus-mina-tenjin', '3coins-plus-amu-plaza-kokura'],
+    note: '鋁合金解凍盤；生肉、魚類解凍用。圖片標價為 ¥1,100，本品為 3COINS 商品，實體店庫存請現場確認。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['3coins-plus-mina-tenjin', '3coins-plus-amu-plaza-kokura'],
     priceKind: 'photo-reference', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '使用者提供的層架照片可辨識 KITINTO 解凍盤與 ¥1,100（含稅）標價。'
   },
   {
@@ -647,7 +647,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '皮膚護理',
     name: 'KINUI CALM-7 舒緩精華', jaName: 'KINUI カームセブンスージングセラム', model: '30 ml・JAN 4595123166154',
     yen: 2970, twdRef: null, defaultQty: 1, image: 'images/thumb/kinui-calm-7-soothing-serum.webp',
-    note: '含 CICA、植物性 PDRN、菸鹼醯胺與泛醇等 7 種整肌成分；官方售價為含稅 ¥2,970。⚠️ 2026-08-15 查證：本品以品牌官方電商為主，實體鋪貨（LOFT／PLAZA）極不穩定、唐吉訶德基本未進貨，福岡無法確認任何一間有貨的門市，建議直接網購，不要為了這項特地跑店。', source: 'docs/product-price-sources-2026-08-13.md', stores: [], storeCandidates: [],
+    note: '含 CICA、植物性 PDRN、菸鹼醯胺與泛醇等 7 種整肌成分；官方售價為含稅 ¥2,970。到藥妝店的美妝保養專區找；本品鋪貨不穩定，大型店（松本清、Cocokara Fine、Welcia）機會較高，進店可直接問店員有沒有「KINUI」這個牌子，沒有就別多花時間。', source: 'docs/product-price-sources-2026-08-13.md', stores: ['matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-hakata-station-underground', 'matsumoto-kiyoshi-kokura-station-south'], storeCandidates: ['cocokara-fine-fukuoka-parco', 'welcia-one-fukuoka-tenjin', 'cocokara-fine-kokura-station'],
     priceKind: 'official', priceSourceUrl: 'https://kinui.tokyo/shop/products/sing_C7SS_default', priceCheckedAt: '2026-08-13', priceNote: null
   },
   {
@@ -679,8 +679,8 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '廚房用品',
     name: '附量匙調味料收納盒（兩入）', jaName: null, model: null,
     yen: 300, twdRef: null, defaultQty: 1, image: 'images/thumb/seasoning-container-pair.webp',
-    note: '透明罐身、掀蓋與內附量匙的兩入調味料盒。影片字卡顯示兩個合計 ¥300；照片未顯示品牌、店家或型號，購買前請核對實物。', source: 'docs/product-price-sources-2026-08-13.md', stores: [], storeCandidates: [],
-    priceKind: 'photo-reference', priceSourceUrl: null, priceCheckedAt: '2026-08-13', priceNote: '使用者提供照片的字卡清楚標示「兩個只要 300 日幣」，但未拍到品牌、店家與型號。'
+    note: '透明罐身、掀蓋與內附量匙的兩入調味料盒，為 3COINS 商品，到門市的廚房用品區找。影片字卡顯示兩個合計 ¥300（符合 3COINS 的 ¥300 定價）；照片未顯示型號，實體店庫存與規格請現場核對。', source: 'docs/product-price-sources-2026-08-13.md', stores: ['3coins-plus-mina-tenjin', '3coins-plus-amu-plaza-kokura'], storeCandidates: [],
+    priceKind: 'photo-reference', priceSourceUrl: null, priceCheckedAt: '2026-08-13', priceNote: '使用者提供照片的字卡清楚標示「兩個只要 300 日幣」，但未拍到品牌、店家與型號；品牌為 3COINS 係使用者 2026-08-15 指認。'
   },
 
   // ── 小林製藥 ハレナース 系列（2026-08-14，使用者提供圖片；同一藥同兩種劑型）──
@@ -943,7 +943,7 @@ const PRICE_OVERRIDES = {
     priceSourceUrl: 'https://www.profoods.co.jp/i/0600551',
     priceCheckedAt: '2026-08-11',
     priceNote: '現行 55 g 規格未見品牌官方定價；以日本食品通路標示價作參考。原紀錄引用的來源網址為運動用品通路且無法對應本商品，已更換為規格相符的食品通路頁。',
-    note: 'トリゼンフーズ 博多華味鳥 10 種極香料 55 g；日本食品通路參考價 ¥588，門市售價可能不同。⚠️ 2026-08-15 查證：品牌官網伴手禮清單未收錄本品，查不到官方確認的實體零售點，通路以網購為主，建議出發前先網購；若想現場碰運氣，大丸福岡天神店的「博多華味鳥」櫃位有機會，但未經證實。製造販售商官方商品頁：https://www.torizenfoods.jp/items/hanamidori/seasoning/kiwami-spice/',
+    note: 'トリゼンフーズ 博多華味鳥 10 種極香料 55 g；日本食品通路參考價 ¥588，門市售價可能不同。九州在地超市可買到，優先到超市的調味料／香辛料區找；找不到時，唐吉訶德的食品區與百貨地下食品街也可以碰運氣。品牌官網伴手禮清單未收錄本品，各店是否上架仍以現場為準。製造販售商官方商品頁：https://www.torizenfoods.jp/items/hanamidori/seasoning/kiwami-spice/',
   },
 };
 
