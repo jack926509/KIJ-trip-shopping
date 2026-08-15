@@ -667,14 +667,6 @@ const BASE_PRODUCTS = [
     priceKind: 'retailer-reference', priceSourceUrl: 'https://item.rakuten.co.jp/q-bazar/8134659/', priceCheckedAt: '2026-08-13', priceNote: '21 枚單品的通路參考價 ¥1,918；不含運費，實體門市售價可能不同。'
   },
   {
-    id: 'cainz-bottle-cleaner-200g',
-    group: 'shopping', tracking: 'buy', category: '廚房用品',
-    name: 'CAINZ 搖一搖水壺清潔粉', jaName: 'カインズ ふるだけボトルクリーナー', model: '200 g・JAN 4549509621584',
-    yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/cainz-bottle-cleaner-200g.webp',
-    note: '將清潔粉與水放入水壺後密封搖晃使用；照片為 200 g 包裝。官方頁可確認規格，但未公開可直接核對的當前價格。⚠️ 2026-08-15 查證：CAINZ 在福岡市與北九州市區皆無門市（最近的直方店距離太遠不划算），本趟買不到。建議網購，或到 LOFT 天神、HANDS 博多找同類的發泡式水壺清潔錠替代（庫存未確認）。', source: '', stores: [], storeCandidates: [],
-    priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-13', priceNote: 'CAINZ 官方商品頁可辨識 200 g 與 JAN 4549509621584，但未顯示可直接核對的當前價格；現行通路頁價格受運費與通路影響，不能作為單品現價。'
-  },
-  {
     id: 'toraku-royal-custard-pudding',
     group: 'convenience', tracking: 'buy', category: '麵包甜點',
     name: 'TORAKU 皇家卡士達布丁', jaName: '神戸シェフクラブ ロイヤルカスタードプリン', model: '布丁 105 g＋焦糖醬 6 g',
