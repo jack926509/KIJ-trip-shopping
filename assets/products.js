@@ -419,8 +419,8 @@ const BASE_PRODUCTS = [
     defaultQty: 1,
     image: 'images/thumb/hasameru-sponge.webp',
     note: '水沖就能去污垢的浴室海綿，掛在水龍頭上方便晾乾。',
-    source: '',
-    stores: ['hands-hakata'],
+    source: 'docs/product-price-sources-2026-08-16.md',
+    stores: ['daiso-hakata-bus-terminal', 'daiso-amu-plaza-kokura', 'daiso-lachic-fukuoka-tenjin'],
     storeCandidates: []
   },
   {
@@ -914,12 +914,12 @@ const PRICE_OVERRIDES = {
     note: 'HOKA 穩定厚底款，2023 年上市參考價 ¥27,500；屬舊款，實際出清價格與庫存可能不同。',
   },
   'hasameru-sponge': {
-    yen: 551,
-    source: 'docs/product-price-sources-2026-08-09.md',
-    priceKind: 'retailer-reference',
-    priceSourceUrl: 'https://www.yodobashi.com/product/100000001008953262/',
-    priceCheckedAt: '2026-08-09',
-    note: '山崎產業バスボンくんはさめるスポンジ，現行 W ポケット款通路參考價 ¥551；顏色與版本請現場核對。',
+    yen: 220,
+    source: 'docs/product-price-sources-2026-08-16.md',
+    priceKind: 'official',
+    priceSourceUrl: 'https://www.daiso-sangyo.co.jp/item/45073',
+    priceCheckedAt: '2026-08-16',
+    note: 'DAISO 自有商品「はさめるスポンジ」，官方單品頁定價 ¥220（税込）；先前誤植為山崎產業バスボンくん通路價 ¥551，已依包裝照片上的 DAISO 標誌與官方單品頁修正。各分店庫存不一，請以 DAISO 官方 App 或現場為準。',
   },
   'chawanmushi-no-moto': {
     yen: 237,
