@@ -524,7 +524,7 @@ const BASE_PRODUCTS = [
     name: 'Asahi 十六茶', jaName: 'アサヒ 十六茶', model: '630 ml・無咖啡因',
     yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/jurokucha-630ml.webp',
     note: 'Asahi 全國性品牌，非 LAWSON 專屬，各大超商鋪貨；630 ml、無咖啡因標示。日本清涼飲料為開放價格，超商售價以門市標示為準（同容量茶飲一般在 ¥160 上下）。', source: 'docs/product-price-sources-2026-08-11.md', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
-    storeCandidates: ['seven-eleven-tenjin-underground', 'familymart-hakata-station', 'familymart-kokura-station'],
+    storeCandidates: ['seven-eleven-tenjin-underground', 'familymart-hakata-station', 'familymart-kokura-station', 'lopia-hakata-yodobashi', 'aeon-shoppers-fukuoka-tenjin', 'lopia-kokura-riverwalk'],
     priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-11', priceNote: '開放價格商品：Asahi 未公布希望小売価格，超商與量販價差大。另 630 ml 對應無標籤瓶／濃味版等多個規格，照片無法確定為哪一款，故不填單一數字。此為最終判定，非待補資料。'
   },
   {
@@ -533,7 +533,7 @@ const BASE_PRODUCTS = [
     name: '午後紅茶 ICE MILK TEA', jaName: '午後の紅茶 ICE MILK TEA', model: null,
     yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/gogo-no-kocha-ice-milk-tea.webp',
     note: 'KIRIN 全國性品牌，非 LAWSON 專屬，各大超商鋪貨；冷藏飲品。日本清涼飲料為開放價格，超商售價以門市標示為準。', source: 'docs/product-price-sources-2026-08-11.md', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
-    storeCandidates: ['seven-eleven-tenjin-underground', 'familymart-hakata-station', 'familymart-kokura-station'],
+    storeCandidates: ['seven-eleven-tenjin-underground', 'familymart-hakata-station', 'familymart-kokura-station', 'lopia-hakata-yodobashi', 'aeon-shoppers-fukuoka-tenjin', 'lopia-kokura-riverwalk'],
     priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-11', priceNote: '開放價格商品：KIRIN 官方頁明示希望小売価格僅供參考且不標示金額。午後の紅茶 ICE MILK TEA 亦查無對應此名稱的現行單一品項，無法指定容量與定價，故不填數字。此為最終判定，非待補資料。'
   },
   {
@@ -551,7 +551,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '食品伴手禮',
     name: '博多華味鳥 10 種極香料', jaName: '博多華味鳥 10種の極スパイス', model: '55 g（現行規格）',
     yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/hanamidori-kiwami-spice.webp',
-    note: '黑胡椒、大蒜、芝麻等 10 種香料調和，適合雞肉、魚類與炒菜。2026 年現行規格由 60 g 改為 55 g，外包裝可能與照片略有不同。', source: '', stores: ['maxvalu-express-hakata-gion', 'reganet-tenjin', 'youme-mart-kokura'], storeCandidates: ['don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi'],
+    note: '黑胡椒、大蒜、芝麻等 10 種香料調和，適合雞肉、魚類與炒菜。2026 年現行規格由 60 g 改為 55 g，外包裝可能與照片略有不同。', source: '', stores: ['maxvalu-express-hakata-gion', 'reganet-tenjin', 'youme-mart-kokura'], storeCandidates: ['don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi', 'lopia-hakata-yodobashi', 'aeon-shoppers-fukuoka-tenjin', 'lopia-kokura-riverwalk'],
     priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '現行 55 g 規格的官方定價與可直接驗證的單瓶通路價格均未顯示。'
   },
   {
@@ -567,7 +567,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '食品伴手禮',
     name: '敘敘苑芝麻風味沙拉醬', jaName: '敘々苑 野菜サラダのたれ［ごま風味］', model: '300 ml',
     yen: 702, twdRef: null, defaultQty: 1, image: 'images/thumb/jojoen-salad-sauce.webp',
-    note: '醬油與芝麻風味沙拉醬，建議先放入碗中再與蔬菜充分拌合，不是直接淋上的一般沙拉醋。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['maxvalu-express-hakata-gion', 'reganet-tenjin', 'youme-mart-kokura', 'don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi'], storeCandidates: [],
+    note: '醬油與芝麻風味沙拉醬，建議先放入碗中再與蔬菜充分拌合，不是直接淋上的一般沙拉醋。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['maxvalu-express-hakata-gion', 'reganet-tenjin', 'youme-mart-kokura', 'don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi'], storeCandidates: ['lopia-hakata-yodobashi', 'aeon-shoppers-fukuoka-tenjin', 'lopia-kokura-riverwalk'],
     priceKind: 'official', priceSourceUrl: 'https://j-products.net/products/salad-tare.html', priceCheckedAt: '2026-08-09', priceNote: null
   },
   {
@@ -575,7 +575,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '食品伴手禮',
     name: 'FUNDOKIN 青柚子胡椒', jaName: 'フンドーキン 青柚子こしょう', model: '50 g 瓶裝',
     yen: 443, twdRef: null, defaultQty: 1, image: 'images/thumb/fundokin-ao-yuzu-kosho.webp',
-    note: '大分特產調味料，使用日本產青柚子果皮與青辣椒；適合鍋物、烏龍麵、味噌湯與炒菜。開封後須冷藏。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['maxvalu-express-hakata-gion', 'reganet-tenjin', 'youme-mart-kokura', 'don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi'], storeCandidates: [],
+    note: '大分特產調味料，使用日本產青柚子果皮與青辣椒；適合鍋物、烏龍麵、味噌湯與炒菜。開封後須冷藏。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['maxvalu-express-hakata-gion', 'reganet-tenjin', 'youme-mart-kokura', 'don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi'], storeCandidates: ['lopia-hakata-yodobashi', 'aeon-shoppers-fukuoka-tenjin', 'lopia-kokura-riverwalk'],
     priceKind: 'official', priceSourceUrl: 'https://www.fundokin.co.jp/sp/products/yuzukosyo/', priceCheckedAt: '2026-08-09', priceNote: null
   },
   {
@@ -583,7 +583,7 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '食品伴手禮',
     name: 'HIGASHIMARU 牡蠣高湯醬油', jaName: 'ヒガシマル 牡蠣だし醤油', model: '400 ml',
     yen: 421, twdRef: null, defaultQty: 1, image: 'images/thumb/higashimaru-oyster-dashi-shoyu.webp',
-    note: '使用瀨戶內產真牡蠣精華，搭配柴魚與昆布高湯；鹽分較一般濃口醬油少 25%，可用於拌飯、炒物與燉煮。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['maxvalu-express-hakata-gion', 'reganet-tenjin', 'youme-mart-kokura', 'don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi'], storeCandidates: [],
+    note: '使用瀨戶內產真牡蠣精華，搭配柴魚與昆布高湯；鹽分較一般濃口醬油少 25%，可用於拌飯、炒物與燉煮。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['maxvalu-express-hakata-gion', 'reganet-tenjin', 'youme-mart-kokura', 'don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi'], storeCandidates: ['lopia-hakata-yodobashi', 'aeon-shoppers-fukuoka-tenjin', 'lopia-kokura-riverwalk'],
     priceKind: 'official', priceSourceUrl: 'https://www.higashimaru.co.jp/products/detail/pdt0103.html', priceCheckedAt: '2026-08-09', priceNote: null
   },
   {
@@ -726,7 +726,7 @@ const BASE_PRODUCTS = [
     name: 'Calbee 原味地瓜脆片', jaName: '素材がおいしい さつまいも', model: '38 g・味付けなし',
     yen: 181, twdRef: null, defaultQty: 1, image: 'images/thumb/calbee-satsumaimo-chips.webp',
     note: '素揚げ地瓜片，無調味（味付けなし）；全國性商品，非 LAWSON 專屬，超市與各大超商鋪貨，門市售價可能不同。', source: 'docs/product-price-sources-2026-08-15.md', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
-    storeCandidates: ['seven-eleven-tenjin-underground', 'familymart-hakata-station', 'familymart-kokura-station'],
+    storeCandidates: ['seven-eleven-tenjin-underground', 'familymart-hakata-station', 'familymart-kokura-station', 'lopia-hakata-yodobashi', 'aeon-shoppers-fukuoka-tenjin', 'lopia-kokura-riverwalk'],
     priceKind: 'retailer-reference', priceSourceUrl: 'https://ns.tokyu-bell.jp/shop/g/g16834866/', priceCheckedAt: '2026-08-15', priceNote: null
   }
 ];
