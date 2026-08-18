@@ -250,6 +250,136 @@
     .legend .gift-food { background: #8b6500; }
     .legend .clothing { background: #5a6b2f; }
 
+    /* 購物路線建議：同區域內以直線距離做最近鄰貪心排序，
+     * 只是「少走冤枉路」的輕量提示，不是精確步行路徑規劃。
+     * 用 <details> 預設收合，避免像 P3（頁首佔手機螢幕 22%）重演。 */
+    .route-panel { margin: 0 0 14px; }
+
+    .route-panel summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      min-height: var(--tap-min);
+      padding: 13px 16px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 7px 20px rgba(55, 48, 39, .06);
+      color: var(--green-dark);
+      font-size: 14px;
+      font-weight: 850;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .route-panel summary::-webkit-details-marker { display: none; }
+    .route-panel summary::after { content: "▾"; font-size: 11px; color: var(--muted); }
+    .route-panel[open] summary::after { content: "▴"; }
+    .route-panel[open] summary { border-radius: 16px 16px 0 0; }
+
+    .route-summary-count { color: var(--muted); font-size: 12px; font-weight: 700; }
+
+    .route-body {
+      padding: 14px 16px 16px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-top: 0;
+      border-radius: 0 0 16px 16px;
+    }
+
+    .route-copy {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .route-group + .route-group { margin-top: 16px; }
+
+    .route-group-title {
+      margin: 0 0 8px;
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .route-stop-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .route-stop {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .route-stop-main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      min-height: var(--tap-min);
+      padding: 8px 12px;
+      background: var(--soft);
+      border: 0;
+      border-radius: 12px;
+      color: inherit;
+      cursor: pointer;
+      font: inherit;
+      text-align: left;
+    }
+
+    .route-stop-index {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--green);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .route-stop-name {
+      flex: 1;
+      min-width: 0;
+      font-size: 14px;
+      font-weight: 750;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .route-stop-meta {
+      flex: 0 0 auto;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .route-stop-link {
+      flex: 0 0 auto;
+      min-height: var(--tap-min);
+      padding: 8px 12px;
+      font-size: 11px;
+    }
+
+    .route-empty {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
     .content-grid {
       display: grid;
       grid-template-columns: minmax(0, 1.12fr) minmax(380px, .88fr);
@@ -638,6 +768,11 @@
       .fallback-icon { margin-top: 16px; }
       .store-card { padding: 15px; }
       .details div { grid-template-columns: 58px minmax(0, 1fr); }
+      .route-panel summary { padding: 11px 13px; }
+      .route-body { padding: 12px 13px 14px; }
+      /* 窄螢幕放不下「編號＋店名＋還沒買 N 項」一整行，讓提示文字換到第二行 */
+      .route-stop-main { flex-wrap: wrap; }
+      .route-stop-meta { flex-basis: 100%; padding-left: 32px; text-align: left; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -695,6 +830,18 @@
         <span><i class="clothing"></i>服飾用品</span>
       </div>
     </div>
+
+    <details class="route-panel" id="routePanel">
+      <summary>
+        <span>🧭 購物路線建議</span>
+        <span class="route-summary-count" id="routeSummaryCount"></span>
+      </summary>
+      <div class="route-body">
+        <p class="route-copy">依你清單上還沒買（或還沒試穿）的商品，把有連結的店家依區域分組，同區域內用直線距離抓最近的下一家，幫你少繞路；不是精確的步行路徑，出發前仍請以 Google Maps 實際路況為準。</p>
+        <div id="routeGroups"></div>
+        <p class="route-empty" id="routeEmpty" hidden>目前沒有需要規劃的路線——可能是清單商品都買齊了，或還沒有店家連結到你的清單商品。</p>
+      </div>
+    </details>
 
     <div class="content-grid">
       <section class="map-panel" aria-label="店家地圖">
@@ -1358,6 +1505,118 @@
       return remaining === 0 ? '・都買齊了' : `・還沒買 ${remaining} 項`;
     }
 
+    /* ── 購物路線建議 ──────────────────────────────────────────
+     * 只做「依區域分組＋同區域內最近鄰貪心排序」，不是精確步行路徑規劃：
+     * 用經緯度直線距離（Haversine）挑下一家最近的店，夠用且不必接外部路徑服務。 */
+    const ROUTE_AREA_ORDER = ['kokura', 'hakata', 'tenjin'];
+
+    function haversineMeters(a, b) {
+      const R = 6371000;
+      const toRad = (deg) => (deg * Math.PI) / 180;
+      const dLat = toRad(b.lat - a.lat);
+      const dLng = toRad(b.lng - a.lng);
+      const h = Math.sin(dLat / 2) ** 2
+        + Math.cos(toRad(a.lat)) * Math.cos(toRad(b.lat)) * Math.sin(dLng / 2) ** 2;
+      return 2 * R * Math.asin(Math.sqrt(h));
+    }
+
+    /* 一家店「還要去」的條件：有清單商品還沒買，或有鞋款還沒試穿——
+     * 鞋款沒有「買了沒」狀態，只要連結到這家店就一直算要去。 */
+    function storeHasRemainingItems(store) {
+      return productsForStore(store.id, 'confirmed').some(
+        (product) => (product.tracking === 'buy' && !isBought(product.id)) || product.tracking === 'try'
+      );
+    }
+
+    function routeStopMeta(items) {
+      const remaining = remainingText(items);
+      if (remaining) return remaining;
+      return items.some((product) => product.tracking === 'try') ? '・待試穿' : '';
+    }
+
+    /* 貪心最近鄰排序：從第一家出發，每步選離「目前這站」直線距離最近的下一家。
+     * 這不保證整體最短，只求「別讓使用者在區域內來回橫跳」，符合輕量路線建議的定位。 */
+    function orderByProximity(stores) {
+      const remaining = stores.slice();
+      const ordered = [];
+      while (remaining.length > 0) {
+        if (ordered.length === 0) {
+          ordered.push(remaining.shift());
+          continue;
+        }
+        const from = ordered[ordered.length - 1];
+        let nearestIndex = 0;
+        let nearestDist = Infinity;
+        remaining.forEach((store, index) => {
+          const dist = haversineMeters(from, store);
+          if (dist < nearestDist) {
+            nearestDist = dist;
+            nearestIndex = index;
+          }
+        });
+        ordered.push(remaining.splice(nearestIndex, 1)[0]);
+      }
+      return ordered;
+    }
+
+    function buildRouteGroups() {
+      const relevant = STORES.filter(storeHasRemainingItems);
+      return ROUTE_AREA_ORDER
+        .map((area) => ({ area, stores: orderByProximity(relevant.filter((store) => store.area === area)) }))
+        .filter((group) => group.stores.length > 0);
+    }
+
+    function makeRouteStop(store, index) {
+      const row = document.createElement('li');
+      row.className = 'route-stop';
+
+      const main = document.createElement('button');
+      main.type = 'button';
+      main.className = 'route-stop-main';
+      main.addEventListener('click', () => {
+        /* 兩個篩選都對回這家店的區域／分類，否則若目前篩選剩下的分頁沒有這家店，
+         * store-card 會找不到、focusStore 的捲動與地圖對焦就失效。 */
+        applyFilters('area', store.area);
+        applyFilters('category', store.category);
+        focusStore(store.id, { scrollCard: true });
+      });
+
+      const items = productsForStore(store.id, 'confirmed');
+      main.append(
+        makeTextElement('span', 'route-stop-index', String(index + 1)),
+        makeTextElement('span', 'route-stop-name', store.name),
+        makeTextElement('span', 'route-stop-meta', `${CATEGORY_LABELS[store.category]}${routeStopMeta(items)}`)
+      );
+
+      row.append(main, makeExternalLink('導航', makeMapsUrl(store), 'action-link route-stop-link'));
+      return row;
+    }
+
+    function renderRoute() {
+      const groups = buildRouteGroups();
+      const container = document.getElementById('routeGroups');
+      const empty = document.getElementById('routeEmpty');
+      const summaryCount = document.getElementById('routeSummaryCount');
+      if (!container) return;
+
+      const totalStores = groups.reduce((sum, group) => sum + group.stores.length, 0);
+      empty.hidden = totalStores !== 0;
+      summaryCount.textContent = totalStores === 0 ? '' : `${groups.length} 區・${totalStores} 家店`;
+
+      const fragment = document.createDocumentFragment();
+      groups.forEach((group) => {
+        const section = document.createElement('div');
+        section.className = 'route-group';
+        section.append(makeTextElement('h3', 'route-group-title', `${AREA_LABELS[group.area]}（${group.stores.length} 家）`));
+        const list = document.createElement('ol');
+        list.className = 'route-stop-list';
+        group.stores.forEach((store, index) => list.append(makeRouteStop(store, index)));
+        section.append(list);
+        fragment.append(section);
+      });
+      container.replaceChildren(fragment);
+    }
+
     function renderProductGroup(items, label, container, { showRemaining = false } = {}) {
       if (items.length === 0) return;
       const wrap = document.createElement('div');
@@ -1623,6 +1882,7 @@
     // 先讀網址參數設好篩選，initMap 的第一次框選才會直接對焦到指定店家
     const urlStore = readStoreUrlParam();
     renderStores();
+    renderRoute();
 
     try {
       initMap();
@@ -1636,9 +1896,12 @@
     }
 
     /* iOS Safari 按「上一頁」回來走 bfcache，script 不會重跑。
-     * 使用者在清單頁勾了幾項再回地圖，「還沒買 N 項」必須跟著更新。 */
+     * 使用者在清單頁勾了幾項再回地圖，「還沒買 N 項」與購物路線都必須跟著更新。 */
     window.addEventListener('pageshow', (event) => {
-      if (event.persisted) renderStores();
+      if (event.persisted) {
+        renderStores();
+        renderRoute();
+      }
     });
   </script>
 </body>
