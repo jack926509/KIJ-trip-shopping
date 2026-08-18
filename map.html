@@ -248,6 +248,7 @@
     .legend .convenience { background: #b23a48; }
     .legend .electronics { background: #6552a4; }
     .legend .gift-food { background: #8b6500; }
+    .legend .clothing { background: #5a6b2f; }
 
     .content-grid {
       display: grid;
@@ -396,6 +397,7 @@
     .category-drug { background: #e7f6f2; color: #0a7a6a; }
     .category-daily { background: #fff2df; color: #a55b09; }
     .category-supermarket { background: #fff0e7; color: #a04a10; }
+    .category-clothing { background: #f1f5e4; color: #5a6b2f; }
 
     .store-name {
       display: block;
@@ -592,6 +594,7 @@
     .map-pin--convenience { background: #b23a48; }
     .map-pin--electronics { background: #6552a4; }
     .map-pin--gift-food { background: #8b6500; }
+    .map-pin--clothing { background: #5a6b2f; }
 
     .popup-content { min-width: 180px; }
     .popup-content strong { display: block; margin-bottom: 4px; font-size: 14px; }
@@ -675,6 +678,7 @@
         <button type="button" data-category="convenience" aria-pressed="false">便利商店</button>
         <button type="button" data-category="electronics" aria-pressed="false">家電</button>
         <button type="button" data-category="gift-food" aria-pressed="false">食品伴手禮</button>
+        <button type="button" data-category="clothing" aria-pressed="false">服飾用品</button>
       </div>
     </section>
 
@@ -688,6 +692,7 @@
         <span><i class="convenience"></i>便利商店</span>
         <span><i class="electronics"></i>家電</span>
         <span><i class="gift-food"></i>食品伴手禮</span>
+        <span><i class="clothing"></i>服飾用品</span>
       </div>
     </div>
 
@@ -1230,11 +1235,46 @@
       { id: 'kayanoya-kokura-izutsuya', name: '茅乃舍 小倉井筒屋店', brand: '茅乃舍', category: 'gift-food', area: 'kokura', address: '福岡県北九州市小倉北区船場町 1-1 小倉井筒屋 本館 B1F', hours: '10:00–19:00', note: '小倉逛街動線上的茅乃舍據點；營業日隨井筒屋公告調整，季節商品與禮盒請以店內為準。', lat: 33.885441, lng: 130.877686, officialUrl: 'https://www.kubara.jp/shoplist/kayanoya/?wh=pc_menu', officialSources: [{ label: '茅乃舍官方店鋪列表', url: 'https://www.kubara.jp/shoplist/kayanoya/?wh=pc_menu' }], mapsQuery: '茅乃舎 小倉井筒屋店 福岡県北九州市小倉北区船場町 1-1' },
       { id: 'hands-hakata', name: 'HANDS 博多店', brand: 'HANDS', category: 'daily', area: 'hakata', address: '福岡県福岡市博多区博多駅中央街 1-1 アミュプラザ博多 1–5F', hours: '10:00–20:00', note: '晴雨傘與日用品的到店確認點；品項、顏色與庫存不保證，請以店內查詢為準。', lat: 33.589912, lng: 130.420395, officialUrl: 'https://store.hands.net/hakata/', officialSources: [{ label: 'HANDS 博多店官方資訊', url: 'https://store.hands.net/hakata/' }], mapsQuery: 'ハンズ博多店 福岡県福岡市博多区博多駅中央街 1-1' },
       { id: 'muji-tenjin-shoppers-fukuoka', name: '無印良品 天神ショッパーズ福岡', brand: '無印良品', category: 'daily', area: 'tenjin', address: '福岡県福岡市中央区天神 4-4-11 天神ショッパーズ福岡 2F', hours: '09:00–21:00', note: '無印三層海綿等生活用品的天神採買點；地下鐵天神站中央口徒步約 4 分。品項與庫存請以店內為準。', lat: 33.593929, lng: 130.398393, officialUrl: 'https://www.muji.com/jp/ja/shop/detail/046700', officialSources: [{ label: '無印良品官方門市頁', url: 'https://www.muji.com/jp/ja/shop/detail/046700' }], mapsQuery: '無印良品 天神ショッパーズ福岡 福岡県福岡市中央区天神 4-4-11' },
-      { id: 'muji-sent-city-kitakyushu', name: '無印良品 セントシティ北九州', brand: '無印良品', category: 'daily', area: 'kokura', address: '福岡県北九州市小倉北区京町 3-1-1 セントシティ北九州 1F', hours: '10:00–20:00', note: '無印三層海綿等生活用品的小倉採買點；2025 年 7 月整修重新開幕，與 6F ベスト電器同棟。品項與庫存請以店內為準。', lat: 33.885056, lng: 130.882570, officialUrl: 'https://www.muji.com/jp/shop/045633', officialSources: [{ label: '無印良品官方門市頁', url: 'https://www.muji.com/jp/shop/045633' }], mapsQuery: '無印良品 セントシティ北九州 福岡県北九州市小倉北区京町 3-1-1' }
+      { id: 'muji-sent-city-kitakyushu', name: '無印良品 セントシティ北九州', brand: '無印良品', category: 'daily', area: 'kokura', address: '福岡県北九州市小倉北区京町 3-1-1 セントシティ北九州 1F', hours: '10:00–20:00', note: '無印三層海綿等生活用品的小倉採買點；2025 年 7 月整修重新開幕，與 6F ベスト電器同棟。品項與庫存請以店內為準。', lat: 33.885056, lng: 130.882570, officialUrl: 'https://www.muji.com/jp/shop/045633', officialSources: [{ label: '無印良品官方門市頁', url: 'https://www.muji.com/jp/shop/045633' }], mapsQuery: '無印良品 セントシティ北九州 福岡県北九州市小倉北区京町 3-1-1' },
+      {
+        id: 'uniqlo-fukuoka-tenjin',
+        name: 'UNIQLO 天神店',
+        brand: 'UNIQLO',
+        category: 'clothing',
+        area: 'tenjin',
+        address: '福岡県福岡市中央区天神 4-3-8 ミーナ天神 1F・2F',
+        hours: '10:00–20:00',
+        note: '九州最大賣場面積的 UNIQLO 旗艦店，男女童裝與嬰兒用品齊全；與 3COINS+plus ミーナ天神店同棟。此店未連結任何清單商品，品項與庫存請以店內為準。',
+        lat: 33.592609,
+        lng: 130.398712,
+        officialUrl: 'https://map.uniqlo.com/jp/ja/detail/10101803',
+        officialSources: [
+          { label: 'UNIQLO 官方店舗檢索頁', url: 'https://map.uniqlo.com/jp/ja/detail/10101803' },
+          { label: 'ミーナ天神官方店舗頁', url: 'https://www.mina-tenjin.com/shop/detail.php?shopId=074' }
+        ],
+        mapsQuery: 'UNIQLO 天神店 福岡県福岡市中央区天神 4-3-8 ミーナ天神 1F・2F'
+      },
+      {
+        id: 'montbell-fukuoka-tenjin',
+        name: 'mont-bell 福岡天神店',
+        brand: 'mont-bell',
+        category: 'clothing',
+        area: 'tenjin',
+        address: '福岡県福岡市中央区天神 2-4-38 NTT-KFビル 1F',
+        hours: '10:30–21:00',
+        note: '警固公園旁路面店，登山、露營與機能服飾裝備齊全。此店未連結任何清單商品，品項與庫存請以店內為準。',
+        lat: 33.587797,
+        lng: 130.398413,
+        officialUrl: 'https://store.montbell.jp/search/shopinfo/?shop_no=618936',
+        officialSources: [
+          { label: 'mont-bell 官方店舗檢索頁', url: 'https://store.montbell.jp/search/shopinfo/?shop_no=618936' }
+        ],
+        mapsQuery: 'mont-bell 福岡天神店 福岡県福岡市中央区天神 2-4-38 NTT-KFビル 1F'
+      }
     ];
 
     const AREA_LABELS = { hakata: '博多', tenjin: '天神', kokura: '小倉' };
-    const CATEGORY_LABELS = { shoe: '鞋款', drug: '藥妝', daily: '生活雜貨', supermarket: '超市', convenience: '便利商店', electronics: '家電', 'gift-food': '食品伴手禮' };
+    const CATEGORY_LABELS = { shoe: '鞋款', drug: '藥妝', daily: '生活雜貨', supermarket: '超市', convenience: '便利商店', electronics: '家電', 'gift-food': '食品伴手禮', clothing: '服飾用品' };
     const MARKER_HTML = {
       shoe: '<span class="map-pin map-pin--shoe"><span aria-hidden="true"></span></span>',
       drug: '<span class="map-pin map-pin--drug"><span aria-hidden="true"></span></span>',
@@ -1242,7 +1282,8 @@
       supermarket: '<span class="map-pin map-pin--supermarket"><span aria-hidden="true"></span></span>',
       convenience: '<span class="map-pin map-pin--convenience"><span aria-hidden="true"></span></span>',
       electronics: '<span class="map-pin map-pin--electronics"><span aria-hidden="true"></span></span>',
-      'gift-food': '<span class="map-pin map-pin--gift-food"><span aria-hidden="true"></span></span>'
+      'gift-food': '<span class="map-pin map-pin--gift-food"><span aria-hidden="true"></span></span>',
+      clothing: '<span class="map-pin map-pin--clothing"><span aria-hidden="true"></span></span>'
     };
 
     let activeArea = 'all';
