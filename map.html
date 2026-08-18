@@ -328,6 +328,13 @@
 
     .route-map-btn:hover { background: var(--soft); }
 
+    .route-start-note {
+      margin: -2px 0 8px;
+      color: var(--muted);
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+
     .route-stop-list {
       display: grid;
       gap: 8px;
@@ -968,7 +975,7 @@
         <span class="route-summary-count" id="routeSummaryCount"></span>
       </summary>
       <div class="route-body">
-        <p class="route-copy">依你清單上還沒買（或還沒試穿）的商品，把有連結的店家依區域分組，同區域內用直線距離抓最近的下一家，幫你少繞路；不是精確的步行路徑，出發前仍請以 Google Maps 實際路況為準。</p>
+        <p class="route-copy">依你清單上還沒買（或還沒試穿）的商品，把有連結的店家依區域分組，從各區車站出發、用直線距離抓最近的下一家，幫你少繞路；不是精確的步行路徑，出發前仍請以 Google Maps 實際路況為準。</p>
         <div id="routeGroups"></div>
         <p class="route-empty" id="routeEmpty" hidden>目前沒有需要規劃的路線——可能是清單商品都買齊了，或還沒有店家連結到你的清單商品。</p>
       </div>
@@ -1653,6 +1660,19 @@
      * 用經緯度直線距離（Haversine）挑下一家最近的店，夠用且不必接外部路徑服務。 */
     const ROUTE_AREA_ORDER = ['tenjin', 'hakata', 'kokura'];
 
+    /* 每區的路線起點：從車站出發，而不是從 STORES 陣列裡碰巧排第一的那家店。
+     *
+     * 錨點指向「車站裡／出口直結的既有店家」，而不是另外寫一組車站座標——
+     * 本專案規定座標一律要有查證來源、不得估算或從地址反推（見 docs/），
+     * 而這幾家店的座標都已查證過，位置就在車站，拿來代表車站不必新增未經
+     * 查證的數字。錨點只當「從哪裡開始找最近的店」的參考點，本身不一定
+     * 會成為路線中的一站（該店沒有待買商品時就不會出現）。 */
+    const ROUTE_START_ANCHORS = {
+      tenjin: { storeId: 'lawson-nishitetsu-fukuoka-tenjin-south', label: '西鐵福岡（天神）站 南口' },
+      hakata: { storeId: 'familymart-hakata-station', label: 'JR 博多站' },
+      kokura: { storeId: 'familymart-kokura-station', label: 'JR 小倉站' }
+    };
+
     function haversineMeters(a, b) {
       const R = 6371000;
       const toRad = (deg) => (deg * Math.PI) / 180;
@@ -1677,17 +1697,18 @@
       return items.some((product) => product.tracking === 'try') ? '・待試穿' : '';
     }
 
-    /* 貪心最近鄰排序：從第一家出發，每步選離「目前這站」直線距離最近的下一家。
-     * 這不保證整體最短，只求「別讓使用者在區域內來回橫跳」，符合輕量路線建議的定位。 */
-    function orderByProximity(stores) {
+    /* 貪心最近鄰排序：從 anchor（車站）出發，每步選離「目前這站」直線距離最近的下一家。
+     * 這不保證整體最短，只求「別讓使用者在區域內來回橫跳」，符合輕量路線建議的定位。
+     * anchor 為 null 時退回舊行為（從陣列第一家開始），讓錨點設錯不會整段壞掉。 */
+    function orderByProximity(stores, anchor = null) {
       const remaining = stores.slice();
       const ordered = [];
       while (remaining.length > 0) {
-        if (ordered.length === 0) {
+        if (ordered.length === 0 && !anchor) {
           ordered.push(remaining.shift());
           continue;
         }
-        const from = ordered[ordered.length - 1];
+        const from = ordered.length === 0 ? anchor : ordered[ordered.length - 1];
         let nearestIndex = 0;
         let nearestDist = Infinity;
         remaining.forEach((store, index) => {
@@ -1702,10 +1723,22 @@
       return ordered;
     }
 
+    /* 錨點要從「全部店家」找，不能只在待跑的店裡找：
+     * 車站那家店可能已經買齊而不在路線上，但它仍然是有效的出發點。 */
+    function routeStartAnchor(area) {
+      const config = ROUTE_START_ANCHORS[area];
+      if (!config) return null;
+      const store = STORES.find((item) => item.id === config.storeId);
+      return store ? { lat: store.lat, lng: store.lng, label: config.label } : null;
+    }
+
     function buildRouteGroups() {
       const relevant = STORES.filter(storeHasRemainingItems);
       return ROUTE_AREA_ORDER
-        .map((area) => ({ area, stores: orderByProximity(relevant.filter((store) => store.area === area)) }))
+        .map((area) => {
+          const anchor = routeStartAnchor(area);
+          return { area, anchor, stores: orderByProximity(relevant.filter((store) => store.area === area), anchor) };
+        })
         .filter((group) => group.stores.length > 0);
     }
 
@@ -1783,14 +1816,16 @@
       </svg>`;
     }
 
-    function openRouteMapDialog(area, stores) {
+    function openRouteMapDialog(area, stores, anchor = null) {
       const dialog = document.getElementById('routeMapDialog');
       const title = document.getElementById('routeMapDialogTitle');
       const svgHost = document.getElementById('routeMapSvgHost');
       const listHost = document.getElementById('routeMapListHost');
       if (!dialog || typeof dialog.showModal !== 'function') return;
 
-      title.textContent = `${AREA_LABELS[area]}購物路線示意圖`;
+      title.textContent = anchor
+        ? `${AREA_LABELS[area]}購物路線示意圖（起點：${anchor.label}）`
+        : `${AREA_LABELS[area]}購物路線示意圖`;
       svgHost.innerHTML = buildRouteMapSvg(stores);
 
       const listFragment = document.createDocumentFragment();
@@ -1868,10 +1903,13 @@
           mapBtn.type = 'button';
           mapBtn.className = 'route-map-btn';
           mapBtn.textContent = '🗺️ 示意圖';
-          mapBtn.addEventListener('click', () => openRouteMapDialog(group.area, group.stores));
+          mapBtn.addEventListener('click', () => openRouteMapDialog(group.area, group.stores, group.anchor));
           head.append(mapBtn);
         }
         section.append(head);
+        if (group.anchor) {
+          section.append(makeTextElement('p', 'route-start-note', `起點：${group.anchor.label}`));
+        }
 
         const list = document.createElement('ol');
         list.className = 'route-stop-list';
