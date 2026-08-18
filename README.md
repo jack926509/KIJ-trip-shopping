@@ -124,7 +124,7 @@ npm run validate:data
 | 含稅金額 vs `yen` | `priceNote` 若寫「含稅 ¥N」，N 必須等於 `yen`（全站一律存含稅價） |
 | 來源必須是單品頁 | `official`／`retailer-reference` 不得使用網站首頁或站內搜尋頁 |
 | 台幣換算 | `twdRef` 必須等於 `yen × JPY_TWD_RATE`，禁止手寫值 |
-| 地圖店家覆蓋 | 每家店都必須至少被一項商品連結，不留只畫在地圖上的標記 |
+| 地圖店家覆蓋 | 每家店都必須至少被一項商品連結，不留只畫在地圖上的標記；刻意只作地點參考的店家要標 `referenceOnly: true`，補上商品後驗證器會提醒把旗標拿掉 |
 | 營業時間 | 不得只寫「依…公告」這類空泛字樣 |
 | 樓層一致性 | 店家 `address` 與 `mapsQuery` 的樓層寫法不得互相矛盾 |
 

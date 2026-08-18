@@ -193,14 +193,32 @@ const storeBlocksAll = mapHtml.slice(mapHtml.indexOf('const STORES = [')).split(
  * 地圖店家檢查
  * ────────────────────────────────────────────────────────────── */
 
-// 5. 地圖上的每家店都必須至少被一項商品指到，否則是畫了卻永遠用不到的標記。
+/* 5. 地圖上的每家店都必須至少被一項商品指到，否則是畫了卻永遠用不到的標記。
+ *
+ * 例外是 `referenceOnly: true`：有些店是刻意只當「地點參考」放上地圖的
+ * （例：天神的 UNIQLO 與 mont-bell，先標好位置、商品之後再補）。
+ * 這種店要在 STORES 裡明講，讓「刻意不連商品」與「忘了連商品」分得開——
+ * 沒有這個旗標就一律視為後者。下面的反向檢查則負責在商品補上之後，
+ * 提醒把這個旗標拿掉，避免它一直掛著卻早已不成立。 */
 const referencedStoreIds = new Set();
 for (const p of products) {
   for (const id of [...(p.stores || []), ...(p.storeCandidates || [])]) referencedStoreIds.add(id);
 }
+const referenceOnlyStoreIds = new Set(
+  storeBlocksAll
+    .filter((block) => /referenceOnly:\s*true/.test(block))
+    .map((block) => (block.match(/id:\s*'([a-z0-9-]+)'/) || [])[1])
+    .filter(Boolean)
+);
 for (const storeId of mapStoreIds) {
+  if (referenceOnlyStoreIds.has(storeId)) continue;
   if (!referencedStoreIds.has(storeId)) {
-    errors.push(`map.html: 店家 ${storeId} 沒有任何商品連結（請連上商品或移除該店）`);
+    errors.push(`map.html: 店家 ${storeId} 沒有任何商品連結（請連上商品、或標記 referenceOnly: true 表明只作地點參考）`);
+  }
+}
+for (const storeId of referenceOnlyStoreIds) {
+  if (referencedStoreIds.has(storeId)) {
+    errors.push(`map.html: 店家 ${storeId} 已有商品連結，請移除 referenceOnly: true`);
   }
 }
 
