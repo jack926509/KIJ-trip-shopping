@@ -222,6 +222,20 @@ for (const storeId of referenceOnlyStoreIds) {
   }
 }
 
+/* 6. 路線起點錨點必須指向真實存在的店家。
+ * 打錯 id 不會噴錯，只會讓 routeStartAnchor 回傳 null、路線悄悄退回
+ * 「從陣列第一家開始」——畫面上看不出任何異狀，正是要靠驗證器攔的那類問題。 */
+const anchorBlock = (mapHtml.match(/const ROUTE_START_ANCHORS = \{[\s\S]*?\n {4}\};/) || [''])[0];
+const anchorAreas = [...anchorBlock.matchAll(/(\w+):\s*\{\s*storeId:\s*'([a-z0-9-]+)'/g)];
+if (mapHtml.includes('ROUTE_START_ANCHORS') && anchorAreas.length === 0) {
+  errors.push('map.html: 找不到任何 ROUTE_START_ANCHORS 錨點設定，請確認格式沒被改壞');
+}
+for (const [, area, storeId] of anchorAreas) {
+  if (!mapStoreIds.has(storeId)) {
+    errors.push(`map.html: ROUTE_START_ANCHORS.${area} 指向不存在的店家（${storeId}）`);
+  }
+}
+
 /* 7. 每個店家分類都必須同時具備：篩選標籤、地圖標記色、圖例色、卡片標籤色。
  * 漏掉圖例色時該色點會變成透明，看起來就像「後面幾個分類沒有圖例」，
  * 而地圖上的標記其實是有顏色的——兩邊不同步且不會有任何錯誤訊息。 */
