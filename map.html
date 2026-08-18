@@ -297,12 +297,36 @@
 
     .route-group + .route-group { margin-top: 16px; }
 
-    .route-group-title {
+    .route-group-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
       margin: 0 0 8px;
+    }
+
+    .route-group-title {
+      margin: 0;
       color: var(--green);
       font-size: 13px;
       font-weight: 850;
     }
+
+    .route-map-btn {
+      flex: 0 0 auto;
+      min-height: 32px;
+      padding: 5px 11px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--green-dark);
+      cursor: pointer;
+      font: inherit;
+      font-size: 11.5px;
+      font-weight: 800;
+    }
+
+    .route-map-btn:hover { background: var(--soft); }
 
     .route-stop-list {
       display: grid;
@@ -378,6 +402,113 @@
       margin: 0;
       color: var(--muted);
       font-size: 13px;
+    }
+
+    /* 路線示意圖：原生 <dialog> 彈跳視窗，點「示意圖」按鈕才開，
+     * 座標依實際經緯度等比例投影，不做任何避免文字重疊的位移——
+     * 圖釘只標號碼，名稱／分類／進度另外列在下面的清單，相對位置才會準確。 */
+    .route-map-dialog {
+      width: min(560px, 92vw);
+      max-height: min(720px, 86vh);
+      margin: auto;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: 0 24px 60px rgba(35, 30, 22, .28);
+      overscroll-behavior: contain;
+    }
+
+    .route-map-dialog::backdrop {
+      background: rgba(28, 24, 18, .5);
+    }
+
+    .route-map-dialog-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 18px 18px 0;
+    }
+
+    .route-map-dialog-head h2 {
+      margin: 0;
+      color: var(--green-dark);
+      font-size: 17px;
+      font-weight: 850;
+    }
+
+    .route-map-close {
+      flex: 0 0 auto;
+      width: var(--tap-min);
+      height: var(--tap-min);
+      border: 0;
+      border-radius: 50%;
+      background: var(--soft);
+      color: var(--green-dark);
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .route-map-dialog-note {
+      margin: 8px 18px 0;
+      color: var(--muted);
+      font-size: 11.5px;
+      line-height: 1.6;
+    }
+
+    .route-map-svg-host {
+      margin: 12px 18px 0;
+      background: #fbfaf7;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .route-map-svg-host svg { display: block; width: 100%; height: auto; }
+
+    .route-map-list {
+      display: grid;
+      gap: 6px;
+      margin: 12px 0 0;
+      padding: 0 18px 18px;
+      list-style: none;
+      overflow-y: auto;
+    }
+
+    .route-map-list button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: var(--tap-min);
+      padding: 7px 11px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--soft);
+      color: inherit;
+      cursor: pointer;
+      font: inherit;
+      text-align: left;
+    }
+
+    .route-map-list .route-stop-index { flex: 0 0 auto; }
+
+    .route-map-list .route-stop-name {
+      flex: 1;
+      min-width: 0;
+      font-size: 13.5px;
+      font-weight: 750;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .route-map-list .route-stop-meta {
+      flex: 0 0 auto;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
     }
 
     .content-grid {
@@ -842,6 +973,16 @@
         <p class="route-empty" id="routeEmpty" hidden>目前沒有需要規劃的路線——可能是清單商品都買齊了，或還沒有店家連結到你的清單商品。</p>
       </div>
     </details>
+
+    <dialog class="route-map-dialog" id="routeMapDialog" aria-labelledby="routeMapDialogTitle">
+      <div class="route-map-dialog-head">
+        <h2 id="routeMapDialogTitle"></h2>
+        <button type="button" class="route-map-close" id="routeMapCloseBtn" aria-label="關閉示意圖">✕</button>
+      </div>
+      <p class="route-map-dialog-note">依實際經緯度等比例繪製，相對位置與方向如實呈現；只是示意，不是精確步行路徑，出發前仍請以 Google Maps 為準。</p>
+      <div class="route-map-svg-host" id="routeMapSvgHost"></div>
+      <ol class="route-map-list" id="routeMapListHost"></ol>
+    </dialog>
 
     <div class="content-grid">
       <section class="map-panel" aria-label="店家地圖">
@@ -1566,6 +1707,115 @@
         .filter((group) => group.stores.length > 0);
     }
 
+    /* 路線示意圖用的分類色點：只給 SVG 圖釘上色，跟 CSS 的 .map-pin--* 是同一組色碼、
+     * 手動保持一致（本檔既有的圖例／標記色也是這樣各自維護，見上方 CATEGORY_LABELS 附近註解）。 */
+    const CATEGORY_DOT_COLORS = {
+      shoe: '#1f5fa8', drug: '#0a7a6a', daily: '#a04a10', supermarket: '#a04a10',
+      convenience: '#b23a48', electronics: '#6552a4', 'gift-food': '#8b6500', clothing: '#5a6b2f'
+    };
+
+    /* 依實際經緯度做等比例投影（Equirectangular，緯度做 cos 校正），
+     * 不做任何為了避免文字重疊而挪動位置的處理——這張圖只標號碼，
+     * 名稱與細節另外列在下面的清單，相對位置才會跟真實地理位置一致。
+     * 唯一例外：座標完全相同（同一棟樓不同樓層）的店家給 7px 極小分散，
+     * 否則兩個圖釘會畫在同一個像素上，完全看不出是兩家店。 */
+    function projectStoresTrueScale(stores) {
+      const W = 480, H = 480, PAD = 46;
+      if (stores.length === 0) return { points: [], W, H };
+      const lat0 = stores.reduce((sum, s) => sum + s.lat, 0) / stores.length;
+      const cosLat0 = Math.cos((lat0 * Math.PI) / 180);
+      const lats = stores.map((s) => s.lat);
+      const lngs = stores.map((s) => s.lng);
+      const latMax = Math.max(...lats);
+      const latMin = Math.min(...lats);
+      const lngMin = Math.min(...lngs);
+      const lngMax = Math.max(...lngs);
+      const rawX = (lng) => (lng - lngMin) * cosLat0;
+      const rawY = (lat) => latMax - lat;
+      const rawW = rawX(lngMax) || 1;
+      const rawH = rawY(latMin) || 1;
+      const scale = Math.min((W - PAD * 2) / rawW, (H - PAD * 2) / rawH);
+      const offX = PAD + ((W - PAD * 2) - rawW * scale) / 2;
+      const offY = PAD + ((H - PAD * 2) - rawH * scale) / 2;
+      const points = stores.map((store) => ({
+        store,
+        x: offX + rawX(store.lng) * scale,
+        y: offY + rawY(store.lat) * scale
+      }));
+
+      const sameCoordGroups = new Map();
+      points.forEach((p) => {
+        const key = `${p.store.lat.toFixed(6)},${p.store.lng.toFixed(6)}`;
+        if (!sameCoordGroups.has(key)) sameCoordGroups.set(key, []);
+        sameCoordGroups.get(key).push(p);
+      });
+      sameCoordGroups.forEach((group) => {
+        if (group.length <= 1) return;
+        const cx = group[0].x, cy = group[0].y, r = 7;
+        group.forEach((p, i) => {
+          const angle = (Math.PI * 2 * i) / group.length - Math.PI / 2;
+          p.x = cx + Math.cos(angle) * r;
+          p.y = cy + Math.sin(angle) * r;
+        });
+      });
+      return { points, W, H };
+    }
+
+    function buildRouteMapSvg(stores) {
+      const { points, W, H } = projectStoresTrueScale(stores);
+      const pathD = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ');
+      const pinsSvg = points.map((p, i) => {
+        const isEdge = i === 0 || i === points.length - 1;
+        const color = CATEGORY_DOT_COLORS[p.store.category] || '#4e5652';
+        const edgeRing = isEdge
+          ? `<circle cx="${p.x}" cy="${p.y}" r="15" fill="none" stroke="#d8a414" stroke-width="2" stroke-dasharray="2.5 2.5" />`
+          : '';
+        return `${edgeRing}<circle cx="${p.x}" cy="${p.y}" r="10" fill="${color}" stroke="#fff" stroke-width="2" /><text x="${p.x}" y="${(p.y + 3.5).toFixed(1)}" text-anchor="middle" font-size="9.5" font-weight="800" fill="#fff" font-family="Arial,sans-serif">${i + 1}</text>`;
+      }).join('');
+      return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="路線示意圖：圖釘依實際地理位置等比例繪製">
+        <defs><marker id="routeArrow" markerWidth="8" markerHeight="8" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#2f6d5e" /></marker></defs>
+        <rect x="0" y="0" width="${W}" height="${H}" fill="#fbfaf7" />
+        <path d="${pathD}" fill="none" stroke="#2f6d5e" stroke-width="2.5" stroke-dasharray="1.5 6" stroke-linecap="round" marker-end="url(#routeArrow)" />
+        ${pinsSvg}
+        <text x="${W - 12}" y="20" text-anchor="end" font-size="10" font-weight="800" fill="#8a8f7d" font-family="Arial,sans-serif">N ↑</text>
+      </svg>`;
+    }
+
+    function openRouteMapDialog(area, stores) {
+      const dialog = document.getElementById('routeMapDialog');
+      const title = document.getElementById('routeMapDialogTitle');
+      const svgHost = document.getElementById('routeMapSvgHost');
+      const listHost = document.getElementById('routeMapListHost');
+      if (!dialog || typeof dialog.showModal !== 'function') return;
+
+      title.textContent = `${AREA_LABELS[area]}購物路線示意圖`;
+      svgHost.innerHTML = buildRouteMapSvg(stores);
+
+      const listFragment = document.createDocumentFragment();
+      stores.forEach((store, index) => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        const items = productsForStore(store.id, 'confirmed');
+        btn.append(
+          makeTextElement('span', 'route-stop-index', String(index + 1)),
+          makeTextElement('span', 'route-stop-name', store.name),
+          makeTextElement('span', 'route-stop-meta', `${CATEGORY_LABELS[store.category]}${routeStopMeta(items)}`)
+        );
+        btn.addEventListener('click', () => {
+          dialog.close();
+          applyFilters('area', store.area);
+          applyFilters('category', store.category);
+          focusStore(store.id, { scrollCard: true });
+        });
+        li.append(btn);
+        listFragment.append(li);
+      });
+      listHost.replaceChildren(listFragment);
+
+      dialog.showModal();
+    }
+
     function makeRouteStop(store, index) {
       const row = document.createElement('li');
       row.className = 'route-stop';
@@ -1607,7 +1857,20 @@
       groups.forEach((group) => {
         const section = document.createElement('div');
         section.className = 'route-group';
-        section.append(makeTextElement('h3', 'route-group-title', `${AREA_LABELS[group.area]}（${group.stores.length} 家）`));
+
+        const head = document.createElement('div');
+        head.className = 'route-group-head';
+        head.append(makeTextElement('h3', 'route-group-title', `${AREA_LABELS[group.area]}（${group.stores.length} 家）`));
+        if (group.stores.length >= 2) {
+          const mapBtn = document.createElement('button');
+          mapBtn.type = 'button';
+          mapBtn.className = 'route-map-btn';
+          mapBtn.textContent = '🗺️ 示意圖';
+          mapBtn.addEventListener('click', () => openRouteMapDialog(group.area, group.stores));
+          head.append(mapBtn);
+        }
+        section.append(head);
+
         const list = document.createElement('ol');
         list.className = 'route-stop-list';
         group.stores.forEach((store, index) => list.append(makeRouteStop(store, index)));
@@ -1878,6 +2141,13 @@
     document.getElementById('resetFiltersBtn').addEventListener('click', () => {
       applyFilters('area', 'all');
       applyFilters('category', 'all');
+    });
+    document.getElementById('routeMapCloseBtn').addEventListener('click', () => {
+      document.getElementById('routeMapDialog').close();
+    });
+    /* 點在 <dialog> 本身（也就是內容框外的背景區）才關閉，點內容不會誤觸 */
+    document.getElementById('routeMapDialog').addEventListener('click', (event) => {
+      if (event.target === event.currentTarget) event.currentTarget.close();
     });
     // 先讀網址參數設好篩選，initMap 的第一次框選才會直接對焦到指定店家
     const urlStore = readStoreUrlParam();
