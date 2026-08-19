@@ -323,8 +323,10 @@ function powerbankStoreBannerHtml(items) {
     : '');
   const render = (ids) => ids.map(linkFor).filter(Boolean).join('');
   if (confirmed.length === 0 && fallback.length === 0) return '';
+  /* 五款的店家目前完全相同，只有一列時不必叫「主要」——沒有第二列可對照。 */
+  const confirmedLabel = fallback.length > 0 ? '主要購買地點' : '購買地點';
   const confirmedHtml = confirmed.length > 0
-    ? `<div class="kij-store-banner-row"><span>主要購買地點</span><div class="kij-store-links">${render(confirmed)}</div></div>`
+    ? `<div class="kij-store-banner-row"><span>${confirmedLabel}</span><div class="kij-store-links">${render(confirmed)}</div></div>`
     : '';
   const fallbackHtml = fallback.length > 0
     ? `<div class="kij-store-banner-row"><span>找不到型號時的備案</span><div class="kij-store-links">${render(fallback)}</div></div>`
@@ -363,7 +365,7 @@ function buildCardHtml(product) {
   const modelHtml = '';
   const fullImage = product.image.replace('/thumb/', '/full/');
   const dryerSummaryHtml = product.group === 'dryer' ? `<div class="kij-dryer-summary">${escapeHtml(DRYER_SUMMARIES[product.id] || '')}</div>` : '';
-  const powerbankSummaryHtml = product.group === 'powerbank' ? `<div class="kij-dryer-summary">${escapeHtml(POWERBANK_SUMMARIES[product.id] || '')}</div>` : '';
+  const powerbankSummaryHtml = product.group === 'powerbank' ? `<div class="kij-powerbank-summary">${escapeHtml(POWERBANK_SUMMARIES[product.id] || '')}</div>` : '';
 
   let priceHtml = '';
   let controlsHtml = '';

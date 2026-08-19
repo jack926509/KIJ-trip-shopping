@@ -112,7 +112,29 @@ Pro SLIM CABLE 官方頁面存在自我矛盾：功能敘述寫「デジタル�
 
 以上為第三方評價的定性摘要，**沒有**寫進商品資料的 `priceNote`，避免與價格佐證混淆。
 
-## 購買地點
+## 購買地點（2026-08-19 定案）
+
+使用者指定**五款一律並列同一組店家**，購買動線統一：
+
+| 店家 | 說明 |
+|---|---|
+| `yodobashi-camera-hakata`（ヨドバシカメラ マルチメディア博多） | ヨドバシ設有 CIO 專門賣場（逾 190 項 CIO 商品），SMARTCOBY 系列鋪貨最完整 |
+| `biccamera-tenjin-1`、`biccamera-tenjin-2` | BicCamera 亦販售 SMARTCOBY 系列；天神兩館分館別品項不同，故兩館都列 |
+
+五款的 `stores` 皆為上列三家、`storeCandidates` 清空，頁面上的購買地點因此
+只在分區頂端顯示一列，卡片內不再各印一次。
+
+需要留意的兩點：
+
+1. 這是**購買動線的安排**，不是「已確認三家都有貨」的查證結論。五款中有三款
+   （8K、Pro SLIM CABLE、Pro CABLE C）已非 CIO 現行陣容，門市能不能買到要碰運氣，
+   各自的 `note`／`priceNote` 都寫明「到店請直接報型號問店員」。
+2. 8K 的**價格佐證**仍取自 BicCamera 商品頁（`priceSourceUrl` 為 biccamera.com），
+   與購買地點是兩件事。這句說明寫在 `note` 而非 `priceNote`——驗證器會檢查
+   `priceNote` 點名的通路是否與 `priceSourceUrl` 網域相符，把「購買地點含ヨドバシ」
+   寫進 `priceNote` 會（正確地）觸發誤報。
+
+## 購買地點（第一輪，保留備查）
 
 | 店家 | 用途 |
 |---|---|

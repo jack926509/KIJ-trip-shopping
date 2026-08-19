@@ -419,6 +419,19 @@ body.kij {
 /* 行動電源的副標只剩型號，不再是品名，因此不用品名的綠色、降為次要資訊。 */
 .kij-card .kij-sub-muted { color: var(--muted); font-weight: 600; }
 
+/* 推薦順位（① 首選…）改用 3C 配件標籤的紫色，與卡片上的 CIO 標籤、
+   比較表表頭同一套色；原本沿用吹風機的灰字，在一排卡片裡看不出是排序。 */
+.kij-powerbank-summary {
+  display: inline-block;
+  margin-top: 5px;
+  padding: 2px 9px;
+  border-radius: var(--radius-pill);
+  background: #f3ecfd;
+  color: #6b3fa0;
+  font-size: 13px;
+  font-weight: 800;
+}
+
 /* 分區頂端的購買地點：五款都在同一區買，寫一次就好。
    視覺上與比較表同一層級（同樣的外框與圓角），但不必橫向捲動。 */
 .kij-store-banner {
