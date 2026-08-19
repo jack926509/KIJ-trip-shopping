@@ -501,11 +501,13 @@ body.kij {
 .kij-powerbank-compare .kij-compare-note { background: #f7f4fd; }
 .kij-powerbank-compare th { background: #ece2fb; color: #5b3490; }
 .kij-powerbank-compare td:first-child { background: #faf8fe; color: #5b3490; }
-.kij-powerbank-compare table { min-width: 760px; }
+.kij-powerbank-compare table { min-width: 1040px; }
+/* 五欄表頭：品名比吹風機的兩欄長得多，維持 nowrap 會溢出欄位、與隔壁欄重疊。 */
+.kij-powerbank-compare th { white-space: normal; }
 .kij-powerbank-compare th:first-child,
-.kij-powerbank-compare td:first-child { width: 19%; }
+.kij-powerbank-compare td:first-child { width: 14%; }
 .kij-powerbank-compare th:not(:first-child),
-.kij-powerbank-compare td:not(:first-child) { width: 27%; }
+.kij-powerbank-compare td:not(:first-child) { width: 17.2%; }
 .kij-shoe-brand { margin: 0 12px 14px; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; }
 .kij-shoe-brand-on { border-color: #b9cfea; }
 .kij-shoe-brand-hoka { border-color: #f1cbab; }

@@ -635,14 +635,6 @@ const BASE_PRODUCTS = [
     priceKind: 'official', priceSourceUrl: 'https://www.astery.jp/en/category/all-products', priceCheckedAt: '2026-08-11', priceNote: '原來源為品牌首頁，已改指官方商品列表頁。¥1,980 沿用前一輪研究結果，本輪未能在官方頁上重新驗證金額，到店請以架上標價為準。'
   },
   {
-    id: 'cio-smartcoby-slimii-wireless-2-2-8k-special-edition',
-    group: 'powerbank', tracking: 'buy', category: '3C 配件',
-    name: 'CIO SMARTCOBY SLIMII Wireless 2.2 8K 行動電源', jaName: 'SMARTCOBY SLIMII Wireless2.2 8K Special Edition Set', model: 'CIO-MB30W1C-8K-S2W25-EE-BK・黑色',
-    yen: 8980, twdRef: null, defaultQty: 1, image: 'images/thumb/cio-smartcoby-slimii-wireless-2-2-8k-special-edition.webp',
-    note: '8,000 mAh、Qi2.2 無線 25 W、USB-C 有線 30 W；約 12 mm、170 g，含專用網狀收納袋。', source: 'docs/product-price-sources-2026-08-11.md', stores: ['biccamera-tenjin-2'], storeCandidates: [],
-    priceKind: 'retailer-reference', priceSourceUrl: 'https://www.biccamera.com/bc/item/15238470/', priceCheckedAt: '2026-08-11', priceNote: '照片可辨識 Special Edition Set 黑色型號 CIO-MB30W1C-8K-S2W25-EE-BK；BicCamera 線上含稅 ¥8,980、點數 898 點，天神 2 號館購買前請先確認該型號店庫存。'
-  },
-  {
     id: 'kinui-calm-7-soothing-serum',
     group: 'shopping', tracking: 'buy', category: '皮膚護理',
     name: 'KINUI CALM-7 舒緩精華', jaName: 'KINUI カームセブンスージングセラム', model: '30 ml・JAN 4595123166154',
@@ -730,22 +722,50 @@ const BASE_PRODUCTS = [
     priceKind: 'retailer-reference', priceSourceUrl: 'https://ns.tokyu-bell.jp/shop/g/g16834866/', priceCheckedAt: '2026-08-15', priceNote: null
   },
 
-  // ── 追加：CIO 行動電源分頁的另外兩款（2026-08-19，官方規格與定價）──
+  /* ── 行動電源分頁（2026-08-19 改版）──
+   * 使用情境已確定為「一個人、只充手機」，因此不放 20,000 mAh 級的 TRIO：
+   * 320 g 的重量對單人充手機是純負擔。五款依推薦順位排列，卡片與比較表都吃這個順序。
+   * 前兩款是 CIO 現行陣容（官方 SMARTCOBY 系列頁在售），後三款官方已不列於系列頁，
+   * 屬舊世代／在庫限り，仍買得到但門市不保證有貨——這件事寫在各自的 priceNote 裡。 */
   {
     id: 'cio-smartcoby-pro-slim-ss-10k',
     group: 'powerbank', tracking: 'buy', category: '3C 配件',
     name: 'CIO SMARTCOBY Pro SLIM SS 行動電源', jaName: 'SMARTCOBY Pro SLIM SS', model: 'CIO-MB35W2C1A-SSA10K-S・黑／白',
     yen: 6280, twdRef: null, defaultQty: 1, image: 'images/thumb/cio-smartcoby-pro-slim-ss-10k.webp',
-    note: '10,000 mAh、單埠最大 35 W，USB-C×2＋USB-A×1 可同時充三台；約 66.8 × 98.3 × 16 mm、187 g，是本頁最好塞進外套口袋的大容量款。採半固體電池、循環約 300 次，支援邊充邊放（パススルー）與數字顯示電量。CIO 官方選購指南把它列為「迷ったらコレ」的均衡首選。ヨドバシ設有 CIO 專門賣場、SMARTCOBY 系列鋪貨齊全，但半固體 SS 版本的門市庫存仍需到店確認，BicCamera 天神兩館為備案。備註：卡片圖為依官方規格自繪的示意圖，不是官方商品照。', source: 'docs/product-price-sources-2026-08-19.md', stores: ['yodobashi-camera-hakata'], storeCandidates: ['biccamera-tenjin-1', 'biccamera-tenjin-2'],
-    priceKind: 'official', priceSourceUrl: 'https://connectinternationalone.co.jp/cioproduct/mobilebattery/smartcoby/cio-mb35w2c1a-ssa10k-s/', priceCheckedAt: '2026-08-19', priceNote: '官方建議售價含稅 ¥6,280（2026-03-27 上市）；家電量販門市售價可能不同。'
+    note: '只充手機的首選：現行陣容裡最便宜也最輕的 10,000 mAh。單埠最大 35 W，USB-C×2＋USB-A×1；約 66.8 × 98.3 × 16 mm、187 g，本體充飽只要 90 分鐘（五款中最快）。半固體電池、循環約 300 次，支援邊充邊放與 1% 數字電量。《家電批評》2026 上半期「準固體行動電源」部門年度 Best Buy，總評 4.45，實測實際可充出 6,187 mAh。缺點是沒有無線也沒有內建線，要自己帶線。備註：卡片圖為依官方規格自繪的示意圖，不是官方商品照。', source: 'docs/product-price-sources-2026-08-19.md', stores: ['yodobashi-camera-hakata'], storeCandidates: ['biccamera-tenjin-1', 'biccamera-tenjin-2'],
+    priceKind: 'official', priceSourceUrl: 'https://connectinternationalone.co.jp/cioproduct/mobilebattery/smartcoby/cio-mb35w2c1a-ssa10k-s/', priceCheckedAt: '2026-08-19', priceNote: '官方建議售價含稅 ¥6,280（2026-03-27 上市），屬 CIO 現行在售陣容；家電量販門市售價可能不同。'
   },
   {
-    id: 'cio-smartcoby-trio-35w-ss-20k',
+    id: 'cio-smartcoby-slimii-wireless-2-2-pro-ss10k',
     group: 'powerbank', tracking: 'buy', category: '3C 配件',
-    name: 'CIO SMARTCOBY TRIO 35W SS 行動電源', jaName: 'SMARTCOBY TRIO 35W SS 20000mAh', model: 'CIO-MB35W2C1A-SS20000・黑／白',
-    yen: 9280, twdRef: null, defaultQty: 1, image: 'images/thumb/cio-smartcoby-trio-35w-ss-20k.webp',
-    note: '20,000 mAh 大容量卻只有約 91 × 68.8 × 29.5 mm、320 g，機身約一張卡片大小，是三款裡唯一能撐整天重度使用或分給同行者的。單埠最大 35 W、USB-C×2＋USB-A×1，半固體電池、循環約 500 次，本體充飽約 180 分鐘。注意：100 Wh 以下可帶上機，但一定要放隨身行李、不可託運。備註：卡片圖為依官方規格自繪的示意圖，不是官方商品照。', source: 'docs/product-price-sources-2026-08-19.md', stores: ['yodobashi-camera-hakata'], storeCandidates: ['biccamera-tenjin-1', 'biccamera-tenjin-2'],
-    priceKind: 'official', priceSourceUrl: 'https://connectinternationalone.co.jp/cioproduct/mobilebattery/smartcoby/cio-mb35w2c1a-ssa20000/', priceCheckedAt: '2026-08-19', priceNote: '官方建議售價含稅 ¥9,280（2026-03-27 上市）。同系列還有輸出更高的 67W SS 版（¥10,980），但重量增至約 355 g；若不需要替筆電快充，35W 版較划算。'
+    name: 'CIO SMARTCOBY SLIMII Wireless 2.2 Pro SS10K 行動電源', jaName: 'SMARTCOBY SLIMⅡ Wireless2.2 Pro SS10K', model: 'CIO-MB35W1C-SS10K-S2W25',
+    yen: 8580, twdRef: null, defaultQty: 1, image: 'images/thumb/cio-smartcoby-slimii-wireless-2-2-pro-ss10k.webp',
+    note: '同頁 8K 那款的現行接班人：比 8K 便宜 ¥400、容量多 2,000 mAh、電芯改半固體、有線輸出從 30 W 升到 35 W。Qi2.2 磁吸無線 25 W，貼在 MagSafe 手機背後免拉線；約 101 × 70 × 17 mm、225 g，本體充飽約 140 分鐘、循環約 400 次。無線與有線同時使用時為 15 W＋5 W。想要磁吸貼背就買這款，不要買 8K。備註：卡片圖為依官方規格自繪的示意圖，不是官方商品照。', source: 'docs/product-price-sources-2026-08-19.md', stores: ['yodobashi-camera-hakata'], storeCandidates: ['biccamera-tenjin-1', 'biccamera-tenjin-2'],
+    priceKind: 'official', priceSourceUrl: 'https://connectinternationalone.co.jp/cioproduct/mobilebattery/smartcoby/cio-mb35w1c-ss10k-s2w25/', priceCheckedAt: '2026-08-19', priceNote: '官方建議售價含稅 ¥8,580，屬 CIO 現行在售陣容；家電量販門市售價可能不同。'
+  },
+  {
+    id: 'cio-smartcoby-slimii-wireless-2-2-8k-special-edition',
+    group: 'powerbank', tracking: 'buy', category: '3C 配件',
+    name: 'CIO SMARTCOBY SLIMII Wireless 2.2 8K 行動電源', jaName: 'SMARTCOBY SLIMII Wireless2.2 8K Special Edition Set', model: 'CIO-MB30W1C-8K-S2W25-EE-BK・黑色',
+    yen: 8980, twdRef: null, defaultQty: 1, image: 'images/thumb/cio-smartcoby-slimii-wireless-2-2-8k-special-edition.webp',
+    note: '8,000 mAh、Qi2.2 無線 25 W、USB-C 有線 30 W；約 12 mm、170 g，是全頁最薄最輕的一款，含專用網狀收納袋。但每 1,000 mAh 要 ¥1,123，是五款中容量單價最高的，而且已不在 CIO 官方現行系列頁上——同樣磁吸無線的接班人 SLIMII Wireless 2.2 Pro SS10K 更便宜、容量更大。除非你極度在意 12 mm 的薄度，否則建議改買接班人。', source: 'docs/product-price-sources-2026-08-11.md', stores: ['biccamera-tenjin-2'], storeCandidates: [],
+    priceKind: 'retailer-reference', priceSourceUrl: 'https://www.biccamera.com/bc/item/15238470/', priceCheckedAt: '2026-08-11', priceNote: '照片可辨識 Special Edition Set 黑色型號 CIO-MB30W1C-8K-S2W25-EE-BK；BicCamera 線上含稅 ¥8,980、點數 898 點，天神 2 號館購買前請先確認該型號店庫存。本款已不在 CIO 官方現行系列頁上，門市可能已無貨。'
+  },
+  {
+    id: 'cio-smartcoby-pro-slim-cable',
+    group: 'powerbank', tracking: 'buy', category: '3C 配件',
+    name: 'CIO SMARTCOBY Pro SLIM CABLE 行動電源', jaName: 'SMARTCOBY Pro SLIM CABLE 35W2C', model: 'CIO-MB35W2C-10000-SC・黑／白',
+    yen: 5980, twdRef: null, defaultQty: 1, image: 'images/thumb/cio-smartcoby-pro-slim-cable.webp',
+    note: '機身自帶約 21 cm 的 USB-C to C 線，旅行時少帶一條線，而且線是可拆式、斷了能單獨換。10,000 mAh、單埠最大 35 W，約 101.5 × 64.5 × 17.8 mm、189 g，本體充飽約 90 分鐘。只充一台手機時它的兩個缺點（沒有 USB-A、兩台同時只有合計 30 W）都碰不到。已不在 CIO 官方現行系列頁上，屬舊世代（非半固體），但官方選購指南仍在推薦；通路實售常低到 ¥4,464，若在門市看到出清價很值得撿。備註：卡片圖為依官方規格自繪的示意圖，不是官方商品照。', source: 'docs/product-price-sources-2026-08-19.md', stores: [], storeCandidates: ['yodobashi-camera-hakata', 'biccamera-tenjin-1', 'biccamera-tenjin-2'],
+    priceKind: 'official', priceSourceUrl: 'https://connectinternationalone.co.jp/cioproduct/mobilebattery/smartcoby/cio-mb35w2c-10000-sc/', priceCheckedAt: '2026-08-19', priceNote: '官方建議售價含稅 ¥5,980。本款已不在 CIO 官方現行系列頁上，門市不保證有貨，故只列為候選店家。官方頁面對電量顯示自相矛盾（功能敘述寫數字顯示、規格表寫點陣 LED），到店請按實機確認。'
+  },
+  {
+    id: 'cio-smartcoby-pro-cable-c',
+    group: 'powerbank', tracking: 'buy', category: '3C 配件',
+    name: 'CIO SMARTCOBY Pro CABLE C 行動電源', jaName: 'SMARTCOBY Pro CABLE C', model: 'SMARTCOBYPRO-35W-CABLE-C・黑／白',
+    yen: 6578, twdRef: null, defaultQty: 1, image: 'images/thumb/cio-smartcoby-pro-cable-c.webp',
+    note: '同樣是內建可拆式 USB-C 線的 10,000 mAh、單埠最大 35 W，但機身約 83 × 66 × 26.3 mm、198 g——佔地面積較小卻厚達 26.3 mm，總體積比 Pro SLIM CABLE 大約兩成四，官方定價還貴 ¥598，兩台同時充更只有合計 15 W。是同門 Pro SLIM CABLE 的上一代，除非在門市看到出清到 ¥3,000 上下，否則沒有理由選它。備註：卡片圖為依官方規格自繪的示意圖，不是官方商品照。', source: 'docs/product-price-sources-2026-08-19.md', stores: [], storeCandidates: ['yodobashi-camera-hakata', 'biccamera-tenjin-1', 'biccamera-tenjin-2'],
+    priceKind: 'official', priceSourceUrl: 'https://connectinternationalone.co.jp/cioproduct/mobilebattery/smartcoby/smartcoby-pro-cable-c/', priceCheckedAt: '2026-08-19', priceNote: '官方建議售價含稅 ¥6,578。本款已不在 CIO 官方現行系列頁上，屬更早的群眾募資世代，門市不保證有貨，故只列為候選店家。'
   }
 ];
 

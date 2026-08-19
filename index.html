@@ -209,15 +209,21 @@ const DRYER_SUMMARIES = {
 /* 行動電源分頁：卡片上那一行「這款的定位是什麼」，
  * 三款規格接近時，光看容量與瓦數分不出該挑哪一個。 */
 const POWERBANK_SUMMARIES = {
-  'cio-smartcoby-slimii-wireless-2-2-8k-special-edition': '磁吸無線・最薄最輕',
-  'cio-smartcoby-pro-slim-ss-10k': '容量與體積最均衡',
-  'cio-smartcoby-trio-35w-ss-20k': '容量最大・一天不用找插座',
+  'cio-smartcoby-pro-slim-ss-10k': '① 首選・最輕最便宜',
+  'cio-smartcoby-slimii-wireless-2-2-pro-ss10k': '② 磁吸貼背・8K 的接班人',
+  'cio-smartcoby-slimii-wireless-2-2-8k-special-edition': '③ 最薄最輕・但容量單價最高',
+  'cio-smartcoby-pro-slim-cable': '④ 內建線・免帶線最省事',
+  'cio-smartcoby-pro-cable-c': '⑤ 同為內建線・更厚更貴',
 };
 
+/* 比較表刻意加一列「每 1,000 mAh」：五款容量從 8,000 到 10,000 不等、
+ * 價格從 ¥5,980 到 ¥8,980，光看標價分不出誰划算，換算成單價才看得出來。 */
 const POWERBANK_COMPARISON_ROWS = {
-  'cio-smartcoby-slimii-wireless-2-2-8k-special-edition': ['8,000 mAh', '有線 30 W／Qi2.2 無線 25 W', 'USB-C×1', '約 12 mm・170 g', '¥8,980', '手機貼著充、不想帶線'],
-  'cio-smartcoby-pro-slim-ss-10k': ['10,000 mAh', '單埠最大 35 W', 'USB-C×2＋USB-A×1', '約 16 mm・187 g', '¥6,280', '一台通吃，先買這台不會錯'],
-  'cio-smartcoby-trio-35w-ss-20k': ['20,000 mAh', '單埠最大 35 W', 'USB-C×2＋USB-A×1', '約 29.5 mm・320 g', '¥9,280', '兩人共用、整天在外或當備援'],
+  'cio-smartcoby-pro-slim-ss-10k': ['10,000 mAh', '35 W', '—', 'USB-C×2＋USB-A×1', '16 mm・187 g', '90 分', '¥6,280', '¥628', '現行', '只充手機的首選；要自己帶線'],
+  'cio-smartcoby-slimii-wireless-2-2-pro-ss10k': ['10,000 mAh', '35 W', 'Qi2.2 25 W', 'USB-C×1', '17 mm・225 g', '140 分', '¥8,580', '¥858', '現行', '想貼在手機背後免拉線就選它'],
+  'cio-smartcoby-slimii-wireless-2-2-8k-special-edition': ['8,000 mAh', '30 W', 'Qi2.2 25 W', 'USB-C×1', '12 mm・170 g', '—', '¥8,980', '¥1,123', '舊款', '最薄最輕，但容量最小、單價最高'],
+  'cio-smartcoby-pro-slim-cable': ['10,000 mAh', '35 W', '—', 'USB-C×2＋內建線', '17.8 mm・189 g', '90 分', '¥5,980', '¥598', '舊款', '自帶 21 cm 可拆線，旅行少帶一條'],
+  'cio-smartcoby-pro-cable-c': ['10,000 mAh', '35 W', '—', 'USB-C×2＋內建線', '26.3 mm・198 g', '—', '¥6,578', '¥658', '舊款', '同樣內建線但更厚更貴，出清才考慮'],
 };
 
 const SHOE_BRANDS = {
@@ -249,11 +255,14 @@ function tableHtml(headings, rows) {
 
 function comparisonTableHtml(group, items) {
   if (group === 'powerbank') {
-    const rowLabels = ['容量', '最大輸出', '連接埠', '厚度／重量', '官方／通路參考價', '適合情境'];
-    const columns = items.map((product) => [product.name.replace('CIO ', '').replace(' 行動電源', ''), ...POWERBANK_COMPARISON_ROWS[product.id]]);
+    const rowLabels = ['容量', '有線輸出', '無線', '連接埠', '厚度／重量', '本體充飽', '官方／通路參考價', '每 1,000 mAh', 'CIO 陣容', '這款的位置'];
+    /* 五欄並排時欄寬只剩約 17%，完整品名會撐破欄位、與隔壁欄互相重疊，
+       所以表頭再去掉共通的 SMARTCOBY 前綴，只留辨識得出來的型號部分。 */
+    const columnTitle = (product) => product.name.replace('CIO ', '').replace(' 行動電源', '').replace('SMARTCOBY ', '');
+    const columns = items.map((product) => [columnTitle(product), ...POWERBANK_COMPARISON_ROWS[product.id]]);
     const rows = rowLabels.map((label, index) => [label, ...columns.map((column) => column[index + 1])]);
     return `<section class="kij-compare kij-powerbank-compare" aria-label="行動電源完整比較表">
-      <p class="kij-compare-note"><strong>上機提醒：</strong>行動電源一律放隨身行李、不可託運；三款皆在 100 Wh 以下（20,000 mAh 款為 77.4 Wh），可帶上機。容量都以電芯標稱值計算，實際可充出的電量約為標稱的六至七成。</p>
+      <p class="kij-compare-note"><strong>選法（一個人、只充手機）：</strong>手機最多吃到 20–27 W，35 W 以上的輸出差異用不到，真正有差的只有容量、要不要帶線、以及價格。五款實際可充出的電量都在 5,000–6,200 mAh 之譜，iPhone 約 1–1.5 次。<br><strong>上機提醒（2026-04-24 起新規）：</strong>行動電源不可託運，必須放隨身行李且不可收進頭頂行李櫃；每人最多 2 個（160 Wh 以下，本頁五款都在 40 Wh 以內）；機內不可對行動電源充電，也不可用它充手機。</p>
       ${tableHtml(['項目', ...columns.map((column) => column[0])], rows)}
     </section>`;
   }
