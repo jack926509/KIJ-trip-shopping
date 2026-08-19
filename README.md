@@ -21,11 +21,12 @@
 ```text
 .
 ├── index.html                  # 採購清單主頁
-├── map.html                    # 購物地圖（內含 STORES 店家資料）
+├── map.html                    # 購物地圖（店家資料已抽出，見 assets/stores.js）
 ├── package.json
 ├── assets/
 │   ├── kij.css                 # 兩頁共用樣式
-│   └── products.js             # 單一商品資料源＋JPY_TWD_RATE 匯率
+│   ├── products.js             # 單一商品資料源＋JPY_TWD_RATE 匯率
+│   └── stores.js               # 單一店家資料源（兩頁共用）
 ├── scripts/
 │   ├── validate-products.mjs   # 資料驗證器
 │   ├── build-images.mjs        # 由原圖產生 thumb／full
@@ -42,7 +43,23 @@
     └── products/
 ```
 
-`index.html` 與 `map.html` 都以 ES module 從 `assets/products.js` 讀取同一份商品資料，**不得各自維護副本**。
+`index.html` 與 `map.html` 都以 ES module 讀取同一份資料，**不得各自維護副本**：
+
+- 商品：`assets/products.js`
+- 店家：`assets/stores.js`
+
+店家的兩個名稱刻意並存、且在同一筆記錄裡相鄰擺放，方便一眼核對：
+
+| 欄位 | 用途 |
+| --- | --- |
+| `name` | 地圖標記與店家卡片，比照招牌的日文正式名稱 |
+| `listName` | 清單頁的店家連結，較短的中文慣用名 |
+
+先前店家資料內嵌在 `map.html`，而 `index.html` 另外手抄了一份 `STORE_SUMMARIES`，
+兩份副本各自演化到 18 家店在兩頁顯示不同名稱——其中 `sports-depo-canal-city-hakata`
+在清單頁是「SPORTS DEPO キャナルシティ博多店」、地圖頁卻是「Alpen FUKUOKA」，
+同一個 id 指到兩家不同的店。現已合併為單一來源，該筆也更名為
+`alpen-fukuoka-canal-city-hakata`，驗證器並會擋下任何一頁重新自建副本。
 
 ## 在本機開啟
 
@@ -112,9 +129,10 @@ cp -R skills/kij-shopping-list ~/.codex/skills/
 
 ```bash
 npm run validate:data
+npm test
 ```
 
-`.github/workflows/validate-data.yml` 也會在 push 與 PR 時自動執行同一份檢查。
+`.github/workflows/validate-data.yml` 會在 push 與 PR 時自動執行這兩項。
 
 驗證器除了檢查欄位格式，也會攔截「同一筆資料的兩個欄位互相矛盾」這類過去只能靠人工複查才找得到的問題：
 
@@ -127,6 +145,8 @@ npm run validate:data
 | 地圖店家覆蓋 | 每家店都必須至少被一項商品連結，不留只畫在地圖上的標記；刻意只作地點參考的店家要標 `referenceOnly: true`，補上商品後驗證器會提醒把旗標拿掉 |
 | 營業時間 | 不得只寫「依…公告」這類空泛字樣 |
 | 樓層一致性 | 店家 `address` 與 `mapsQuery` 的樓層寫法不得互相矛盾 |
+| 店家資料完整性 | `stores.js` 每筆都必須有 `name`、`listName`、`type` 等欄位與數字座標，id 不得重複 |
+| 禁止重建副本 | `map.html` 不得再內嵌 `const STORES`，`index.html` 不得再寫死 `STORE_SUMMARIES` |
 
 其他既有檢查：id 唯一、`stores` 必須指向地圖上存在的店家、有價格就必須有 `source` 檔案、每項商品都要有 `images/thumb/<id>.webp`、中文欄位不得混入簡體字。
 

@@ -152,7 +152,7 @@ const BASE_PRODUCTS = [
     image: 'images/thumb/golden-seasoning.webp',
     note: 'HORINISHI 萬能調味鹽，100 g 白松露鹽口味，露營、居家料理皆可用。',
     source: 'docs/japan-product-prices-2026-08-01.md',
-    stores: ['sports-depo-canal-city-hakata'],
+    stores: ['alpen-fukuoka-canal-city-hakata'],
     storeCandidates: []
   },
   {
@@ -272,7 +272,7 @@ const BASE_PRODUCTS = [
     image: 'images/thumb/cloudsurfermax.webp',
     note: 'On 厚緩震款，Alpen 有獨家配色 Black｜Eclipse，可留意現場庫存。',
     source: 'docs/japan-product-prices-2026-08-01.md',
-    stores: ['murasaki-sports-canal-city-hakata', 'sports-depo-canal-city-hakata']
+    stores: ['murasaki-sports-canal-city-hakata', 'alpen-fukuoka-canal-city-hakata']
   },
   {
     id: 'cloudsurfer2',
