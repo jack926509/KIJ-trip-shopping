@@ -311,6 +311,27 @@ function storeLinksHtml(product) {
   return `<div class="kij-store-links">${links}</div>`;
 }
 
+/* 行動電源五款的購買地點完全重疊，每張卡都印一次只是同樣的字重複五遍。
+ * 改成在分區頂端寫一次；清單仍從商品資料推導，不寫死店名，
+ * 之後任何一款改了 stores，這一行就會跟著變。 */
+function powerbankStoreBannerHtml(items) {
+  const confirmed = [...new Set(items.flatMap((product) => product.stores ?? []))];
+  const fallback = [...new Set(items.flatMap((product) => product.storeCandidates ?? []))]
+    .filter((id) => !confirmed.includes(id));
+  const linkFor = (id) => (STORE_SUMMARIES[id]
+    ? `<a href="map.html?store=${encodeURIComponent(id)}">${escapeHtml(STORE_SUMMARIES[id].name)}</a>`
+    : '');
+  const render = (ids) => ids.map(linkFor).filter(Boolean).join('');
+  if (confirmed.length === 0 && fallback.length === 0) return '';
+  const confirmedHtml = confirmed.length > 0
+    ? `<div class="kij-store-banner-row"><span>主要購買地點</span><div class="kij-store-links">${render(confirmed)}</div></div>`
+    : '';
+  const fallbackHtml = fallback.length > 0
+    ? `<div class="kij-store-banner-row"><span>找不到型號時的備案</span><div class="kij-store-links">${render(fallback)}</div></div>`
+    : '';
+  return `<section class="kij-store-banner" aria-label="行動電源購買地點">${confirmedHtml}${fallbackHtml}</section>`;
+}
+
 /* 勾選框樣式的狀態按鈕：方框由 CSS 畫，切換時只改 class，
    不重寫按鈕內容，避免把方框元素洗掉。 */
 function purchaseToggleHtml(product) {
@@ -332,9 +353,13 @@ function buildCardHtml(product) {
   /* 日文名與型號併成一行（用「・」分隔），省下窄卡片的一整列。
      吹風機的型號本身就是品名，不重複顯示。 */
   const subParts = [];
-  if (product.jaName) subParts.push(escapeHtml(product.jaName));
+  /* 行動電源的 jaName 與中文品名幾乎逐字相同（「CIO SMARTCOBY Pro SLIM SS 行動電源」
+     對「SMARTCOBY Pro SLIM SS」），印出來只是同一個名字說兩遍，故略過。
+     型號保留：在日本家電量販要跟店員報的就是型號，而且 SS 與非 SS 版只差在型號。 */
+  if (product.jaName && product.group !== 'powerbank') subParts.push(escapeHtml(product.jaName));
   if (product.model && product.group !== 'dryer') subParts.push(escapeHtml(product.model));
-  const jaHtml = subParts.length > 0 ? `<div class="ja">${subParts.join('・')}</div>` : '';
+  const subCls = product.group === 'powerbank' ? 'ja kij-sub-muted' : 'ja';
+  const jaHtml = subParts.length > 0 ? `<div class="${subCls}">${subParts.join('・')}</div>` : '';
   const modelHtml = '';
   const fullImage = product.image.replace('/thumb/', '/full/');
   const dryerSummaryHtml = product.group === 'dryer' ? `<div class="kij-dryer-summary">${escapeHtml(DRYER_SUMMARIES[product.id] || '')}</div>` : '';
@@ -357,8 +382,8 @@ function buildCardHtml(product) {
        店家連結沿用藥妝日用那套，站在天神時才知道往哪家電量販走。 */
     const yenText = product.yen != null ? `¥${product.yen.toLocaleString()}` : '價格待確認';
     const twdText = product.twdRef != null ? `（約 NT$${product.twdRef.toLocaleString()}）` : '';
+    // 店家改由分區頂端的 powerbankStoreBannerHtml 統一顯示，卡片內不重複。
     priceHtml = `<div class="price-row"><span class="yen">${yenText}</span><span class="twd">${twdText}</span><span class="kij-price-kind">${priceKindText}</span></div>`;
-    priceHtml += storeLinksHtml(product);
     controlsHtml = purchaseToggleHtml(product);
   } else if (product.group === 'dryer') {
     const yenText = product.yen != null ? `¥${product.yen.toLocaleString()}` : '價格待確認';
@@ -456,6 +481,7 @@ function buildSectionHtml(group) {
   }
 
   if (group === 'dryer' || group === 'shoes' || group === 'powerbank') bodyInner = comparisonTableHtml(group, items) + bodyInner;
+  if (group === 'powerbank') bodyInner = powerbankStoreBannerHtml(items) + bodyInner;
 
   const countText = group === 'shoes' ? shoeCountText() : `${items.length} 項`;
 

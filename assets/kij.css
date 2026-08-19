@@ -416,6 +416,35 @@ body.kij {
 .kij-store-links a:hover { text-decoration-thickness: 2px; }
 .kij-dryer-summary { margin-top: 4px; color: var(--muted); font-size: 13px; font-weight: 700; }
 
+/* 行動電源的副標只剩型號，不再是品名，因此不用品名的綠色、降為次要資訊。 */
+.kij-card .kij-sub-muted { color: var(--muted); font-weight: 600; }
+
+/* 分區頂端的購買地點：五款都在同一區買，寫一次就好。
+   視覺上與比較表同一層級（同樣的外框與圓角），但不必橫向捲動。 */
+.kij-store-banner {
+  /* 分區內容在 ≥1000px 是兩欄 grid，橫幅必須跨滿整列（同 .kij-compare 的作法）。 */
+  grid-column: 1 / -1;
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--accent-soft);
+}
+.kij-store-banner-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 10px;
+}
+.kij-store-banner-row + .kij-store-banner-row { margin-top: 6px; }
+.kij-store-banner-row > span {
+  flex: none;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 800;
+}
+.kij-store-banner .kij-store-links { margin-top: 0; }
+
 .kij-bottombar { background: rgba(255, 255, 255, .96); border-top-color: var(--line); }
 .kij-bottombar .active { color: var(--accent); }
 
