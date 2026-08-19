@@ -9,6 +9,15 @@ async function loadProducts() {
   return { products: mod.PRODUCTS, rate: mod.JPY_TWD_RATE };
 }
 
+/* 店家資料改由 assets/stores.js 匯出後，這裡直接讀物件，
+   不再用正規表示式去剖析 map.html 的原始文字——那種剖析對
+   「單行寫法 vs 多行寫法」很敏感，先前 45 家店裡有 15 家因為寫成單行
+   而被縮排型的樣式漏掉，漏掉的店等於完全沒被檢查到。 */
+async function loadStores() {
+  const mod = await import(path.join(ROOT, 'assets/stores.js'));
+  return mod.STORES;
+}
+
 function fail(errors) {
   console.error(`✗ 驗證失敗，共 ${errors.length} 項問題：`);
   errors.forEach((e) => console.error(`  - ${e}`));
@@ -20,6 +29,7 @@ const VALID_TRACKING = new Set(['buy', 'try']);
 const VALID_PRICE_KIND = new Set(['official', 'retailer-reference', 'launch-reference', 'photo-reference', 'pending']);
 
 const { products, rate: JPY_TWD_RATE } = await loadProducts();
+const stores = await loadStores();
 if (typeof JPY_TWD_RATE !== 'number' || !(JPY_TWD_RATE > 0)) {
   fail(['assets/products.js 必須匯出正數的 JPY_TWD_RATE']);
 }
@@ -27,7 +37,32 @@ const errors = [];
 const seenIds = new Set();
 const mapHtml = readFileSync(path.join(ROOT, 'map.html'), 'utf8');
 const indexHtml = readFileSync(path.join(ROOT, 'index.html'), 'utf8');
-const mapStoreIds = new Set([...mapHtml.matchAll(/id:\s*'([^']+)'/g)].map((match) => match[1]));
+const mapStoreIds = new Set(stores.map((store) => store.id));
+
+/* 店家資料自身的檢查（欄位齊全、id 不重複、兩個名稱都在）。 */
+const seenStoreIds = new Set();
+for (const store of stores) {
+  const label = store.id || '(缺 id)';
+  if (!store.id || !/^[a-z0-9-]+$/.test(store.id)) errors.push(`stores.js: ${label} 的 id 缺漏或格式不合`);
+  if (seenStoreIds.has(store.id)) errors.push(`stores.js: ${label} id 重複`);
+  seenStoreIds.add(store.id);
+  for (const field of ['name', 'listName', 'type', 'brand', 'category', 'area', 'address', 'hours', 'note', 'mapsQuery']) {
+    if (typeof store[field] !== 'string' || store[field].trim().length === 0) {
+      errors.push(`stores.js: ${label} 缺少 ${field}`);
+    }
+  }
+  if (typeof store.lat !== 'number' || typeof store.lng !== 'number') {
+    errors.push(`stores.js: ${label} 的 lat／lng 必須是數字`);
+  }
+}
+
+/* 兩頁都不得再自己維護一份店家資料——這正是先前 18 家店在兩頁顯示不同名稱的成因。 */
+if (/const STORES\s*=\s*\[/.test(mapHtml)) {
+  errors.push('map.html: 不得再內嵌 const STORES，請從 assets/stores.js 匯入');
+}
+if (/const STORE_SUMMARIES\s*=\s*\{/.test(indexHtml)) {
+  errors.push('index.html: 不得再寫死 STORE_SUMMARIES，請從 assets/stores.js 匯入');
+}
 
 if (!Array.isArray(products) || products.length === 0) {
   fail(['PRODUCTS 必須是非空陣列']);
@@ -184,11 +219,6 @@ for (const p of products) {
   }
 }
 
-/* 只在店家層級（縮排 6 格）的 `{` 切開。
- * 不能用 /\n\s*\{/，那會連 officialSources 裡縮排 10 格的內層物件一起切，
- * 使 mapsQuery 被分到別的區塊，樓層一致性檢查就永遠比不到。 */
-const storeBlocksAll = mapHtml.slice(mapHtml.indexOf('const STORES = [')).split(/\n {6}\{/).slice(1);
-
 /* ──────────────────────────────────────────────────────────────
  * 地圖店家檢查
  * ────────────────────────────────────────────────────────────── */
@@ -205,20 +235,17 @@ for (const p of products) {
   for (const id of [...(p.stores || []), ...(p.storeCandidates || [])]) referencedStoreIds.add(id);
 }
 const referenceOnlyStoreIds = new Set(
-  storeBlocksAll
-    .filter((block) => /referenceOnly:\s*true/.test(block))
-    .map((block) => (block.match(/id:\s*'([a-z0-9-]+)'/) || [])[1])
-    .filter(Boolean)
+  stores.filter((store) => store.referenceOnly === true).map((store) => store.id)
 );
 for (const storeId of mapStoreIds) {
   if (referenceOnlyStoreIds.has(storeId)) continue;
   if (!referencedStoreIds.has(storeId)) {
-    errors.push(`map.html: 店家 ${storeId} 沒有任何商品連結（請連上商品、或標記 referenceOnly: true 表明只作地點參考）`);
+    errors.push(`stores.js: 店家 ${storeId} 沒有任何商品連結（請連上商品、或標記 referenceOnly: true 表明只作地點參考）`);
   }
 }
 for (const storeId of referenceOnlyStoreIds) {
   if (referencedStoreIds.has(storeId)) {
-    errors.push(`map.html: 店家 ${storeId} 已有商品連結，請移除 referenceOnly: true`);
+    errors.push(`stores.js: 店家 ${storeId} 已有商品連結，請移除 referenceOnly: true`);
   }
 }
 
@@ -241,9 +268,7 @@ for (const [, area, storeId] of anchorAreas) {
  * 而地圖上的標記其實是有顏色的——兩邊不同步且不會有任何錯誤訊息。 */
 const categoryLabels = [...(mapHtml.match(/const CATEGORY_LABELS = \{[^}]*\}/) || [''])[0]
   .matchAll(/'?([a-z-]+)'?\s*:\s*'/g)].map((m) => m[1]);
-const usedCategories = new Set(
-  storeBlocksAll.map((b) => (b.match(/category:\s*'([a-z-]+)'/) || [])[1]).filter(Boolean)
-);
+const usedCategories = new Set(stores.map((store) => store.category));
 for (const category of categoryLabels) {
   for (const [what, pattern] of [
     ['地圖標記色 .map-pin--', new RegExp(`\\.map-pin--${category}\\s*\\{`)],
@@ -255,29 +280,23 @@ for (const category of categoryLabels) {
 }
 for (const category of usedCategories) {
   if (!categoryLabels.includes(category)) {
-    errors.push(`map.html: 店家使用了 CATEGORY_LABELS 未定義的分類（${category}）`);
+    errors.push(`stores.js: 店家使用了 map.html 的 CATEGORY_LABELS 未定義的分類（${category}）`);
   }
 }
 
 // 6. 營業時間不得只寫「依公告」這類空泛字樣，樓層寫法也不得自我矛盾。
-const storeBlocks = storeBlocksAll;
-for (const block of storeBlocks) {
-  const id = (block.match(/id:\s*'([a-z0-9-]+)'/) || [])[1];
-  if (!id || !mapStoreIds.has(id)) continue;
-  const hours = (block.match(/hours:\s*'([^']*)'/) || [])[1] || '';
-  if (/^依.*公告$|^依商場營業時間$/.test(hours.trim())) {
-    errors.push(`map.html: 店家 ${id} 的 hours 只寫「${hours}」，必須填具體時段`);
+const floorOf = (text) => (text.match(/\b(B?\d+)F\b/) || [])[1];
+for (const store of stores) {
+  if (/^依.*公告$|^依商場營業時間$/.test((store.hours || '').trim())) {
+    errors.push(`stores.js: 店家 ${store.id} 的 hours 只寫「${store.hours}」，必須填具體時段`);
   }
-  const address = (block.match(/address:\s*'([^']*)'/) || [])[1] || '';
-  const mapsQuery = (block.match(/mapsQuery:\s*'([^']*)'/) || [])[1] || '';
-  const floorOf = (text) => (text.match(/\b(B?\d+)F\b/) || [])[1];
-  const addressFloor = floorOf(address);
-  const queryFloor = floorOf(mapsQuery);
+  const addressFloor = floorOf(store.address || '');
+  const queryFloor = floorOf(store.mapsQuery || '');
   if (addressFloor && queryFloor && addressFloor !== queryFloor) {
-    errors.push(`map.html: 店家 ${id} 的 address 樓層（${addressFloor}F）與 mapsQuery（${queryFloor}F）不一致`);
+    errors.push(`stores.js: 店家 ${store.id} 的 address 樓層（${addressFloor}F）與 mapsQuery（${queryFloor}F）不一致`);
   }
 }
 
 if (errors.length > 0) fail(errors);
 
-console.log(`✓ 驗證通過：${products.length} 項商品，${seenIds.size} 個唯一 id`);
+console.log(`✓ 驗證通過：${products.length} 項商品、${seenIds.size} 個唯一 id，${stores.length} 家店`);

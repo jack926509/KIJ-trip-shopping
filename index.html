@@ -39,6 +39,9 @@
 
 <script type="module">
 import { PRODUCTS } from './assets/products.js';
+/* 店家的顯示名稱與分類一律取自 assets/stores.js，本檔不再自行維護副本——
+   先前那份手抄的 STORE_SUMMARIES 與地圖的 STORES 已經漂移到 18 家店顯示不同名稱。 */
+import { STORE_SUMMARIES } from './assets/stores.js';
 
 /* ────────────────────────────────────────────────────────────────
  * 資料索引
@@ -160,46 +163,6 @@ const PRICE_KIND_LABEL = {
   pending: '價格待確認',
 };
 
-const STORE_SUMMARIES = {
-  '3coins-plus-amu-plaza-kokura': { type: '生活雜貨（3COINS／DAISO）', name: '3COINS+plus AMU PLAZA 小倉店' },
-  '3coins-plus-mina-tenjin': { type: '生活雜貨（3COINS／DAISO）', name: '3COINS+plus ミーナ天神店' },
-  'biccamera-tenjin-1': { type: '家電', name: 'BicCamera 天神 1 號館' },
-  'biccamera-tenjin-2': { type: '家電', name: 'BicCamera 天神 2 號館' },
-  'daiso-amu-plaza-kokura': { type: '生活雜貨', name: 'DAISO AMU PLAZA 小倉店' },
-  'daiso-hakata-bus-terminal': { type: '生活雜貨', name: 'DAISO 博多巴士總站店' },
-  'daiso-lachic-fukuoka-tenjin': { type: '生活雜貨', name: 'DAISO LACHIC 福岡天神店' },
-  'daikoku-drug-tenjin-building': { type: '藥妝', name: '大國藥妝天神大樓店' },
-  'don-quijote-nakasu': { type: '藥妝', name: '唐吉訶德中洲店' },
-  'don-quijote-fukuoka-tenjin': { type: '藥妝', name: '唐吉訶德福岡天神本店' },
-  'don-quijote-kokura-uomachi': { type: '藥妝', name: '唐吉訶德小倉魚町店' },
-  'hoka-fukuoka-tenjin': { type: '鞋店', name: 'HOKA Fukuoka Tenjin' },
-  'hands-hakata': { type: '生活雜貨', name: 'HANDS 博多店' },
-  'loft-mina-tenjin': { type: '生活雜貨', name: 'LOFT 天神店' },
-  'muji-sent-city-kitakyushu': { type: '生活雜貨', name: '無印良品 セントシティ北九州' },
-  'yodobashi-camera-hakata': { type: '家電', name: 'ヨドバシカメラ マルチメディア博多' },
-  'muji-tenjin-shoppers-fukuoka': { type: '生活雜貨', name: '無印良品 天神ショッパーズ福岡' },
-  'kayanoya-hakata-station-daitos': { type: '食品／伴手禮', name: '茅乃舍 博多站 DEITOS 店' },
-  'kayanoya-kokura-izutsuya': { type: '食品／伴手禮', name: '茅乃舍 小倉井筒屋店' },
-  'lawson-hakata': { type: '便利商店', name: 'LAWSON 博多店' },
-  'lawson-kokura-uomachi-2chome': { type: '便利商店', name: 'LAWSON 小倉魚町二丁目店' },
-  'lawson-nishitetsu-fukuoka-tenjin-south': { type: '便利商店', name: 'LAWSON 西鐵福岡天神站南口店' },
-  'seven-eleven-tenjin-underground': { type: '便利商店', name: '7-ELEVEN 天神地下街店' },
-  'familymart-hakata-station': { type: '便利商店', name: 'FamilyMart JR 博多站店' },
-  'familymart-kokura-station': { type: '便利商店', name: 'FamilyMart JR 小倉站改札口店' },
-  'matsumoto-kiyoshi-hakata-station-underground': { type: '藥妝', name: '松本清博多站地下街店' },
-  'matsumoto-kiyoshi-tenjin-underground': { type: '藥妝', name: '松本清天神地下街店' },
-  'reganet-tenjin': { type: '超市', name: 'レガネット天神（ソラリアステージ B1）' },
-  'youme-mart-kokura': { type: '超市', name: 'ゆめマート小倉（魚町）' },
-  'cocokara-fine-fukuoka-parco': { type: '藥妝', name: 'Cocokara Fine 福岡 PARCO 店' },
-  'cocokara-fine-kokura-station': { type: '藥妝', name: 'Cocokara Fine 小倉站店' },
-  'welcia-one-fukuoka-tenjin': { type: '藥妝', name: 'Welcia One Building 福岡天神店' },
-  'matsumoto-kiyoshi-kokura-station-south': { type: '藥妝', name: '松本清小倉站南口店' },
-  'maxvalu-express-hakata-gion': { type: '超市／賣場', name: 'MaxValu Express 博多祇園店' },
-  'murasaki-sports-canal-city-hakata': { type: '鞋店', name: 'ムラサキスポーツキャナルシティ博多店' },
-  'sports-depo-canal-city-hakata': { type: '鞋店', name: 'SPORTS DEPO キャナルシティ博多店' },
-  'uniqlo-fukuoka-tenjin': { type: '服飾用品', name: 'UNIQLO 天神店' },
-  'montbell-fukuoka-tenjin': { type: '服飾用品', name: 'mont-bell 福岡天神店' },
-};
 
 const DRYER_SUMMARIES = {
   ne7n: 'W 礦物＋負離子・可折疊',

@@ -14,3 +14,6 @@ jobs:
         with:
           node-version: '22'
       - run: npm run validate:data
+      # 清單互動與店家顯示的契約測試。先前只跑 validate:data，
+      # 這支測試從來沒在 CI 執行過，等於白寫。
+      - run: npm test
