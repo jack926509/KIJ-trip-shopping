@@ -20,6 +20,7 @@
       <nav class="kij-tabs" id="kijTabs">
         <button type="button" class="kij-tab active" data-action="tab" data-group="shopping">藥妝日用</button>
         <button type="button" class="kij-tab" data-action="tab" data-group="convenience">便利商店</button>
+        <button type="button" class="kij-tab" data-action="tab" data-group="powerbank">行動電源</button>
         <button type="button" class="kij-tab" data-action="tab" data-group="dryer">吹風機</button>
         <button type="button" class="kij-tab" data-action="tab" data-group="shoes">鞋款</button>
       </nav>
@@ -43,10 +44,11 @@ import { PRODUCTS } from './assets/products.js';
  * 資料索引
  * ──────────────────────────────────────────────────────────────── */
 const PRODUCTS_BY_ID = new Map(PRODUCTS.map((p) => [p.id, p]));
-const GROUPS = ['shopping', 'convenience', 'dryer', 'shoes'];
+const GROUPS = ['shopping', 'convenience', 'powerbank', 'dryer', 'shoes'];
 const GROUP_META = {
   shopping: { label: '藥妝日用', icon: '🛍️' },
   convenience: { label: '便利商店', icon: '🏪' },
+  powerbank: { label: '行動電源', icon: '🔋' },
   dryer: { label: '吹風機', icon: '💨' },
   shoes: { label: '鞋款試穿', icon: '👟' },
 };
@@ -141,6 +143,9 @@ function pillForProduct(product) {
   if (product.group === 'dryer') {
     return { text: 'Panasonic', cls: 'kij-cat-electronics' };
   }
+  if (product.group === 'powerbank') {
+    return { text: 'CIO', cls: 'kij-cat-electronics' };
+  }
   if (product.group === 'shoes') {
     return { text: SHOE_BRANDS[product.id] || '鞋款', cls: 'kij-cat-shoe' };
   }
@@ -171,6 +176,7 @@ const STORE_SUMMARIES = {
   'hands-hakata': { type: '生活雜貨', name: 'HANDS 博多店' },
   'loft-mina-tenjin': { type: '生活雜貨', name: 'LOFT 天神店' },
   'muji-sent-city-kitakyushu': { type: '生活雜貨', name: '無印良品 セントシティ北九州' },
+  'yodobashi-camera-hakata': { type: '家電', name: 'ヨドバシカメラ マルチメディア博多' },
   'muji-tenjin-shoppers-fukuoka': { type: '生活雜貨', name: '無印良品 天神ショッパーズ福岡' },
   'kayanoya-hakata-station-daitos': { type: '食品／伴手禮', name: '茅乃舍 博多站 DEITOS 店' },
   'kayanoya-kokura-izutsuya': { type: '食品／伴手禮', name: '茅乃舍 小倉井筒屋店' },
@@ -198,6 +204,26 @@ const STORE_SUMMARIES = {
 const DRYER_SUMMARIES = {
   ne7n: 'W 礦物＋負離子・可折疊',
   ne5n: '負離子・可折疊',
+};
+
+/* 行動電源分頁：卡片上那一行「這款的定位是什麼」，
+ * 三款規格接近時，光看容量與瓦數分不出該挑哪一個。 */
+const POWERBANK_SUMMARIES = {
+  'cio-smartcoby-pro-slim-ss-10k': '① 首選・最輕最便宜',
+  'cio-smartcoby-slimii-wireless-2-2-pro-ss10k': '② 磁吸貼背・8K 的接班人',
+  'cio-smartcoby-slimii-wireless-2-2-8k-special-edition': '③ 最薄最輕・但容量單價最高',
+  'cio-smartcoby-pro-slim-cable': '④ 內建線・免帶線最省事',
+  'cio-smartcoby-pro-cable-c': '⑤ 同為內建線・更厚更貴',
+};
+
+/* 比較表刻意加一列「每 1,000 mAh」：五款容量從 8,000 到 10,000 不等、
+ * 價格從 ¥5,980 到 ¥8,980，光看標價分不出誰划算，換算成單價才看得出來。 */
+const POWERBANK_COMPARISON_ROWS = {
+  'cio-smartcoby-pro-slim-ss-10k': ['10,000 mAh', '35 W', '—', 'USB-C×2＋USB-A×1', '16 mm・187 g', '90 分', '¥6,280', '¥628', '現行', '只充手機的首選；要自己帶線'],
+  'cio-smartcoby-slimii-wireless-2-2-pro-ss10k': ['10,000 mAh', '35 W', 'Qi2.2 25 W', 'USB-C×1', '17 mm・225 g', '140 分', '¥8,580', '¥858', '現行', '想貼在手機背後免拉線就選它'],
+  'cio-smartcoby-slimii-wireless-2-2-8k-special-edition': ['8,000 mAh', '30 W', 'Qi2.2 25 W', 'USB-C×1', '12 mm・170 g', '—', '¥8,980', '¥1,123', '舊款', '最薄最輕，但容量最小、單價最高'],
+  'cio-smartcoby-pro-slim-cable': ['10,000 mAh', '35 W', '—', 'USB-C×2＋內建線', '17.8 mm・189 g', '90 分', '¥5,980', '¥598', '舊款', '自帶 21 cm 可拆線，旅行少帶一條'],
+  'cio-smartcoby-pro-cable-c': ['10,000 mAh', '35 W', '—', 'USB-C×2＋內建線', '26.3 mm・198 g', '—', '¥6,578', '¥658', '舊款', '同樣內建線但更厚更貴，出清才考慮'],
 };
 
 const SHOE_BRANDS = {
@@ -228,6 +254,18 @@ function tableHtml(headings, rows) {
 }
 
 function comparisonTableHtml(group, items) {
+  if (group === 'powerbank') {
+    const rowLabels = ['容量', '有線輸出', '無線', '連接埠', '厚度／重量', '本體充飽', '官方／通路參考價', '每 1,000 mAh', 'CIO 陣容', '這款的位置'];
+    /* 五欄並排時欄寬只剩約 17%，完整品名會撐破欄位、與隔壁欄互相重疊，
+       所以表頭再去掉共通的 SMARTCOBY 前綴，只留辨識得出來的型號部分。 */
+    const columnTitle = (product) => product.name.replace('CIO ', '').replace(' 行動電源', '').replace('SMARTCOBY ', '');
+    const columns = items.map((product) => [columnTitle(product), ...POWERBANK_COMPARISON_ROWS[product.id]]);
+    const rows = rowLabels.map((label, index) => [label, ...columns.map((column) => column[index + 1])]);
+    return `<section class="kij-compare kij-powerbank-compare" aria-label="行動電源完整比較表">
+      <p class="kij-compare-note"><strong>選法（一個人、只充手機）：</strong>手機最多吃到 20–27 W，35 W 以上的輸出差異用不到，真正有差的只有容量、要不要帶線、以及價格。五款實際可充出的電量都在 5,000–6,200 mAh 之譜，iPhone 約 1–1.5 次。<br><strong>上機提醒（2026-04-24 起新規）：</strong>行動電源不可託運，必須放隨身行李且不可收進頭頂行李櫃；每人最多 2 個（160 Wh 以下，本頁五款都在 40 Wh 以內）；機內不可對行動電源充電，也不可用它充手機。</p>
+      ${tableHtml(['項目', ...columns.map((column) => column[0])], rows)}
+    </section>`;
+  }
   if (group === 'dryer') {
     const [ne7n, ne5n] = items.map((product) => DRYER_COMPARISON_ROWS[product.id]);
     const rowLabels = ['JIS 風量', '髮絲受風量', '模式', '離子／礦物', '重量／收納', '電壓／功率'];
@@ -273,6 +311,29 @@ function storeLinksHtml(product) {
   return `<div class="kij-store-links">${links}</div>`;
 }
 
+/* 行動電源五款的購買地點完全重疊，每張卡都印一次只是同樣的字重複五遍。
+ * 改成在分區頂端寫一次；清單仍從商品資料推導，不寫死店名，
+ * 之後任何一款改了 stores，這一行就會跟著變。 */
+function powerbankStoreBannerHtml(items) {
+  const confirmed = [...new Set(items.flatMap((product) => product.stores ?? []))];
+  const fallback = [...new Set(items.flatMap((product) => product.storeCandidates ?? []))]
+    .filter((id) => !confirmed.includes(id));
+  const linkFor = (id) => (STORE_SUMMARIES[id]
+    ? `<a href="map.html?store=${encodeURIComponent(id)}">${escapeHtml(STORE_SUMMARIES[id].name)}</a>`
+    : '');
+  const render = (ids) => ids.map(linkFor).filter(Boolean).join('');
+  if (confirmed.length === 0 && fallback.length === 0) return '';
+  /* 五款的店家目前完全相同，只有一列時不必叫「主要」——沒有第二列可對照。 */
+  const confirmedLabel = fallback.length > 0 ? '主要購買地點' : '購買地點';
+  const confirmedHtml = confirmed.length > 0
+    ? `<div class="kij-store-banner-row"><span>${confirmedLabel}</span><div class="kij-store-links">${render(confirmed)}</div></div>`
+    : '';
+  const fallbackHtml = fallback.length > 0
+    ? `<div class="kij-store-banner-row"><span>找不到型號時的備案</span><div class="kij-store-links">${render(fallback)}</div></div>`
+    : '';
+  return `<section class="kij-store-banner" aria-label="行動電源購買地點">${confirmedHtml}${fallbackHtml}</section>`;
+}
+
 /* 勾選框樣式的狀態按鈕：方框由 CSS 畫，切換時只改 class，
    不重寫按鈕內容，避免把方框元素洗掉。 */
 function purchaseToggleHtml(product) {
@@ -294,12 +355,17 @@ function buildCardHtml(product) {
   /* 日文名與型號併成一行（用「・」分隔），省下窄卡片的一整列。
      吹風機的型號本身就是品名，不重複顯示。 */
   const subParts = [];
-  if (product.jaName) subParts.push(escapeHtml(product.jaName));
+  /* 行動電源的 jaName 與中文品名幾乎逐字相同（「CIO SMARTCOBY Pro SLIM SS 行動電源」
+     對「SMARTCOBY Pro SLIM SS」），印出來只是同一個名字說兩遍，故略過。
+     型號保留：在日本家電量販要跟店員報的就是型號，而且 SS 與非 SS 版只差在型號。 */
+  if (product.jaName && product.group !== 'powerbank') subParts.push(escapeHtml(product.jaName));
   if (product.model && product.group !== 'dryer') subParts.push(escapeHtml(product.model));
-  const jaHtml = subParts.length > 0 ? `<div class="ja">${subParts.join('・')}</div>` : '';
+  const subCls = product.group === 'powerbank' ? 'ja kij-sub-muted' : 'ja';
+  const jaHtml = subParts.length > 0 ? `<div class="${subCls}">${subParts.join('・')}</div>` : '';
   const modelHtml = '';
   const fullImage = product.image.replace('/thumb/', '/full/');
   const dryerSummaryHtml = product.group === 'dryer' ? `<div class="kij-dryer-summary">${escapeHtml(DRYER_SUMMARIES[product.id] || '')}</div>` : '';
+  const powerbankSummaryHtml = product.group === 'powerbank' ? `<div class="kij-powerbank-summary">${escapeHtml(POWERBANK_SUMMARIES[product.id] || '')}</div>` : '';
 
   let priceHtml = '';
   let controlsHtml = '';
@@ -312,6 +378,14 @@ function buildCardHtml(product) {
       ? `<div class="price-row"><span class="yen">¥${product.yen.toLocaleString()}</span><span class="kij-price-kind">${priceKindText}</span></div>`
       : '';
     priceHtml += storeLinksHtml(product);
+    controlsHtml = purchaseToggleHtml(product);
+  } else if (product.group === 'powerbank') {
+    /* 行動電源單價高，台幣換算與價格佐證強度都要看得到；
+       店家連結沿用藥妝日用那套，站在天神時才知道往哪家電量販走。 */
+    const yenText = product.yen != null ? `¥${product.yen.toLocaleString()}` : '價格待確認';
+    const twdText = product.twdRef != null ? `（約 NT$${product.twdRef.toLocaleString()}）` : '';
+    // 店家改由分區頂端的 powerbankStoreBannerHtml 統一顯示，卡片內不重複。
+    priceHtml = `<div class="price-row"><span class="yen">${yenText}</span><span class="twd">${twdText}</span><span class="kij-price-kind">${priceKindText}</span></div>`;
     controlsHtml = purchaseToggleHtml(product);
   } else if (product.group === 'dryer') {
     const yenText = product.yen != null ? `¥${product.yen.toLocaleString()}` : '價格待確認';
@@ -361,6 +435,7 @@ function buildCardHtml(product) {
         ${jaHtml}
         ${modelHtml}
         ${dryerSummaryHtml}
+        ${powerbankSummaryHtml}
       </div>
       <div class="kij-card-detail">
         ${priceHtml}
@@ -407,7 +482,8 @@ function buildSectionHtml(group) {
     bodyInner = items.map(buildCardHtml).join('');
   }
 
-  if (group === 'dryer' || group === 'shoes') bodyInner = comparisonTableHtml(group, items) + bodyInner;
+  if (group === 'dryer' || group === 'shoes' || group === 'powerbank') bodyInner = comparisonTableHtml(group, items) + bodyInner;
+  if (group === 'powerbank') bodyInner = powerbankStoreBannerHtml(items) + bodyInner;
 
   const countText = group === 'shoes' ? shoeCountText() : `${items.length} 項`;
 

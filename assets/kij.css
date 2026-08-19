@@ -416,6 +416,48 @@ body.kij {
 .kij-store-links a:hover { text-decoration-thickness: 2px; }
 .kij-dryer-summary { margin-top: 4px; color: var(--muted); font-size: 13px; font-weight: 700; }
 
+/* 行動電源的副標只剩型號，不再是品名，因此不用品名的綠色、降為次要資訊。 */
+.kij-card .kij-sub-muted { color: var(--muted); font-weight: 600; }
+
+/* 推薦順位（① 首選…）改用 3C 配件標籤的紫色，與卡片上的 CIO 標籤、
+   比較表表頭同一套色；原本沿用吹風機的灰字，在一排卡片裡看不出是排序。 */
+.kij-powerbank-summary {
+  display: inline-block;
+  margin-top: 5px;
+  padding: 2px 9px;
+  border-radius: var(--radius-pill);
+  background: #f3ecfd;
+  color: #6b3fa0;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* 分區頂端的購買地點：五款都在同一區買，寫一次就好。
+   視覺上與比較表同一層級（同樣的外框與圓角），但不必橫向捲動。 */
+.kij-store-banner {
+  /* 分區內容在 ≥1000px 是兩欄 grid，橫幅必須跨滿整列（同 .kij-compare 的作法）。 */
+  grid-column: 1 / -1;
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--accent-soft);
+}
+.kij-store-banner-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 10px;
+}
+.kij-store-banner-row + .kij-store-banner-row { margin-top: 6px; }
+.kij-store-banner-row > span {
+  flex: none;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 800;
+}
+.kij-store-banner .kij-store-links { margin-top: 0; }
+
 .kij-bottombar { background: rgba(255, 255, 255, .96); border-top-color: var(--line); }
 .kij-bottombar .active { color: var(--accent); }
 
@@ -494,6 +536,20 @@ body.kij {
 .kij-dryer-compare td:first-child { width: 22%; }
 .kij-dryer-compare th:not(:first-child),
 .kij-dryer-compare td:not(:first-child) { width: 39%; }
+
+/* 行動電源比較表：三款並排，色系跟著卡片標籤的 3C 紫走，
+   與吹風機（藍）分得開。三欄比兩欄窄，min-width 拉大一點保留可讀性。 */
+.kij-powerbank-compare { border-color: #d8cbee; }
+.kij-powerbank-compare .kij-compare-note { background: #f7f4fd; }
+.kij-powerbank-compare th { background: #ece2fb; color: #5b3490; }
+.kij-powerbank-compare td:first-child { background: #faf8fe; color: #5b3490; }
+.kij-powerbank-compare table { min-width: 1040px; }
+/* 五欄表頭：品名比吹風機的兩欄長得多，維持 nowrap 會溢出欄位、與隔壁欄重疊。 */
+.kij-powerbank-compare th { white-space: normal; }
+.kij-powerbank-compare th:first-child,
+.kij-powerbank-compare td:first-child { width: 14%; }
+.kij-powerbank-compare th:not(:first-child),
+.kij-powerbank-compare td:not(:first-child) { width: 17.2%; }
 .kij-shoe-brand { margin: 0 12px 14px; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; }
 .kij-shoe-brand-on { border-color: #b9cfea; }
 .kij-shoe-brand-hoka { border-color: #f1cbab; }

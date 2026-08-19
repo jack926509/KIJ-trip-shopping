@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
+  <rect width="800" height="800" fill="#f7f4ed"/>
+  <rect x="24" y="24" width="752" height="752" rx="28" fill="none" stroke="#e7e1d8" stroke-width="4"/>
+  <text x="60" y="104" font-family="Helvetica,Arial,sans-serif" font-size="34" font-weight="700" fill="#2f6d5e" letter-spacing="6">CIO</text>
+  <text x="60" y="152" font-family="Helvetica,Arial,sans-serif" font-size="34" font-weight="700" fill="#26302c">SMARTCOBY Pro SLIM CABLE</text>
+  <text x="60" y="190" font-family="Helvetica,Arial,sans-serif" font-size="22" fill="#727874">CIO-MB35W2C-10000-SC</text>
+  <g transform="translate(60,214)">
+    <rect width="199" height="44" rx="22" fill="#e8f2ee" stroke="#9ec4b7" stroke-width="2"/>
+    <text x="99.5" y="30" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="22" font-weight="700" fill="#2f6d5e">內建 21cm 可拆線</text>
+  </g>
+
+  <g transform="translate(244,288)">
+    <rect width="252" height="280" rx="26" fill="#2f6d5e"/>
+    <rect x="14" y="14" width="224" height="252" rx="16" fill="none" stroke="#5f9184" stroke-width="3"/>
+    
+    <rect x="40" y="98" width="172" height="84" rx="12" fill="#12241f"/>
+    <text x="126" y="160" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="54" font-weight="700" fill="#8fe3c6">100</text>
+    <text x="196" y="134" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="20" fill="#8fe3c6">%</text>
+    <rect x="70" y="-16" width="44" height="16" rx="7" fill="#3d7d6d"/>
+    <rect x="138" y="-16" width="44" height="16" rx="7" fill="#3d7d6d"/>
+    <path d="M 252 224 h 40 a 16 16 0 0 1 16 16 v 40 a 16 16 0 0 1 -16 16 h -26" fill="none" stroke="#3d7d6d" stroke-width="13" stroke-linecap="round"/>
+  </g>
+
+  <text x="60" y="646" font-family="Helvetica,Arial,sans-serif" font-size="52" font-weight="700" fill="#2f6d5e">10,000 mAh</text>
+  <text x="60" y="694" font-family="Helvetica,Arial,sans-serif" font-size="28" font-weight="700" fill="#26302c">單埠最大 35W ／ USB-C×2</text>
+  <text x="60" y="732" font-family="Helvetica,Arial,sans-serif" font-size="24" fill="#727874">約 101.5 × 64.5 × 17.8 mm　約 189 g</text>
+  <text x="740" y="736" text-anchor="end" font-family="Helvetica,Arial,sans-serif" font-size="20" fill="#a8a49c">規格示意圖</text>
+</svg>
