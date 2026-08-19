@@ -22,6 +22,7 @@
         <button type="button" class="kij-tab" data-action="tab" data-group="convenience">便利商店</button>
         <button type="button" class="kij-tab" data-action="tab" data-group="powerbank">行動電源</button>
         <button type="button" class="kij-tab" data-action="tab" data-group="dryer">吹風機</button>
+        <button type="button" class="kij-tab" data-action="tab" data-group="mouse">滑鼠</button>
         <button type="button" class="kij-tab" data-action="tab" data-group="shoes">鞋款</button>
       </nav>
     </div>
@@ -47,12 +48,13 @@ import { STORE_SUMMARIES } from './assets/stores.js';
  * 資料索引
  * ──────────────────────────────────────────────────────────────── */
 const PRODUCTS_BY_ID = new Map(PRODUCTS.map((p) => [p.id, p]));
-const GROUPS = ['shopping', 'convenience', 'powerbank', 'dryer', 'shoes'];
+const GROUPS = ['shopping', 'convenience', 'powerbank', 'dryer', 'mouse', 'shoes'];
 const GROUP_META = {
   shopping: { label: '藥妝日用', icon: '🛍️' },
   convenience: { label: '便利商店', icon: '🏪' },
   powerbank: { label: '行動電源', icon: '🔋' },
   dryer: { label: '吹風機', icon: '💨' },
+  mouse: { label: '滑鼠', icon: '🖱️' },
   shoes: { label: '鞋款試穿', icon: '👟' },
 };
 let activeGroup = 'shopping';
@@ -152,6 +154,9 @@ function pillForProduct(product) {
   if (product.group === 'shoes') {
     return { text: SHOE_BRANDS[product.id] || '鞋款', cls: 'kij-cat-shoe' };
   }
+  if (product.group === 'mouse') {
+    return { text: MOUSE_BRANDS[product.id] || '滑鼠', cls: 'kij-cat-electronics' };
+  }
   return null;
 }
 
@@ -191,6 +196,21 @@ const POWERBANK_COMPARISON_ROWS = {
 const SHOE_BRANDS = {
   cloudtilt: 'ON', cloudsurfermax: 'ON', cloudsurfer2: 'ON', cloud6: 'ON', cloudrunner3: 'ON',
   clifton11: 'HOKA', bondi9: 'HOKA', skyflow: 'HOKA', transport2: 'HOKA', gaviota5: 'HOKA',
+};
+
+const MOUSE_BRANDS = {
+  'elecom-ex-g': 'ELECOM',
+  'sanwa-ma-ergw19': 'Sanwa Supply',
+  'sanwa-trackball-400-mawbttb190': 'Sanwa Supply',
+  'logicool-mx-anywhere-3s': 'Logicool',
+};
+
+/* 滑鼠分頁卡片上的「這款的定位是什麼」，呼應鞋款／行動電源的一句話定位寫法。 */
+const MOUSE_SUMMARIES = {
+  'elecom-ex-g': '① 日規人體工學入門・多尺寸可選',
+  'sanwa-ma-ergw19': '② 棒狀造型・手腕完全不用扭轉',
+  'sanwa-trackball-400-mawbttb190': '③ 軌跡球・免移動手臂，適合窄桌面',
+  'logicool-mx-anywhere-3s': '④ 主流大廠・輕巧隨身、多裝置切換',
 };
 
 const DRYER_COMPARISON_ROWS = {
@@ -296,6 +316,21 @@ function powerbankStoreBannerHtml(items) {
   return `<section class="kij-store-banner" aria-label="行動電源購買地點">${confirmedHtml}${fallbackHtml}</section>`;
 }
 
+/* 滑鼠分頁頂端的研究說明：四款目前是依品牌口碑與官方規格整理出的建議，
+ * 尚未實地走訪天神／博多店面核對現貨與售價，因此每張卡都只有 storeCandidates（可詢問門市），
+ * 沒有 stores（實地確認鋪貨）。這裡統一寫一次提醒，卡片內不重複。 */
+function mouseNoteHtml(items) {
+  const candidateIds = [...new Set(items.flatMap((product) => product.storeCandidates ?? []))];
+  const linkFor = (id) => (STORE_SUMMARIES[id]
+    ? `<a href="map.html?store=${encodeURIComponent(id)}">${escapeHtml(STORE_SUMMARIES[id].name)}</a>`
+    : '');
+  const candidateHtml = candidateIds.map(linkFor).filter(Boolean).join('');
+  return `<section class="kij-store-banner" aria-label="滑鼠品牌卡片說明">
+    <p class="kij-compare-note">以下為依品牌口碑與官方規格整理的<strong>研究建議</strong>，尚未實地到店核對現貨與售價，圖片為文字版品牌卡而非實拍照片；購買前請以店內標示與庫存為準。</p>
+    ${candidateHtml ? `<div class="kij-store-banner-row"><span>可詢問門市</span><div class="kij-store-links">${candidateHtml}</div></div>` : ''}
+  </section>`;
+}
+
 /* 勾選框樣式的狀態按鈕：方框由 CSS 畫，切換時只改 class，
    不重寫按鈕內容，避免把方框元素洗掉。 */
 function purchaseToggleHtml(product) {
@@ -328,6 +363,7 @@ function buildCardHtml(product) {
   const fullImage = product.image.replace('/thumb/', '/full/');
   const dryerSummaryHtml = product.group === 'dryer' ? `<div class="kij-dryer-summary">${escapeHtml(DRYER_SUMMARIES[product.id] || '')}</div>` : '';
   const powerbankSummaryHtml = product.group === 'powerbank' ? `<div class="kij-powerbank-summary">${escapeHtml(POWERBANK_SUMMARIES[product.id] || '')}</div>` : '';
+  const mouseSummaryHtml = product.group === 'mouse' ? `<div class="kij-powerbank-summary">${escapeHtml(MOUSE_SUMMARIES[product.id] || '')}</div>` : '';
 
   let priceHtml = '';
   let controlsHtml = '';
@@ -398,6 +434,7 @@ function buildCardHtml(product) {
         ${modelHtml}
         ${dryerSummaryHtml}
         ${powerbankSummaryHtml}
+        ${mouseSummaryHtml}
       </div>
       <div class="kij-card-detail">
         ${priceHtml}
@@ -446,6 +483,7 @@ function buildSectionHtml(group) {
 
   if (group === 'dryer' || group === 'shoes' || group === 'powerbank') bodyInner = comparisonTableHtml(group, items) + bodyInner;
   if (group === 'powerbank') bodyInner = powerbankStoreBannerHtml(items) + bodyInner;
+  if (group === 'mouse') bodyInner = mouseNoteHtml(items) + bodyInner;
 
   const countText = group === 'shoes' ? shoeCountText() : `${items.length} 項`;
 

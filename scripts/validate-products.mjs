@@ -24,7 +24,7 @@ function fail(errors) {
   process.exit(1);
 }
 
-const VALID_GROUP = new Set(['shopping', 'dryer', 'shoes', 'convenience', 'powerbank']);
+const VALID_GROUP = new Set(['shopping', 'dryer', 'shoes', 'convenience', 'powerbank', 'mouse']);
 const VALID_TRACKING = new Set(['buy', 'try']);
 const VALID_PRICE_KIND = new Set(['official', 'retailer-reference', 'launch-reference', 'photo-reference', 'pending']);
 
