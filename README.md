@@ -169,6 +169,7 @@ npm run build:images
 
 ## 圖片來源
 
+- CIO 行動電源（`cio-smartcoby-pro-slim-ss-10k`、`cio-smartcoby-trio-35w-ss-20k`）的卡片圖為**依官方規格自繪的規格示意圖**（原圖為 `images/source/*.svg`），不是官方商品照；圖上右下角標註「規格示意圖」，商品 `note` 也寫明。取得可用實品照片後，替換原圖再跑 `npm run build:images` 即可。
 - ON 鞋款圖片取自 [ON 官方網站](https://www.on.com/)，頁面內均標註來源並連回對應官方商品頁。
 - HOKA 鞋款圖片取自台灣經銷商 [ISPO+ 官方網站](https://www.ispo.com.tw/)，頁面內均標註實際圖片來源；商品資訊連結仍指向 HOKA 日本官方網站。
 - 圖片僅供個人旅遊採購規劃使用；公開或商業使用仍應依品牌授權條款辦理。

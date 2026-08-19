@@ -636,7 +636,7 @@ const BASE_PRODUCTS = [
   },
   {
     id: 'cio-smartcoby-slimii-wireless-2-2-8k-special-edition',
-    group: 'shopping', tracking: 'buy', category: '3C 配件',
+    group: 'powerbank', tracking: 'buy', category: '3C 配件',
     name: 'CIO SMARTCOBY SLIMII Wireless 2.2 8K 行動電源', jaName: 'SMARTCOBY SLIMII Wireless2.2 8K Special Edition Set', model: 'CIO-MB30W1C-8K-S2W25-EE-BK・黑色',
     yen: 8980, twdRef: null, defaultQty: 1, image: 'images/thumb/cio-smartcoby-slimii-wireless-2-2-8k-special-edition.webp',
     note: '8,000 mAh、Qi2.2 無線 25 W、USB-C 有線 30 W；約 12 mm、170 g，含專用網狀收納袋。', source: 'docs/product-price-sources-2026-08-11.md', stores: ['biccamera-tenjin-2'], storeCandidates: [],
@@ -728,6 +728,24 @@ const BASE_PRODUCTS = [
     note: '素揚げ地瓜片，無調味（味付けなし）；全國性商品，非 LAWSON 專屬，超市與各大超商鋪貨，門市售價可能不同。', source: 'docs/product-price-sources-2026-08-15.md', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
     storeCandidates: ['seven-eleven-tenjin-underground', 'familymart-hakata-station', 'familymart-kokura-station', 'lopia-hakata-yodobashi', 'aeon-shoppers-fukuoka-tenjin', 'lopia-kokura-riverwalk'],
     priceKind: 'retailer-reference', priceSourceUrl: 'https://ns.tokyu-bell.jp/shop/g/g16834866/', priceCheckedAt: '2026-08-15', priceNote: null
+  },
+
+  // ── 追加：CIO 行動電源分頁的另外兩款（2026-08-19，官方規格與定價）──
+  {
+    id: 'cio-smartcoby-pro-slim-ss-10k',
+    group: 'powerbank', tracking: 'buy', category: '3C 配件',
+    name: 'CIO SMARTCOBY Pro SLIM SS 行動電源', jaName: 'SMARTCOBY Pro SLIM SS', model: 'CIO-MB35W2C1A-SSA10K-S・黑／白',
+    yen: 6280, twdRef: null, defaultQty: 1, image: 'images/thumb/cio-smartcoby-pro-slim-ss-10k.webp',
+    note: '10,000 mAh、單埠最大 35 W，USB-C×2＋USB-A×1 可同時充三台；約 66.8 × 98.3 × 16 mm、187 g，是本頁最好塞進外套口袋的大容量款。採半固體電池、循環約 300 次，支援邊充邊放（パススルー）與數字顯示電量。CIO 官方選購指南把它列為「迷ったらコレ」的均衡首選。ヨドバシ設有 CIO 專門賣場、SMARTCOBY 系列鋪貨齊全，但半固體 SS 版本的門市庫存仍需到店確認，BicCamera 天神兩館為備案。備註：卡片圖為依官方規格自繪的示意圖，不是官方商品照。', source: 'docs/product-price-sources-2026-08-19.md', stores: ['yodobashi-camera-hakata'], storeCandidates: ['biccamera-tenjin-1', 'biccamera-tenjin-2'],
+    priceKind: 'official', priceSourceUrl: 'https://connectinternationalone.co.jp/cioproduct/mobilebattery/smartcoby/cio-mb35w2c1a-ssa10k-s/', priceCheckedAt: '2026-08-19', priceNote: '官方建議售價含稅 ¥6,280（2026-03-27 上市）；家電量販門市售價可能不同。'
+  },
+  {
+    id: 'cio-smartcoby-trio-35w-ss-20k',
+    group: 'powerbank', tracking: 'buy', category: '3C 配件',
+    name: 'CIO SMARTCOBY TRIO 35W SS 行動電源', jaName: 'SMARTCOBY TRIO 35W SS 20000mAh', model: 'CIO-MB35W2C1A-SS20000・黑／白',
+    yen: 9280, twdRef: null, defaultQty: 1, image: 'images/thumb/cio-smartcoby-trio-35w-ss-20k.webp',
+    note: '20,000 mAh 大容量卻只有約 91 × 68.8 × 29.5 mm、320 g，機身約一張卡片大小，是三款裡唯一能撐整天重度使用或分給同行者的。單埠最大 35 W、USB-C×2＋USB-A×1，半固體電池、循環約 500 次，本體充飽約 180 分鐘。注意：100 Wh 以下可帶上機，但一定要放隨身行李、不可託運。備註：卡片圖為依官方規格自繪的示意圖，不是官方商品照。', source: 'docs/product-price-sources-2026-08-19.md', stores: ['yodobashi-camera-hakata'], storeCandidates: ['biccamera-tenjin-1', 'biccamera-tenjin-2'],
+    priceKind: 'official', priceSourceUrl: 'https://connectinternationalone.co.jp/cioproduct/mobilebattery/smartcoby/cio-mb35w2c1a-ssa20000/', priceCheckedAt: '2026-08-19', priceNote: '官方建議售價含稅 ¥9,280（2026-03-27 上市）。同系列還有輸出更高的 67W SS 版（¥10,980），但重量增至約 355 g；若不需要替筆電快充，35W 版較划算。'
   }
 ];
 
