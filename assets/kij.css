@@ -75,6 +75,19 @@ body.kij {
   padding: 0 15px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.kij-tabs::-webkit-scrollbar { display: none; }
+.kij-tab { scroll-snap-align: start; }
+
+/* 6 顆分頁在手機寬度放不下一行，右緣淡出提示「還可以往右滑」；
+ * 只有真的捲得動時才顯示（由 JS 依 scrollWidth 判斷加上 is-scrollable），
+ * 比照 map.html 的 .filter-group／.legend 做法，兩頁共用同一套視覺語彙。 */
+.kij-tabs.is-scrollable {
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent);
+  mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent);
 }
 
 .kij-tab {
@@ -380,6 +393,20 @@ body.kij {
 }
 .kij-price-line { color: var(--text); font-weight: 800; }
 .kij-price-line .kij-twd { color: var(--muted); font-size: .86em; font-weight: 600; }
+
+/* 商品卡片附註／購買警語：note 與 priceNote 先前完全沒被渲染，本次補上。
+ * 有值才顯示，樣式比照既有次要文字（.kij-compare-note）；
+ * overflow-wrap 避免型號這類不含空白的長字串把窄卡片撐寬。 */
+.kij-card-note,
+.kij-card-pricenote {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+/* priceNote 不加粗：它多半是「圖片未顯示可辨識售價」這類資料來源免責說明，
+   加粗會比下方 note（站在店裡真正要看的購買提醒）更搶眼，主次顛倒。 */
 
 /* 推薦店家：文字超連結，頓號分隔。點下去開地圖並選中該店。
    前面的小圖釘表示「這會跳到地圖」，跟品名的 ↗（外部商品頁）區隔開。

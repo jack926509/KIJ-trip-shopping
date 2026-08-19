@@ -59,6 +59,12 @@ const GROUP_META = {
 };
 let activeGroup = 'shopping';
 
+/* 這三個群組是「選一／選幾個參考」而非每項都要買，tracking 一律是 'try'
+ * （已試穿／已選定），不計入「已買 X / 48」的購買進度。
+ * 狀態列與分區計數要跟著這份清單走，否則改了 tracking 卻漏改顯示邏輯，
+ * 就會變成滑鼠／行動電源分頁永遠顯示「已買 0 項」。 */
+const TRY_ONLY_GROUPS = new Set(['shoes', 'mouse', 'powerbank']);
+
 /* 6 種實際 category → 4 種色票 class 的對應規則。
  * 分類文字本身一律從 PRODUCTS 動態取得（不寫死清單），
  * 這裡只是「文字 → 色票」的樣式對照表，找不到對應時 fallback 到 kij-cat-shoe（中性藍）。 */
@@ -241,7 +247,11 @@ function comparisonTableHtml(group, items) {
     /* 五欄並排時欄寬只剩約 17%，完整品名會撐破欄位、與隔壁欄互相重疊，
        所以表頭再去掉共通的 SMARTCOBY 前綴，只留辨識得出來的型號部分。 */
     const columnTitle = (product) => product.name.replace('CIO ', '').replace(' 行動電源', '').replace('SMARTCOBY ', '');
-    const columns = items.map((product) => [columnTitle(product), ...POWERBANK_COMPARISON_ROWS[product.id]]);
+    // 對照表缺列（POWERBANK_COMPARISON_ROWS 沒有這個商品 id）時跳過該款，
+    // 不要整頁炸掉——scripts/validate-products.mjs 另有檢查攔截「忘了補列」。
+    const columns = items
+      .filter((product) => Array.isArray(POWERBANK_COMPARISON_ROWS[product.id]))
+      .map((product) => [columnTitle(product), ...POWERBANK_COMPARISON_ROWS[product.id]]);
     const rows = rowLabels.map((label, index) => [label, ...columns.map((column) => column[index + 1])]);
     return `<section class="kij-compare kij-powerbank-compare" aria-label="行動電源完整比較表">
       <p class="kij-compare-note"><strong>選法（一個人、只充手機）：</strong>手機最多吃到 20–27 W，35 W 以上的輸出差異用不到，真正有差的只有容量、要不要帶線、以及價格。五款實際可充出的電量都在 5,000–6,200 mAh 之譜，iPhone 約 1–1.5 次。<br><strong>上機提醒（2026-04-24 起新規）：</strong>行動電源不可託運，必須放隨身行李且不可收進頭頂行李櫃；每人最多 2 個（160 Wh 以下，本頁五款都在 40 Wh 以內）；機內不可對行動電源充電，也不可用它充手機。</p>
@@ -304,14 +314,22 @@ function powerbankStoreBannerHtml(items) {
     ? `<a href="map.html?store=${encodeURIComponent(id)}">${escapeHtml(STORE_SUMMARIES[id].name)}</a>`
     : '');
   const render = (ids) => ids.map(linkFor).filter(Boolean).join('');
-  if (confirmed.length === 0 && fallback.length === 0) return '';
+  /* 判斷「有沒有東西可顯示」一定要看渲染後的連結字串，不能只看 id 陣列長度——
+     id 若查不到對應店家（render 回傳空字串），陣列長度仍 > 0，
+     會印出一個只有標籤、沒有內容的空「購買地點」列。 */
+  const confirmedLinks = render(confirmed);
+  const fallbackLinks = render(fallback);
+  if (!confirmedLinks && !fallbackLinks) return '';
   /* 五款的店家目前完全相同，只有一列時不必叫「主要」——沒有第二列可對照。 */
-  const confirmedLabel = fallback.length > 0 ? '主要購買地點' : '購買地點';
-  const confirmedHtml = confirmed.length > 0
-    ? `<div class="kij-store-banner-row"><span>${confirmedLabel}</span><div class="kij-store-links">${render(confirmed)}</div></div>`
+  const confirmedLabel = fallbackLinks ? '主要購買地點' : '購買地點';
+  const confirmedHtml = confirmedLinks
+    ? `<div class="kij-store-banner-row"><span>${confirmedLabel}</span><div class="kij-store-links">${confirmedLinks}</div></div>`
     : '';
-  const fallbackHtml = fallback.length > 0
-    ? `<div class="kij-store-banner-row"><span>找不到型號時的備案</span><div class="kij-store-links">${render(fallback)}</div></div>`
+  /* 目前五款的 stores 皆留空、只有 storeCandidates，此時只會印出這一列，
+     標籤改用「可詢問門市」——不是「找不到型號時的備案」（那個語氣預設還有一列「主要購買地點」可對照）。 */
+  const fallbackLabel = confirmedLinks ? '找不到型號時的備案' : '可詢問門市';
+  const fallbackHtml = fallbackLinks
+    ? `<div class="kij-store-banner-row"><span>${fallbackLabel}</span><div class="kij-store-links">${fallbackLinks}</div></div>`
     : '';
   return `<section class="kij-store-banner" aria-label="行動電源購買地點">${confirmedHtml}${fallbackHtml}</section>`;
 }
@@ -338,9 +356,12 @@ function purchaseToggleHtml(product) {
   return `<button type="button" class="kij-status-btn${bought ? ' on' : ''}" data-action="toggle-bought" aria-pressed="${bought}"><span class="kij-check" aria-hidden="true"></span>已購買</button>`;
 }
 
+/* 「已試穿」字面上只適合鞋款；滑鼠與行動電源是「幾選一」的參考清單，
+ * 不會真的試穿，改用「已選定」較符合實際情境，但仍是同一套 kij_tried_ 狀態。 */
 function triedToggleHtml(product) {
   const tried = isTried(product.id);
-  return `<button type="button" class="kij-status-btn${tried ? ' on' : ''}" data-action="toggle-tried" aria-pressed="${tried}"><span class="kij-check" aria-hidden="true"></span>已試穿</button>`;
+  const label = product.group === 'shoes' ? '已試穿' : '已選定';
+  return `<button type="button" class="kij-status-btn${tried ? ' on' : ''}" data-action="toggle-tried" aria-pressed="${tried}"><span class="kij-check" aria-hidden="true"></span>${label}</button>`;
 }
 
 /* ────────────────────────────────────────────────────────────────
@@ -384,7 +405,9 @@ function buildCardHtml(product) {
     const twdText = product.twdRef != null ? `（約 NT$${product.twdRef.toLocaleString()}）` : '';
     // 店家改由分區頂端的 powerbankStoreBannerHtml 統一顯示，卡片內不重複。
     priceHtml = `<div class="price-row"><span class="yen">${yenText}</span><span class="twd">${twdText}</span><span class="kij-price-kind">${priceKindText}</span></div>`;
-    controlsHtml = purchaseToggleHtml(product);
+    // 行動電源是五選一的參考清單（tracking: 'try'），按鈕要跟著切換成「已選定」，
+    // 否則畫面顯示「已購買」卻不計入購買進度，使用者會搞不清楚勾了到底算不算。
+    controlsHtml = product.tracking === 'buy' ? purchaseToggleHtml(product) : triedToggleHtml(product);
   } else if (product.group === 'dryer') {
     const yenText = product.yen != null ? `¥${product.yen.toLocaleString()}` : '價格待確認';
     priceHtml = `<div class="price-row"><span class="yen">${yenText}</span><span class="kij-price-kind">通路參考價</span></div>`;
@@ -419,6 +442,13 @@ function buildCardHtml(product) {
     ? `<h5><a class="kij-name-link" href="${escapeHtml(product.priceSourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(product.name)}<span class="kij-ext" aria-hidden="true">↗</span></a></h5>`
     : `<h5>${escapeHtml(product.name)}</h5>`;
 
+  /* note／priceNote 先前完全沒被讀出來，本次新增的購買警語（例如「不保證有貨」
+     「圖片未顯示可辨識的售價」）因此看不到。有值才顯示，樣式比照既有次要文字。
+     priceNote 緊接在價格後面（說明這個價格／有沒有貨的來龍去脈），
+     note 放在最後（商品本身的補充說明），避免打散既有的價格區塊排版。 */
+  const priceNoteHtml = product.priceNote ? `<p class="kij-card-pricenote">${escapeHtml(product.priceNote)}</p>` : '';
+  const noteHtml = product.note ? `<p class="kij-card-note">${escapeHtml(product.note)}</p>` : '';
+
   return `
     <div class="kij-card kij-card-${escapeHtml(product.group)}${product.tracking === 'buy' && isBought(product.id) ? ' is-bought' : ''}" id="${escapeHtml(product.id)}" data-id="${escapeHtml(product.id)}">
       <div class="thumb">
@@ -438,14 +468,21 @@ function buildCardHtml(product) {
       </div>
       <div class="kij-card-detail">
         ${priceHtml}
+        ${priceNoteHtml}
+        ${noteHtml}
       </div>
     </div>`;
 }
 
-function shoeCountText() {
-  const shoeItems = PRODUCTS.filter((p) => p.group === 'shoes');
-  const triedCount = shoeItems.filter((p) => isTried(p.id)).length;
-  return `已試穿 ${triedCount} / ${shoeItems.length}`;
+/* 鞋款／滑鼠／行動電源都是「try」群組（試穿或選定，不是每項都要買），
+ * 分區標題的計數文字統一由這支函式產生，鞋款維持「已試穿…雙」，
+ * 其餘兩個群組用「已選定…項」，措辭跟卡片上的按鈕文字（triedToggleHtml）一致。 */
+function triedCountText(group) {
+  const items = PRODUCTS.filter((p) => p.group === group);
+  const triedCount = items.filter((p) => isTried(p.id)).length;
+  return group === 'shoes'
+    ? `已試穿 ${triedCount} / ${items.length}`
+    : `已選定 ${triedCount} / ${items.length} 項`;
 }
 
 function buildSectionHtml(group) {
@@ -485,7 +522,7 @@ function buildSectionHtml(group) {
   if (group === 'powerbank') bodyInner = powerbankStoreBannerHtml(items) + bodyInner;
   if (group === 'mouse') bodyInner = mouseNoteHtml(items) + bodyInner;
 
-  const countText = group === 'shoes' ? shoeCountText() : `${items.length} 項`;
+  const countText = TRY_ONLY_GROUPS.has(group) ? triedCountText(group) : `${items.length} 項`;
 
   return `
     <section class="kij-section" data-group="${group}">
@@ -549,6 +586,11 @@ function updateProgressBar() {
   if (activeGroup === 'shoes') {
     const triedCount = groupItems.filter((p) => isTried(p.id)).length;
     headText = `已試穿 ${triedCount} / ${groupItems.length} 雙`;
+  } else if (TRY_ONLY_GROUPS.has(activeGroup)) {
+    // 滑鼠／行動電源同為「選一／選幾個參考」，不是每項都要買，
+    // 分母跟著 tracking='try' 走，否則會永遠卡在「已買 0 項」。
+    const triedCount = groupItems.filter((p) => isTried(p.id)).length;
+    headText = `${GROUP_META[activeGroup].label}　已選定 ${triedCount} / ${groupItems.length} 項`;
   } else {
     const boughtCount = groupItems.filter((p) => isBought(p.id)).length;
     headText = `${GROUP_META[activeGroup].label}　已買 ${boughtCount} / ${groupItems.length} 項`;
@@ -558,9 +600,10 @@ function updateProgressBar() {
     `${headText}　·　全站已買 ${allBoughtCount} / ${allBuyItems.length} 項`;
 }
 
-function updateShoeSectionCount() {
-  const header = document.querySelector('.kij-section[data-group="shoes"] .kij-section-header .count');
-  if (header) header.textContent = shoeCountText();
+function updateTriedSectionCount(group) {
+  if (!TRY_ONLY_GROUPS.has(group)) return;
+  const header = document.querySelector(`.kij-section[data-group="${group}"] .kij-section-header .count`);
+  if (header) header.textContent = triedCountText(group);
 }
 
 function syncKijState() {
@@ -576,6 +619,11 @@ function syncKijState() {
 function focusSection(group) {
   activeGroup = group;
   document.querySelectorAll('.kij-tab').forEach((tab) => tab.classList.toggle('active', tab.dataset.group === group));
+  // 6 顆分頁在手機寬度放不下一行，選中的那顆可能在可視範圍外（例如從網址錨點
+  // 直接跳到「鞋款」），切換時把它捲進視野；block:'nearest' 避免多餘的垂直捲動。
+  // inline 必須是 'center'：分頁列有 scroll-snap-type: x proximity，'nearest' 只會挪到
+  // 剛好貼邊就被吸附點拉回去，中間那幾顆（滑鼠）實測只露出 31px。
+  document.querySelector('.kij-tab.active')?.scrollIntoView({ inline: 'center', block: 'nearest' });
   renderSections();
   updateProgressBar(); // 分母跟著分頁走，切頁後必須重算
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -654,8 +702,8 @@ appEl.addEventListener('click', (e) => {
       if (!product) return;
       setTried(id, !isTried(id));
       syncCardVisual(card, product);
-      updateShoeSectionCount();
-      updateProgressBar(); // 鞋款頁的狀態文字講的是試穿雙數，勾了要同步
+      updateTriedSectionCount(product.group);
+      updateProgressBar(); // 鞋款／滑鼠／行動電源頁的狀態文字講的是試穿或選定數，勾了要同步
       syncKijState();
       break;
     }
@@ -696,6 +744,19 @@ document.getElementById('kijItemCount').textContent = `共 ${PRODUCTS.length} �
     ticking = true;
     window.requestAnimationFrame(sync);
   }, { passive: true });
+  sync();
+})();
+
+/* 分頁在手機寬度放不下一行時可橫向捲動，右緣淡出提示「還可以往右滑」，
+ * 只在真的捲得動時顯示——比照 map.html 的 filter-group／legend 做法。 */
+(() => {
+  const tabsEl = document.getElementById('kijTabs');
+  if (!tabsEl) return;
+  const sync = () => {
+    tabsEl.classList.toggle('is-scrollable', tabsEl.scrollWidth - tabsEl.clientWidth - tabsEl.scrollLeft > 1);
+  };
+  window.addEventListener('resize', sync);
+  tabsEl.addEventListener('scroll', sync, { passive: true });
   sync();
 })();
 

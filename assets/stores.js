@@ -50,7 +50,7 @@ export const STORES = [
       { label: 'Alpen 官方門市頁', url: 'https://store.alpen-group.jp/Form/RealShop/ShopDetail.aspx?rsid=5400' },
       { label: 'Canal City 官方樓層頁', url: 'https://canalcity.co.jp/shopsearch/floor/103' }
     ],
-    mapsQuery: 'SPORTS DEPO Flagship Store Canal City Hakata 福岡県福岡市博多区住吉 1-2-74'
+    mapsQuery: 'Alpen FUKUOKA 福岡県福岡市博多区住吉 1-2-74'
   },
   {
     id: 'murasaki-sports-canal-city-hakata',

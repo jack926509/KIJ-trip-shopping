@@ -284,7 +284,22 @@ for (const category of usedCategories) {
   }
 }
 
-// 6. 營業時間不得只寫「依公告」這類空泛字樣，樓層寫法也不得自我矛盾。
+/* 8. 行動電源對照表（index.html 的 POWERBANK_COMPARISON_ROWS）必須涵蓋每一款
+ * 行動電源商品 id，否則比較表少一欄（index.html 已加防護跳過該款、不會整頁炸掉，
+ * 但這裡要在資料源頭攔截「忘了補列」，兩者互為備援）。 */
+const powerbankRowsBlock = (indexHtml.match(/const POWERBANK_COMPARISON_ROWS = \{[\s\S]*?\n\};/) || [''])[0];
+const powerbankRowIds = new Set([...powerbankRowsBlock.matchAll(/'([a-z0-9-]+)':/g)].map((m) => m[1]));
+const powerbankProducts = products.filter((p) => p.group === 'powerbank');
+if (powerbankProducts.length > 0 && powerbankRowIds.size === 0) {
+  errors.push('index.html: 找不到任何 POWERBANK_COMPARISON_ROWS 項目，請確認格式沒被改壞');
+}
+for (const p of powerbankProducts) {
+  if (!powerbankRowIds.has(p.id)) {
+    errors.push(`index.html: POWERBANK_COMPARISON_ROWS 缺少行動電源商品 ${p.id} 的對照列`);
+  }
+}
+
+// 9. 營業時間不得只寫「依公告」這類空泛字樣，樓層寫法也不得自我矛盾。
 const floorOf = (text) => (text.match(/\b(B?\d+)F\b/) || [])[1];
 for (const store of stores) {
   if (/^依.*公告$|^依商場營業時間$/.test((store.hours || '').trim())) {

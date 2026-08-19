@@ -347,6 +347,14 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      /* .route-stop-list 是 display:grid 但沒宣告 grid-template-columns，
+       * 這個 li 就是那個隱含欄位的 grid item：預設自動最小寬度＝內容的
+       * min-content，內容（店名＋導航按鈕）撐開的寬度大於軌道本身時，
+       * 瀏覽器不會把它縮回去，而是讓它視覺溢出——這正是手機 390px 下
+       * document.scrollWidth 變成 457px 的來源。min-width:0 拿掉這個
+       * 自動最小寬度，讓 flex 子項（.route-stop-main 本來就有 min-width:0）
+       * 照原本設計正常縮小、不再撐破版面。 */
+      min-width: 0;
     }
 
     .route-stop-main {
@@ -423,7 +431,18 @@
       border-radius: 22px;
       box-shadow: 0 24px 60px rgba(35, 30, 22, .28);
       overscroll-behavior: contain;
+      /* 內容超過 max-height 時要能捲動；先前沒宣告，全靠瀏覽器對 <dialog> 的
+       * UA 預設值（多數是 auto，但不是規格保證），明確寫出來才不會踩到冷門瀏覽器的雷。 */
+      overflow: auto;
     }
+
+    /* 點在卡片左右內緣或區塊間隙也會誤關視窗：因為 dialog 本身 padding:0，
+     * 留白全靠子元素各自的 margin 撐開，那些 margin 區塊的背景就是 <dialog>，
+     * 點下去 event.target === dialog，被判定成「點背景」而關閉。
+     * 加這層填滿的 inner wrapper 後，可視範圍內任何一點的 event.target
+     * 都會落在 wrapper（或其子元素）身上，只有真正的背景（含 ::backdrop）
+     * 點擊時 target 才會是 <dialog> 本身，背景關閉判斷才不會誤觸。 */
+    .route-map-dialog-inner { display: block; }
 
     .route-map-dialog::backdrop {
       background: rgba(28, 24, 18, .5);
@@ -984,13 +1003,15 @@
     </details>
 
     <dialog class="route-map-dialog" id="routeMapDialog" aria-labelledby="routeMapDialogTitle">
-      <div class="route-map-dialog-head">
-        <h2 id="routeMapDialogTitle"></h2>
-        <button type="button" class="route-map-close" id="routeMapCloseBtn" aria-label="關閉示意圖">✕</button>
+      <div class="route-map-dialog-inner" id="routeMapDialogInner">
+        <div class="route-map-dialog-head">
+          <h2 id="routeMapDialogTitle"></h2>
+          <button type="button" class="route-map-close" id="routeMapCloseBtn" aria-label="關閉示意圖">✕</button>
+        </div>
+        <p class="route-map-dialog-note">依實際經緯度等比例繪製，相對位置與方向如實呈現；只是示意，不是精確步行路徑，出發前仍請以 Google Maps 為準。</p>
+        <div class="route-map-svg-host" id="routeMapSvgHost"></div>
+        <ol class="route-map-list" id="routeMapListHost"></ol>
       </div>
-      <p class="route-map-dialog-note">依實際經緯度等比例繪製，相對位置與方向如實呈現；只是示意，不是精確步行路徑，出發前仍請以 Google Maps 為準。</p>
-      <div class="route-map-svg-host" id="routeMapSvgHost"></div>
-      <ol class="route-map-list" id="routeMapListHost"></ol>
     </dialog>
 
     <div class="content-grid">
@@ -1147,11 +1168,14 @@
     }
 
     /* 一家店「還要去」的條件：有清單商品還沒買，或有鞋款還沒試穿——
-     * 鞋款沒有「買了沒」狀態，只要連結到這家店就一直算要去。 */
+     * 鞋款沒有「買了沒」狀態，只要連結到這家店就一直算要去。
+     * 候選店家（storeCandidates，例如行動電源那種「不保證有貨、到現場問」的品項）
+     * 同樣要算，否則那幾家店會整個從購物路線上消失。 */
     function storeHasRemainingItems(store) {
-      return productsForStore(store.id, 'confirmed').some(
-        (product) => (product.tracking === 'buy' && !isBought(product.id)) || product.tracking === 'try'
-      );
+      const isRemaining = (product) =>
+        (product.tracking === 'buy' && !isBought(product.id)) || product.tracking === 'try';
+      return productsForStore(store.id, 'confirmed').some(isRemaining)
+        || productsForStore(store.id, 'candidate').some(isRemaining);
     }
 
     function routeStopMeta(items) {
@@ -1284,7 +1308,12 @@
       const title = document.getElementById('routeMapDialogTitle');
       const svgHost = document.getElementById('routeMapSvgHost');
       const listHost = document.getElementById('routeMapListHost');
-      if (!dialog || typeof dialog.showModal !== 'function') return;
+      if (!dialog || typeof dialog.showModal !== 'function') {
+        // 少數不支援 <dialog> 的舊瀏覽器：示意圖彈不出來，但路線清單本身
+        // 就在按鈕正下方，用提示告知使用者而非按鈕靜默無反應。
+        window.alert('此瀏覽器不支援彈出式路線示意圖，請直接參考下方的路線清單與「導航」連結。');
+        return;
+      }
 
       title.textContent = anchor
         ? `${AREA_LABELS[area]}購物路線示意圖（起點：${anchor.label}）`
@@ -1555,6 +1584,9 @@
         button.setAttribute('aria-pressed', String(isActive));
       });
       renderStores();
+      // 點路線站點會一次套用 area＋category 兩個篩選，結果可能從 45 家掉到 1 家，
+      // 選中的 pill 若在畫面外（分類共 8 個，手機一行放不下）使用者會看不出發生了什麼事。
+      revealActiveFilter(`[data-${filterType}]`);
     }
 
     function focusStore(id, { scrollCard = false } = {}) {
@@ -1648,9 +1680,11 @@
     document.getElementById('routeMapCloseBtn').addEventListener('click', () => {
       document.getElementById('routeMapDialog').close();
     });
-    /* 點在 <dialog> 本身（也就是內容框外的背景區）才關閉，點內容不會誤觸 */
+    /* 點在填滿的 inner wrapper 之外（也就是內容框外的背景區，含 ::backdrop）才關閉，
+     * 點卡片內緣或區塊間隙不會誤觸——這些位置的 target 現在都落在 wrapper 內。 */
     document.getElementById('routeMapDialog').addEventListener('click', (event) => {
-      if (event.target === event.currentTarget) event.currentTarget.close();
+      const inner = document.getElementById('routeMapDialogInner');
+      if (inner && !inner.contains(event.target)) event.currentTarget.close();
     });
     // 先讀網址參數設好篩選，initMap 的第一次框選才會直接對焦到指定店家
     const urlStore = readStoreUrlParam();

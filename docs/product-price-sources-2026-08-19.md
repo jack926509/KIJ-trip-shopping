@@ -46,7 +46,7 @@ Wireless2.2 8K）掛在「藥妝日用」的「3C 配件」分類下。使用者
 仍列出 Pro SLIM CABLE 並附 Amazon／楽天 連結。因此這三款維持在清單上，但：
 
 - 8K 的 `note` 與 `priceNote` 明講它已非現行、且接班人更便宜容量更大。
-- Pro SLIM CABLE 與 Pro CABLE C 的 `stores` 留空、只填 `storeCandidates`，
+- 五款的 `stores` 一律留空、只填 `storeCandidates`（詳見下方「購買地點」一節），
   因為門市不保證有貨，不應該給出「這家買得到」的確定語氣。
 
 **8K 與其接班人的對照**（這是本輪最有價值的發現）：
@@ -112,7 +112,7 @@ Pro SLIM CABLE 官方頁面存在自我矛盾：功能敘述寫「デジタル�
 
 以上為第三方評價的定性摘要，**沒有**寫進商品資料的 `priceNote`，避免與價格佐證混淆。
 
-## 購買地點（2026-08-19 定案）
+## 購買地點（2026-08-19 定案，同日修正為 stores 留空）
 
 使用者指定**五款一律並列同一組店家**，購買動線統一：
 
@@ -121,8 +121,10 @@ Pro SLIM CABLE 官方頁面存在自我矛盾：功能敘述寫「デジタル�
 | `yodobashi-camera-hakata`（ヨドバシカメラ マルチメディア博多） | ヨドバシ設有 CIO 專門賣場（逾 190 項 CIO 商品），SMARTCOBY 系列鋪貨最完整 |
 | `biccamera-tenjin-1`、`biccamera-tenjin-2` | BicCamera 亦販售 SMARTCOBY 系列；天神兩館分館別品項不同，故兩館都列 |
 
-五款的 `stores` 皆為上列三家、`storeCandidates` 清空，頁面上的購買地點因此
-只在分區頂端顯示一列，卡片內不再各印一次。
+「購買動線統一」指的是這三家店，不代表「確定有貨」——五款中有三款（8K、Pro SLIM
+CABLE、Pro CABLE C）已非 CIO 現行陣容，門市能不能買到要碰運氣。因此五款的
+`stores` 一律留空，上列三家改列 `storeCandidates`；頁面上以「可詢問門市」的措辭
+在分區頂端顯示一列，不再用肯定語氣宣稱「購買地點」，卡片內也不各印一次。
 
 需要留意的兩點：
 
