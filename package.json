@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "build:images": "node scripts/build-images.mjs",
+    "build:placeholders": "node scripts/build-placeholder-images.mjs",
     "test": "node scripts/test-list-ui.mjs",
     "validate:data": "node scripts/validate-products.mjs"
   },
