@@ -18,4 +18,4 @@
 
 - ELECOM EX-G 與 Logicool MX Anywhere 3S 的價格取自 Yodobashi.com 商品頁當下顯示售價；門市（Yodobashi 博多、BicCamera 天神）現場尺寸／顏色庫存與售價可能不同。
 - Sanwa Supply 兩款目前僅確認官方線上商店（sanwa.co.jp／Sanwa Direct）售價，尚未確認天神、博多實體店（BicCamera、Yodobashi、HANDS 博多店）是否常態鋪貨；建議先致電或到店詢問，找不到現貨時可改線上訂購。
-- 本頁四款均為根據品牌口碑與規格整理出的**研究建議**，非已到店實測比較，卡片圖片為文字版品牌卡（無實拍照片）。
+- 本頁四款均為根據品牌口碑與規格整理出的**研究建議**，非已到店實測比較。卡片圖片已於 2026-08-20 換為品牌官方商品照。

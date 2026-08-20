@@ -206,17 +206,31 @@ const SHOE_BRANDS = {
 
 const MOUSE_BRANDS = {
   'elecom-ex-g': 'ELECOM',
+  'elecom-ex-g-pro': 'ELECOM',
+  'sanwa-400-ma092': 'Sanwa Supply',
   'sanwa-ma-ergw19': 'Sanwa Supply',
   'sanwa-trackball-400-mawbttb190': 'Sanwa Supply',
+  'logicool-ergo-m575-sp': 'Logicool',
+  'logicool-mx-ergo-s': 'Logicool',
   'logicool-mx-anywhere-3s': 'Logicool',
+  'logicool-pebble-mouse-2-m350s': 'Logicool',
+  'buffalo-bsmbw318bk': 'Buffalo',
 };
 
-/* 滑鼠分頁卡片上的「這款的定位是什麼」，呼應鞋款／行動電源的一句話定位寫法。 */
+/* 滑鼠分頁卡片上的「這款的定位是什麼」，呼應鞋款／行動電源的一句話定位寫法。
+ * 編號依 products.js 的排列分成三組：①～④ 人體工學造型、⑤～⑦ 軌跡球、⑧～⑩ 隨身輕便，
+ * 組內由價格低到高。改動順序時這裡的編號要跟著改。 */
 const MOUSE_SUMMARIES = {
-  'elecom-ex-g': '① 日規人體工學入門・多尺寸可選',
-  'sanwa-ma-ergw19': '② 棒狀造型・手腕完全不用扭轉',
-  'sanwa-trackball-400-mawbttb190': '③ 軌跡球・免移動手臂，適合窄桌面',
-  'logicool-mx-anywhere-3s': '④ 主流大廠・輕巧隨身、多裝置切換',
+  'elecom-ex-g': '① 人體工學入門・多尺寸可選',
+  'elecom-ex-g-pro': '② 人體工學頂規・8 鍵、3 台切換、充電式',
+  'sanwa-400-ma092': '③ 人體工學最便宜・小預算試手感',
+  'sanwa-ma-ergw19': '④ 棒狀造型・手腕完全不用扭轉',
+  'sanwa-trackball-400-mawbttb190': '⑤ 軌跡球入門・免移動手臂，適合窄桌面',
+  'logicool-ergo-m575-sp': '⑥ 軌跡球中階・靜音、大廠手感',
+  'logicool-mx-ergo-s': '⑦ 軌跡球旗艦・角度可調、可自訂巨集',
+  'logicool-mx-anywhere-3s': '⑧ 高階隨身・玻璃桌面可用、多裝置切換',
+  'logicool-pebble-mouse-2-m350s': '⑨ 超薄極輕・包包夾層塞得下',
+  'buffalo-bsmbw318bk': '⑩ 最低價備用・堪用就好',
 };
 
 const DRYER_COMPARISON_ROWS = {
@@ -344,7 +358,7 @@ function mouseNoteHtml(items) {
     : '');
   const candidateHtml = candidateIds.map(linkFor).filter(Boolean).join('');
   return `<section class="kij-store-banner" aria-label="滑鼠品牌卡片說明">
-    <p class="kij-compare-note">以下為依品牌口碑與官方規格整理的<strong>研究建議</strong>，尚未實地到店核對現貨與售價，圖片為文字版品牌卡而非實拍照片；購買前請以店內標示與庫存為準。</p>
+    <p class="kij-compare-note">以下為依品牌口碑與官方規格整理的<strong>研究建議</strong>，尚未實地到店核對現貨與售價，圖片部分為品牌官方商品照、部分為文字版品牌卡（該款尚無實拍照片）；購買前請以店內標示與庫存為準。</p>
     ${candidateHtml ? `<div class="kij-store-banner-row"><span>可詢問門市</span><div class="kij-store-links">${candidateHtml}</div></div>` : ''}
   </section>`;
 }

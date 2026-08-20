@@ -241,7 +241,7 @@ const BASE_PRODUCTS = [
     storeCandidates: ['biccamera-tenjin-2', 'yodobashi-camera-hakata', 'bestdenki-kokura-ekimae']
   },
 
-  // ── 滑鼠（mouse，4 項；品牌研究建議，尚未實地走訪店面核對現貨，卡片為文字版品牌卡） ──
+  // ── 滑鼠（mouse，10 項；品牌研究建議，尚未實地走訪店面核對現貨。前 4 項為品牌官方商品照，2026-08-20 新增的 6 項尚無實拍照片，用文字版品牌卡） ──
   {
     id: 'elecom-ex-g',
     group: 'mouse',
@@ -259,6 +259,42 @@ const BASE_PRODUCTS = [
     stores: [],
     storeCandidates: ['yodobashi-camera-hakata', 'biccamera-tenjin-1'],
     priceKind: 'retailer-reference', priceSourceUrl: 'https://www.yodobashi.com/product/100000001007874792/', priceCheckedAt: '2026-08-19', priceNote: 'Yodobashi.com 商品頁列出的 M 尺寸／2.4GHz／黑色款含稅售價；門市現場實際庫存尺寸、顏色與售價可能不同，請以店內標示為準。'
+  },
+  {
+    id: 'elecom-ex-g-pro',
+    group: 'mouse',
+    tracking: 'try',
+    category: null,
+    name: 'ELECOM EX-G PRO 人體工學無線滑鼠',
+    jaName: '静音 充電式 Bluetooth5.0マウス EX-G 8ボタン Mサイズ',
+    model: 'M-XGM50MBSKBK（Mサイズ・ブラック）',
+    yen: 6590,
+    twdRef: null,
+    defaultQty: null,
+    image: 'images/thumb/elecom-ex-g-pro.webp',
+    note: 'EX-G 系列的頂規版本，和上面那款是同一種「不必用力握住」的手形（不是垂直滑鼠），差別在功能全面升級：8 顆可自訂按鍵、可左右傾斜的高速滾輪、最多 3 台裝置切換、充電式免換電池。ELECOM 與整形外科醫師共同開發。適合已經確定喜歡 EX-G 手感、想一次買到系列最高階的人。',
+    source: 'docs/mouse-research-additional-2026-08-20.md',
+    stores: [],
+    storeCandidates: ['yodobashi-camera-hakata', 'biccamera-tenjin-1', 'biccamera-tenjin-2'],
+    priceKind: 'retailer-reference', priceSourceUrl: 'https://www.yodobashi.com/product/100000001008069243/', priceCheckedAt: '2026-08-20', priceNote: 'Yodobashi.com 商品頁含稅售價 ¥6,590（回饋 659 點）。ELECOM 官方商品頁標示的含稅定價為 ¥17,424，日本周邊廠商常訂高定價再由通路折讓，此處採實際付得出的通路價。門市庫存尺寸、顏色與售價可能不同，請以店內標示為準；尚未確認天神、博多實體店是否鋪貨。'
+  },
+  {
+    id: 'sanwa-400-ma092',
+    group: 'mouse',
+    tracking: 'try',
+    category: null,
+    name: 'Sanwa Supply 人體工學無線滑鼠 400-MA092',
+    jaName: 'ワイヤレスマウス 無線 2.4GHz エルゴノミクス ブルーLED 5ボタン',
+    model: '400-MA092（ブラック）',
+    yen: 2780,
+    twdRef: null,
+    defaultQty: null,
+    image: 'images/thumb/sanwa-400-ma092.webp',
+    note: '機身背部拉高、向內傾斜的人體工學造型（不是垂直滑鼠），手掌自然攤放不必用力抓握；5 鍵可自訂、2.4GHz 無線、中等尺寸男女都好握。¥2,780 是滑鼠分頁裡最便宜的人體工學款，不到 EX-G 的六折，適合想先用小預算試試這種形狀合不合手的人。',
+    source: 'docs/mouse-research-additional-2026-08-20.md',
+    stores: [],
+    storeCandidates: [],
+    priceKind: 'official', priceSourceUrl: 'https://direct.sanwa.co.jp/ItemPage/400-MA092', priceCheckedAt: '2026-08-20', priceNote: 'Sanwa Direct 官方線上商店商品頁含稅售價 ¥2,780。此為 Sanwa Direct 網路限定商品（WEB 限定），天神、博多實體通路不一定買得到，未列可詢問門市；想要的話建議直接線上訂購。'
   },
   {
     id: 'sanwa-ma-ergw19',
@@ -297,6 +333,42 @@ const BASE_PRODUCTS = [
     priceKind: 'official', priceSourceUrl: 'https://direct.sanwa.co.jp/ItemPage/400-MAWBTTB190BK', priceCheckedAt: '2026-08-19', priceNote: 'Sanwa Direct 官方線上商店商品頁含稅售價 ¥5,480。目前僅確認官方線上商店售價，尚未確認天神、博多實體店是否常態鋪貨。'
   },
   {
+    id: 'logicool-ergo-m575-sp',
+    group: 'mouse',
+    tracking: 'try',
+    category: null,
+    name: 'Logicool ERGO M575 SP 無線軌跡球滑鼠',
+    jaName: 'ワイヤレストラックボールマウス ERGO M575 SP 静音',
+    model: 'M575SPOW（オフホワイト＋ブルーボール）',
+    yen: 8400,
+    twdRef: null,
+    defaultQty: null,
+    image: 'images/thumb/logicool-ergo-m575-sp.webp',
+    note: '上面那顆 Sanwa 軌跡球與旗艦 MX ERGO S 之間的中價位選擇，同樣是拇指操作、手臂不用移動，按鍵做了靜音化。支援藍牙與 Logi Bolt 接收器。適合想體驗軌跡球好處、又還不確定要不要一次投資到旗艦款的人。',
+    source: 'docs/mouse-research-additional-2026-08-20.md',
+    stores: [],
+    storeCandidates: ['yodobashi-camera-hakata', 'biccamera-tenjin-1', 'biccamera-tenjin-2'],
+    priceKind: 'retailer-reference', priceSourceUrl: 'https://www.yodobashi.com/product/100000001008693278/', priceCheckedAt: '2026-08-20', priceNote: 'Yodobashi.com 商品頁含稅售價 ¥8,400（回饋 840 點）。門市庫存顏色與售價可能不同；尚未確認天神、博多實體店是否鋪貨。'
+  },
+  {
+    id: 'logicool-mx-ergo-s',
+    group: 'mouse',
+    tracking: 'try',
+    category: null,
+    name: 'Logicool MX ERGO S 無線軌跡球滑鼠',
+    jaName: 'ワイヤレストラックボールマウス MX ERGO S 充電式 8ボタン',
+    model: 'MXTB2（グラファイト）',
+    yen: 17700,
+    twdRef: null,
+    defaultQty: null,
+    image: 'images/thumb/logicool-mx-ergo-s.webp',
+    note: 'Logicool 軌跡球的旗艦款，機身角度可調（平放或傾斜 20 度），8 鍵可自訂並支援 Smart Actions 巨集，USB-C 快充。價格是分頁裡最高的，適合已經用慣軌跡球、確定這是自己長期主力、想一次到位的重度使用者；只是旅途臨時用的話不必買到這款。',
+    source: 'docs/mouse-research-additional-2026-08-20.md',
+    stores: [],
+    storeCandidates: ['yodobashi-camera-hakata', 'biccamera-tenjin-1', 'biccamera-tenjin-2'],
+    priceKind: 'retailer-reference', priceSourceUrl: 'https://www.yodobashi.com/product/100000001008693280/', priceCheckedAt: '2026-08-20', priceNote: 'Yodobashi.com 商品頁含稅售價 ¥17,700（回饋 1,770 點）。Amazon 等通路查到 ¥16,091 更低價，比價後再決定通路較划算。門市庫存與售價可能不同；尚未確認天神、博多實體店是否鋪貨。'
+  },
+  {
     id: 'logicool-mx-anywhere-3s',
     group: 'mouse',
     tracking: 'try',
@@ -313,6 +385,42 @@ const BASE_PRODUCTS = [
     stores: [],
     storeCandidates: ['yodobashi-camera-hakata', 'biccamera-tenjin-1'],
     priceKind: 'retailer-reference', priceSourceUrl: 'https://www.yodobashi.com/product/100000001007851366/', priceCheckedAt: '2026-08-19', priceNote: 'Yodobashi.com 石墨灰（MX1800GR）款含稅售價，另有多種顏色與 Mac 專用版本；門市現場售價與庫存顏色可能不同。'
+  },
+  {
+    id: 'logicool-pebble-mouse-2-m350s',
+    group: 'mouse',
+    tracking: 'try',
+    category: null,
+    name: 'Logicool PEBBLE MOUSE 2 M350S 超薄靜音滑鼠',
+    jaName: 'ワイヤレスマウス PEBBLE MOUSE 2 M350S Bluetooth 薄型 静音',
+    model: 'M350sBL（ブルー）',
+    yen: 3240,
+    twdRef: null,
+    defaultQty: null,
+    image: 'images/thumb/logicool-pebble-mouse-2-m350s.webp',
+    note: '比上面的 MX Anywhere 3S 更薄更輕、鵝卵石般的圓潤外型，塞進包包夾層不佔空間；按鍵聲音大幅降低，單顆三號電池可用約 24 個月，藍牙可在 3 台裝置間切換。適合純粹想要一支輕便旅行用滑鼠、不需要進階功能的人。',
+    source: 'docs/mouse-research-additional-2026-08-20.md',
+    stores: [],
+    storeCandidates: ['yodobashi-camera-hakata', 'biccamera-tenjin-1', 'biccamera-tenjin-2'],
+    priceKind: 'retailer-reference', priceSourceUrl: 'https://www.yodobashi.com/product/100000001008119012/', priceCheckedAt: '2026-08-20', priceNote: 'Yodobashi.com 藍色款（M350sBL）含稅售價 ¥3,240（回饋 324 點），另有多種顏色。門市庫存顏色與售價可能不同；尚未確認天神、博多實體店是否鋪貨。'
+  },
+  {
+    id: 'buffalo-bsmbw318bk',
+    group: 'mouse',
+    tracking: 'try',
+    category: null,
+    name: 'Buffalo 無線靜音滑鼠 BSMBW318BK',
+    jaName: 'ワイヤレスマウス 無線 2.4GHz BlueLED 5ボタン 電池式',
+    model: 'BSMBW318BK（ブラック）',
+    yen: 2080,
+    twdRef: null,
+    defaultQty: null,
+    image: 'images/thumb/buffalo-bsmbw318bk.webp',
+    note: '日本本土品牌的入門無線滑鼠，一般形狀（沒有人體工學設計），5 鍵可指定功能、靜音點擊、乾電池式。¥2,080 是分頁裡最便宜的，適合只想帶一支堪用的備用滑鼠、或臨時發現忘了帶而需要就近補一支的情況。',
+    source: 'docs/mouse-research-additional-2026-08-20.md',
+    stores: [],
+    storeCandidates: ['yodobashi-camera-hakata', 'biccamera-tenjin-1', 'biccamera-tenjin-2'],
+    priceKind: 'retailer-reference', priceSourceUrl: 'https://www.yodobashi.com/product/100000001004427483/', priceCheckedAt: '2026-08-20', priceNote: 'Yodobashi.com 商品頁含稅售價 ¥2,080（回饋 208 點）。門市庫存與售價可能不同；尚未確認天神、博多實體店是否鋪貨。'
   },
 
   // ── ON 鞋款（shoes，5 項）──
@@ -806,7 +914,7 @@ const BASE_PRODUCTS = [
     group: 'powerbank', tracking: 'try', category: '3C 配件',
     name: 'CIO SMARTCOBY Pro SLIM SS 行動電源', jaName: 'SMARTCOBY Pro SLIM SS', model: 'CIO-MB35W2C1A-SSA10K-S・黑／白',
     yen: 6280, twdRef: null, defaultQty: null, image: 'images/thumb/cio-smartcoby-pro-slim-ss-10k.webp',
-    note: '只充手機的首選：現行陣容裡最便宜也最輕的 10,000 mAh。單埠最大 35 W，USB-C×2＋USB-A×1；約 66.8 × 98.3 × 16 mm、187 g，本體充飽只要 90 分鐘（五款中最快）。半固體電池、循環約 300 次，支援邊充邊放與 1% 數字電量。《家電批評》2026 上半期「準固體行動電源」部門年度 Best Buy，總評 4.45，實測實際可充出 6,187 mAh。缺點是沒有無線也沒有內建線，要自己帶線。備註：卡片圖為依官方規格自繪的示意圖，不是官方商品照。', source: 'docs/product-price-sources-2026-08-19.md', stores: [], storeCandidates: ['yodobashi-camera-hakata', 'biccamera-tenjin-1', 'biccamera-tenjin-2'],
+    note: '只充手機的首選：現行陣容裡最便宜也最輕的 10,000 mAh。單埠最大 35 W，USB-C×2＋USB-A×1；約 66.8 × 98.3 × 16 mm、187 g，本體充飽只要 90 分鐘（五款中最快）。半固體電池、循環約 300 次，支援邊充邊放與 1% 數字電量。《家電批評》2026 上半期「準固體行動電源」部門年度 Best Buy，總評 4.45，實測實際可充出 6,187 mAh。缺點是沒有無線也沒有內建線，要自己帶線。', source: 'docs/product-price-sources-2026-08-19.md', stores: [], storeCandidates: ['yodobashi-camera-hakata', 'biccamera-tenjin-1', 'biccamera-tenjin-2'],
     priceKind: 'official', priceSourceUrl: 'https://connectinternationalone.co.jp/cioproduct/mobilebattery/smartcoby/cio-mb35w2c1a-ssa10k-s/', priceCheckedAt: '2026-08-19', priceNote: '官方建議售價含稅 ¥6,280（2026-03-27 上市），屬 CIO 現行在售陣容；家電量販門市售價可能不同。'
   },
   {
@@ -814,7 +922,7 @@ const BASE_PRODUCTS = [
     group: 'powerbank', tracking: 'try', category: '3C 配件',
     name: 'CIO SMARTCOBY SLIMII Wireless 2.2 Pro SS10K 行動電源', jaName: 'SMARTCOBY SLIMⅡ Wireless2.2 Pro SS10K', model: 'CIO-MB35W1C-SS10K-S2W25',
     yen: 8580, twdRef: null, defaultQty: null, image: 'images/thumb/cio-smartcoby-slimii-wireless-2-2-pro-ss10k.webp',
-    note: '同頁 8K 那款的現行接班人：比 8K 便宜 ¥400、容量多 2,000 mAh、電芯改半固體、有線輸出從 30 W 升到 35 W。Qi2.2 磁吸無線 25 W，貼在 MagSafe 手機背後免拉線；約 101 × 70 × 17 mm、225 g，本體充飽約 140 分鐘、循環約 400 次。無線與有線同時使用時為 15 W＋5 W。想要磁吸貼背就買這款，不要買 8K。備註：卡片圖為依官方規格自繪的示意圖，不是官方商品照。', source: 'docs/product-price-sources-2026-08-19.md', stores: [], storeCandidates: ['yodobashi-camera-hakata', 'biccamera-tenjin-1', 'biccamera-tenjin-2'],
+    note: '同頁 8K 那款的現行接班人：比 8K 便宜 ¥400、容量多 2,000 mAh、電芯改半固體、有線輸出從 30 W 升到 35 W。Qi2.2 磁吸無線 25 W，貼在 MagSafe 手機背後免拉線；約 101 × 70 × 17 mm、225 g，本體充飽約 140 分鐘、循環約 400 次。無線與有線同時使用時為 15 W＋5 W。想要磁吸貼背就買這款，不要買 8K。', source: 'docs/product-price-sources-2026-08-19.md', stores: [], storeCandidates: ['yodobashi-camera-hakata', 'biccamera-tenjin-1', 'biccamera-tenjin-2'],
     priceKind: 'official', priceSourceUrl: 'https://connectinternationalone.co.jp/cioproduct/mobilebattery/smartcoby/cio-mb35w1c-ss10k-s2w25/', priceCheckedAt: '2026-08-19', priceNote: '官方建議售價含稅 ¥8,580，屬 CIO 現行在售陣容；家電量販門市售價可能不同。'
   },
   {
@@ -830,7 +938,7 @@ const BASE_PRODUCTS = [
     group: 'powerbank', tracking: 'try', category: '3C 配件',
     name: 'CIO SMARTCOBY Pro SLIM CABLE 行動電源', jaName: 'SMARTCOBY Pro SLIM CABLE 35W2C', model: 'CIO-MB35W2C-10000-SC・黑／白',
     yen: 5980, twdRef: null, defaultQty: null, image: 'images/thumb/cio-smartcoby-pro-slim-cable.webp',
-    note: '機身自帶約 21 cm 的 USB-C to C 線，旅行時少帶一條線，而且線是可拆式、斷了能單獨換。10,000 mAh、單埠最大 35 W，約 101.5 × 64.5 × 17.8 mm、189 g，本體充飽約 90 分鐘。只充一台手機時它的兩個缺點（沒有 USB-A、兩台同時只有合計 30 W）都碰不到。已不在 CIO 官方現行系列頁上，屬舊世代（非半固體），但官方選購指南仍在推薦；通路實售常低到 ¥4,464，若在門市看到出清價很值得撿。備註：卡片圖為依官方規格自繪的示意圖，不是官方商品照。', source: 'docs/product-price-sources-2026-08-19.md', stores: [], storeCandidates: ['yodobashi-camera-hakata', 'biccamera-tenjin-1', 'biccamera-tenjin-2'],
+    note: '機身自帶約 21 cm 的 USB-C to C 線，旅行時少帶一條線，而且線是可拆式、斷了能單獨換。10,000 mAh、單埠最大 35 W，約 101.5 × 64.5 × 17.8 mm、189 g，本體充飽約 90 分鐘。只充一台手機時它的兩個缺點（沒有 USB-A、兩台同時只有合計 30 W）都碰不到。已不在 CIO 官方現行系列頁上，屬舊世代（非半固體），但官方選購指南仍在推薦；通路實售常低到 ¥4,464，若在門市看到出清價很值得撿。', source: 'docs/product-price-sources-2026-08-19.md', stores: [], storeCandidates: ['yodobashi-camera-hakata', 'biccamera-tenjin-1', 'biccamera-tenjin-2'],
     priceKind: 'official', priceSourceUrl: 'https://connectinternationalone.co.jp/cioproduct/mobilebattery/smartcoby/cio-mb35w2c-10000-sc/', priceCheckedAt: '2026-08-19', priceNote: '官方建議售價含稅 ¥5,980。本款已不在 CIO 官方現行系列頁上，兩家量販都不保證有貨，到店請直接報型號問店員。官方頁面對電量顯示自相矛盾（功能敘述寫數字顯示、規格表寫點陣 LED），到店請按實機確認。'
   },
   {
@@ -838,7 +946,7 @@ const BASE_PRODUCTS = [
     group: 'powerbank', tracking: 'try', category: '3C 配件',
     name: 'CIO SMARTCOBY Pro CABLE C 行動電源', jaName: 'SMARTCOBY Pro CABLE C', model: 'SMARTCOBYPRO-35W-CABLE-C・黑／白',
     yen: 6578, twdRef: null, defaultQty: null, image: 'images/thumb/cio-smartcoby-pro-cable-c.webp',
-    note: '同樣是內建可拆式 USB-C 線的 10,000 mAh、單埠最大 35 W，但機身約 83 × 66 × 26.3 mm、198 g——佔地面積較小卻厚達 26.3 mm，總體積比 Pro SLIM CABLE 大約兩成四，官方定價還貴 ¥598，兩台同時充更只有合計 15 W。是同門 Pro SLIM CABLE 的上一代，除非在門市看到出清到 ¥3,000 上下，否則沒有理由選它。備註：卡片圖為依官方規格自繪的示意圖，不是官方商品照。', source: 'docs/product-price-sources-2026-08-19.md', stores: [], storeCandidates: ['yodobashi-camera-hakata', 'biccamera-tenjin-1', 'biccamera-tenjin-2'],
+    note: '同樣是內建可拆式 USB-C 線的 10,000 mAh、單埠最大 35 W，但機身約 83 × 66 × 26.3 mm、198 g——佔地面積較小卻厚達 26.3 mm，總體積比 Pro SLIM CABLE 大約兩成四，官方定價還貴 ¥598，兩台同時充更只有合計 15 W。是同門 Pro SLIM CABLE 的上一代，除非在門市看到出清到 ¥3,000 上下，否則沒有理由選它。', source: 'docs/product-price-sources-2026-08-19.md', stores: [], storeCandidates: ['yodobashi-camera-hakata', 'biccamera-tenjin-1', 'biccamera-tenjin-2'],
     priceKind: 'official', priceSourceUrl: 'https://connectinternationalone.co.jp/cioproduct/mobilebattery/smartcoby/smartcoby-pro-cable-c/', priceCheckedAt: '2026-08-19', priceNote: '官方建議售價含稅 ¥6,578。本款已不在 CIO 官方現行系列頁上，屬更早的群眾募資世代，兩家量販都不保證有貨，到店請直接報型號問店員。'
   }
 ];

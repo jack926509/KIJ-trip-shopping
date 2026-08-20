@@ -1,3 +1,6 @@
 .worktrees/
 .superpowers/
 node_modules/
+
+# 制度規定的修改前備份檔，只留本機不進版控
+*.bak-*
