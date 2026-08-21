@@ -330,12 +330,13 @@ export const STORES = [
     category: 'daily',
     area: 'kokura',
     address: '福岡縣北九州市小倉北區淺野 1-1-1 AMU PLAZA 小倉 西館 5F',
-    hours: '週一至週四 10:00–20:30；週五至週日與假日 10:00–21:00',
+    hours: '10:00–20:00',
     note: '中型店、提供免稅服務；位於西館 5F，與 B1F 的 DAISO／Cocokara Fine 不同樓層。',
     lat: 33.887192,
     lng: 130.881485,
-    officialUrl: 'https://www.palcloset.jp/addons/pal/shoplist/detail/?b=3coins&brandshop_no=2234',
+    officialUrl: 'https://www.amuplaza.jp/floor/detail/?cd=000100',
     officialSources: [
+      { label: 'AMU PLAZA 小倉官方樓層頁', url: 'https://www.amuplaza.jp/floor/detail/?cd=000100' },
       { label: '3COINS 官方店鋪頁', url: 'https://www.palcloset.jp/addons/pal/shoplist/detail/?b=3coins&brandshop_no=2234' }
     ],
     mapsQuery: '3COINS plus アミュプラザ小倉店'
@@ -622,9 +623,9 @@ export const STORES = [
     note: 'Panasonic 吹風機的主要採買點；型號、電壓規格、庫存與免稅資格請結帳前確認。',
     lat: 33.586903,
     lng: 130.401108,
-    officialUrl: 'https://biccamera.co.jp/language/chinese-tenjin.html',
+    officialUrl: 'https://www.biccamera.com/bc/i/shop/shoplist/shop026.jsp',
     officialSources: [
-      { label: 'BicCamera 天神官方店鋪資訊', url: 'https://biccamera.co.jp/language/chinese-tenjin.html' }
+      { label: 'BicCamera 天神 1 號館官方店鋪頁', url: 'https://www.biccamera.com/bc/i/shop/shoplist/shop026.jsp' }
     ],
     mapsQuery: 'ビックカメラ 天神1号館 福岡県福岡市中央区今泉 1-25-1'
   },
@@ -694,7 +695,7 @@ export const STORES = [
     category: 'convenience',
     area: 'tenjin',
     address: '福岡県福岡市中央区天神 2 天神地下街',
-    hours: '05:30–24:30（依天神地下街設施營業時間）',
+    hours: '07:00–23:00',
     note: '天神地下街內；冷藏、冷凍與限定商品庫存請以店內為準。',
     lat: 33.58939,
     lng: 130.398041,
@@ -755,8 +756,9 @@ export const STORES = [
     note: '茅乃舍高湯包與茶碗蒸し的素的博多採買點；營業日隨博多站設施公告調整，季節商品與禮盒請以店內為準。',
     lat: 33.589912,
     lng: 130.420395,
-    officialUrl: 'https://www.kubara.jp/shoplist/kayanoya/?wh=pc_menu',
+    officialUrl: 'https://www.kayanoya.com/shop/hakata-deitos/',
     officialSources: [
+      { label: '茅乃舍 博多站 DEITOS 店官方頁', url: 'https://www.kayanoya.com/shop/hakata-deitos/' },
       { label: '茅乃舍官方店鋪列表', url: 'https://www.kubara.jp/shoplist/kayanoya/?wh=pc_menu' }
     ],
     mapsQuery: '茅乃舎 博多駅デイトス店 福岡県福岡市博多区博多駅中央街 1-1'
@@ -774,8 +776,9 @@ export const STORES = [
     note: '小倉逛街動線上的茅乃舍據點；營業日隨井筒屋公告調整，季節商品與禮盒請以店內為準。',
     lat: 33.885441,
     lng: 130.877686,
-    officialUrl: 'https://www.kubara.jp/shoplist/kayanoya/?wh=pc_menu',
+    officialUrl: 'https://www.kayanoya.com/shop/kokura-izutsuya/',
     officialSources: [
+      { label: '茅乃舍 小倉井筒屋店官方頁', url: 'https://www.kayanoya.com/shop/kokura-izutsuya/' },
       { label: '茅乃舍官方店鋪列表', url: 'https://www.kubara.jp/shoplist/kayanoya/?wh=pc_menu' }
     ],
     mapsQuery: '茅乃舎 小倉井筒屋店 福岡県北九州市小倉北区船場町 1-1'
