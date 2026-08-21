@@ -396,6 +396,10 @@
       gap: 6px;
     }
 
+    /* 同 .filter-group[hidden]：class 的 display 會蓋掉 [hidden] 的瀏覽器預設樣式，
+     * 少了這一條，摘要 chip 點開前個別區域就已經全部攤在地圖上了。 */
+    .map-area-chip-group[hidden] { display: none; }
+
     .map-area-chip {
       display: inline-flex;
       align-items: center;
