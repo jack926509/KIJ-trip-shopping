@@ -37,6 +37,8 @@ const errors = [];
 const seenIds = new Set();
 const mapHtml = readFileSync(path.join(ROOT, 'map.html'), 'utf8');
 const indexHtml = readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+const mapApp = readFileSync(path.join(ROOT, 'scripts/map-app.js'), 'utf8');
+const indexApp = readFileSync(path.join(ROOT, 'scripts/index-app.js'), 'utf8');
 const mapStoreIds = new Set(stores.map((store) => store.id));
 
 /* 店家資料自身的檢查（欄位齊全、id 不重複、兩個名稱都在）。 */
@@ -60,7 +62,7 @@ for (const store of stores) {
 if (/const STORES\s*=\s*\[/.test(mapHtml)) {
   errors.push('map.html: 不得再內嵌 const STORES，請從 assets/stores.js 匯入');
 }
-if (/const STORE_SUMMARIES\s*=\s*\{/.test(indexHtml)) {
+if (/const STORE_SUMMARIES\s*=\s*\{/.test(indexApp)) {
   errors.push('index.html: 不得再寫死 STORE_SUMMARIES，請從 assets/stores.js 匯入');
 }
 
@@ -149,8 +151,8 @@ for (const p of products) {
 }
 
 for (const forbiddenText of ['結算', '價格待確認原因']) {
-  if (indexHtml.includes(forbiddenText)) errors.push(`index.html: 不得保留「${forbiddenText}」`);
-  if (mapHtml.includes(forbiddenText)) errors.push(`map.html: 不得保留「${forbiddenText}」`);
+  if (indexApp.includes(forbiddenText)) errors.push(`scripts/index-app.js: 不得保留「${forbiddenText}」`);
+  if (mapApp.includes(forbiddenText)) errors.push(`scripts/map-app.js: 不得保留「${forbiddenText}」`);
 }
 
 /* ──────────────────────────────────────────────────────────────
@@ -252,9 +254,9 @@ for (const storeId of referenceOnlyStoreIds) {
 /* 6. 路線起點錨點必須指向真實存在的店家。
  * 打錯 id 不會噴錯，只會讓 routeStartAnchor 回傳 null、路線悄悄退回
  * 「從陣列第一家開始」——畫面上看不出任何異狀，正是要靠驗證器攔的那類問題。 */
-const anchorBlock = (mapHtml.match(/const ROUTE_START_ANCHORS = \{[\s\S]*?\n {4}\};/) || [''])[0];
+const anchorBlock = (mapApp.match(/const ROUTE_START_ANCHORS = \{[\s\S]*?\n\};/) || [''])[0];
 const anchorAreas = [...anchorBlock.matchAll(/(\w+):\s*\{\s*storeId:\s*'([a-z0-9-]+)'/g)];
-if (mapHtml.includes('ROUTE_START_ANCHORS') && anchorAreas.length === 0) {
+if (mapApp.includes('ROUTE_START_ANCHORS') && anchorAreas.length === 0) {
   errors.push('map.html: 找不到任何 ROUTE_START_ANCHORS 錨點設定，請確認格式沒被改壞');
 }
 for (const [, area, storeId] of anchorAreas) {
@@ -266,7 +268,7 @@ for (const [, area, storeId] of anchorAreas) {
 /* 7. 每個店家分類都必須同時具備：篩選標籤、地圖標記色、圖例色、卡片標籤色。
  * 漏掉圖例色時該色點會變成透明，看起來就像「後面幾個分類沒有圖例」，
  * 而地圖上的標記其實是有顏色的——兩邊不同步且不會有任何錯誤訊息。 */
-const categoryLabels = [...(mapHtml.match(/const CATEGORY_LABELS = \{[^}]*\}/) || [''])[0]
+const categoryLabels = [...(mapApp.match(/const CATEGORY_LABELS = \{[^}]*\}/) || [''])[0]
   .matchAll(/'?([a-z-]+)'?\s*:\s*'/g)].map((m) => m[1]);
 const usedCategories = new Set(stores.map((store) => store.category));
 for (const category of categoryLabels) {
@@ -287,7 +289,7 @@ for (const category of usedCategories) {
 /* 8. 行動電源對照表（index.html 的 POWERBANK_COMPARISON_ROWS）必須涵蓋每一款
  * 行動電源商品 id，否則比較表少一欄（index.html 已加防護跳過該款、不會整頁炸掉，
  * 但這裡要在資料源頭攔截「忘了補列」，兩者互為備援）。 */
-const powerbankRowsBlock = (indexHtml.match(/const POWERBANK_COMPARISON_ROWS = \{[\s\S]*?\n\};/) || [''])[0];
+const powerbankRowsBlock = (indexApp.match(/const POWERBANK_COMPARISON_ROWS = \{[\s\S]*?\n\};/) || [''])[0];
 const powerbankRowIds = new Set([...powerbankRowsBlock.matchAll(/'([a-z0-9-]+)':/g)].map((m) => m[1]));
 const powerbankProducts = products.filter((p) => p.group === 'powerbank');
 if (powerbankProducts.length > 0 && powerbankRowIds.size === 0) {
