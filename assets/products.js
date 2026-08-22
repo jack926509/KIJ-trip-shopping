@@ -250,15 +250,15 @@ const BASE_PRODUCTS = [
     name: 'ELECOM EX-G 人體工學無線滑鼠',
     jaName: '静音 2.4GHz無線マウス EX-G',
     model: 'M-XGM30DBSKBK（Mサイズ・ブラック）',
-    yen: 5080,
+    yen: 7623,
     twdRef: null,
     defaultQty: null,
     image: 'images/thumb/elecom-ex-g.webp',
-    note: '手掌微傾斜的人體工學設計＋靜音微動，5 鍵、可調 DPI；M／L／LL 等多種尺寸與 2.4GHz／藍牙版本可選，長時間握持手腕負擔較小，是日本最普及的人體工學滑鼠系列之一。',
-    source: 'docs/mouse-price-research-2026-08-19.md',
+    note: '手掌微傾斜的人體工學設計＋靜音微動，5 鍵、可調 DPI；M／L／LL 等多種尺寸與 2.4GHz／藍牙版本可選。官方標準價 ¥7,623，量販店實售可能較低。',
+    source: 'docs/product-refresh-audit-2026-08-22.md',
     stores: [],
     storeCandidates: ['yodobashi-camera-hakata', 'biccamera-tenjin-1'],
-    priceKind: 'retailer-reference', priceSourceUrl: 'https://www.yodobashi.com/product/100000001007874792/', priceCheckedAt: '2026-08-19', priceNote: 'Yodobashi.com 商品頁列出的 M 尺寸／2.4GHz／黑色款含稅售價；門市現場實際庫存尺寸、顏色與售價可能不同，請以店內標示為準。'
+    priceKind: 'official', priceSourceUrl: 'https://www.elecom.co.jp/products/M-XGM30DBSKBK.html', priceCheckedAt: '2026-08-22', priceNote: 'ELECOM 官方標準含稅價 ¥7,623；量販店通常可能折價，門市庫存尺寸、顏色與實售另查。'
   },
   {
     id: 'elecom-ex-g-pro',
@@ -268,15 +268,15 @@ const BASE_PRODUCTS = [
     name: 'ELECOM EX-G PRO 人體工學無線滑鼠',
     jaName: '静音 充電式 Bluetooth5.0マウス EX-G 8ボタン Mサイズ',
     model: 'M-XGM50MBSKBK（Mサイズ・ブラック）',
-    yen: 6590,
+    yen: 17424,
     twdRef: null,
     defaultQty: null,
     image: 'images/thumb/elecom-ex-g-pro.webp',
     note: 'EX-G 系列的頂規版本，和上面那款是同一種「不必用力握住」的手形（不是垂直滑鼠），差別在功能全面升級：8 顆可自訂按鍵、可左右傾斜的高速滾輪、最多 3 台裝置切換、充電式免換電池。ELECOM 與整形外科醫師共同開發。適合已經確定喜歡 EX-G 手感、想一次買到系列最高階的人。',
-    source: 'docs/mouse-research-additional-2026-08-20.md',
+    source: 'docs/product-refresh-audit-2026-08-22.md',
     stores: [],
     storeCandidates: ['yodobashi-camera-hakata', 'biccamera-tenjin-1', 'biccamera-tenjin-2'],
-    priceKind: 'retailer-reference', priceSourceUrl: 'https://www.yodobashi.com/product/100000001008069243/', priceCheckedAt: '2026-08-20', priceNote: 'Yodobashi.com 商品頁含稅售價 ¥6,590（回饋 659 點）。ELECOM 官方商品頁標示的含稅定價為 ¥17,424，日本周邊廠商常訂高定價再由通路折讓，此處採實際付得出的通路價。門市庫存尺寸、顏色與售價可能不同，請以店內標示為準；尚未確認天神、博多實體店是否鋪貨。'
+    priceKind: 'official', priceSourceUrl: 'https://www.elecom.co.jp/products/M-XGM50MBSKBK.html', priceCheckedAt: '2026-08-22', priceNote: 'ELECOM 官方標準含稅價 ¥17,424；量販店通常可能大幅折價，門市庫存尺寸、顏色與實售另查。'
   },
   {
     id: 'sanwa-400-ma092',
@@ -304,15 +304,15 @@ const BASE_PRODUCTS = [
     name: 'Sanwa Supply 棒狀人體工學滑鼠 MA-ERGW19',
     jaName: 'ワイヤレスエルゴノミクススティックマウス MA-ERGW19',
     model: 'MA-ERGW19（2.4GHz無線・IR LEDセンサー）',
-    yen: 6820,
+    yen: 7480,
     twdRef: null,
     defaultQty: null,
     image: 'images/thumb/sanwa-ma-ergw19.webp',
-    note: '搖桿造型的棒狀人體工學滑鼠，手腕不必扭轉、以自然角度握持，內附軟質腕靠分散施力；2.4GHz 無線＋IR LED 感應器，另有藍牙版 MA-ERGBT20。適合長時間文書工作、容易手腕痠痛的人。',
-    source: 'docs/mouse-price-research-2026-08-19.md',
+    note: '搖桿造型的棒狀人體工學滑鼠，手腕不必扭轉、以自然角度握持；官方已標示廢止，只能找通路剩餘庫存。',
+    source: 'docs/product-refresh-audit-2026-08-22.md',
     stores: [],
     storeCandidates: ['hands-hakata'],
-    priceKind: 'official', priceSourceUrl: 'https://www.sanwa.co.jp/product/syohin?code=MA-ERGW19', priceCheckedAt: '2026-08-19', priceNote: 'Sanwa Supply 官方商品頁標示的標準售價，含稅 ¥6,820；通路實售可能更低，購買前可比價。目前僅確認官方線上商店售價，尚未確認天神、博多實體店是否常態鋪貨。'
+    priceKind: 'launch-reference', priceSourceUrl: 'https://www.sanwa.co.jp/product/syohin?code=MA-ERGW19', priceCheckedAt: '2026-08-22', priceNote: '官方頁標示標準含稅價 ¥7,480 且產品已廢止；此數字只供辨識舊品，門市只能碰運氣找剩餘庫存。'
   },
   {
     id: 'sanwa-trackball-400-mawbttb190',
@@ -340,15 +340,15 @@ const BASE_PRODUCTS = [
     name: 'Logicool ERGO M575 SP 無線軌跡球滑鼠',
     jaName: 'ワイヤレストラックボールマウス ERGO M575 SP 静音',
     model: 'M575SPOW（オフホワイト＋ブルーボール）',
-    yen: 8400,
+    yen: 7700,
     twdRef: null,
     defaultQty: null,
     image: 'images/thumb/logicool-ergo-m575-sp.webp',
     note: '上面那顆 Sanwa 軌跡球與旗艦 MX ERGO S 之間的中價位選擇，同樣是拇指操作、手臂不用移動，按鍵做了靜音化。支援藍牙與 Logi Bolt 接收器。適合想體驗軌跡球好處、又還不確定要不要一次投資到旗艦款的人。',
-    source: 'docs/mouse-research-additional-2026-08-20.md',
+    source: 'docs/product-refresh-audit-2026-08-22.md',
     stores: [],
     storeCandidates: ['yodobashi-camera-hakata', 'biccamera-tenjin-1', 'biccamera-tenjin-2'],
-    priceKind: 'retailer-reference', priceSourceUrl: 'https://www.yodobashi.com/product/100000001008693278/', priceCheckedAt: '2026-08-20', priceNote: 'Yodobashi.com 商品頁含稅售價 ¥8,400（回饋 840 點）。門市庫存顏色與售價可能不同；尚未確認天神、博多實體店是否鋪貨。'
+    priceKind: 'official', priceSourceUrl: 'https://www.logicool.co.jp/ja-jp/shop/p/ergo-m575s-wireless-trackball.910-007027', priceCheckedAt: '2026-08-22', priceNote: 'Logicool 官方直營當日特價含稅 ¥7,700（原價 ¥8,470）；促銷可能變動，指定白色款與實體門市庫存另查。'
   },
   {
     id: 'logicool-mx-ergo-s',
@@ -394,15 +394,15 @@ const BASE_PRODUCTS = [
     name: 'Logicool PEBBLE MOUSE 2 M350S 超薄靜音滑鼠',
     jaName: 'ワイヤレスマウス PEBBLE MOUSE 2 M350S Bluetooth 薄型 静音',
     model: 'M350sBL（ブルー）',
-    yen: 3240,
+    yen: 3960,
     twdRef: null,
     defaultQty: null,
     image: 'images/thumb/logicool-pebble-mouse-2-m350s.webp',
     note: '比上面的 MX Anywhere 3S 更薄更輕、鵝卵石般的圓潤外型，塞進包包夾層不佔空間；按鍵聲音大幅降低，單顆三號電池可用約 24 個月，藍牙可在 3 台裝置間切換。適合純粹想要一支輕便旅行用滑鼠、不需要進階功能的人。',
-    source: 'docs/mouse-research-additional-2026-08-20.md',
+    source: 'docs/product-refresh-audit-2026-08-22.md',
     stores: [],
     storeCandidates: ['yodobashi-camera-hakata', 'biccamera-tenjin-1', 'biccamera-tenjin-2'],
-    priceKind: 'retailer-reference', priceSourceUrl: 'https://www.yodobashi.com/product/100000001008119012/', priceCheckedAt: '2026-08-20', priceNote: 'Yodobashi.com 藍色款（M350sBL）含稅售價 ¥3,240（回饋 324 點），另有多種顏色。門市庫存顏色與售價可能不同；尚未確認天神、博多實體店是否鋪貨。'
+    priceKind: 'official', priceSourceUrl: 'https://www.logicool.co.jp/ja-jp/products/mice/pebble-2-m350s-wireless-mouse.html', priceCheckedAt: '2026-08-22', priceNote: 'Logicool 官方含稅價 ¥3,960；官網當日顯示有貨，但藍色 M350sBL 與實體門市庫存另查。'
   },
   {
     id: 'buffalo-bsmbw318bk',
@@ -412,15 +412,15 @@ const BASE_PRODUCTS = [
     name: 'Buffalo 無線靜音滑鼠 BSMBW318BK',
     jaName: 'ワイヤレスマウス 無線 2.4GHz BlueLED 5ボタン 電池式',
     model: 'BSMBW318BK（ブラック）',
-    yen: 2080,
+    yen: null,
     twdRef: null,
     defaultQty: null,
     image: 'images/thumb/buffalo-bsmbw318bk.webp',
-    note: '日本本土品牌的入門無線滑鼠，一般形狀（沒有人體工學設計），5 鍵可指定功能、靜音點擊、乾電池式。¥2,080 是分頁裡最便宜的，適合只想帶一支堪用的備用滑鼠、或臨時發現忘了帶而需要就近補一支的情況。',
-    source: 'docs/mouse-research-additional-2026-08-20.md',
+    note: '日本本土品牌的入門無線滑鼠，一般形狀（沒有人體工學設計），5 鍵可指定功能、靜音點擊、乾電池式。官方採開放價格，適合只想帶一支堪用的備用滑鼠；到店以架上價為準。',
+    source: 'docs/product-refresh-audit-2026-08-22.md',
     stores: [],
     storeCandidates: ['yodobashi-camera-hakata', 'biccamera-tenjin-1', 'biccamera-tenjin-2'],
-    priceKind: 'retailer-reference', priceSourceUrl: 'https://www.yodobashi.com/product/100000001004427483/', priceCheckedAt: '2026-08-20', priceNote: 'Yodobashi.com 商品頁含稅售價 ¥2,080（回饋 208 點）。門市庫存與售價可能不同；尚未確認天神、博多實體店是否鋪貨。'
+    priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-22', priceNote: 'BUFFALO 官方確認本品為開放價格；原 ¥2,080 通路頁本輪無法重新讀取，不當作現價。'
   },
 
   // ── ON 鞋款（shoes，5 項）──
@@ -652,10 +652,10 @@ const BASE_PRODUCTS = [
   {
     id: 'wpc-iza-cool-compact',
     group: 'shopping', tracking: 'buy', category: '晴雨傘',
-    name: 'Wpc. IZA COOL & COMPACT 晴雨傘', jaName: 'Wpc. IZA COOL & COMPACT', model: 'ZA020',
-    yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/wpc-iza-cool-compact.webp',
-    note: '男用晴雨兩用款，53 cm；圖片標示完全遮光與 UV-cut 率 100%，頭頂表面溫度差最高 22.2°C。', source: '', stores: ['hands-hakata', 'loft-mina-tenjin'], storeCandidates: [],
-    priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '圖片未顯示可辨識的售價。'
+    name: 'Wpc. IZA COOL & COMPACT 晴雨傘', jaName: 'Wpc. IZA COOL & COMPACT', model: 'ZA030・53 cm',
+    yen: 5280, twdRef: null, defaultQty: 1, image: 'images/thumb/wpc-iza-cool-compact.webp',
+    note: '男用晴雨兩用款，53 cm；圖片標示完全遮光與 UV-cut 率 100%，頭頂表面溫度差最高 22.2°C。照片對應 COOL & COMPACT，型號為 ZA030；HANDS、Loft 僅作現場詢問對象，不保證有貨。', source: 'docs/product-refresh-audit-2026-08-22.md', stores: [], storeCandidates: ['hands-hakata', 'loft-mina-tenjin'],
+    priceKind: 'official', priceSourceUrl: 'https://www.wpc-store.com/c/iza/za030', priceCheckedAt: '2026-08-22', priceNote: '官方 COOL & COMPACT（ZA030）含稅價 ¥5,280；原資料誤把 COOL & COMPACT 與舊型號 ZA020 混為同款，已依照片及官方單品頁修正。'
   },
   {
     id: 'coleman-auto-folding-umbrella',
@@ -669,17 +669,17 @@ const BASE_PRODUCTS = [
     id: 'pabron-ace-pro-x-36',
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '大正百保能 ACE Pro-X 錠', jaName: 'パブロンエースPro-X錠', model: '第 2 類醫藥品・36 錠',
-    yen: 1495, twdRef: null, defaultQty: 1, image: 'images/thumb/pabron-ace-pro-x-36.webp',
-    note: '第 2 類醫藥品；包裝標示 36 錠與 ibuprofen 最大 600 mg 配方。日本通路比價參考價 ¥1,495，門市售價可能不同。購買與使用前請閱讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-11.md', stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'], storeCandidates: ['welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
-    priceKind: 'retailer-reference', priceSourceUrl: 'https://kakaku.com/medicine-item/K0001623006/', priceCheckedAt: '2026-08-11', priceNote: '大正製藥未對 36 錠規格公布希望小売価格（日本 OTC 藥品多為開放價格），改以比價站最低價作參考。'
+    yen: 2178, twdRef: null, defaultQty: 1, image: 'images/thumb/pabron-ace-pro-x-36.webp',
+    note: '第 2 類醫藥品；包裝標示 36 錠與 ibuprofen 最大 600 mg 配方。官方希望零售含稅價 ¥2,178，藥妝實售可能較低。購買與使用前請閱讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-refresh-audit-2026-08-22.md', stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'], storeCandidates: ['welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
+    priceKind: 'official', priceSourceUrl: 'https://www.taisho.co.jp/company/news/2023/20230822001374/', priceCheckedAt: '2026-08-22', priceNote: '大正製藥官方 36 錠希望零售含稅價 ¥2,178；連鎖藥妝實售可能較低，以當日架上價為準。'
   },
   {
     id: 'taisho-kampo-stomach-48',
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '大正漢方胃腸藥（微粒）', jaName: '大正漢方胃腸薬〈微粒〉', model: '第 2 類醫藥品・48 包',
-    yen: 1760, twdRef: null, defaultQty: 1, image: 'images/thumb/taisho-kampo-stomach-48.webp',
-    note: '第 2 類醫藥品；依圖片為 48 包微粒包裝。日本通路比價參考價 ¥1,760，門市售價可能不同。購買與使用前請閱讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-11.md', stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'], storeCandidates: ['welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
-    priceKind: 'retailer-reference', priceSourceUrl: 'https://kakaku.com/medicine-item/K0000544212/', priceCheckedAt: '2026-08-11', priceNote: '大正製藥未公布本規格希望小売価格（日本 OTC 藥品多為開放價格），改以比價站最低價作參考。'
+    yen: 2860, twdRef: null, defaultQty: 1, image: 'images/thumb/taisho-kampo-stomach-48.webp',
+    note: '第 2 類醫藥品；依圖片為 48 包微粒包裝。官方希望零售含稅價 ¥2,860，藥局通路通常可能折價。購買與使用前請閱讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-refresh-audit-2026-08-22.md', stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'], storeCandidates: ['welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
+    priceKind: 'official', priceSourceUrl: 'https://www.taisho.co.jp/company/news/2021/20210601000779.html', priceCheckedAt: '2026-08-22', priceNote: '大正製藥官方 48 包希望零售含稅價 ¥2,860；可信藥局當日網價為 ¥2,178，但不代表福岡門市價。'
   },
 
   // ── Lawson 便利商店必買必吃（2026-08-09，使用者提供圖片）──
@@ -740,9 +740,9 @@ const BASE_PRODUCTS = [
     id: 'kobayashi-zukkinon-ointment',
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '小林製藥塗抹式 ZUKKINON 軟膏', jaName: '塗るズッキノン軟膏', model: '第 3 類醫藥品・15 g',
-    yen: 1100, twdRef: null, defaultQty: 1, image: 'images/thumb/kobayashi-zukkinon-ointment.webp',
-    note: '肩頸僵硬伴隨頭痛時使用的外用軟膏；請依說明書使用，不可塗於太陽穴、眼周、黏膜或傷口。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'], storeCandidates: ['welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
-    priceKind: 'official', priceSourceUrl: 'https://www.kobayashi.co.jp/seihin/zkn_n/index.html', priceCheckedAt: '2026-08-09', priceNote: null
+    yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/kobayashi-zukkinon-ointment.webp',
+    note: '肩頸僵硬伴隨頭痛時使用的外用軟膏；官方現行品採開放價格，實售以藥妝店架上標示為準。請依說明書使用，不可塗於太陽穴、眼周、黏膜或傷口。', source: 'docs/product-refresh-audit-2026-08-22.md', stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'], storeCandidates: ['welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
+    priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-22', priceNote: '官方商品頁確認仍為現行品，但價格為開放價；舊 ¥1,100 僅能作過往預算，不當作現價。'
   },
   {
     id: 'jojoen-salad-sauce',
@@ -781,8 +781,8 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '戶外用品',
     name: '3COINS 折疊式迷你露營椅', jaName: '折りたたみコンパクトチェア', model: '2525-DN9065-000・黑色',
     yen: 660, twdRef: null, defaultQty: 1, image: 'images/thumb/3coins-folding-camp-chair.webp',
-    note: '適合排隊、露營與野餐的折疊椅；官方資料標示耐重 100 kg、含收納袋。實體店庫存請現場確認。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['3coins-plus-mina-tenjin', '3coins-plus-amu-plaza-kokura'],
-    priceKind: 'official', priceSourceUrl: 'https://www.palcloset.jp/display/item/2525-DN9065-000/?b=3coins', priceCheckedAt: '2026-08-09', priceNote: null
+    note: '適合排隊、露營與野餐的折疊椅；官方資料標示耐重 100 kg、含收納袋。官方網店目前無貨，門市可能仍有零星庫存，出發日再查分店。', source: 'docs/product-refresh-audit-2026-08-22.md', stores: ['3coins-plus-mina-tenjin', '3coins-plus-amu-plaza-kokura'],
+    priceKind: 'official', priceSourceUrl: 'https://www.palcloset.jp/display/item/2525-DN9065-000/?b=3coins', priceCheckedAt: '2026-08-22', priceNote: '官方含稅價 ¥660；當日網店無貨，不代表福岡門市完全無庫存。'
   },
   {
     id: 'lulu-attack-ex-24',
@@ -805,8 +805,8 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '日用品',
     name: 'DAISO 玩具總動員振子掛鐘', jaName: '振り子時計（トイ・ストーリー）', model: null,
     yen: 770, twdRef: null, defaultQty: 1, image: 'images/thumb/daiso-toy-story-pendulum-clock.webp',
-    note: '玩具總動員角色振子掛鐘；圖片可辨識艾利三眼怪造型擺錘。', source: 'docs/product-price-sources-2026-08-10.md', stores: ['daiso-hakata-bus-terminal', 'daiso-amu-plaza-kokura', 'daiso-lachic-fukuoka-tenjin'], storeCandidates: [],
-    priceKind: 'official', priceSourceUrl: 'https://jp.daisonet.com/collections/disney-design-collection-br-toy-story-br-toys-in-action', priceCheckedAt: '2026-08-11', priceNote: null
+    note: '玩具總動員角色振子掛鐘；圖片可辨識艾利三眼怪造型擺錘。官方網店目前無庫存，不代表福岡門市完全無貨，出發日再查。', source: 'docs/product-refresh-audit-2026-08-22.md', stores: ['daiso-hakata-bus-terminal', 'daiso-amu-plaza-kokura', 'daiso-lachic-fukuoka-tenjin'], storeCandidates: [],
+    priceKind: 'official', priceSourceUrl: 'https://jp.daisonet.com/collections/disney-design-collection-br-toy-story-br-toys-in-action', priceCheckedAt: '2026-08-22', priceNote: '官方含稅價 ¥770；網店當日無庫存，實體門市仍需另查。'
   },
   {
     id: 'cp-lip-lip-essence',
@@ -814,15 +814,15 @@ const BASE_PRODUCTS = [
     name: 'Cp-Lip 唇部美容液', jaName: 'Cp-Lip Lip Essence', model: '6 mL',
     yen: 1980, twdRef: null, defaultQty: 1, image: 'images/thumb/cp-lip-lip-essence.webp',
     note: '6 mL 保濕唇部美容液（アステリ CPリップ＜唇用美容液＞），可作唇部打底、精華與唇蜜使用。製造販售商官方站：https://www.astery.jp/', source: 'docs/product-price-sources-2026-08-11.md', stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'], storeCandidates: ['welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
-    priceKind: 'official', priceSourceUrl: 'https://www.astery.jp/en/category/all-products', priceCheckedAt: '2026-08-11', priceNote: '原來源為品牌首頁，已改指官方商品列表頁。¥1,980 沿用前一輪研究結果，本輪未能在官方頁上重新驗證金額，到店請以架上標價為準。'
+    priceKind: 'official', priceSourceUrl: 'https://www.astery.jp/product-page/cp-lip-cp%E3%83%AA%E3%83%83%E3%83%97-6ml-%E5%94%87%E7%94%A8%E7%BE%8E%E5%AE%B9%E6%B6%B2', priceCheckedAt: '2026-08-22', priceNote: '品牌官方單品頁含稅價 ¥1,980；福岡藥妝鋪貨與現貨未確認。'
   },
   {
     id: 'kinui-calm-7-soothing-serum',
     group: 'shopping', tracking: 'buy', category: '皮膚護理',
     name: 'KINUI CALM-7 舒緩精華', jaName: 'KINUI カームセブンスージングセラム', model: '30 ml・JAN 4595123166154',
     yen: 2970, twdRef: null, defaultQty: 1, image: 'images/thumb/kinui-calm-7-soothing-serum.webp',
-    note: '含 CICA、植物性 PDRN、菸鹼醯胺與泛醇等 7 種整肌成分；官方售價為含稅 ¥2,970。到藥妝店的美妝保養專區找；本品鋪貨不穩定，大型店（松本清、Cocokara Fine、Welcia）機會較高，進店可直接問店員有沒有「KINUI」這個牌子，沒有就別多花時間。', source: 'docs/product-price-sources-2026-08-13.md', stores: ['matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-hakata-station-underground', 'matsumoto-kiyoshi-kokura-station-south'], storeCandidates: ['cocokara-fine-fukuoka-parco', 'welcia-one-fukuoka-tenjin', 'cocokara-fine-kokura-station'],
-    priceKind: 'official', priceSourceUrl: 'https://kinui.tokyo/shop/products/sing_C7SS_default', priceCheckedAt: '2026-08-13', priceNote: null
+    note: '含 CICA、植物性 PDRN、菸鹼醯胺與泛醇等 7 種整肌成分；官方售價為含稅 ¥2,970，但官網目前售罄，可登記補貨通知。福岡實體藥妝是否鋪貨未確認。', source: 'docs/product-refresh-audit-2026-08-22.md', stores: ['matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-hakata-station-underground', 'matsumoto-kiyoshi-kokura-station-south'], storeCandidates: ['cocokara-fine-fukuoka-parco', 'welcia-one-fukuoka-tenjin', 'cocokara-fine-kokura-station'],
+    priceKind: 'official', priceSourceUrl: 'https://kinui.tokyo/shop/products/sing_C7SS_default', priceCheckedAt: '2026-08-22', priceNote: '官方含稅價 ¥2,970；當日顯示 SOLD OUT，可登記補貨，實體門市現貨另查。'
   },
   {
     id: 'salonpas-ae-240',
@@ -836,9 +836,9 @@ const BASE_PRODUCTS = [
     id: 'passtime-lx-premium-21',
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: 'Passtime LX Premium 止痛貼布', jaName: 'パスタイムLXプレミアム', model: '第 2 類醫藥品・21 枚・7 × 10 cm・JAN 4987235024451',
-    yen: 1918, twdRef: null, defaultQty: 1, image: 'images/thumb/passtime-lx-premium-21.webp',
-    note: '含ロキソプロフェン Na 水和物、l-メントール與維生素 E 的外用貼布；包裝標示 24 小時持續。日本通路單品參考價 ¥1,918；購買與使用前請詳讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-13.md', stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'], storeCandidates: [],
-    priceKind: 'retailer-reference', priceSourceUrl: 'https://item.rakuten.co.jp/q-bazar/8134659/', priceCheckedAt: '2026-08-13', priceNote: '21 枚單品的通路參考價 ¥1,918；不含運費，實體門市售價可能不同。'
+    yen: 2398, twdRef: null, defaultQty: 1, image: 'images/thumb/passtime-lx-premium-21.webp',
+    note: '含ロキソプロフェン Na 水和物、l-メントール與維生素 E 的外用貼布；包裝標示 24 小時持續。官方希望零售含稅價 ¥2,398，藥妝實售可能較低。購買與使用前請詳讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-refresh-audit-2026-08-22.md', stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'], storeCandidates: [],
+    priceKind: 'official', priceSourceUrl: 'https://www.yutokuyakuhin.co.jp/product/2-13-1.html', priceCheckedAt: '2026-08-22', priceNote: '祐徳薬品官方 21 枚／JAN 4987235024451 希望零售含稅價 ¥2,398；門市實售可能較低。'
   },
   {
     id: 'toraku-royal-custard-pudding',
@@ -862,9 +862,9 @@ const BASE_PRODUCTS = [
     id: 'kobayashi-harenurse-spray',
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '小林製藥扁桃腺發炎噴霧', jaName: 'ハレナーススプレー', model: '第 3 類醫藥品・15 mL',
-    yen: 798, twdRef: null, defaultQty: 1, image: 'images/thumb/kobayashi-harenurse-spray.webp',
+    yen: 880, twdRef: null, defaultQty: 1, image: 'images/thumb/kobayashi-harenurse-spray.webp',
     note: '第 3 類醫藥品；抗炎成分アズレンスルホン酸ナトリウム加殺菌成分セチルピリジニウム，直接噴在喉嚨患部、冷感速效。與同系列藥粉功效相同，噴霧體積大，適合放在住宿處使用。購買與服用前請閱讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-14.md', stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'], storeCandidates: ['welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
-    priceKind: 'retailer-reference', priceSourceUrl: 'https://www.askul.co.jp/p/APW1472/', priceCheckedAt: '2026-08-14', priceNote: '小林製藥官方未公布本品希望小売価格（日本 OTC 藥品多採開放價格），改以日本通路單品頁含稅 ¥798 作參考；各家藥妝實售約 ¥726–880，門市標價為準。'
+    priceKind: 'official', priceSourceUrl: 'https://www.kobayashi.co.jp/seihin/hrn_s/', priceCheckedAt: '2026-08-22', priceNote: '小林製藥官方希望零售未稅 ¥800，換算含稅 ¥880；藥妝實售可能較低，以 15 ml 包裝與架上價為準。'
   },
   {
     id: 'kobayashi-harenurse-18',
@@ -888,9 +888,9 @@ const BASE_PRODUCTS = [
     id: 'daiso-basin-cleaner-cloth',
     group: 'shopping', tracking: 'buy', category: '日用品',
     name: '大創洗面台清潔布', jaName: '洗面台クリーナー（落ち落ちＶ）', model: '1 個入・10×10×0.75 cm',
-    yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/daiso-basin-cleaner-cloth.webp',
-    note: '大創「落ち落ちＶ」系列，正反兩面各有分工：正面細凹凸刮出黏滑與灰塵，背面微纖維擦乾水痕，一般只用清水即可，頑垢再搭配中性洗劑。適合洗手台與水龍頭的水垢。', source: '', stores: ['daiso-hakata-bus-terminal', 'daiso-amu-plaza-kokura', 'daiso-lachic-fukuoka-tenjin'], storeCandidates: [],
-    priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-14', priceNote: '大創官方商品頁只列材質與尺寸、未標售價；該系列多數品項為 110 日圓（税込），但也有 330 日圓的手柄款，無法從官方頁確認本品屬於哪一種，請以門市標價為準。'
+    yen: 110, twdRef: null, defaultQty: 1, image: 'images/thumb/daiso-basin-cleaner-cloth.webp',
+    note: '大創「落ち落ちＶ」系列，正反兩面各有分工：正面細凹凸刮出黏滑與灰塵，背面微纖維擦乾水痕，一般只用清水即可，頑垢再搭配中性洗劑。官方網店目前售罄，不代表福岡門市也無貨。', source: 'docs/product-refresh-audit-2026-08-22.md', stores: ['daiso-hakata-bus-terminal', 'daiso-amu-plaza-kokura', 'daiso-lachic-fukuoka-tenjin'], storeCandidates: [],
+    priceKind: 'official', priceSourceUrl: 'https://jp.daisonet.com/products/4550480670362', priceCheckedAt: '2026-08-22', priceNote: '大創官方單品頁含稅價 ¥110，JAN 4550480670362；門市庫存以官方 App 或現場為準。'
   },
 
   // ── 追加：Calbee 地瓜脆片（2026-08-15，使用者提供圖片）──
@@ -898,10 +898,10 @@ const BASE_PRODUCTS = [
     id: 'calbee-satsumaimo-chips',
     group: 'convenience', tracking: 'buy', category: '零食', storeBrand: 'LAWSON',
     name: 'Calbee 原味地瓜脆片', jaName: '素材がおいしい さつまいも', model: '38 g・味付けなし',
-    yen: 181, twdRef: null, defaultQty: 1, image: 'images/thumb/calbee-satsumaimo-chips.webp',
-    note: '素揚げ地瓜片，無調味（味付けなし）；全國性商品，非 LAWSON 專屬，超市與各大超商鋪貨，門市售價可能不同。', source: 'docs/product-price-sources-2026-08-15.md', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
+    yen: 160, twdRef: null, defaultQty: 1, image: 'images/thumb/calbee-satsumaimo-chips.webp',
+    note: '素揚げ地瓜片，無調味（味付けなし）；全國性商品，非 LAWSON 專屬。AEON 網店當日含稅參考價約 ¥160，各超市與超商售價可能不同。', source: 'docs/product-refresh-audit-2026-08-22.md', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
     storeCandidates: ['seven-eleven-tenjin-underground', 'familymart-hakata-station', 'familymart-kokura-station', 'lopia-hakata-yodobashi', 'aeon-shoppers-fukuoka-tenjin', 'lopia-kokura-riverwalk'],
-    priceKind: 'retailer-reference', priceSourceUrl: 'https://ns.tokyu-bell.jp/shop/g/g16834866/', priceCheckedAt: '2026-08-15', priceNote: null
+    priceKind: 'retailer-reference', priceSourceUrl: 'https://shop.aeon.com/netsuper/01050000004010/010500000040104901330805180.html', priceCheckedAt: '2026-08-22', priceNote: 'AEON 網店含稅價 ¥159.84，畫面以日圓整數顯示為 ¥160；分店與超商售價可能不同。'
   },
 
   /* ── 行動電源分頁（2026-08-19 改版）──
@@ -948,6 +948,17 @@ const BASE_PRODUCTS = [
     yen: 6578, twdRef: null, defaultQty: null, image: 'images/thumb/cio-smartcoby-pro-cable-c.webp',
     note: '同樣是內建可拆式 USB-C 線的 10,000 mAh、單埠最大 35 W，但機身約 83 × 66 × 26.3 mm、198 g——佔地面積較小卻厚達 26.3 mm，總體積比 Pro SLIM CABLE 大約兩成四，官方定價還貴 ¥598，兩台同時充更只有合計 15 W。是同門 Pro SLIM CABLE 的上一代，除非在門市看到出清到 ¥3,000 上下，否則沒有理由選它。', source: 'docs/product-price-sources-2026-08-19.md', stores: [], storeCandidates: ['yodobashi-camera-hakata', 'biccamera-tenjin-1', 'biccamera-tenjin-2'],
     priceKind: 'official', priceSourceUrl: 'https://connectinternationalone.co.jp/cioproduct/mobilebattery/smartcoby/smartcoby-pro-cable-c/', priceCheckedAt: '2026-08-19', priceNote: '官方建議售價含稅 ¥6,578。本款已不在 CIO 官方現行系列頁上，屬更早的群眾募資世代，兩家量販都不保證有貨，到店請直接報型號問店員。'
+  },
+
+  // ── 追加：HORINISHI 新檸檬香料（2026-08-22，使用者提供圖片）──
+  {
+    id: 'horinishi-new-lemon',
+    group: 'shopping', tracking: 'buy', category: '食品伴手禮',
+    name: 'HORINISHI 新檸檬萬用香料', jaName: 'アウトドアスパイス ほりにしニューレモン', model: '100 g',
+    yen: 1280, twdRef: null, defaultQty: 1, image: 'images/thumb/horinishi-new-lemon.webp',
+    note: '2026 年 8 月 21 日上市的新定番檸檬萬用香料，可搭配肉類、魚類、蔬菜、義大利麵與麵食。與清單內其他香料相同，優先到超市的調味料／香辛料區找；各分店是否已鋪貨仍以當日架上庫存為準。',
+    source: 'docs/product-price-sources-2026-08-22.md', stores: ['maxvalu-express-hakata-gion', 'reganet-tenjin', 'youme-mart-kokura'], storeCandidates: ['lopia-hakata-yodobashi', 'aeon-shoppers-fukuoka-tenjin', 'lopia-kokura-riverwalk'],
+    priceKind: 'official', priceSourceUrl: 'https://shop-orange.info/products/horinishi-394', priceCheckedAt: '2026-08-22', priceNote: '品牌官方販售通路含稅價 ¥1,280；超市各分店售價與現貨可能不同。'
   }
 ];
 
@@ -963,14 +974,14 @@ const PRICE_OVERRIDES = {
     note: '照片確認為 DAISO 紛失防止タグ DG036-2102；包裝標價 ¥1,100（CR2032 電池另購）。',
   },
   kombu: {
-    yen: 216,
+    yen: null,
     model: '25 g',
-    source: 'docs/product-price-sources-2026-08-10.md',
-    priceKind: 'official',
-    priceSourceUrl: 'https://www.kurakon.jp/products/01/genenshio.html',
-    priceCheckedAt: '2026-08-10',
-    priceNote: null,
-    note: '照片對應くらこん減塩塩こんぶ 25 g；官方建議零售價為未稅 ¥200，食品消費稅 8% 換算為含稅 ¥216。',
+    source: 'docs/product-refresh-audit-2026-08-22.md',
+    priceKind: 'pending',
+    priceSourceUrl: null,
+    priceCheckedAt: '2026-08-22',
+    priceNote: 'くらこん官方已公告 25 g 減鹽鹽昆布暫停販售，目前沒有可用的現行固定價。',
+    note: '照片對應くらこん減塩塩こんぶ 25 g；官方於 2026 年 4 月公告暫停販售，目前只可能買到通路剩餘庫存，不列為必買現貨。',
   },
   'belt-fan': {
     yen: 1980,
@@ -982,40 +993,40 @@ const PRICE_OVERRIDES = {
     note: '照片對應 3COINS ベルトファン；PAL CLOSET 官方售價 ¥1,980。',
   },
   jinmart: {
-    yen: 1098,
+    yen: 1320,
     model: '15 g',
-    source: 'docs/product-price-sources-2026-08-09.md',
-    priceKind: 'retailer-reference',
-    priceSourceUrl: 'https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4987241139217',
-    priceCheckedAt: '2026-08-09',
-    note: '照片確認為 Mentholatum ジンマート 15 g；松本清線上通路參考價 ¥1,098。',
+    source: 'docs/product-refresh-audit-2026-08-22.md',
+    priceKind: 'official',
+    priceSourceUrl: 'https://jp.rohto.com/jinmart/ointment/',
+    priceCheckedAt: '2026-08-22',
+    note: '照片確認為 Mentholatum ジンマート 15 g；官方希望零售含稅價 ¥1,320。實體藥妝的售價與庫存未確認。',
   },
   roihi: {
-    yen: 2618,
+    yen: 2695,
     model: '80 g',
-    source: 'docs/product-price-sources-2026-08-09.md',
-    priceKind: 'retailer-reference',
-    priceSourceUrl: 'https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4987167090265',
-    priceCheckedAt: '2026-08-09',
-    note: '照片對應ロイヒクリームフェルビ 80 g；松本清線上通路參考價 ¥2,618。',
+    source: 'docs/product-refresh-audit-2026-08-22.md',
+    priceKind: 'official',
+    priceSourceUrl: 'https://www.nichiban.co.jp/general/health/stiff_shoulder/roihi_creamfelbi/',
+    priceCheckedAt: '2026-08-22',
+    note: '照片對應ロイヒクリームフェルビ 80 g；官方未稅 ¥2,450，以 10% 消費稅換算含稅 ¥2,695。實體藥妝的售價與庫存未確認。',
   },
   nature: {
     yen: 803,
     model: '40 ml',
-    source: 'docs/product-price-sources-2026-08-09.md',
-    priceKind: 'retailer-reference',
-    priceSourceUrl: 'https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4955814710965',
-    priceCheckedAt: '2026-08-09',
-    note: '照片對應ネイチャーコンク 薬用フットケアローション 40 ml；松本清線上通路參考價 ¥803。',
+    source: 'docs/product-refresh-audit-2026-08-22.md',
+    priceKind: 'official',
+    priceSourceUrl: 'https://www.narisup.com/shop/brand/natureconc.aspx',
+    priceCheckedAt: '2026-08-22',
+    note: '照片對應ネイチャーコンク 薬用フットケアローション 40 ml；官方含稅價 ¥803。門市未必常備，請以 40 ml 包裝詢問。',
   },
   anelon: {
-    yen: 1628,
+    yen: 1848,
     model: '10 カプセル',
-    source: 'docs/product-price-sources-2026-08-09.md',
-    priceKind: 'retailer-reference',
-    priceSourceUrl: 'https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4987300029459',
-    priceCheckedAt: '2026-08-09',
-    note: '照片對應アネロン「ニスキャップ」10 粒；松本清線上通路參考價 ¥1,628。',
+    source: 'docs/product-refresh-audit-2026-08-22.md',
+    priceKind: 'official',
+    priceSourceUrl: 'https://www.ssp.co.jp/product/detail/annys/',
+    priceCheckedAt: '2026-08-22',
+    note: '照片對應アネロン「ニスキャップ」10 粒；官方希望零售含稅價 ¥1,848。另有 4 粒與 6 粒包裝，現場請先核對粒數。',
   },
   'hareno-toothbrush': {
     priceKind: 'retailer-reference',
@@ -1023,25 +1034,29 @@ const PRICE_OVERRIDES = {
     priceCheckedAt: '2026-08-01',
   },
   'lion-stain-rescue': {
+    yen: 498,
+    source: 'docs/product-refresh-audit-2026-08-22.md',
     priceKind: 'retailer-reference',
-    priceSourceUrl: 'https://lohaco.yahoo.co.jp/store/h-lohaco/item/aa53310/',
-    priceCheckedAt: '2026-08-01',
+    priceSourceUrl: 'https://lohaco.yahoo.co.jp/store/h-lohaco/item/8803586/',
+    priceCheckedAt: '2026-08-22',
+    priceNote: 'LOHACO 單支 17 ml 含稅價 ¥498；另有 2 支組，換算每支約 ¥470，門市售價可能不同。',
+    note: '衣物局部去漬液，17 ml；目前單支通路參考價 ¥498，現場請確認是單支或 2 支組。',
   },
   ne7n: {
     yen: 7680,
     priceKind: 'retailer-reference',
-    priceSourceUrl: 'https://www.biccamera.com/bc/item/14481338/',
-    priceCheckedAt: '2026-08-10',
-    source: 'docs/product-price-sources-2026-08-10.md',
-    note: 'BicCamera 線上參考價 ¥7,680；實體門市價格與點數回饋以結帳當日為準。',
+    priceSourceUrl: 'https://www.biccamera.com/bc/item/14481337/',
+    priceCheckedAt: '2026-08-22',
+    source: 'docs/product-refresh-audit-2026-08-22.md',
+    note: 'BicCamera 線上含稅參考價 ¥7,680；線上有貨不代表天神館有現貨，可先用門市取置功能查詢。',
   },
   ne5n: {
     yen: 5180,
     priceKind: 'retailer-reference',
-    priceSourceUrl: 'https://kakaku.com/item/J0000048996/?lid=20190108pricemenu_ranking_2',
-    priceCheckedAt: '2026-08-10',
-    source: 'docs/product-price-sources-2026-08-10.md',
-    note: '價格.com 比價參考價 ¥5,180（來源為比價站而非 BicCamera 官方標價）；BicCamera 實體門市價格與點數回饋以結帳當日為準。',
+    priceSourceUrl: 'https://www.biccamera.com/bc/item/14481334/',
+    priceCheckedAt: '2026-08-22',
+    source: 'docs/product-refresh-audit-2026-08-22.md',
+    note: 'BicCamera 線上含稅參考價 ¥5,180；線上有貨不代表天神館有現貨，實體門市售價也可能不同。',
   },
   cloudsurfermax: {
     priceKind: 'official',
@@ -1158,15 +1173,6 @@ const PRICE_OVERRIDES = {
     priceNote: null,
     note: 'PROTECT U 官方折疊日傘系列定價 ¥2,178；照片未能辨識具體款式，顏色與骨長請在門市再核對。',
   },
-  'wpc-iza-cool-compact': {
-    yen: 3850,
-    source: 'docs/product-price-sources-2026-08-10.md',
-    priceKind: 'official',
-    priceSourceUrl: 'https://www.wpc-store.com/c/iza/za003',
-    priceCheckedAt: '2026-08-11',
-    priceNote: '原來源為品牌首頁而非商品頁，已改指官方線上商店的 IZA COMPACT 無地款商品頁。¥3,850 為品牌定價；本輪查得通路實售有低於定價者（例：ZA020 約 ¥3,277），到店價格以現場為準。',
-    note: 'Wpc. IZA COMPACT 無地款，品牌定價 ¥3,850。照片僅能辨識「ZA020」，而 Wpc. 的 COMPACT 系列橫跨 ZA003／ZA020／ZA028 等型號，實際 SKU 未能確認；花色款價格可能不同，購買前請核對包裝型號。',
-  },
   'hanamidori-kiwami-spice': {
     yen: 588,
     source: 'docs/product-price-sources-2026-08-11.md',
@@ -1182,8 +1188,8 @@ const PRICE_OVERRIDES = {
  * 台幣金額一律由此常數換算，各商品不得自帶手寫的 twdRef，
  * 否則會像先前 ne7n（0.311）與 ne5n（0.322）那樣各用一套匯率而互相矛盾。
  * 更新匯率只需改這裡兩個值，並跑 npm run validate:data。 */
-export const JPY_TWD_RATE = 0.2035;
-export const JPY_TWD_RATE_CHECKED_AT = '2026-08-10';
+export const JPY_TWD_RATE = 0.2032;
+export const JPY_TWD_RATE_CHECKED_AT = '2026-08-21';
 
 export const PRODUCTS = BASE_PRODUCTS.map((product) => {
   const override = PRICE_OVERRIDES[product.id] || {};

@@ -100,8 +100,8 @@ export const STORES = [
     category: 'drug',
     area: 'hakata',
     address: '福岡県福岡市博多区博多駅中央街 地下 4',
-    hours: '10:00–20:00',
-    note: '博多口側地下 1 樓；營業時間依博多站地下街官方物販類公告，第三方網站另有 08:00–22:00、09:00–20:00 等不同記載，實際請以店內公告為準。不保證指定藥品、品牌或免稅服務。',
+    hours: '08:00–22:00',
+    note: '博多口側地下 1 樓；營業時間依松本清官方門市頁。不保證指定藥品、品牌或免稅服務，出發前請再確認當日公告。',
     lat: 33.589783,
     lng: 130.420593,
     officialUrl: 'https://www.matsukiyococokara-online.com/map/?kid=20805173',
@@ -350,13 +350,13 @@ export const STORES = [
     category: 'drug',
     area: 'kokura',
     address: '福岡県北九州市小倉北区魚町 2-1-7',
-    hours: '09:00–20:30',
-    note: '魚町商店街主要藥妝採買點；營業時間依第三方通路資訊彙整，出發前建議再次核對。',
+    hours: '09:30–21:15',
+    note: '魚町商店街主要藥妝採買點；營業時間依 Sundrug 官方門市頁，出發前請再確認當日公告。',
     lat: 33.884033,
     lng: 130.879929,
-    officialUrl: 'https://sundrug-online.com/vi/blogs/search-store/2005',
+    officialUrl: 'https://sundrug-online.com/blogs/search-store/2005',
     officialSources: [
-      { label: 'Sundrug 官方門市頁', url: 'https://sundrug-online.com/vi/blogs/search-store/2005' }
+      { label: 'Sundrug 官方門市頁', url: 'https://sundrug-online.com/blogs/search-store/2005' }
     ],
     mapsQuery: 'サンドラッグ 魚町銀天街店'
   },

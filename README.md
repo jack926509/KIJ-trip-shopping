@@ -155,8 +155,8 @@ npm test
 台幣金額由 `assets/products.js` 的單一常數換算，各商品**不得自帶手寫的 `twdRef`**：
 
 ```js
-export const JPY_TWD_RATE = 0.2035;
-export const JPY_TWD_RATE_CHECKED_AT = '2026-08-10';
+export const JPY_TWD_RATE = 0.2032;
+export const JPY_TWD_RATE_CHECKED_AT = '2026-08-21';
 ```
 
 更新匯率只需改這兩個值再跑一次驗證。（先前兩筆手寫值曾各用 0.311 與 0.322 兩套匯率而互相矛盾，改為單一來源即為此。）
