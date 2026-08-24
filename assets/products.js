@@ -863,8 +863,8 @@ const BASE_PRODUCTS = [
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '小林製藥扁桃腺發炎噴霧', jaName: 'ハレナーススプレー', model: '第 3 類醫藥品・15 mL',
     yen: 880, twdRef: null, defaultQty: 1, image: 'images/thumb/kobayashi-harenurse-spray.webp',
-    note: '第 3 類醫藥品；抗炎成分アズレンスルホン酸ナトリウム加殺菌成分セチルピリジニウム，直接噴在喉嚨患部、冷感速效。與同系列藥粉功效相同，噴霧體積大，適合放在住宿處使用。購買與服用前請閱讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-14.md', stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'], storeCandidates: ['welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
-    priceKind: 'official', priceSourceUrl: 'https://www.kobayashi.co.jp/seihin/hrn_s/', priceCheckedAt: '2026-08-22', priceNote: '小林製藥官方希望零售未稅 ¥800，換算含稅 ¥880；藥妝實售可能較低，以 15 ml 包裝與架上價為準。'
+    note: '第 3 類醫藥品；抗炎成分アズレンスルホン酸ナトリウム加殺菌成分セチルピリジニウム，直接噴在喉嚨患部、冷感速效。與同系列藥粉功效相同，噴霧體積大，適合放在住宿處使用。購買與服用前請閱讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-24.md', stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'], storeCandidates: ['welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
+    priceKind: 'official', priceSourceUrl: 'https://www.kobayashi.co.jp/seihin/hrn_s/', priceCheckedAt: '2026-08-24', priceNote: '小林製藥官方希望零售未稅 ¥800，換算含稅 ¥880；藥妝實售可能較低，以 15 mL 包裝與架上價為準。'
   },
   {
     id: 'kobayashi-harenurse-18',
