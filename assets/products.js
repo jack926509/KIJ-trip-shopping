@@ -959,6 +959,17 @@ const BASE_PRODUCTS = [
     note: '2026 年 8 月 21 日上市的新定番檸檬萬用香料，可搭配肉類、魚類、蔬菜、義大利麵與麵食。與清單內其他香料相同，優先到超市的調味料／香辛料區找；各分店是否已鋪貨仍以當日架上庫存為準。',
     source: 'docs/product-price-sources-2026-08-22.md', stores: ['maxvalu-express-hakata-gion', 'reganet-tenjin', 'youme-mart-kokura'], storeCandidates: ['lopia-hakata-yodobashi', 'aeon-shoppers-fukuoka-tenjin', 'lopia-kokura-riverwalk'],
     priceKind: 'official', priceSourceUrl: 'https://shop-orange.info/products/horinishi-394', priceCheckedAt: '2026-08-22', priceNote: '品牌官方販售通路含稅價 ¥1,280；超市各分店售價與現貨可能不同。'
+  },
+
+  // ── 追加：佐藤製藥 アセス L（2026-08-25，使用者提供圖片）──
+  {
+    id: 'sato-acess-l',
+    group: 'shopping', tracking: 'buy', category: '日用品',
+    name: '佐藤製藥 アセス L 牙齦護理牙膏', jaName: 'アセスL', model: '照片為 125 g 舊規格／日本現行 120 g',
+    yen: 1717, twdRef: null, defaultQty: 1, image: 'images/thumb/sato-acess-l.webp',
+    note: '第 3 類醫藥品；使用三種天然草本成分，改善牙齦炎、牙周病所致的出血、腫脹、口臭與口腔黏膩等症狀，為清淡薄荷味且不含研磨劑。照片是 125 g 舊規格，日本官方現行容量為 60／120／160 g，旅途中請以 120 g 包裝辨識。購買與使用前請閱讀說明書，症狀持續時應諮詢牙醫師、藥師或登錄販售者。',
+    source: 'docs/product-price-sources-2026-08-25.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'matsumoto-kiyoshi-kokura-station-south', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station'],
+    priceKind: 'retailer-reference', priceSourceUrl: 'https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4987316003610', priceCheckedAt: '2026-08-25', priceNote: '日本現行 120 g 規格在松本清官方線上商店的含稅價為 ¥1,717；照片所示 125 g 舊規格已不在佐藤製藥日本官方現行容量中，門市售價與庫存可能不同。'
   }
 ];
 
