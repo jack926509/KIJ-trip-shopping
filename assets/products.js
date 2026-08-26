@@ -970,6 +970,30 @@ const BASE_PRODUCTS = [
     note: '第 3 類醫藥品；使用三種天然草本成分，改善牙齦炎、牙周病所致的出血、腫脹、口臭與口腔黏膩等症狀，為清淡薄荷味且不含研磨劑。照片是 125 g 舊規格，日本官方現行容量為 60／120／160 g，旅途中請以 120 g 包裝辨識。購買與使用前請閱讀說明書，症狀持續時應諮詢牙醫師、藥師或登錄販售者。',
     source: 'docs/product-price-sources-2026-08-25.md', stores: [], storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'matsumoto-kiyoshi-kokura-station-south', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station'],
     priceKind: 'retailer-reference', priceSourceUrl: 'https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4987316003610', priceCheckedAt: '2026-08-25', priceNote: '日本現行 120 g 規格在松本清官方線上商店的含稅價為 ¥1,717；照片所示 125 g 舊規格已不在佐藤製藥日本官方現行容量中，門市售價與庫存可能不同。'
+  },
+  /* 7-ELEVEN × 銀のぶどう 聯名的シュガーバターの木系列。
+     這個系列每季換一種口味、每檔約半年限定（焼きりんご 2022 秋、キャラメルブリュレ、
+     スイートポテトブリュレ、メープルブリュレ 2025 秋…），照片上的「焼きりんごブリュレ仕立て」
+     是 2022 年秋季那一檔，官方單品頁已下架，因此價格取不到佐證、標為 pending。 */
+  {
+    id: 'sugar-butter-tree-yaki-ringo-brulee',
+    group: 'convenience',
+    tracking: 'buy',
+    category: '麵包甜點',
+    name: '烤蘋果布蕾夾心餅',
+    jaName: 'シュガーバターの木 焼きりんごブリュレ仕立て',
+    model: '3 個入',
+    yen: null,
+    twdRef: null,
+    defaultQty: 1,
+    image: 'images/thumb/sugar-butter-tree-yaki-ringo-brulee.webp',
+    note: '7-ELEVEN 與銀のぶどう聯名，酥脆穀物餅乾夾蘋果風味白巧克力，1 個 83 kcal；含乳成分、小麥、大豆、蘋果。此系列每季輪替口味、每檔約半年，照片上的焼きりんご 是 2022 年秋季那一檔，2026 年 9 月到店多半已換成當季新口味——當成「找シュガーバターの木這個系列」，架上有哪一種口味就買哪一種。',
+    source: 'docs/product-price-sources-2026-08-26.md',
+    priceKind: 'pending',
+    priceSourceUrl: null,
+    priceCheckedAt: '2026-08-26',
+    priceNote: '焼きりんご 這一檔是 2022 年秋季限定、官方單品頁已下架，取不到可佐證的單品頁，故不填價格。搜尋結果顯示這個系列近年各口味定價一致，但無法逐項核對到原始頁面，不寫進 yen；到店以架上標示為準。',
+    stores: ['seven-eleven-tenjin-underground']
   }
 ];
 

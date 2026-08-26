@@ -69,6 +69,16 @@
 .optional-badge, .done-badge { border-radius: 999px; padding: 3px 7px; font-size: 10px; font-weight: 900; }
 .optional-badge { background: #f4ead6; color: #755620; }
 .done-badge { background: #dceee4; color: #23604e; }
+/* 站與站之間的移動：表定時刻沒把它算進去，這裡把它顯示出來。
+   排程留的時間不夠時轉為警示色，並直接寫出「只留 N 分」。 */
+/* 用行內排版而非 flex：店名長度不一，flex 會把開頭的 ↳ 擠成獨立一行。 */
+.stop-leg { margin: 0 0 7px; color: #7a857f; font-size: 11.5px; line-height: 1.6; }
+.stop-leg::before { content: "↳ "; color: #a8b2ac; font-weight: 900; }
+.stop-leg.is-tight { color: #8b6424; }
+.stop-leg-tight {
+  display: inline-block; margin-left: 7px; padding: 2px 8px; border-radius: 999px;
+  background: #f4ead6; color: #755620; font-size: 10.5px; font-weight: 900; white-space: nowrap;
+}
 .stop-meta { margin-top: 4px; color: #65716c; font-size: 12px; line-height: 1.6; }
 .stop-products { margin: 7px 0 0; color: #35433d; font-size: 12px; line-height: 1.65; }
 .stop-note { margin: 5px 0 0; color: #6b756f; font-size: 12px; line-height: 1.6; }

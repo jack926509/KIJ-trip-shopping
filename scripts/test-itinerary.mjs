@@ -49,4 +49,39 @@ assert.ok(!welciaStop.confirmedProducts.some((product) => product.id === 'hareno
 
 assert.equal(Math.round(haversineMeters({ lat: 33.586903, lng: 130.401108 }, { lat: 33.587925, lng: 130.400894 })), 115);
 
+/* 行程的每個停靠點只能列出「那家店真的有登記」的商品。
+ * 實際發生過：9/4 的 HANDS 站列了 Sanwa 400-MA092，但那是 Sanwa Direct 網路限定商品，
+ * stores 與 storeCandidates 都是空的——照著行程走會在店裡白找一輪，
+ * 而且畫面上完全看不出來（商品名照樣印出來）。 */
+const productsById = new Map(PRODUCTS.map((product) => [product.id, product]));
+const mismatched = [];
+for (const segment of ITINERARY_SEGMENTS) {
+  for (const stop of segment.stops) {
+    for (const productId of stop.productIds) {
+      const product = productsById.get(productId);
+      if (!product) { mismatched.push(`${segment.id} / ${stop.storeId}：查無商品 ${productId}`); continue; }
+      const known = [...(product.stores ?? []), ...(product.storeCandidates ?? [])];
+      if (!known.includes(stop.storeId)) {
+        mismatched.push(`${segment.id} / ${stop.storeId}：${product.name}${known.length === 0 ? '（沒登記任何店家）' : ''}`);
+      }
+    }
+  }
+}
+assert.deepEqual(mismatched, [], `行程停靠點列出了該店沒有登記的商品：\n  ${mismatched.join('\n  ')}`);
+
+/* 藥妝與便利商店刻意不排進固定行程（店家密度高，沿途遇到就買），
+ * 因此這兩類「完全」倚賴即時補買路線。哪天有人從 STORES 拿掉一家 LAWSON，
+ * 或把某項商品的 stores 清空，這些品項就會變成兩邊都查不到、卻沒有任何錯誤訊息。 */
+const reachable = new Set();
+for (const group of planner.remainingGroups()) {
+  for (const stop of group.stops) {
+    for (const product of [...stop.confirmedProducts, ...stop.candidateProducts]) reachable.add(product.id);
+  }
+}
+const stranded = PRODUCTS
+  .filter((product) => ['shopping', 'convenience'].includes(product.group))
+  .filter((product) => !reachable.has(product.id))
+  .map((product) => `${product.name}（${product.group}）`);
+assert.deepEqual(stranded, [], `不排進固定行程的品項必須有即時補買路線可去，以下無處可買：\n  ${stranded.join('\n  ')}`);
+
 console.log('✓ 行程資料與路線規劃契約通過');
