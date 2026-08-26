@@ -457,10 +457,6 @@ function buildCardHtml(product, { showPill = true, groupBadge = false } = {}) {
     ? `<h5><a class="kij-name-link" href="${escapeHtml(product.priceSourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(product.name)}<span class="kij-ext" aria-hidden="true">↗</span></a></h5>`
     : `<h5>${escapeHtml(product.name)}</h5>`;
 
-  /* note／priceNote 先前完全沒被讀出來，本次新增的購買警語（例如「不保證有貨」
-     「圖片未顯示可辨識的售價」）因此看不到。有值才顯示，樣式比照既有次要文字。
-     priceNote 緊接在價格後面（說明這個價格／有沒有貨的來龍去脈），
-     note 放在最後（商品本身的補充說明），避免打散既有的價格區塊排版。 */
   /* note 與 priceNote 目前都是「資料來源與查證狀態」的說明：PRICE_OVERRIDES 在
      2026-08-22 的商品刷新時，把原本的購買提醒（「建議帶 1 條」）覆寫成了
      「照片確認為 … 官方希望零售含稅價 ¥1,320。實體藥妝的售價與庫存未確認」這類查證紀錄。
@@ -472,7 +468,6 @@ function buildCardHtml(product, { showPill = true, groupBadge = false } = {}) {
         notes.map((text) => `<p class="kij-card-note">${escapeHtml(text)}</p>`).join('')
       }</details>`
     : '';
-  const priceNoteHtml = '';
 
   return `
     <div class="kij-card kij-card-${escapeHtml(product.group)}${product.tracking === 'buy' && isBought(product.id) ? ' is-bought' : ''}" id="${escapeHtml(product.id)}" data-id="${escapeHtml(product.id)}">
@@ -493,7 +488,6 @@ function buildCardHtml(product, { showPill = true, groupBadge = false } = {}) {
       </div>
       <div class="kij-card-detail">
         ${priceHtml}
-        ${priceNoteHtml}
         ${noteHtml}
       </div>
     </div>`;
@@ -705,8 +699,11 @@ function updateProgressBar() {
     headText = `${GROUP_META[activeGroup].label}　已買 ${boughtCount} / ${groupItems.length} 項`;
   }
 
-  document.getElementById('kijStatusLine').textContent =
-    `${headText}　·　全站已買 ${allBoughtCount} / ${allBuyItems.length} 項`;
+  /* 搜尋時結果跨全部分頁、分頁也不再亮選中狀態，這時再講「藥妝日用 已買 1 / 41」
+     等於在說一個畫面上不存在的範圍，只留全站進度。 */
+  document.getElementById('kijStatusLine').textContent = searchQuery
+    ? `全站已買 ${allBoughtCount} / ${allBuyItems.length} 項`
+    : `${headText}　·　全站已買 ${allBoughtCount} / ${allBuyItems.length} 項`;
 }
 
 function updateTriedSectionCount(group) {
@@ -730,12 +727,9 @@ function focusSection(group) {
   /* 點分頁＝「我要看這一類」，與「我要找某一項」是互斥的兩個動作。
      不清掉搜尋的話，點了分頁畫面卻還停在搜尋結果，會以為分頁壞了。 */
   if (searchQuery) clearSearch();
-  document.querySelectorAll('.kij-tab').forEach((tab) => {
-    const active = tab.dataset.group === group;
-    tab.classList.toggle('active', active);
-    if (active) tab.setAttribute('aria-current', 'true');
-    else tab.removeAttribute('aria-current');
-  });
+  // 分頁選中狀態一律由 syncTabsForSearch() 統一設定（renderSections 內會呼叫），
+  // 不在這裡再寫一份，否則兩處判斷條件日後會漂移。
+  syncTabsForSearch();
   // 6 顆分頁在手機寬度放不下一行，選中的那顆可能在可視範圍外（例如從網址錨點
   // 直接跳到「鞋款」），切換時把它捲進視野；block:'nearest' 避免多餘的垂直捲動。
   // inline 必須是 'center'：分頁列有 scroll-snap-type: x proximity，'nearest' 只會挪到
@@ -797,6 +791,7 @@ function applySearch(raw) {
   searchQuery = raw.trim().toLowerCase();
   searchClearBtn.hidden = raw.length === 0;
   renderSections();
+  updateProgressBar(); // 狀態列在搜尋中／不搜尋時講的範圍不同，兩邊切換都要重算
 }
 
 function clearSearch() {

@@ -395,7 +395,7 @@ body.kij {
 .kij-card-source > summary::-webkit-details-marker { display: none; }
 .kij-card-source > summary::after { content: "▾"; font-size: 10px; }
 .kij-card-source[open] > summary::after { content: "▴"; }
-.kij-card-source .kij-card-pricenote { margin-top: 2px; }
+.kij-card-source .kij-card-note { margin-top: 2px; }
 
 .kij-tabs { padding: 0; gap: 9px; }
 .kij-tab { flex: 0 0 auto; min-height: 44px; }
@@ -408,6 +408,12 @@ body.kij {
 .kij-section-header b { font-size: 18px; }
 .kij-section-header .count { font-size: 13px; }
 .kij-section-body { display: grid; gap: 14px; }
+/* .kij-section-body 的 display:grid 是 class 選擇器，優先權高過 [hidden] 的瀏覽器
+   預設樣式，所以 toggleSectionCollapse() 設了 hidden、寫了 localStorage、也把
+   aria-expanded 改成 false，畫面卻完全沒收合——分區標題等於是一顆沒有作用的按鈕，
+   而且對螢幕閱讀器謊報「已收合」。map.html 早就為 .filter-group 修過同一類問題，
+   清單頁一直漏掉。 */
+.kij-section-body[hidden] { display: none; }
 .kij-subcat { display: contents; }
 .kij-subcat-heading { grid-column: 1 / -1; padding: 6px 2px !important; }
 
@@ -524,8 +530,7 @@ body.kij {
 /* 商品卡片附註／購買警語：note 與 priceNote 先前完全沒被渲染，本次補上。
  * 有值才顯示，樣式比照既有次要文字（.kij-compare-note）；
  * overflow-wrap 避免型號這類不含空白的長字串把窄卡片撐寬。 */
-.kij-card-note,
-.kij-card-pricenote {
+.kij-card-note {
   margin: 6px 0 0;
   color: var(--muted);
   font-size: 12px;
@@ -700,6 +705,16 @@ body.kij {
   .kij-card h5 { font-size: 16px; margin-top: 2px; }
   .kij-shopping-details { margin-top: 9px; padding-top: 9px; font-size: 14px; }
   .kij-card .yen { font-size: 19px; }
+}
+
+/* 360px 的窄手機（iPhone SE、多數舊 Android）：卡片可用寬只剩約 310px，
+   扣掉 156px 的圖後右欄僅約 142px，低於「明細值欄 > 160px」這條門檻——
+   實測「松本清博多站地下街店」會從店名中間斷成兩行、只剩一個「店」字掉在下一行，
+   價格也被擠成兩行。圖縮到 124px 把右欄還回 174px，回到 390px 時的比例。 */
+@media (max-width: 380px) {
+  .kij-card { column-gap: 10px; padding: 12px; grid-template-columns: 124px minmax(0, 1fr); }
+  .kij-card .thumb,
+  .kij-card-shopping .thumb { width: 124px; height: 124px; }
 }
 
 .kij-compare {

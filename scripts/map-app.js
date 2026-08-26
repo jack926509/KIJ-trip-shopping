@@ -7,7 +7,9 @@ import { AREA_LABELS, createRoutePlanner, haversineMeters } from '../assets/rout
 const leafletReady = await (window.__leafletReady || Promise.resolve(typeof L !== 'undefined')).catch(() => false);
 await (window.__markerClusterReady || Promise.resolve(false));
 if (!leafletReady || typeof L === 'undefined') {
-  showMapFallback();
+  /* Leaflet 沒載到＝以下整段全部跳過，店家清單／搜尋／篩選一個都不會渲染。
+     降級訊息要照實講，並給「重新整理／回購物清單」兩條路。 */
+  showMapFallback({ scriptMissing: true });
 } else {
 const CATALOG = createCatalogIndex(PRODUCTS);
 const STORES_BY_ID = new Map(STORES.map((store) => [store.id, store]));
