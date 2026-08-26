@@ -2,7 +2,7 @@
 
 北九州旅行使用的日本藥妝、日用品、食品伴手禮、3C 配件與社群推薦採購清單。
 
-本專案為單頁式靜態網站，可直接部署至 Vercel、GitHub Pages、Cloudflare Pages 或其他靜態網站服務。
+本專案為三頁式靜態網站，可直接部署至 Vercel、GitHub Pages、Cloudflare Pages 或其他靜態網站服務。
 
 ## 功能
 
@@ -15,19 +15,28 @@
 - 手機與桌面響應式版面
 - 使用瀏覽器保存部分操作紀錄
 - 商品價格來源與查證日期
+- 依日期顯示固定購物行程
+- 依未完成商品產生即時補買路線，並可在地圖顯示站序
 
 ## 專案結構
 
 ```text
 .
 ├── index.html                  # 採購清單主頁
+├── itinerary.html              # 固定行程與即時補買路線
 ├── map.html                    # 購物地圖（店家資料已抽出，見 assets/stores.js）
 ├── package.json
 ├── assets/
-│   ├── kij.css                 # 兩頁共用樣式
+│   ├── kij.css                 # 三頁共用樣式
+│   ├── itinerary.css           # 行程頁樣式
+│   ├── itinerary.js            # 固定行程唯一資料源
 │   ├── products.js             # 單一商品資料源＋JPY_TWD_RATE 匯率
-│   └── stores.js               # 單一店家資料源（兩頁共用）
+│   ├── route-planner.js        # 固定／即時路線共用邏輯
+│   └── stores.js               # 單一店家資料源（三頁共用）
 ├── scripts/
+│   ├── index-app.js            # 清單頁互動
+│   ├── itinerary-app.js        # 行程頁互動
+│   ├── map-app.js              # 地圖頁互動與路線繪製
 │   ├── validate-products.mjs   # 資料驗證器
 │   ├── build-images.mjs        # 由原圖產生 thumb／full
 │   └── extract-embedded-images.mjs
@@ -43,10 +52,12 @@
     └── products/
 ```
 
-`index.html` 與 `map.html` 都以 ES module 讀取同一份資料，**不得各自維護副本**：
+`index.html`、`itinerary.html` 與 `map.html` 都以 ES module 讀取共用資料，**不得各自維護副本**：
 
 - 商品：`assets/products.js`
 - 店家：`assets/stores.js`
+- 固定行程：`assets/itinerary.js`
+- 路線計算：`assets/route-planner.js`
 
 店家的兩個名稱刻意並存、且在同一筆記錄裡相鄰擺放，方便一眼核對：
 
@@ -107,7 +118,7 @@ vercel --prod
 
 若已連接 GitHub 與 Vercel：
 
-1. 修改 `index.html`。
+1. 修改對應頁面或 `assets/` 共用資料。
 2. Commit 並 Push 到 GitHub。
 3. Vercel 會自動重新部署。
 
@@ -147,6 +158,7 @@ npm test
 | 樓層一致性 | 店家 `address` 與 `mapsQuery` 的樓層寫法不得互相矛盾 |
 | 店家資料完整性 | `stores.js` 每筆都必須有 `name`、`listName`、`type` 等欄位與數字座標，id 不得重複 |
 | 禁止重建副本 | `map.html` 不得再內嵌 `const STORES`，`index.html` 不得再寫死 `STORE_SUMMARIES` |
+| 行程資料 | 日期、時段、segment、店家與商品 id 必須存在且站序時間合法 |
 
 其他既有檢查：id 唯一、`stores` 必須指向地圖上存在的店家、有價格就必須有 `source` 檔案、每項商品都要有 `images/thumb/<id>.webp`、中文欄位不得混入簡體字。
 

@@ -35,12 +35,17 @@ const planner = createRoutePlanner({
 const fixed = planner.fixedSegment('2026-09-03-tenjin-pm');
 assert.equal(fixed.stops.length, 6, '固定行程應包含 Cosmos 選配站');
 assert.equal(fixed.stops.at(-1).optional, true, 'Cosmos 必須標成選配');
+assert.equal(fixed.endTime, '20:50', 'Cosmos 20:30 抵達並停留 20 分，晚間行程應到 20:50');
 assert.ok(planner.routeLegs(fixed).every((leg) => Number.isFinite(leg.meters)), '每段固定路線都應可計算距離');
 assert.ok(planner.routeDirectionsSegments(fixed).length > 0, '固定路線應可產生 Google Maps 導航');
 
 const groups = planner.remainingGroups();
 assert.deepEqual(groups.map((group) => group.area), ['tenjin', 'hakata', 'kokura'], '即時路線區域順序固定');
 assert.ok(groups.every((group) => group.stops.length > 0), '每個即時路線區域都應有站點');
+const welciaStop = groups.find((group) => group.area === 'tenjin').stops
+  .find((stop) => stop.store.id === 'welcia-one-fukuoka-tenjin');
+assert.ok(welciaStop.candidateProducts.some((product) => product.id === 'hareno-toothbrush'), '候選店家商品必須保留到店確認關係');
+assert.ok(!welciaStop.confirmedProducts.some((product) => product.id === 'hareno-toothbrush'), '候選商品不得誤列為已確認通路');
 
 assert.equal(Math.round(haversineMeters({ lat: 33.586903, lng: 130.401108 }, { lat: 33.587925, lng: 130.400894 })), 115);
 

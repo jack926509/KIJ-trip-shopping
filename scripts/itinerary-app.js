@@ -141,7 +141,10 @@ function renderRemainingStop(leg, index) {
   const body = makeElement('div');
   body.append(makeElement('strong', '', leg.store.name));
   if (leg.meters !== null) body.append(makeElement('span', '', `${index === 0 ? '距起點' : '距上一站'}約 ${walkText(leg.meters)}`));
-  const names = leg.products.slice(0, 4).map((product) => product.name);
+  if (leg.candidateProducts.length > 0) body.append(makeElement('span', 'candidate-note', '候選商品需到店確認'));
+  const candidateIds = new Set(leg.candidateProducts.map((product) => product.id));
+  const names = leg.products.slice(0, 4)
+    .map((product) => `${product.name}${candidateIds.has(product.id) ? '（到店確認）' : ''}`);
   if (leg.products.length > 4) names.push(`另 ${leg.products.length - 4} 項`);
   body.append(makeElement('span', '', names.join('、')));
   item.append(body);

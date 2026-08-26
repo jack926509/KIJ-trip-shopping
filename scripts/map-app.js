@@ -2,7 +2,7 @@ import { STORES } from '../assets/stores.js';
 import { PRODUCTS } from '../assets/products.js';
 import { createCatalogIndex } from '../assets/catalog-index.js';
 import { makeImageFallback, readStoredBool } from '../assets/app-utils.js';
-import { AREA_LABELS, createRoutePlanner } from '../assets/route-planner.js';
+import { AREA_LABELS, createRoutePlanner, haversineMeters } from '../assets/route-planner.js';
 
 const leafletReady = await (window.__leafletReady || Promise.resolve(typeof L !== 'undefined')).catch(() => false);
 await (window.__markerClusterReady || Promise.resolve(false));
@@ -147,16 +147,6 @@ function remainingText(items) {
   return remaining === 0 ? '・都買齊了' : `・還沒買 ${remaining} 項`;
 }
 
-function haversineMeters(a, b) {
-  const R = 6371000;
-  const toRad = (deg) => (deg * Math.PI) / 180;
-  const dLat = toRad(b.lat - a.lat);
-  const dLng = toRad(b.lng - a.lng);
-  const h = Math.sin(dLat / 2) ** 2
-    + Math.cos(toRad(a.lat)) * Math.cos(toRad(b.lat)) * Math.sin(dLng / 2) ** 2;
-  return 2 * R * Math.asin(Math.sqrt(h));
-}
-
 /* 路線建議的資料與排序已移至行程頁共用模組；地圖只負責把網址指定的路線畫出來。 */
 let routeMode = null;
 
@@ -250,7 +240,7 @@ function exitRouteMode() {
   }
   // 強制重畫：篩選、聚合與框選全部回到進入路線模式之前的狀態
   lastPlacementKey = '';
-  renderStores();
+  renderStores({ force: true });
 }
 
 function renderProductGroup(items, label, container, { showRemaining = false } = {}) {

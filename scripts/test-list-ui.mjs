@@ -40,6 +40,18 @@ if (/id="routePanel"/.test(mapHtml)) failures.push('地圖頁仍保留舊購物�
 if (!/createRoutePlanner/.test(mapApp) || !/searchParams\.get\('plan'\)/.test(mapApp) || !/searchParams\.get\('route'\)/.test(mapApp)) {
   failures.push('地圖頁尚未使用共用路線模組解析 plan／route 網址參數');
 }
+if (!/candidateProducts/.test(itineraryApp) || !/到店確認/.test(itineraryApp)) {
+  failures.push('即時補買路線沒有標示候選店家的商品需到店確認');
+}
+if (!/renderStores\(\{ force: true \}\)/.test(mapApp)) {
+  failures.push('地圖結束路線後沒有強制復原店家清單狀態');
+}
+if (!/import \{ AREA_LABELS, createRoutePlanner, haversineMeters \}/.test(mapApp)) {
+  failures.push('地圖頁沒有使用共用距離函式');
+}
+if (/\.route-panel\s*\{/.test(mapHtml) || /\.route-stop-main\s*\{/.test(mapHtml)) {
+  failures.push('地圖頁仍殘留已搬移路線面板的未使用樣式');
+}
 if (/<script type="module">[\s\S]*?import /.test(indexHtml) || /<script type="module">[\s\S]*?import /.test(mapHtml)) {
   failures.push('HTML 仍保留大型內嵌 module');
 }

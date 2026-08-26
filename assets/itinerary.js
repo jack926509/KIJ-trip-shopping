@@ -22,7 +22,7 @@ export const ITINERARY_SEGMENTS = [
     ],
   },
   {
-    id: '2026-09-03-tenjin-pm', date: '2026-09-03', area: 'tenjin', startTime: '17:00', endTime: '20:30',
+    id: '2026-09-03-tenjin-pm', date: '2026-09-03', area: 'tenjin', startTime: '17:00', endTime: '20:50',
     title: '電器、鞋與食品｜回天神南收尾',
     note: '先處理較早打烊的 DAISO 與 HOKA，再北上買超市商品，最後往天神南附近飯店方向收尾。',
     anchor: { storeId: 'lawson-nishitetsu-fukuoka-tenjin-south', label: '西鐵福岡（天神）站 南口' },

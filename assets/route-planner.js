@@ -63,8 +63,11 @@ export function createRoutePlanner({ stores, products, readStoredBool = (_key, f
     ? !readStoredBool(`kij_tried_${product.id}`, false)
     : !readStoredBool(`kij_bought_${product.id}`, false);
   const remainingProductsForStore = (storeId) => {
-    const all = catalog.productsForStore(storeId, 'all');
-    return [...new Map(all.map((product) => [product.id, product])).values()].filter(isRemaining);
+    const confirmedProducts = catalog.productsForStore(storeId, 'confirmed').filter(isRemaining);
+    const confirmedIds = new Set(confirmedProducts.map((product) => product.id));
+    const candidateProducts = catalog.productsForStore(storeId, 'candidate')
+      .filter((product) => isRemaining(product) && !confirmedIds.has(product.id));
+    return { confirmedProducts, candidateProducts, products: [...confirmedProducts, ...candidateProducts] };
   };
 
   function remainingGroups() {
@@ -72,7 +75,7 @@ export function createRoutePlanner({ stores, products, readStoredBool = (_key, f
       const anchor = anchorFrom(ROUTE_START_ANCHORS[area]);
       const stops = stores
         .filter((store) => store.area === area)
-        .map((store) => ({ store, products: remainingProductsForStore(store.id), optional: false }))
+        .map((store) => ({ store, ...remainingProductsForStore(store.id), optional: false }))
         .filter((stop) => stop.products.length > 0);
       return { id: `remaining-${area}`, kind: 'remaining', area, anchor, stops: orderByProximity(stops, anchor) };
     }).filter((group) => group.stops.length > 0);

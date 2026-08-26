@@ -61,6 +61,7 @@
 .remaining-stop .stop-number { width: 28px; height: 28px; font-size: 12px; }
 .remaining-stop strong { display: block; font-size: 14px; }
 .remaining-stop span { color: #68736e; font-size: 11px; line-height: 1.55; }
+.remaining-stop .candidate-note { display: block; color: #8b6424; font-weight: 800; }
 .route-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
 .maps-link { background: #edf3ef; color: #2f6d5e; padding: 9px 12px; font-size: 12px; }
 .route-empty { padding: 18px; border-radius: 14px; background: #fff; color: #66716c; }
