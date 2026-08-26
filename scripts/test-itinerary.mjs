@@ -69,4 +69,19 @@ for (const segment of ITINERARY_SEGMENTS) {
 }
 assert.deepEqual(mismatched, [], `行程停靠點列出了該店沒有登記的商品：\n  ${mismatched.join('\n  ')}`);
 
+/* 藥妝與便利商店刻意不排進固定行程（店家密度高，沿途遇到就買），
+ * 因此這兩類「完全」倚賴即時補買路線。哪天有人從 STORES 拿掉一家 LAWSON，
+ * 或把某項商品的 stores 清空，這些品項就會變成兩邊都查不到、卻沒有任何錯誤訊息。 */
+const reachable = new Set();
+for (const group of planner.remainingGroups()) {
+  for (const stop of group.stops) {
+    for (const product of [...stop.confirmedProducts, ...stop.candidateProducts]) reachable.add(product.id);
+  }
+}
+const stranded = PRODUCTS
+  .filter((product) => ['shopping', 'convenience'].includes(product.group))
+  .filter((product) => !reachable.has(product.id))
+  .map((product) => `${product.name}（${product.group}）`);
+assert.deepEqual(stranded, [], `不排進固定行程的品項必須有即時補買路線可去，以下無處可買：\n  ${stranded.join('\n  ')}`);
+
 console.log('✓ 行程資料與路線規劃契約通過');
