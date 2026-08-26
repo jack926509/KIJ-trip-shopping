@@ -80,11 +80,46 @@ function stopCompletion(products) {
   return products.every(isDone);
 }
 
-function renderFixedStop(stop, index) {
+function minutesOf(time) {
+  const [hour, minute] = time.split(':').map(Number);
+  return hour * 60 + minute;
+}
+
+/* 表定時刻只寫「幾點到、待多久」，沒有把站與站之間的移動算進去——
+ * 實際上 12 段路程中有 4 段，上一站的離開時間就是下一站的抵達時間（留 0 分）。
+ * 這裡不改動任何時刻（那是使用者的行程決定），只把「這段要走多久 / 排程留多久」
+ * 顯示出來，讓人自己看得到哪一段其實趕不到。
+ * 距離沿用全站一致的直線估算（walkText），與即時補買路線同一套標準。 */
+function renderStopLeg(leg, index, segment, stops) {
+  if (leg.meters === null || leg.meters === undefined) return null;
+  /* 同座標＝同一棟樓（ミーナ天神的 LOFT 與 3COINS、博多站的茅乃舍與 HANDS）。
+     這種「移動」只是搭電梯換樓層，排 0 分是合理的，不該當成排程過緊。 */
+  const sameBuilding = leg.meters < 50;
+  const element = makeElement('p', 'stop-leg');
+  element.append(makeElement('span', '', sameBuilding
+    ? '同一棟樓，直接移動'
+    : `從${index === 0 ? (segment.anchor?.label || '起點') : '上一站'} ${walkText(leg.meters)}`));
+
+  /* 只檢查站與站之間。第一站比的是「區段開始時間」，而區段本來就是從抵達第一站
+     算起的，拿它當移動時間不足會整段誤報。 */
+  if (!sameBuilding && index > 0) {
+    const walkMinutes = Math.max(1, Math.round(leg.meters / 80));
+    const previous = stops[index - 1];
+    const slack = minutesOf(leg.arrivalTime) - (minutesOf(previous.arrivalTime) + previous.durationMinutes);
+    if (slack < walkMinutes) {
+      element.classList.add('is-tight');
+      element.append(makeElement('span', 'stop-leg-tight', slack <= 0 ? '排程沒留移動時間' : `排程只留 ${slack} 分`));
+    }
+  }
+  return element;
+}
+
+function renderFixedStop(stop, index, legElement) {
   const item = makeElement('li', `stop-item${stop.optional ? ' is-optional' : ''}`);
   item.append(makeElement('span', 'stop-number', String(index + 1)));
 
   const body = makeElement('div', 'stop-body');
+  if (legElement) body.append(legElement);
   const nameRow = makeElement('div', 'stop-name-row');
   nameRow.append(makeElement('span', 'stop-name', stop.store.name));
   if (stop.optional) nameRow.append(makeElement('span', 'optional-badge', '選配'));
@@ -115,7 +150,12 @@ function renderSegment(segmentId) {
   header.append(heading, makeLink('在地圖查看', `map.html?plan=${encodeURIComponent(segment.id)}`, 'map-route-link'));
   card.append(header);
   const list = makeElement('ol', 'stop-list');
-  segment.stops.forEach((stop, index) => list.append(renderFixedStop(stop, index)));
+  /* routeLegs 已經會從 anchor 起算每一段的直線距離，固定行程與即時補買路線共用同一支。 */
+  const legs = planner.routeLegs(segment);
+  segment.stops.forEach((stop, index) => {
+    const leg = renderStopLeg(legs[index], index, segment, segment.stops);
+    list.append(renderFixedStop(stop, index, leg));
+  });
   card.append(list);
   return card;
 }

@@ -46,7 +46,9 @@ export const ITINERARY_SEGMENTS = [
     anchor: { storeId: 'familymart-hakata-station', label: 'JR 博多站' },
     stops: [
       { storeId: 'kayanoya-hakata-station-daitos', arrivalTime: '10:00', durationMinutes: 30, optional: false, productIds: ['kayanoya-dashi', 'chawanmushi-no-moto'], note: '先處理博多站內商品。' },
-      { storeId: 'hands-hakata', arrivalTime: '10:30', durationMinutes: 30, optional: true, productIds: ['sanwa-400-ma092', 'sanwa-ma-ergw19', 'sanwa-trackball-400-mawbttb190'], note: '只有 BicCamera 未選到合適滑鼠才加入。' },
+      /* 400-MA092 不列在這裡：它的商品資料註明是 Sanwa Direct 網路限定（WEB 限定），
+         天神、博多實體門市不鋪貨，寫進來只會讓人在 HANDS 白找一輪。 */
+      { storeId: 'hands-hakata', arrivalTime: '10:30', durationMinutes: 30, optional: true, productIds: ['sanwa-ma-ergw19', 'sanwa-trackball-400-mawbttb190'], note: '只有 BicCamera 未選到合適滑鼠才加入；400-MA092 是網路限定，門市買不到。' },
       { storeId: 'murasaki-sports-canal-city-hakata', arrivalTime: '11:30', durationMinutes: 60, optional: false, productIds: ['cloudtilt', 'cloudsurfermax', 'cloudsurfer2', 'cloud6', 'cloudrunner3'], note: '型號、顏色與尺碼以現場庫存為準。' },
       { storeId: 'alpen-fukuoka-canal-city-hakata', arrivalTime: '12:35', durationMinutes: 40, optional: false, productIds: ['golden-seasoning', 'cloudsurfermax'], note: '買白松露鹽，也可再確認 Cloudsurfer Max。' },
     ],
@@ -57,10 +59,14 @@ export const ITINERARY_SEGMENTS = [
     note: '不綁定單一門市；17:00 左右收尾，18:40 前回飯店領行李。',
     anchor: { storeId: 'familymart-kokura-station', label: 'JR 小倉站' },
     stops: [
+      /* 藥妝刻意不綁品項：福岡與小倉的藥妝店密度極高，把 18 項釘在某一家門市
+       * 反而是過度規劃——原本那份清單裡還有 4 項（止癢藥膏、痠痛乳膏、足跟修護液、
+       * 暈車藥）根本沒登記在這家分店，照著走會在架上白找。
+       * 藥妝改為沿途遇到就買，要看還缺什麼請用清單頁的搜尋或「即時補買路線」。 */
       {
         storeId: 'matsumoto-kiyoshi-kokura-station-south', arrivalTime: '12:30', durationMinutes: 30, optional: true,
-        productIds: ['jinmart', 'roihi', 'nature', 'anelon', 'pabron-ace-pro-x-36', 'lulu-attack-ex-24', 'taisho-kampo-stomach-48', 'ohta-isan-s-50', 'hareno-toothbrush', 'toothbrush-p61', 'salonpas-ae-240', 'passtime-lx-premium-21', 'kobayashi-harenurse-spray', 'kobayashi-harenurse-18', 'lion-stain-rescue', 'kobayashi-zukkinon-ointment', 'cp-lip-lip-essence', 'kinui-calm-7-soothing-serum'],
-        note: '只是順路候選；沿途任何仍在營業的藥妝店都可以逛。',
+        productIds: [],
+        note: '藥妝不綁定門市：小倉站周邊藥妝店很多，沿途遇到仍在營業的就進去補。要看還缺哪些，用清單頁的搜尋或「即時補買路線」。',
       },
     ],
   },
