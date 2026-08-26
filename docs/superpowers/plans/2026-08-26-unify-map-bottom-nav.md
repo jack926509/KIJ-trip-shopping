@@ -29,7 +29,7 @@
 - Consumes: 三頁既有的 `.kij-bottombar` markup 與 `.active` 狀態。
 - Produces: 所有頁面共用的 821px 以上置中膠囊導覽樣式。
 
-- [ ] **Step 1: 寫入會失敗的共用樣式契約測試**
+- [x] **Step 1: 寫入會失敗的共用樣式契約測試**
 
 在 `scripts/test-list-ui.mjs` 讀取的 `kijCss` 上加入檢查：禁止 `body.kij .kij-bottombar`，並要求 821px media query 內存在未限定頁面的 `.kij-bottombar`、460px 寬度及 18px bottom。
 
@@ -42,13 +42,13 @@ if (!/@media \(min-width: 821px\) \{[\s\S]*?\.kij-bottombar \{[\s\S]*?width: min
 }
 ```
 
-- [ ] **Step 2: 執行測試並確認先失敗**
+- [x] **Step 2: 執行測試並確認先失敗**
 
 Run: `node scripts/test-list-ui.mjs`
 
 Expected: FAIL，訊息包含「桌機底部導覽仍只套用在 body.kij」。
 
-- [ ] **Step 3: 將桌機膠囊規則改為三頁共用**
+- [x] **Step 3: 將桌機膠囊規則改為三頁共用**
 
 在 `assets/kij.css` 的 `@media (min-width: 821px)` 中，把四個 `body.kij .kij-bottombar...` 選擇器改為 `.kij-bottombar...`，並更新註解說明三頁統一。
 
@@ -61,7 +61,7 @@ Expected: FAIL，訊息包含「桌機底部導覽仍只套用在 body.kij」。
 }
 ```
 
-- [ ] **Step 4: 執行自動驗收**
+- [x] **Step 4: 執行自動驗收**
 
 Run: `npm test`
 
@@ -75,11 +75,11 @@ Run: `git diff --check`
 
 Expected: 無空白錯誤。
 
-- [ ] **Step 5: 執行瀏覽器驗收**
+- [x] **Step 5: 執行瀏覽器驗收**
 
 在 1280×900 與 390×844 開啟 `index.html`、`itinerary.html`、`map.html`。確認桌機三頁導覽同為置中膠囊；手機三頁同為滿寬；頁面無水平溢出，地圖可操作且 console 無錯誤。
 
-- [ ] **Step 6: 建立原子提交**
+- [x] **Step 6: 建立原子提交**
 
 ```bash
 git add assets/kij.css scripts/test-list-ui.mjs docs/superpowers/specs/2026-08-26-unify-map-bottom-nav-design.md docs/superpowers/plans/2026-08-26-unify-map-bottom-nav.md

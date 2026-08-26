@@ -90,6 +90,16 @@ if (!/下方店家清單、搜尋與篩選仍可正常使用/.test(mapHtml)) {
  * 變成點「唐吉訶德中洲店」卻開到「松本清博多站地下街店」——按錯會走到別家店。
  * 這是一組數字之間的約束，看 CSS 看不出來，所以在這裡釘住。 */
 const kijCss = readFileSync(path.join(ROOT, 'assets/kij.css'), 'utf8');
+
+/* 桌機底部導覽是三頁共用元件；若再次限定在 body.kij，沒有該 class 的地圖頁
+ * 就會退回滿版導覽列，與清單／行程頁的置中膠囊不一致。 */
+if (/body\.kij \.kij-bottombar/.test(kijCss)) {
+  failures.push('桌機底部導覽仍只套用在 body.kij，地圖頁會維持滿版樣式');
+}
+if (!/@media \(min-width: 821px\) \{[\s\S]*?\.kij-bottombar \{[\s\S]*?width: min\(460px,[\s\S]*?bottom: 18px;/.test(kijCss)) {
+  failures.push('共用桌機底部導覽缺少 460px 置中膠囊或 18px 底部距離');
+}
+
 const storeLinkPad = kijCss.match(/\.kij-store-links a \{[^}]*padding:\s*(\d+)px 0/);
 const storeLinkGap = kijCss.match(/\.kij-store-links \{ gap:\s*(\d+)px/);
 if (!storeLinkPad || !storeLinkGap) {

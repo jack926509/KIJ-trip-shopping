@@ -632,11 +632,9 @@ body.kij {
 .kij-bottombar { background: var(--surface); border-top-color: var(--line); }
 .kij-bottombar .active { color: var(--accent); }
 
-/* 桌機不需要橫跨 1280px 的手機式底部列：收成螢幕下方置中的膠囊。
-   只作用在 body.kij（清單頁與行程頁）；map.html 的 body 沒有這個 class，
-   維持滿版底部列——那頁是滿版地圖的 app 版面，滿版列本來就合理。 */
+/* 桌機不需要橫跨 1280px 的手機式底部列：三頁統一收成螢幕下方置中的膠囊。 */
 @media (min-width: 821px) {
-  body.kij .kij-bottombar {
+  .kij-bottombar {
     width: min(460px, calc(100% - 32px));
     margin: 0 auto;
     bottom: 18px;
@@ -646,15 +644,15 @@ body.kij {
     border-radius: var(--radius-pill);
     box-shadow: 0 12px 30px rgba(55, 48, 39, .16);
   }
-  body.kij .kij-bottombar a {
+  .kij-bottombar a {
     flex-direction: row;
     gap: 8px;
     font-size: 13.5px;
     font-weight: 700;
     border-radius: var(--radius-pill);
   }
-  body.kij .kij-bottombar i { font-size: 17px; }
-  body.kij .kij-bottombar .active { background: var(--accent-soft); }
+  .kij-bottombar i { font-size: 17px; }
+  .kij-bottombar .active { background: var(--accent-soft); }
 }
 
 /* 兩欄門檻設在 1000px：圖放大到 186px 後，760px 時分兩欄會讓右側明細只剩約 130px。 */
