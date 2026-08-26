@@ -20,6 +20,11 @@ const GROUP_META = {
   shoes: { label: '鞋款試穿', icon: '👟' },
 };
 let activeGroup = 'shopping';
+/* 搜尋字串刻意不持久化：它是「現在站在這個貨架前」的臨時動作，
+   下次開頁還帶著上次的關鍵字只會讓人以為清單不見了。
+   「只看未完成」相反——那是整趟旅程的檢視偏好，記起來。 */
+let searchQuery = '';
+let unboughtOnly = false;
 
 /* 這三個群組是「選一／選幾個參考」而非每項都要買，tracking 一律是 'try'
  * （已試穿／已選定），不計入「已買 X / 48」的購買進度。
@@ -321,11 +326,65 @@ function triedToggleHtml(product) {
 }
 
 /* ────────────────────────────────────────────────────────────────
+ * 搜尋與篩選
+ * ──────────────────────────────────────────────────────────────── */
+
+/* 「完成」在兩種 tracking 下是不同動作：要買的看買了沒，參考清單看試穿／選定了沒。
+ * 「只看未完成」與分區計數都走這一支，避免兩邊各判斷一次而漂移。 */
+function isDone(product) {
+  return product.tracking === 'buy' ? isBought(product.id) : isTried(product.id);
+}
+
+/* 每項商品的可搜尋文字建一次索引：中文品名、日文名、型號、分類、分頁名稱，
+ * 外加店家的顯示名稱——站在店裡最常問的其實是「松本清有什麼」。
+ * 75 項 × 每次輸入都重掃字串很浪費，所以在載入時算好。 */
+const SEARCH_TEXT = new Map(PRODUCTS.map((product) => {
+  const storeNames = [...(product.stores || []), ...(product.storeCandidates || [])]
+    .map((storeId) => STORE_SUMMARIES[storeId]?.name || '');
+  return [product.id, [
+    product.name,
+    product.jaName,
+    product.model,
+    product.category,
+    GROUP_META[product.group]?.label,
+    ...storeNames,
+  ].filter(Boolean).join(' ').toLowerCase()];
+}));
+
+function matchesSearch(product) {
+  if (!searchQuery) return true;
+  const haystack = SEARCH_TEXT.get(product.id) || '';
+  /* 以空白拆成多個關鍵字並全部要命中（AND）：「松本清 精華」找得到
+     「在松本清買得到的精華液」，而不是把整串當成一個詞比對。 */
+  return searchQuery.split(/\s+/).filter(Boolean).every((term) => haystack.includes(term));
+}
+
+function passesFilters(product) {
+  if (unboughtOnly && isDone(product)) return false;
+  return matchesSearch(product);
+}
+
+function visibleItems(group) {
+  return (CATALOG.byGroup.get(group) || []).filter(passesFilters);
+}
+
+function searchResults() {
+  return GROUPS.flatMap((group) => visibleItems(group));
+}
+
+/* ────────────────────────────────────────────────────────────────
  * 卡片渲染
  * ──────────────────────────────────────────────────────────────── */
-function buildCardHtml(product) {
-  const pill = pillForProduct(product);
+/* showPill：藥妝日用分區的商品已經被分類小標題分好組了，卡片右上再重複一次
+   同樣的分類膠囊只是把 172px 的右欄再切掉一截。分區外（搜尋結果）沒有小標題，
+   分類膠囊就變回有用的資訊，所以由呼叫端決定。
+   groupBadge：搜尋結果跨全部分頁，卡片要說明自己原本住在哪一頁。 */
+function buildCardHtml(product, { showPill = true, groupBadge = false } = {}) {
+  const pill = showPill ? pillForProduct(product) : null;
   const pillHtml = pill ? `<span class="kij-pill ${pill.cls}">${escapeHtml(pill.text)}</span>` : '';
+  const badgeHtml = groupBadge
+    ? `<span class="kij-group-badge">${escapeHtml(GROUP_META[product.group]?.label || product.group)}</span>`
+    : '';
   /* 日文名與型號併成一行（用「・」分隔），省下窄卡片的一整列。
      吹風機的型號本身就是品名，不重複顯示。 */
   const subParts = [];
@@ -398,12 +457,17 @@ function buildCardHtml(product) {
     ? `<h5><a class="kij-name-link" href="${escapeHtml(product.priceSourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(product.name)}<span class="kij-ext" aria-hidden="true">↗</span></a></h5>`
     : `<h5>${escapeHtml(product.name)}</h5>`;
 
-  /* note／priceNote 先前完全沒被讀出來，本次新增的購買警語（例如「不保證有貨」
-     「圖片未顯示可辨識的售價」）因此看不到。有值才顯示，樣式比照既有次要文字。
-     priceNote 緊接在價格後面（說明這個價格／有沒有貨的來龍去脈），
-     note 放在最後（商品本身的補充說明），避免打散既有的價格區塊排版。 */
-  const priceNoteHtml = product.priceNote ? `<p class="kij-card-pricenote">${escapeHtml(product.priceNote)}</p>` : '';
-  const noteHtml = product.note ? `<p class="kij-card-note">${escapeHtml(product.note)}</p>` : '';
+  /* note 與 priceNote 目前都是「資料來源與查證狀態」的說明：PRICE_OVERRIDES 在
+     2026-08-22 的商品刷新時，把原本的購買提醒（「建議帶 1 條」）覆寫成了
+     「照片確認為 … 官方希望零售含稅價 ¥1,320。實體藥妝的售價與庫存未確認」這類查證紀錄。
+     兩段攤開後在手機上常比價格區塊還高，站在貨架前是雜訊，因此收進同一個可展開區塊。
+     不是刪掉——要查價格怎麼來的，點一下就看得到。 */
+  const notes = [product.note, product.priceNote].filter(Boolean);
+  const noteHtml = notes.length > 0
+    ? `<details class="kij-card-source"><summary>商品與價格說明</summary>${
+        notes.map((text) => `<p class="kij-card-note">${escapeHtml(text)}</p>`).join('')
+      }</details>`
+    : '';
 
   return `
     <div class="kij-card kij-card-${escapeHtml(product.group)}${product.tracking === 'buy' && isBought(product.id) ? ' is-bought' : ''}" id="${escapeHtml(product.id)}" data-id="${escapeHtml(product.id)}">
@@ -411,7 +475,7 @@ function buildCardHtml(product) {
         <a class="kij-image-link" href="${escapeHtml(fullImage)}" target="_blank" rel="noopener noreferrer" aria-label="放大查看 ${escapeHtml(product.name)} 圖片"><img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" width="156" height="156" loading="lazy" decoding="async"></a>
       </div>
       <div class="kij-card-head">
-        ${pillHtml || '<span></span>'}
+        ${badgeHtml}${pillHtml}${badgeHtml || pillHtml ? '' : '<span></span>'}
         ${controlsHtml}
       </div>
       <div class="mid">
@@ -424,7 +488,6 @@ function buildCardHtml(product) {
       </div>
       <div class="kij-card-detail">
         ${priceHtml}
-        ${priceNoteHtml}
         ${noteHtml}
       </div>
     </div>`;
@@ -441,9 +504,23 @@ function triedCountText(group) {
     : `已選定 ${triedCount} / ${items.length} 項`;
 }
 
+/* 搜尋結果：跨全部分頁的扁平卡片清單，不分區、不帶比較表。
+ * 比較表是「決定要買哪一款」的行前工具，跟「現在要找某一項」的搜尋不同情境。 */
+function buildSearchResultsHtml(items) {
+  return `
+    <section class="kij-section" data-group="search">
+      <div class="kij-section-body">
+        ${items.map((product) => buildCardHtml(product, { showPill: false, groupBadge: true })).join('')}
+      </div>
+    </section>`;
+}
+
 function buildSectionHtml(group) {
   const meta = GROUP_META[group];
-  const items = CATALOG.byGroup.get(group) || [];
+  const allItems = CATALOG.byGroup.get(group) || [];
+  /* 「只看未完成」只藏卡片，不動比較表與店家橫幅——那些是整個分區的參考資料，
+     跟「這一項買了沒」無關；買完最後一款吹風機時把比較表一起藏掉並不合理。 */
+  const items = allItems.filter(passesFilters);
   const collapsed = isSectionCollapsed(group);
   let bodyInner;
 
@@ -453,32 +530,38 @@ function buildSectionHtml(group) {
     bodyInner = categories.map((category) => {
       const catItems = items.filter((p) => p.category === category);
       const chipCls = chipClassForCategory(category);
+      // 分類已寫在這個小標題上，卡片內不再重複同一顆膠囊。
       return `
         <div class="kij-subcat" data-category="${escapeHtml(category)}">
           <div class="kij-subcat-heading" style="padding:6px 4px;">
             <span class="kij-pill ${chipCls}">${escapeHtml(category)}</span>
             <span style="font-size:11px;color:var(--muted);margin-left:6px;">${catItems.length} 項</span>
           </div>
-          ${catItems.map(buildCardHtml).join('')}
+          ${catItems.map((product) => buildCardHtml(product, { showPill: false })).join('')}
         </div>`;
     }).join('');
   } else if (group === 'shoes') {
     bodyInner = ['ON', 'HOKA'].map((brand) => {
       const brandItems = items.filter((product) => SHOE_BRANDS[product.id] === brand);
+      if (brandItems.length === 0) return '';
       return `<div class="kij-shoe-card-group kij-shoe-card-group-${brand.toLowerCase()}">
         <h3>${brand}</h3>
-        <div class="kij-shoe-card-grid">${brandItems.map(buildCardHtml).join('')}</div>
+        <div class="kij-shoe-card-grid">${brandItems.map((product) => buildCardHtml(product)).join('')}</div>
       </div>`;
     }).join('');
   } else {
-    bodyInner = items.map(buildCardHtml).join('');
+    bodyInner = items.map((product) => buildCardHtml(product)).join('');
   }
 
-  if (group === 'dryer' || group === 'shoes' || group === 'powerbank') bodyInner = comparisonTableHtml(group, items) + bodyInner;
-  if (group === 'powerbank') bodyInner = powerbankStoreBannerHtml(items) + bodyInner;
-  if (group === 'mouse') bodyInner = mouseNoteHtml(items) + bodyInner;
+  if (group === 'dryer' || group === 'shoes' || group === 'powerbank') bodyInner = comparisonTableHtml(group, allItems) + bodyInner;
+  if (group === 'powerbank') bodyInner = powerbankStoreBannerHtml(allItems) + bodyInner;
+  if (group === 'mouse') bodyInner = mouseNoteHtml(allItems) + bodyInner;
 
-  const countText = TRY_ONLY_GROUPS.has(group) ? triedCountText(group) : `${items.length} 項`;
+  /* 開了「只看未完成」時，分區計數要講眼前看得到的數字（剩 N 項），
+     不然標題寫「41 項」、底下卻只有 3 張卡片，會以為畫面壞了。 */
+  const countText = unboughtOnly
+    ? `剩 ${items.length} / ${allItems.length} 項`
+    : (TRY_ONLY_GROUPS.has(group) ? triedCountText(group) : `${items.length} 項`);
 
   return `
     <section class="kij-section" data-group="${group}">
@@ -505,18 +588,67 @@ function attachImageFallbacks() {
 let lastSectionsKey = '';
 
 function sectionRenderKey() {
-  const items = CATALOG.byGroup.get(activeGroup) || [];
+  const items = searchQuery ? PRODUCTS : (CATALOG.byGroup.get(activeGroup) || []);
   return [
+    searchQuery,
+    unboughtOnly,
     activeGroup,
     isSectionCollapsed(activeGroup),
     ...items.map((product) => `${product.id}:${product.tracking === 'buy' ? isBought(product.id) : isTried(product.id)}`),
   ].join('|');
 }
 
+/* 結果行與空狀態：搜尋或篩選之後畫面上可能一張卡片都沒有，
+   這時要寫清楚是「找不到」還是「都完成了」，而不是給一片空白。 */
+function renderResultState(count) {
+  const resultLine = document.getElementById('kijResultLine');
+  const empty = document.getElementById('kijEmpty');
+
+  if (searchQuery) {
+    resultLine.hidden = false;
+    resultLine.textContent = count > 0
+      ? `「${searchQuery}」找到 ${count} 項${unboughtOnly ? '未完成商品' : '商品'}`
+      : `「${searchQuery}」沒有符合的商品`;
+  } else {
+    resultLine.hidden = true;
+    resultLine.textContent = '';
+  }
+
+  if (count > 0) {
+    empty.hidden = true;
+    return;
+  }
+  empty.hidden = false;
+  if (searchQuery) {
+    empty.textContent = '換個關鍵字試試：可以找中文品名、日文名、型號、分類或店家名。';
+  } else if (unboughtOnly) {
+    empty.textContent = `${GROUP_META[activeGroup].label}都完成了 🎉　關掉「只看未完成」可以回頭看已完成的品項。`;
+  } else {
+    empty.textContent = '這個分頁目前沒有商品。';
+  }
+}
+
+/* 搜尋結果跨全部分頁，此時再讓某一顆分頁亮著「選中」，會讓人以為只搜了那一頁。 */
+function syncTabsForSearch() {
+  document.querySelectorAll('.kij-tab').forEach((tab) => {
+    const active = !searchQuery && tab.dataset.group === activeGroup;
+    tab.classList.toggle('active', active);
+    if (active) tab.setAttribute('aria-current', 'true');
+    else tab.removeAttribute('aria-current');
+  });
+}
+
 function renderSections({ force = false } = {}) {
+  syncTabsForSearch();
   const key = sectionRenderKey();
   if (!force && key === lastSectionsKey) return false;
-  document.getElementById('kijSections').innerHTML = buildSectionHtml(activeGroup);
+  const container = document.getElementById('kijSections');
+  const items = searchQuery ? searchResults() : visibleItems(activeGroup);
+  /* 搜尋時整個分區結構（比較表、分類小標題、收合）都不適用，換成扁平結果清單。 */
+  container.innerHTML = searchQuery
+    ? (items.length > 0 ? buildSearchResultsHtml(items) : '')
+    : buildSectionHtml(activeGroup);
+  renderResultState(items.length);
   lastSectionsKey = key;
   attachImageFallbacks();
   return true;
@@ -567,8 +699,11 @@ function updateProgressBar() {
     headText = `${GROUP_META[activeGroup].label}　已買 ${boughtCount} / ${groupItems.length} 項`;
   }
 
-  document.getElementById('kijStatusLine').textContent =
-    `${headText}　·　全站已買 ${allBoughtCount} / ${allBuyItems.length} 項`;
+  /* 搜尋時結果跨全部分頁、分頁也不再亮選中狀態，這時再講「藥妝日用 已買 1 / 41」
+     等於在說一個畫面上不存在的範圍，只留全站進度。 */
+  document.getElementById('kijStatusLine').textContent = searchQuery
+    ? `全站已買 ${allBoughtCount} / ${allBuyItems.length} 項`
+    : `${headText}　·　全站已買 ${allBoughtCount} / ${allBuyItems.length} 項`;
 }
 
 function updateTriedSectionCount(group) {
@@ -589,7 +724,12 @@ function syncKijState() {
  * ──────────────────────────────────────────────────────────────── */
 function focusSection(group) {
   activeGroup = group;
-  document.querySelectorAll('.kij-tab').forEach((tab) => tab.classList.toggle('active', tab.dataset.group === group));
+  /* 點分頁＝「我要看這一類」，與「我要找某一項」是互斥的兩個動作。
+     不清掉搜尋的話，點了分頁畫面卻還停在搜尋結果，會以為分頁壞了。 */
+  if (searchQuery) clearSearch();
+  // 分頁選中狀態一律由 syncTabsForSearch() 統一設定（renderSections 內會呼叫），
+  // 不在這裡再寫一份，否則兩處判斷條件日後會漂移。
+  syncTabsForSearch();
   // 6 顆分頁在手機寬度放不下一行，選中的那顆可能在可視範圍外（例如從網址錨點
   // 直接跳到「鞋款」），切換時把它捲進視野；block:'nearest' 避免多餘的垂直捲動。
   // inline 必須是 'center'：分頁列有 scroll-snap-type: x proximity，'nearest' 只會挪到
@@ -605,6 +745,9 @@ function focusSection(group) {
 function focusProductById(id) {
   const product = PRODUCTS_BY_ID.get(id);
   if (!product) return false;
+  /* 從地圖點某項商品跳過來，但那項已完成、又開著「只看未完成」時，卡片根本不在畫面上，
+     捲動會靜靜失敗。使用者明確指名了這一項，這時關掉篩選才是他要的。 */
+  if (unboughtOnly && isDone(product)) applyUnboughtOnly(false);
   if (activeGroup !== product.group) focusSection(product.group);
   const card = document.getElementById(id);
   if (card) {
@@ -638,6 +781,57 @@ function resetView() {
 }
 
 /* ────────────────────────────────────────────────────────────────
+ * 搜尋與篩選的介面接線
+ * ──────────────────────────────────────────────────────────────── */
+const searchInput = document.getElementById('kijSearch');
+const searchClearBtn = document.getElementById('kijSearchClear');
+const unboughtToggle = document.getElementById('kijUnboughtToggle');
+
+function applySearch(raw) {
+  searchQuery = raw.trim().toLowerCase();
+  searchClearBtn.hidden = raw.length === 0;
+  renderSections();
+  updateProgressBar(); // 狀態列在搜尋中／不搜尋時講的範圍不同，兩邊切換都要重算
+}
+
+function clearSearch() {
+  searchInput.value = '';
+  applySearch('');
+}
+
+/* 輸入即篩選，但用 rAF 併掉同一幀內的連續輸入：75 張卡片全重繪，
+   逐字元同步重排在手機上會卡住輸入法。 */
+let searchFrame = 0;
+searchInput.addEventListener('input', () => {
+  const value = searchInput.value;
+  cancelAnimationFrame(searchFrame);
+  searchFrame = requestAnimationFrame(() => applySearch(value));
+});
+
+/* Esc 清空是搜尋框的通用預期；type="search" 的原生 Esc 只清值不觸發 input。 */
+searchInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && searchInput.value) {
+    e.preventDefault();
+    clearSearch();
+  }
+});
+
+searchClearBtn.addEventListener('click', () => {
+  clearSearch();
+  searchInput.focus();
+});
+
+function applyUnboughtOnly(next) {
+  unboughtOnly = next;
+  writeBool('kij_unbought_only', next);
+  unboughtToggle.setAttribute('aria-pressed', String(next));
+  renderSections();
+  updateProgressBar();
+}
+
+unboughtToggle.addEventListener('click', () => applyUnboughtOnly(!unboughtOnly));
+
+/* ────────────────────────────────────────────────────────────────
  * 事件委派
  * ──────────────────────────────────────────────────────────────── */
 const appEl = document.getElementById('app');
@@ -664,7 +858,9 @@ appEl.addEventListener('click', (e) => {
     case 'toggle-bought': {
       if (!product) return;
       setBought(id, !isBought(id));
-      syncCardVisual(card, product);
+      // 開著「只看未完成」時，勾完的品項就該從畫面消失——這正是那顆開關的意思。
+      if (unboughtOnly) renderSections();
+      else syncCardVisual(card, product);
       updateProgressBar();
       syncKijState();
       break;
@@ -672,8 +868,11 @@ appEl.addEventListener('click', (e) => {
     case 'toggle-tried': {
       if (!product) return;
       setTried(id, !isTried(id));
-      syncCardVisual(card, product);
-      updateTriedSectionCount(product.group);
+      if (unboughtOnly) renderSections();
+      else {
+        syncCardVisual(card, product);
+        updateTriedSectionCount(product.group);
+      }
       updateProgressBar(); // 鞋款／滑鼠／行動電源頁的狀態文字講的是試穿或選定數，勾了要同步
       syncKijState();
       break;
@@ -701,6 +900,10 @@ appEl.addEventListener('keydown', (e) => {
  * 初始化
  * ──────────────────────────────────────────────────────────────── */
 document.getElementById('kijItemCount').textContent = `共 ${PRODUCTS.length} 項商品`;
+
+/* 「只看未完成」是整趟旅程的檢視偏好，重開頁面要還在（搜尋字串則刻意不留）。 */
+unboughtOnly = readBool('kij_unbought_only', false);
+unboughtToggle.setAttribute('aria-pressed', String(unboughtOnly));
 
 /* 捲動後收合頁首，把螢幕還給商品。用 rAF 節流，避免捲動時反覆觸發版面計算。 */
 (() => {

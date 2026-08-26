@@ -9,6 +9,10 @@
   <meta name="theme-color" content="#2f6d5e">
   <script>
     window.__mapFallbackRequested = false;
+    /* 兩條降級路徑（圖磚載不到、Leaflet 本身載不到）現在後果一致：
+     * map-app.js 不再把主體包在 else 裡，沒有 Leaflet 就只是不畫地圖，
+     * 店家清單、搜尋、篩選與 Google Maps 導航照常運作。
+     * 這句話因此在兩種情況下都是真的。 */
     function showMapFallback() {
       window.__mapFallbackRequested = true;
       const mapElement = document.getElementById('map');
@@ -119,16 +123,47 @@
     .map-attribution a { color: inherit; }
     #map[hidden] + .map-attribution { display: none; }
 
+    /* 訊息靠上排：地圖失敗時抽屜會拉開到 half，把整個 map-stage 的下半截蓋住，
+       原本 place-content: center 會讓文字剛好落在被蓋住的那一段，只露出半行標題。
+       店家清單現在才是這頁的主角，降級訊息退到上方交代一句就好。 */
     #mapFallback {
       position: absolute;
       inset: 0;
       z-index: 400;
       display: grid;
-      place-content: center;
-      padding: 40px 24px;
+      place-content: start center;
+      padding: 22px 24px;
       overflow: auto;
       background: linear-gradient(145deg, var(--accent-soft), #f7f4ed);
       text-align: center;
+    }
+    #mapFallback h2 { margin: 10px 0 6px; font-size: 19px; }
+    #mapFallback p { margin: 0; max-width: 34em; font-size: 13px; line-height: 1.65; }
+
+    .fallback-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .fallback-actions button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: var(--tap-min);
+      padding: 0 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-pill);
+      background: #fff;
+      color: var(--accent);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
     }
 
     #mapFallback[hidden],
@@ -1115,7 +1150,10 @@
       <div id="mapFallback" hidden>
         <div class="fallback-icon" aria-hidden="true">⌖</div>
         <h2>地圖暫時無法載入</h2>
-        <p>店家清單、搜尋與篩選仍可正常使用；請從卡片開啟 Google Maps 導航或官方資料。</p>
+        <p>下方店家清單、搜尋與篩選仍可正常使用；請從卡片開啟 Google Maps 導航或官方資料。</p>
+        <div class="fallback-actions">
+          <button type="button" onclick="location.reload()">重新整理</button>
+        </div>
       </div>
 
       <!-- 浮在地圖上的控制列。桌機版由 syncLayout() 搬進左側面板的 #drawerDock。 -->

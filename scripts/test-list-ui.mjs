@@ -59,6 +59,50 @@ if (!/data-action="toggle-bought"/.test(indexApp)) {
   failures.push('可購買商品沒有輸出 data-action="toggle-bought" 按鈕');
 }
 
+/* 清單頁的搜尋與「只看未完成」是站在店裡最常用的兩個控制項；
+ * 少了任何一半（HTML 有欄位但 JS 沒接、或反過來）畫面上都看不出來，
+ * 只會變成「打字沒反應」，所以兩邊都釘住。 */
+for (const id of ['kijSearch', 'kijSearchClear', 'kijUnboughtToggle', 'kijResultLine', 'kijEmpty']) {
+  if (!indexHtml.includes(`id="${id}"`)) failures.push(`清單頁缺少 #${id}`);
+  if (!indexApp.includes(`'${id}'`)) failures.push(`清單 module 沒有接上 #${id}`);
+}
+/* 搜尋要涵蓋店家名：「松本清有什麼」是實際會用的問法，
+   而店家名不在商品欄位裡，漏掉時搜尋仍然「有反應」，只是永遠找不到店。 */
+if (!/STORE_SUMMARIES\[storeId\]\?\.name/.test(indexApp)) {
+  failures.push('商品搜尋索引沒有納入店家顯示名稱');
+}
+/* 地圖頁在 Leaflet 載不到時，店家清單／搜尋／篩選仍須運作。
+ * 這曾經是把整支模組包在 `} else {` 裡而整段被跳過——畫面上卻寫著「仍可正常使用」。
+ * 釘住兩件事：不再有那層 else，且 initMap 只在 hasLeaflet 時才呼叫。 */
+if (/if \(!leafletReady \|\| typeof L === 'undefined'\) \{[\s\S]{0,400}\} else \{/.test(mapApp)) {
+  failures.push('地圖模組又把主體包在 leafletReady 的 else 裡，Leaflet 失敗時清單會整個消失');
+}
+if (!/const hasLeaflet =/.test(mapApp) || !/if \(hasLeaflet\) \{[\s\S]{0,120}initMap\(\);/.test(mapApp)) {
+  failures.push('地圖模組沒有以 hasLeaflet 收斂 initMap 的呼叫');
+}
+/* 降級訊息說「下方店家清單…仍可正常使用」，這句話只有在上面兩條成立時才是真的 */
+if (!/下方店家清單、搜尋與篩選仍可正常使用/.test(mapHtml)) {
+  failures.push('地圖降級訊息被改動，請同步確認清單在無 Leaflet 時是否真的可用');
+}
+
+/* 手機的店家連結用「內距＋等量負外距」撐大可點範圍，這只有在
+ * 行距 ≥ 內距的兩倍時才安全；小於這個值，下一行的命中區會蓋住上一行的文字，
+ * 變成點「唐吉訶德中洲店」卻開到「松本清博多站地下街店」——按錯會走到別家店。
+ * 這是一組數字之間的約束，看 CSS 看不出來，所以在這裡釘住。 */
+const kijCss = readFileSync(path.join(ROOT, 'assets/kij.css'), 'utf8');
+const storeLinkPad = kijCss.match(/\.kij-store-links a \{[^}]*padding:\s*(\d+)px 0/);
+const storeLinkGap = kijCss.match(/\.kij-store-links \{ gap:\s*(\d+)px/);
+if (!storeLinkPad || !storeLinkGap) {
+  failures.push('找不到手機店家連結的內距／行距宣告，無法驗證命中區是否重疊');
+} else if (Number(storeLinkGap[1]) < Number(storeLinkPad[1]) * 2) {
+  failures.push(`店家連結行距 ${storeLinkGap[1]}px 小於內距 ${storeLinkPad[1]}px 的兩倍，相鄰連結的命中區會重疊`);
+}
+
+/* 「只看未完成」是整趟旅程的檢視偏好，必須持久化 */
+if (!/kij_unbought_only/.test(indexApp)) {
+  failures.push('「只看未完成」沒有寫入 localStorage');
+}
+
 if (indexApp.includes("return '唐吉訶德／松本清／SUNDRUG';")) {
   failures.push('推薦店家仍以品類寫死，會把未確認店家誤標為可購買');
 }

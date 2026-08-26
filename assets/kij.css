@@ -270,6 +270,133 @@ body.kij {
   font-weight: 700;
   line-height: 1.5;
 }
+/* 搜尋＋篩選工具列。外觀沿用 map.html 的 .map-search（圓角膠囊、放大鏡在左、
+   右側清除鈕），兩頁的「搜尋」看起來要是同一個東西。 */
+.kij-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 11px;
+}
+
+.kij-search {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: var(--tap-min);
+  padding: 0 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+}
+.kij-search:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(47, 109, 94, .14); }
+.kij-search-icon { flex: 0 0 auto; font-size: 14px; }
+.kij-search input {
+  flex: 1;
+  min-width: 0;
+  min-height: 40px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 15px;
+  outline: none;
+  /* Safari 的 search 型別會自己畫一顆清除鈕，與右邊那顆重複 */
+  -webkit-appearance: none;
+  appearance: none;
+}
+.kij-search input::-webkit-search-cancel-button { display: none; }
+.kij-search input::placeholder { color: #a49b91; }
+.kij-search-clear {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.kij-search-clear[hidden] { display: none; }
+
+/* 「只看未完成」：買到後半段時把已完成的卡片收起來，畫面只剩還要處理的品項。 */
+.kij-filter-chip {
+  flex: 0 0 auto;
+  min-height: var(--tap-min);
+  padding: 0 15px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: #4e5652;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.kij-filter-chip[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* 搜尋結果與空狀態 */
+.kij-result-line {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+.kij-result-line[hidden] { display: none; }
+.kij-empty {
+  margin: 0;
+  padding: 34px 20px;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+  text-align: center;
+}
+.kij-empty[hidden] { display: none; }
+
+/* 搜尋結果沒有分區小標題，改在卡片上標明這項商品原本在哪個分頁 */
+.kij-group-badge {
+  display: inline-block;
+  white-space: nowrap;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  background: #ece8e1;
+  color: #5c645f;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+/* 價格來源說明（priceNote）預設收起：多半是「官方含稅價…實體售價與庫存未確認」
+   這類資料來源免責說明，攤開後常比價格本身還高，站在店裡是雜訊。
+   購買提醒（note）維持攤開——那是真的要當場看的。 */
+.kij-card-source { margin: 7px 0 0; }
+.kij-card-source > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 30px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  list-style: none;
+  cursor: pointer;
+}
+.kij-card-source > summary::-webkit-details-marker { display: none; }
+.kij-card-source > summary::after { content: "▾"; font-size: 10px; }
+.kij-card-source[open] > summary::after { content: "▴"; }
+.kij-card-source .kij-card-note { margin-top: 2px; }
+
 .kij-tabs { padding: 0; gap: 9px; }
 .kij-tab { flex: 0 0 auto; min-height: 44px; }
 .kij-tab { background: #ece8e1; color: #4e5652; }
@@ -281,6 +408,12 @@ body.kij {
 .kij-section-header b { font-size: 18px; }
 .kij-section-header .count { font-size: 13px; }
 .kij-section-body { display: grid; gap: 14px; }
+/* .kij-section-body 的 display:grid 是 class 選擇器，優先權高過 [hidden] 的瀏覽器
+   預設樣式，所以 toggleSectionCollapse() 設了 hidden、寫了 localStorage、也把
+   aria-expanded 改成 false，畫面卻完全沒收合——分區標題等於是一顆沒有作用的按鈕，
+   而且對螢幕閱讀器謊報「已收合」。map.html 早就為 .filter-group 修過同一類問題，
+   清單頁一直漏掉。 */
+.kij-section-body[hidden] { display: none; }
 .kij-subcat { display: contents; }
 .kij-subcat-heading { grid-column: 1 / -1; padding: 6px 2px !important; }
 
@@ -371,8 +504,16 @@ body.kij {
   .kij-check { transition: background-color .15s ease, border-color .15s ease; }
 }
 
-/* 品名即商品頁連結：平常看起來就是標題，只用一個小箭頭表示點得開 */
-.kij-name-link { color: inherit; text-decoration: none; }
+/* 品名即商品頁連結：平常看起來就是標題，只用一個小箭頭表示點得開。
+   內距＋等量負外距把可點高度從 17px 撐到約 29px，視覺位置完全不動
+   （負外距抵銷掉內距佔的版面）——單手在店裡點得比較穩，但不改版型。 */
+.kij-name-link {
+  color: inherit;
+  text-decoration: none;
+  display: inline-block;
+  padding: 6px 0;
+  margin: -6px 0;
+}
 .kij-name-link:hover { color: var(--accent); }
 .kij-name-link:hover .kij-ext { color: var(--accent); }
 .kij-ext {
@@ -397,8 +538,7 @@ body.kij {
 /* 商品卡片附註／購買警語：note 與 priceNote 先前完全沒被渲染，本次補上。
  * 有值才顯示，樣式比照既有次要文字（.kij-compare-note）；
  * overflow-wrap 避免型號這類不含空白的長字串把窄卡片撐寬。 */
-.kij-card-note,
-.kij-card-pricenote {
+.kij-card-note {
   margin: 6px 0 0;
   color: var(--muted);
   font-size: 12px;
@@ -429,6 +569,8 @@ body.kij {
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
 }
+/* 桌機維持緊排：實測 36 張有兩家以上店家的卡片中，29 張的店名是並排在同一行的，
+   欄寬夠、也用不到大的觸控目標。手機的處理見下方 540px 區塊。 */
 .kij-store-links a::before {
   content: "";
   display: inline-block;
@@ -485,11 +627,41 @@ body.kij {
 }
 .kij-store-banner .kij-store-links { margin-top: 0; }
 
-.kij-bottombar { background: rgba(255, 255, 255, .96); border-top-color: var(--line); }
+/* 背景必須完全不透明：先前是 rgba(...,.96) 且無模糊，捲動時商品文字會從導覽列
+   後面透出來疊在「清單／行程／地圖」上（sticky 元素不會把內容推開，只會蓋住）。 */
+.kij-bottombar { background: var(--surface); border-top-color: var(--line); }
 .kij-bottombar .active { color: var(--accent); }
+
+/* 桌機不需要橫跨 1280px 的手機式底部列：收成螢幕下方置中的膠囊。
+   只作用在 body.kij（清單頁與行程頁）；map.html 的 body 沒有這個 class，
+   維持滿版底部列——那頁是滿版地圖的 app 版面，滿版列本來就合理。 */
+@media (min-width: 821px) {
+  body.kij .kij-bottombar {
+    width: min(460px, calc(100% - 32px));
+    margin: 0 auto;
+    bottom: 18px;
+    padding: 6px;
+    border: 1px solid var(--line);
+    border-top-color: var(--line);
+    border-radius: var(--radius-pill);
+    box-shadow: 0 12px 30px rgba(55, 48, 39, .16);
+  }
+  body.kij .kij-bottombar a {
+    flex-direction: row;
+    gap: 8px;
+    font-size: 13.5px;
+    font-weight: 700;
+    border-radius: var(--radius-pill);
+  }
+  body.kij .kij-bottombar i { font-size: 17px; }
+  body.kij .kij-bottombar .active { background: var(--accent-soft); }
+}
 
 /* 兩欄門檻設在 1000px：圖放大到 186px 後，760px 時分兩欄會讓右側明細只剩約 130px。 */
 @media (min-width: 1000px) {
+  /* 搜尋框拉滿 1180px 只是把一行字攤在一條長跑道上；限寬後與分頁列的節奏一致。 */
+  .kij-search { flex: 0 1 520px; }
+  .kij-toolbar { justify-content: flex-start; }
   .kij-section-body { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .kij-section[data-group="shopping"] .kij-subcat-heading { grid-column: 1 / -1; }
 }
@@ -508,6 +680,15 @@ body.kij {
   .kij-header.is-compact .title-row b { font-size: 16px; }
   .kij-header.is-compact .title-row b::before { display: none; }
   .kij-header.is-compact .kij-status-line { display: none; }
+  /* 加了搜尋列之後頁首又長回來了。手機捲動後把標題整列也收掉，
+     只留「搜尋＋篩選＋分頁」這三個隨時要用的控制項（實測約 118px）。
+     分頁本身就說明了現在在看哪一類，標題不是捲動中需要的資訊。 */
+  .kij-header.is-compact .title-row { display: none; }
+  .kij-header.is-compact .kij-toolbar { margin-bottom: 9px; }
+  .kij-toolbar { gap: 7px; margin-bottom: 10px; }
+  .kij-search { padding: 0 10px; }
+  .kij-search input { font-size: 16px; } /* iOS Safari 在 <16px 的輸入框會自動放大整頁 */
+  .kij-filter-chip { padding: 0 12px; font-size: 12.5px; }
   @media (prefers-reduced-motion: no-preference) {
     .kij-header .title-row b { transition: font-size .18s ease; }
   }
@@ -534,6 +715,43 @@ body.kij {
   .kij-card h5 { font-size: 16px; margin-top: 2px; }
   .kij-shopping-details { margin-top: 9px; padding-top: 9px; font-size: 14px; }
   .kij-card .yen { font-size: 19px; }
+
+  /* 手機的店家連結：實測 36 張有兩家以上店家的卡片，並排的是 0 張——
+     右欄只有約 170px，店名一律各自佔一行。原本的 gap: 1px 是為並排情境留的，
+     在手機上什麼也沒省到，只是把兩行店名黏在一起，讀起來像一團。
+
+     改成行高收緊（1.9→1.45）、行距拉開（1px→17px）：兩行店名之間有了呼吸，
+     一眼就分得出是兩家不同的店；而收緊行高剛好抵掉大部分拉開的行距，
+     兩家店的總高度只增加約 4px。
+
+     內距＋等量負外距把可點範圍由 25px 撐到 35px，版面位置不變。
+     17px 的行距是算出來的下限（≥ 內距 8px 的兩倍）——低於它，下一行的命中區
+     就會蓋住上一行的文字，變成點 A 店開到 B 店，那比目標小更糟。 */
+  .kij-store-links { gap: 17px 12px; margin-top: 9px; line-height: 1.45; }
+  .kij-store-links a { display: inline-block; padding: 8px 0; margin: -8px 0; }
+
+  /* 品名在手機常會折成兩行，1.25 的行高讓兩行中文貼得太近 */
+  .kij-card h5 { line-height: 1.38; }
+}
+
+/* 360px 的窄手機（iPhone SE、多數舊 Android）：卡片可用寬只剩約 310px，
+   扣掉 156px 的圖後右欄僅約 142px，低於「明細值欄 > 160px」這條門檻——
+   實測「松本清博多站地下街店」會從店名中間斷成兩行、只剩一個「店」字掉在下一行，
+   價格也被擠成兩行。圖縮到 124px 把右欄還回 174px，回到 390px 時的比例。 */
+@media (max-width: 380px) {
+  .kij-card { column-gap: 10px; padding: 12px; grid-template-columns: 124px minmax(0, 1fr); }
+  .kij-card .thumb,
+  .kij-card-shopping .thumb { width: 124px; height: 124px; }
+}
+
+/* 320px（iPhone SE 一代等最窄的機種）：卡片內容寬只剩約 272px，
+   124px 的圖仍會把右欄壓到 138px，店家名照樣斷行。圖再縮到 96px，
+   右欄回到約 166px，一樣守住 160px 門檻。 */
+@media (max-width: 340px) {
+  .kij-card { grid-template-columns: 96px minmax(0, 1fr); }
+  .kij-card .thumb,
+  .kij-card-shopping .thumb { width: 96px; height: 96px; }
+  .kij-card h5 { font-size: 15px; }
 }
 
 .kij-compare {

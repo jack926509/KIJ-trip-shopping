@@ -6,9 +6,13 @@ import { AREA_LABELS, createRoutePlanner, haversineMeters } from '../assets/rout
 
 const leafletReady = await (window.__leafletReady || Promise.resolve(typeof L !== 'undefined')).catch(() => false);
 await (window.__markerClusterReady || Promise.resolve(false));
-if (!leafletReady || typeof L === 'undefined') {
-  showMapFallback();
-} else {
+
+/* Leaflet 載不到時，以下整段原本包在 else 裡被完全跳過，店家清單／搜尋／篩選
+ * 一個都不會渲染——而畫面上的降級訊息卻寫著「仍可正常使用」。
+ * 其實這支模組本來就是照「map 可能是 null」寫的（renderRouteOnMap、focusStore、
+ * syncLayout、定位都已經有 if (map) 守衛），唯一的問題就是那層 else。
+ * 拆掉之後：沒有 Leaflet 就只是不畫地圖，清單、搜尋、篩選、Google Maps 導航照常。 */
+const hasLeaflet = leafletReady && typeof L !== 'undefined';
 const CATALOG = createCatalogIndex(PRODUCTS);
 const STORES_BY_ID = new Map(STORES.map((store) => [store.id, store]));
 const ROUTE_PLANNER = createRoutePlanner({ stores: STORES, products: PRODUCTS, readStoredBool });
@@ -384,7 +388,7 @@ function framedSelection(stores) {
     chip.setAttribute('aria-label', `把地圖移到${AREA_LABELS[area]}，那裡還有 ${count} 家店`);
     chip.addEventListener('click', () => {
       frameAreaOverride = area;
-      renderMarkers(visibleStores());
+      if (map) renderMarkers(visibleStores());
     });
     return chip;
   };
@@ -621,6 +625,8 @@ function bindFilterButtons() {
  * 由「分類 ▾」按鈕展開；桌機控制列在左側面板裡，空間夠，永遠攤開並藏掉切換鈕。
  * 收起時把目前選的分類寫在按鈕上，使用者才看得出篩選狀態。 */
 function syncCategoryFilter() {
+  // 呼叫端見 syncLayout 與分類切換鈕；高度一變，降級訊息的 padding 就要跟著重算
+  queueMicrotask(syncFallbackOffset);
   const toggle = document.getElementById('categoryToggle');
   const group = document.getElementById('storeTypeFilter');
   if (!toggle || !group) return;
@@ -854,7 +860,22 @@ function syncLayout() {
   // half 是 46vh，轉向或改視窗大小後要重算，浮動元件才不會停在舊高度
   syncDrawerVisible(drawerVisibleHeights()[drawer.dataset.state] ?? 110);
   markScrollableRows();
+  syncFallbackOffset();
   if (map) map.invalidateSize();
+}
+
+/* 降級訊息鋪滿整個 map-stage，而控制列在手機版是浮在同一層的上方，
+ * 兩者會疊在一起（實測標題被搜尋列蓋掉一半）。控制列高度會隨「分類」展開而變，
+ * 桌機版又整條被搬進左側面板，所以用實測高度推 padding，而不是寫死一個數字。 */
+function syncFallbackOffset() {
+  const fallback = document.getElementById('mapFallback');
+  const topbar = document.getElementById('mapTopbar');
+  const stage = document.getElementById('mapStage');
+  if (!fallback || !topbar || !stage) return;
+  const inStage = stage.contains(topbar);
+  fallback.style.paddingTop = inStage
+    ? `${Math.round(topbar.getBoundingClientRect().bottom - stage.getBoundingClientRect().top) + 22}px`
+    : '';
 }
 
 /* ── 搜尋 ────────────────────────────────────────────────
@@ -934,7 +955,8 @@ locateBtn.addEventListener('click', () => {
       userPosition = { lat: position.coords.latitude, lng: position.coords.longitude };
       showGeoNotice('');
       sortDistanceBtn.hidden = false;
-      renderUserMarker();
+      // 沒有地圖就沒有要放圖釘的畫布，但距離排序與「距離 N 公尺」照樣算得出來
+      if (map) renderUserMarker();
       renderStores();
       if (map) map.setView([userPosition.lat, userPosition.lng], Math.max(map.getZoom(), 15), { animate: true });
     },
@@ -978,10 +1000,18 @@ const urlStore = readStoreUrlParam();
 const urlRoute = readRouteUrlParam();
 renderStores();
 
-try {
-  initMap();
-} catch (error) {
+if (hasLeaflet) {
+  try {
+    initMap();
+  } catch (error) {
+    showMapFallback();
+  }
+} else {
+  /* 只有地圖畫不出來；清單與篩選都在，所以把抽屜拉開，
+     讓使用者直接看到店家清單，而不是盯著一塊「地圖無法載入」的空白。 */
   showMapFallback();
+  expandDrawerAtLeast('half');
+  syncFallbackOffset();
 }
 
 if (urlRoute) {
@@ -1008,4 +1038,3 @@ if (urlRoute) {
     }
       }
     });
-}

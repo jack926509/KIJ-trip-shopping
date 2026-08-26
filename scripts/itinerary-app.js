@@ -16,8 +16,14 @@ function makeElement(tag, className, text) {
   return element;
 }
 
+/* 旅程在日本、人從台灣出發，兩地同為 UTC+9／+8 之外的判斷會讓「今天」跳掉一天；
+ * 沿用既有的 Asia/Taipei 基準，只是把它抽出來讓分頁也標得出「今天」。 */
+function todayDate() {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Taipei' }).format(new Date());
+}
+
 function defaultDate() {
-  const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Taipei' }).format(new Date());
+  const today = todayDate();
   return ITINERARY_DAYS.find((day) => day.date === today)?.date
     || ITINERARY_DAYS.find((day) => day.date > today)?.date
     || ITINERARY_DAYS.at(-1).date;
@@ -49,12 +55,16 @@ function makeLink(label, href, className, { external = false } = {}) {
 
 function renderDayTabs() {
   const tabs = document.getElementById('itineraryDayTabs');
+  const today = todayDate();
   const fragment = document.createDocumentFragment();
   ITINERARY_DAYS.forEach((day) => {
     const button = makeElement('button', 'itinerary-day-tab', `${shortDate(day.date)}（${day.weekday}）`);
     button.type = 'button';
     button.setAttribute('role', 'tab');
     button.setAttribute('aria-selected', String(day.date === activeDate));
+    /* 四顆分頁長得一樣重，出門當天要先看得出自己在第幾天。
+       徽章本身也是文字，讀螢幕閱讀器時會唸出來，不必另外加 aria-label。 */
+    if (day.date === today) button.append(makeElement('span', 'day-tab-today', '今天'));
     button.addEventListener('click', () => {
       activeDate = day.date;
       renderDayTabs();
