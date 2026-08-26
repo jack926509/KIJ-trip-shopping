@@ -59,6 +59,23 @@ if (!/data-action="toggle-bought"/.test(indexApp)) {
   failures.push('可購買商品沒有輸出 data-action="toggle-bought" 按鈕');
 }
 
+/* 清單頁的搜尋與「只看未完成」是站在店裡最常用的兩個控制項；
+ * 少了任何一半（HTML 有欄位但 JS 沒接、或反過來）畫面上都看不出來，
+ * 只會變成「打字沒反應」，所以兩邊都釘住。 */
+for (const id of ['kijSearch', 'kijSearchClear', 'kijUnboughtToggle', 'kijResultLine', 'kijEmpty']) {
+  if (!indexHtml.includes(`id="${id}"`)) failures.push(`清單頁缺少 #${id}`);
+  if (!indexApp.includes(`'${id}'`)) failures.push(`清單 module 沒有接上 #${id}`);
+}
+/* 搜尋要涵蓋店家名：「松本清有什麼」是實際會用的問法，
+   而店家名不在商品欄位裡，漏掉時搜尋仍然「有反應」，只是永遠找不到店。 */
+if (!/STORE_SUMMARIES\[storeId\]\?\.name/.test(indexApp)) {
+  failures.push('商品搜尋索引沒有納入店家顯示名稱');
+}
+/* 「只看未完成」是整趟旅程的檢視偏好，必須持久化 */
+if (!/kij_unbought_only/.test(indexApp)) {
+  failures.push('「只看未完成」沒有寫入 localStorage');
+}
+
 if (indexApp.includes("return '唐吉訶德／松本清／SUNDRUG';")) {
   failures.push('推薦店家仍以品類寫死，會把未確認店家誤標為可購買');
 }

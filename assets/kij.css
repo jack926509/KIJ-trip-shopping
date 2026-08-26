@@ -270,6 +270,133 @@ body.kij {
   font-weight: 700;
   line-height: 1.5;
 }
+/* 搜尋＋篩選工具列。外觀沿用 map.html 的 .map-search（圓角膠囊、放大鏡在左、
+   右側清除鈕），兩頁的「搜尋」看起來要是同一個東西。 */
+.kij-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 11px;
+}
+
+.kij-search {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: var(--tap-min);
+  padding: 0 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+}
+.kij-search:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(47, 109, 94, .14); }
+.kij-search-icon { flex: 0 0 auto; font-size: 14px; }
+.kij-search input {
+  flex: 1;
+  min-width: 0;
+  min-height: 40px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 15px;
+  outline: none;
+  /* Safari 的 search 型別會自己畫一顆清除鈕，與右邊那顆重複 */
+  -webkit-appearance: none;
+  appearance: none;
+}
+.kij-search input::-webkit-search-cancel-button { display: none; }
+.kij-search input::placeholder { color: #a49b91; }
+.kij-search-clear {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.kij-search-clear[hidden] { display: none; }
+
+/* 「只看未完成」：買到後半段時把已完成的卡片收起來，畫面只剩還要處理的品項。 */
+.kij-filter-chip {
+  flex: 0 0 auto;
+  min-height: var(--tap-min);
+  padding: 0 15px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: #4e5652;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.kij-filter-chip[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* 搜尋結果與空狀態 */
+.kij-result-line {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+.kij-result-line[hidden] { display: none; }
+.kij-empty {
+  margin: 0;
+  padding: 34px 20px;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+  text-align: center;
+}
+.kij-empty[hidden] { display: none; }
+
+/* 搜尋結果沒有分區小標題，改在卡片上標明這項商品原本在哪個分頁 */
+.kij-group-badge {
+  display: inline-block;
+  white-space: nowrap;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  background: #ece8e1;
+  color: #5c645f;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+/* 價格來源說明（priceNote）預設收起：多半是「官方含稅價…實體售價與庫存未確認」
+   這類資料來源免責說明，攤開後常比價格本身還高，站在店裡是雜訊。
+   購買提醒（note）維持攤開——那是真的要當場看的。 */
+.kij-card-source { margin: 7px 0 0; }
+.kij-card-source > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 30px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  list-style: none;
+  cursor: pointer;
+}
+.kij-card-source > summary::-webkit-details-marker { display: none; }
+.kij-card-source > summary::after { content: "▾"; font-size: 10px; }
+.kij-card-source[open] > summary::after { content: "▴"; }
+.kij-card-source .kij-card-pricenote { margin-top: 2px; }
+
 .kij-tabs { padding: 0; gap: 9px; }
 .kij-tab { flex: 0 0 auto; min-height: 44px; }
 .kij-tab { background: #ece8e1; color: #4e5652; }
@@ -485,11 +612,41 @@ body.kij {
 }
 .kij-store-banner .kij-store-links { margin-top: 0; }
 
-.kij-bottombar { background: rgba(255, 255, 255, .96); border-top-color: var(--line); }
+/* 背景必須完全不透明：先前是 rgba(...,.96) 且無模糊，捲動時商品文字會從導覽列
+   後面透出來疊在「清單／行程／地圖」上（sticky 元素不會把內容推開，只會蓋住）。 */
+.kij-bottombar { background: var(--surface); border-top-color: var(--line); }
 .kij-bottombar .active { color: var(--accent); }
+
+/* 桌機不需要橫跨 1280px 的手機式底部列：收成螢幕下方置中的膠囊。
+   只作用在 body.kij（清單頁與行程頁）；map.html 的 body 沒有這個 class，
+   維持滿版底部列——那頁是滿版地圖的 app 版面，滿版列本來就合理。 */
+@media (min-width: 821px) {
+  body.kij .kij-bottombar {
+    width: min(460px, calc(100% - 32px));
+    margin: 0 auto;
+    bottom: 18px;
+    padding: 6px;
+    border: 1px solid var(--line);
+    border-top-color: var(--line);
+    border-radius: var(--radius-pill);
+    box-shadow: 0 12px 30px rgba(55, 48, 39, .16);
+  }
+  body.kij .kij-bottombar a {
+    flex-direction: row;
+    gap: 8px;
+    font-size: 13.5px;
+    font-weight: 700;
+    border-radius: var(--radius-pill);
+  }
+  body.kij .kij-bottombar i { font-size: 17px; }
+  body.kij .kij-bottombar .active { background: var(--accent-soft); }
+}
 
 /* 兩欄門檻設在 1000px：圖放大到 186px 後，760px 時分兩欄會讓右側明細只剩約 130px。 */
 @media (min-width: 1000px) {
+  /* 搜尋框拉滿 1180px 只是把一行字攤在一條長跑道上；限寬後與分頁列的節奏一致。 */
+  .kij-search { flex: 0 1 520px; }
+  .kij-toolbar { justify-content: flex-start; }
   .kij-section-body { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .kij-section[data-group="shopping"] .kij-subcat-heading { grid-column: 1 / -1; }
 }
@@ -508,6 +665,15 @@ body.kij {
   .kij-header.is-compact .title-row b { font-size: 16px; }
   .kij-header.is-compact .title-row b::before { display: none; }
   .kij-header.is-compact .kij-status-line { display: none; }
+  /* 加了搜尋列之後頁首又長回來了。手機捲動後把標題整列也收掉，
+     只留「搜尋＋篩選＋分頁」這三個隨時要用的控制項（實測約 118px）。
+     分頁本身就說明了現在在看哪一類，標題不是捲動中需要的資訊。 */
+  .kij-header.is-compact .title-row { display: none; }
+  .kij-header.is-compact .kij-toolbar { margin-bottom: 9px; }
+  .kij-toolbar { gap: 7px; margin-bottom: 10px; }
+  .kij-search { padding: 0 10px; }
+  .kij-search input { font-size: 16px; } /* iOS Safari 在 <16px 的輸入框會自動放大整頁 */
+  .kij-filter-chip { padding: 0 12px; font-size: 12.5px; }
   @media (prefers-reduced-motion: no-preference) {
     .kij-header .title-row b { transition: font-size .18s ease; }
   }

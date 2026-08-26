@@ -17,8 +17,23 @@
         <span id="kijItemCount"></span>
       </div>
       <p class="kij-status-line" id="kijStatusLine" aria-live="polite"></p>
+      <div class="kij-toolbar">
+        <div class="kij-search">
+          <span class="kij-search-icon" aria-hidden="true">🔍</span>
+          <input
+            id="kijSearch"
+            type="search"
+            inputmode="search"
+            autocomplete="off"
+            placeholder="搜尋商品、日文名或店家"
+            aria-label="搜尋商品，可輸入中文品名、日文名、型號或店家名"
+          >
+          <button type="button" class="kij-search-clear" id="kijSearchClear" aria-label="清除搜尋" hidden>✕</button>
+        </div>
+        <button type="button" class="kij-filter-chip" id="kijUnboughtToggle" aria-pressed="false">只看未完成</button>
+      </div>
       <nav class="kij-tabs" id="kijTabs">
-        <button type="button" class="kij-tab active" data-action="tab" data-group="shopping">藥妝日用</button>
+        <button type="button" class="kij-tab active" data-action="tab" data-group="shopping" aria-current="true">藥妝日用</button>
         <button type="button" class="kij-tab" data-action="tab" data-group="convenience">便利商店</button>
         <button type="button" class="kij-tab" data-action="tab" data-group="powerbank">行動電源</button>
         <button type="button" class="kij-tab" data-action="tab" data-group="dryer">吹風機</button>
@@ -29,7 +44,9 @@
   </header>
 
   <main id="kijMain">
+    <p class="kij-result-line" id="kijResultLine" role="status" aria-live="polite" hidden></p>
     <div id="kijSections"></div>
+    <p class="kij-empty" id="kijEmpty" hidden></p>
   </main>
 
   <nav class="kij-bottombar" aria-label="主要導覽">
