@@ -569,10 +569,8 @@ body.kij {
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
 }
-/* 這裡刻意「不」用內距＋負外距去撐大可點範圍：這排連結會換行，行距只有約 26px，
-   撐到 39px 會讓下一行的命中區蓋住上一行的文字——實測點「唐吉訶德中洲店」的下緣
-   會開到「松本清博多站地下街店」。按不到只是麻煩，按錯會走到別家店。
-   要真的加大，得先把行距拉開（每多一行約 +10px），那是版面取捨，留給使用者決定。 */
+/* 桌機維持緊排：實測 36 張有兩家以上店家的卡片中，29 張的店名是並排在同一行的，
+   欄寬夠、也用不到大的觸控目標。手機的處理見下方 540px 區塊。 */
 .kij-store-links a::before {
   content: "";
   display: inline-block;
@@ -717,6 +715,23 @@ body.kij {
   .kij-card h5 { font-size: 16px; margin-top: 2px; }
   .kij-shopping-details { margin-top: 9px; padding-top: 9px; font-size: 14px; }
   .kij-card .yen { font-size: 19px; }
+
+  /* 手機的店家連結：實測 36 張有兩家以上店家的卡片，並排的是 0 張——
+     右欄只有約 170px，店名一律各自佔一行。原本的 gap: 1px 是為並排情境留的，
+     在手機上什麼也沒省到，只是把兩行店名黏在一起，讀起來像一團。
+
+     改成行高收緊（1.9→1.45）、行距拉開（1px→17px）：兩行店名之間有了呼吸，
+     一眼就分得出是兩家不同的店；而收緊行高剛好抵掉大部分拉開的行距，
+     兩家店的總高度只增加約 4px。
+
+     內距＋等量負外距把可點範圍由 25px 撐到 35px，版面位置不變。
+     17px 的行距是算出來的下限（≥ 內距 8px 的兩倍）——低於它，下一行的命中區
+     就會蓋住上一行的文字，變成點 A 店開到 B 店，那比目標小更糟。 */
+  .kij-store-links { gap: 17px 12px; margin-top: 9px; line-height: 1.45; }
+  .kij-store-links a { display: inline-block; padding: 8px 0; margin: -8px 0; }
+
+  /* 品名在手機常會折成兩行，1.25 的行高讓兩行中文貼得太近 */
+  .kij-card h5 { line-height: 1.38; }
 }
 
 /* 360px 的窄手機（iPhone SE、多數舊 Android）：卡片可用寬只剩約 310px，

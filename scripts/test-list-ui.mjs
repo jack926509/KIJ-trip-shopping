@@ -85,6 +85,19 @@ if (!/下方店家清單、搜尋與篩選仍可正常使用/.test(mapHtml)) {
   failures.push('地圖降級訊息被改動，請同步確認清單在無 Leaflet 時是否真的可用');
 }
 
+/* 手機的店家連結用「內距＋等量負外距」撐大可點範圍，這只有在
+ * 行距 ≥ 內距的兩倍時才安全；小於這個值，下一行的命中區會蓋住上一行的文字，
+ * 變成點「唐吉訶德中洲店」卻開到「松本清博多站地下街店」——按錯會走到別家店。
+ * 這是一組數字之間的約束，看 CSS 看不出來，所以在這裡釘住。 */
+const kijCss = readFileSync(path.join(ROOT, 'assets/kij.css'), 'utf8');
+const storeLinkPad = kijCss.match(/\.kij-store-links a \{[^}]*padding:\s*(\d+)px 0/);
+const storeLinkGap = kijCss.match(/\.kij-store-links \{ gap:\s*(\d+)px/);
+if (!storeLinkPad || !storeLinkGap) {
+  failures.push('找不到手機店家連結的內距／行距宣告，無法驗證命中區是否重疊');
+} else if (Number(storeLinkGap[1]) < Number(storeLinkPad[1]) * 2) {
+  failures.push(`店家連結行距 ${storeLinkGap[1]}px 小於內距 ${storeLinkPad[1]}px 的兩倍，相鄰連結的命中區會重疊`);
+}
+
 /* 「只看未完成」是整趟旅程的檢視偏好，必須持久化 */
 if (!/kij_unbought_only/.test(indexApp)) {
   failures.push('「只看未完成」沒有寫入 localStorage');
