@@ -504,8 +504,16 @@ body.kij {
   .kij-check { transition: background-color .15s ease, border-color .15s ease; }
 }
 
-/* 品名即商品頁連結：平常看起來就是標題，只用一個小箭頭表示點得開 */
-.kij-name-link { color: inherit; text-decoration: none; }
+/* 品名即商品頁連結：平常看起來就是標題，只用一個小箭頭表示點得開。
+   內距＋等量負外距把可點高度從 17px 撐到約 29px，視覺位置完全不動
+   （負外距抵銷掉內距佔的版面）——單手在店裡點得比較穩，但不改版型。 */
+.kij-name-link {
+  color: inherit;
+  text-decoration: none;
+  display: inline-block;
+  padding: 6px 0;
+  margin: -6px 0;
+}
 .kij-name-link:hover { color: var(--accent); }
 .kij-name-link:hover .kij-ext { color: var(--accent); }
 .kij-ext {
@@ -561,6 +569,10 @@ body.kij {
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
 }
+/* 這裡刻意「不」用內距＋負外距去撐大可點範圍：這排連結會換行，行距只有約 26px，
+   撐到 39px 會讓下一行的命中區蓋住上一行的文字——實測點「唐吉訶德中洲店」的下緣
+   會開到「松本清博多站地下街店」。按不到只是麻煩，按錯會走到別家店。
+   要真的加大，得先把行距拉開（每多一行約 +10px），那是版面取捨，留給使用者決定。 */
 .kij-store-links a::before {
   content: "";
   display: inline-block;
@@ -715,6 +727,16 @@ body.kij {
   .kij-card { column-gap: 10px; padding: 12px; grid-template-columns: 124px minmax(0, 1fr); }
   .kij-card .thumb,
   .kij-card-shopping .thumb { width: 124px; height: 124px; }
+}
+
+/* 320px（iPhone SE 一代等最窄的機種）：卡片內容寬只剩約 272px，
+   124px 的圖仍會把右欄壓到 138px，店家名照樣斷行。圖再縮到 96px，
+   右欄回到約 166px，一樣守住 160px 門檻。 */
+@media (max-width: 340px) {
+  .kij-card { grid-template-columns: 96px minmax(0, 1fr); }
+  .kij-card .thumb,
+  .kij-card-shopping .thumb { width: 96px; height: 96px; }
+  .kij-card h5 { font-size: 15px; }
 }
 
 .kij-compare {

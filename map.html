@@ -9,32 +9,16 @@
   <meta name="theme-color" content="#2f6d5e">
   <script>
     window.__mapFallbackRequested = false;
-    /* 兩條降級路徑的後果完全不同，訊息必須分開講：
-     * - 圖磚載不到（tileerror）：Leaflet 有載到，map-app.js 整支照跑，
-     *   店家清單、搜尋與篩選真的還能用。
-     * - Leaflet 本身載不到：map-app.js 的主體整個包在 else 裡被跳過，
-     *   清單、搜尋、篩選一個都不會渲染。這時再說「仍可正常使用」是騙人的，
-     *   使用者會站在博多站盯著一個空白面板找不到店。 */
-    function showMapFallback({ scriptMissing = false } = {}) {
+    /* 兩條降級路徑（圖磚載不到、Leaflet 本身載不到）現在後果一致：
+     * map-app.js 不再把主體包在 else 裡，沒有 Leaflet 就只是不畫地圖，
+     * 店家清單、搜尋、篩選與 Google Maps 導航照常運作。
+     * 這句話因此在兩種情況下都是真的。 */
+    function showMapFallback() {
       window.__mapFallbackRequested = true;
       const mapElement = document.getElementById('map');
       const fallbackElement = document.getElementById('mapFallback');
       if (mapElement) mapElement.hidden = true;
       if (fallbackElement) fallbackElement.hidden = false;
-      const noteElement = document.getElementById('mapFallbackNote');
-      const actionsElement = document.getElementById('mapFallbackActions');
-      if (scriptMissing) {
-        if (noteElement) noteElement.textContent = '地圖元件沒有下載成功，這一頁的店家清單、搜尋與篩選也無法使用。連上網路後重新整理，或先回購物清單——清單上的店家名同樣可以開 Google Maps。';
-        if (actionsElement) actionsElement.hidden = false;
-        /* 這些控制項的事件全在被跳過的那段裡，留在畫面上只是按了沒反應的假按鈕，
-           比訊息本身更誤導。整組收掉，只留降級訊息與兩個真的能動的動作。 */
-        for (const id of ['mapTopbar', 'locateBtn', 'drawer']) {
-          const element = document.getElementById(id);
-          if (element) element.hidden = true;
-        }
-      } else if (noteElement) {
-        noteElement.textContent = '只有地圖圖磚載不到，店家清單、搜尋與篩選仍可正常使用；請從卡片開啟 Google Maps 導航或官方資料。';
-      }
     }
   </script>
   <link
@@ -139,21 +123,22 @@
     .map-attribution a { color: inherit; }
     #map[hidden] + .map-attribution { display: none; }
 
+    /* 訊息靠上排：地圖失敗時抽屜會拉開到 half，把整個 map-stage 的下半截蓋住，
+       原本 place-content: center 會讓文字剛好落在被蓋住的那一段，只露出半行標題。
+       店家清單現在才是這頁的主角，降級訊息退到上方交代一句就好。 */
     #mapFallback {
       position: absolute;
       inset: 0;
       z-index: 400;
       display: grid;
-      place-content: center;
-      padding: 40px 24px;
+      place-content: start center;
+      padding: 22px 24px;
       overflow: auto;
       background: linear-gradient(145deg, var(--accent-soft), #f7f4ed);
       text-align: center;
     }
-
-    /* class 選擇器的 display 會蓋過 [hidden] 的瀏覽器預設樣式，
-       同 .filter-group[hidden] 早先修過的問題，這三個容器也要各補一條。 */
-    .map-topbar[hidden], .drawer[hidden], .map-tool-btn[hidden] { display: none; }
+    #mapFallback h2 { margin: 10px 0 6px; font-size: 19px; }
+    #mapFallback p { margin: 0; max-width: 34em; font-size: 13px; line-height: 1.65; }
 
     .fallback-actions {
       display: flex;
@@ -162,9 +147,7 @@
       gap: 10px;
       margin-top: 16px;
     }
-    .fallback-actions[hidden] { display: none; }
-    .fallback-actions button,
-    .fallback-actions a {
+    .fallback-actions button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -177,10 +160,11 @@
       font: inherit;
       font-size: 14px;
       font-weight: 800;
-      text-decoration: none;
       cursor: pointer;
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
     }
-    .fallback-actions button { background: var(--accent); border-color: var(--accent); color: #fff; }
 
     #mapFallback[hidden],
     #map[hidden] { display: none; }
@@ -1166,10 +1150,9 @@
       <div id="mapFallback" hidden>
         <div class="fallback-icon" aria-hidden="true">⌖</div>
         <h2>地圖暫時無法載入</h2>
-        <p id="mapFallbackNote">店家清單、搜尋與篩選仍可正常使用；請從卡片開啟 Google Maps 導航或官方資料。</p>
-        <div class="fallback-actions" id="mapFallbackActions" hidden>
+        <p>下方店家清單、搜尋與篩選仍可正常使用；請從卡片開啟 Google Maps 導航或官方資料。</p>
+        <div class="fallback-actions">
           <button type="button" onclick="location.reload()">重新整理</button>
-          <a href="index.html">回購物清單</a>
         </div>
       </div>
 

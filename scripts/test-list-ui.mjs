@@ -71,6 +71,20 @@ for (const id of ['kijSearch', 'kijSearchClear', 'kijUnboughtToggle', 'kijResult
 if (!/STORE_SUMMARIES\[storeId\]\?\.name/.test(indexApp)) {
   failures.push('商品搜尋索引沒有納入店家顯示名稱');
 }
+/* 地圖頁在 Leaflet 載不到時，店家清單／搜尋／篩選仍須運作。
+ * 這曾經是把整支模組包在 `} else {` 裡而整段被跳過——畫面上卻寫著「仍可正常使用」。
+ * 釘住兩件事：不再有那層 else，且 initMap 只在 hasLeaflet 時才呼叫。 */
+if (/if \(!leafletReady \|\| typeof L === 'undefined'\) \{[\s\S]{0,400}\} else \{/.test(mapApp)) {
+  failures.push('地圖模組又把主體包在 leafletReady 的 else 裡，Leaflet 失敗時清單會整個消失');
+}
+if (!/const hasLeaflet =/.test(mapApp) || !/if \(hasLeaflet\) \{[\s\S]{0,120}initMap\(\);/.test(mapApp)) {
+  failures.push('地圖模組沒有以 hasLeaflet 收斂 initMap 的呼叫');
+}
+/* 降級訊息說「下方店家清單…仍可正常使用」，這句話只有在上面兩條成立時才是真的 */
+if (!/下方店家清單、搜尋與篩選仍可正常使用/.test(mapHtml)) {
+  failures.push('地圖降級訊息被改動，請同步確認清單在無 Leaflet 時是否真的可用');
+}
+
 /* 「只看未完成」是整趟旅程的檢視偏好，必須持久化 */
 if (!/kij_unbought_only/.test(indexApp)) {
   failures.push('「只看未完成」沒有寫入 localStorage');
