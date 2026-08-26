@@ -284,6 +284,27 @@ export const STORES = [
     mapsQuery: 'マツモトキヨシ 小倉駅南口店'
   },
   {
+    id: 'cosmos-tenjin-daimaru-mae',
+    name: 'ドラッグストアコスモス 天神大丸前店',
+    listName: 'Cosmos 天神大丸前店',
+    type: '藥妝',
+    brand: 'Cosmos',
+    category: 'drug',
+    area: 'tenjin',
+    address: '福岡県福岡市中央区渡辺通 5-24-30 東カン福岡第一ビル 103',
+    hours: '10:00–23:00',
+    note: '天神南附近的順路候選藥妝店；不宣稱指定品牌、規格或現貨。電話 092-791-9339。',
+    referenceOnly: true,
+    lat: 33.5882707,
+    lng: 130.4023493,
+    officialUrl: 'https://www.cosmospc.co.jp/shop/kyushu/fukuoka/fukuoka/chuou/',
+    officialSources: [
+      { label: 'Cosmos 官方中央區門市頁', url: 'https://www.cosmospc.co.jp/shop/kyushu/fukuoka/fukuoka/chuou/' },
+      { label: 'MapFan 店鋪座標', url: 'https://mapfan.com/spots/SCWA3%2CFKF1%2C7R0' }
+    ],
+    mapsQuery: 'ドラッグストアコスモス 天神大丸前店 福岡県福岡市中央区渡辺通 5-24-30'
+  },
+  {
     id: 'cocokara-fine-kokura-station',
     name: 'Cocokara Fine 小倉站店',
     listName: 'Cocokara Fine 小倉站店',

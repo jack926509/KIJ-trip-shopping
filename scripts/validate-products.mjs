@@ -1,6 +1,7 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { ITINERARY_DAYS, ITINERARY_SEGMENTS } from '../assets/itinerary.js';
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
@@ -55,6 +56,50 @@ for (const store of stores) {
   }
   if (typeof store.lat !== 'number' || typeof store.lng !== 'number') {
     errors.push(`stores.js: ${label} 的 lat／lng 必須是數字`);
+  }
+}
+
+/* 固定行程只存共用資料的 id；所有引用與時間格式在發布前一次攔截。 */
+const productIds = new Set(products.map((product) => product.id));
+const itineraryDates = new Set();
+const itinerarySegmentIds = new Set();
+const validTime = /^([01]\d|2[0-3]):[0-5]\d$/;
+for (const day of ITINERARY_DAYS) {
+  if (!/^2026-09-0[3-6]$/.test(day.date)) errors.push(`itinerary.js: 日期不在旅程範圍（${day.date}）`);
+  if (itineraryDates.has(day.date)) errors.push(`itinerary.js: 日期重複（${day.date}）`);
+  itineraryDates.add(day.date);
+  if (!Array.isArray(day.segmentIds)) errors.push(`itinerary.js: ${day.date} segmentIds 必須是陣列`);
+}
+for (const segment of ITINERARY_SEGMENTS) {
+  const label = segment.id || '(缺 id)';
+  if (!/^[a-z0-9-]+$/.test(label)) errors.push(`itinerary.js: segment id 格式不合（${label}）`);
+  if (itinerarySegmentIds.has(label)) errors.push(`itinerary.js: segment id 重複（${label}）`);
+  itinerarySegmentIds.add(label);
+  if (!itineraryDates.has(segment.date)) errors.push(`itinerary.js: ${label} 指向不存在的日期（${segment.date}）`);
+  if (!validTime.test(segment.startTime) || !validTime.test(segment.endTime) || segment.startTime >= segment.endTime) {
+    errors.push(`itinerary.js: ${label} 起訖時間不合法（${segment.startTime}–${segment.endTime}）`);
+  }
+  if (!mapStoreIds.has(segment.anchor?.storeId)) errors.push(`itinerary.js: ${label} 起點店家不存在（${segment.anchor?.storeId}）`);
+  let previousArrival = '';
+  const stopStoreIds = new Set();
+  for (const stop of segment.stops || []) {
+    if (!mapStoreIds.has(stop.storeId)) errors.push(`itinerary.js: ${label} 店家不存在（${stop.storeId}）`);
+    if (stopStoreIds.has(stop.storeId)) errors.push(`itinerary.js: ${label} 店家重複（${stop.storeId}）`);
+    stopStoreIds.add(stop.storeId);
+    if (!validTime.test(stop.arrivalTime) || (previousArrival && stop.arrivalTime < previousArrival)) {
+      errors.push(`itinerary.js: ${label} 抵達時間未依序排列（${stop.arrivalTime}）`);
+    }
+    previousArrival = stop.arrivalTime;
+    if (!Number.isInteger(stop.durationMinutes) || stop.durationMinutes <= 0) errors.push(`itinerary.js: ${label}/${stop.storeId} 停留時間不合法`);
+    if (typeof stop.optional !== 'boolean') errors.push(`itinerary.js: ${label}/${stop.storeId} optional 必須是布林值`);
+    for (const productId of stop.productIds || []) {
+      if (!productIds.has(productId)) errors.push(`itinerary.js: ${label}/${stop.storeId} 商品不存在（${productId}）`);
+    }
+  }
+}
+for (const day of ITINERARY_DAYS) {
+  for (const segmentId of day.segmentIds || []) {
+    if (!itinerarySegmentIds.has(segmentId)) errors.push(`itinerary.js: ${day.date} 指向不存在的 segment（${segmentId}）`);
   }
 }
 
