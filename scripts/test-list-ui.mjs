@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { PRODUCTS } from '../assets/products.js';
@@ -10,6 +10,10 @@ const indexHtml = readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 const mapHtml = readFileSync(path.join(ROOT, 'map.html'), 'utf8');
 const indexApp = readFileSync(path.join(ROOT, 'scripts/index-app.js'), 'utf8');
 const mapApp = readFileSync(path.join(ROOT, 'scripts/map-app.js'), 'utf8');
+const itineraryHtmlPath = path.join(ROOT, 'itinerary.html');
+const itineraryAppPath = path.join(ROOT, 'scripts/itinerary-app.js');
+const itineraryHtml = existsSync(itineraryHtmlPath) ? readFileSync(itineraryHtmlPath, 'utf8') : '';
+const itineraryApp = existsSync(itineraryAppPath) ? readFileSync(itineraryAppPath, 'utf8') : '';
 const failures = [];
 
 if (!/<script type="module" src="scripts\/index-app\.js"><\/script>/.test(indexHtml)) {
@@ -17,6 +21,24 @@ if (!/<script type="module" src="scripts\/index-app\.js"><\/script>/.test(indexH
 }
 if (!/<script type="module" src="scripts\/map-app\.js"><\/script>/.test(mapHtml)) {
   failures.push('map.html 沒有外部地圖 module 引用');
+}
+if (!/<script type="module" src="scripts\/itinerary-app\.js"><\/script>/.test(itineraryHtml)) {
+  failures.push('itinerary.html 沒有外部行程 module 引用');
+}
+for (const [page, html] of [['清單', indexHtml], ['行程', itineraryHtml], ['地圖', mapHtml]]) {
+  for (const href of ['index.html', 'itinerary.html', 'map.html']) {
+    if (!html.includes(`href="${href}"`)) failures.push(`${page}頁底部導覽缺少 ${href}`);
+  }
+}
+if (!/id="itineraryDayTabs"/.test(itineraryHtml) || !/id="remainingRouteGroups"/.test(itineraryHtml)) {
+  failures.push('行程頁缺少日期分頁或即時補買路線容器');
+}
+if (!/ITINERARY_DAYS/.test(itineraryApp) || !/remainingGroups\(\)/.test(itineraryApp)) {
+  failures.push('行程頁沒有使用固定行程與即時補買共用資料');
+}
+if (/id="routePanel"/.test(mapHtml)) failures.push('地圖頁仍保留舊購物路線建議面板');
+if (!/createRoutePlanner/.test(mapApp) || !/searchParams\.get\('plan'\)/.test(mapApp) || !/searchParams\.get\('route'\)/.test(mapApp)) {
+  failures.push('地圖頁尚未使用共用路線模組解析 plan／route 網址參數');
 }
 if (/<script type="module">[\s\S]*?import /.test(indexHtml) || /<script type="module">[\s\S]*?import /.test(mapHtml)) {
   failures.push('HTML 仍保留大型內嵌 module');

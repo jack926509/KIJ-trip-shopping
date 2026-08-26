@@ -2,6 +2,7 @@ import { STORES } from '../assets/stores.js';
 import { PRODUCTS } from '../assets/products.js';
 import { createCatalogIndex } from '../assets/catalog-index.js';
 import { makeImageFallback, readStoredBool } from '../assets/app-utils.js';
+import { AREA_LABELS, createRoutePlanner } from '../assets/route-planner.js';
 
 const leafletReady = await (window.__leafletReady || Promise.resolve(typeof L !== 'undefined')).catch(() => false);
 await (window.__markerClusterReady || Promise.resolve(false));
@@ -10,9 +11,7 @@ if (!leafletReady || typeof L === 'undefined') {
 } else {
 const CATALOG = createCatalogIndex(PRODUCTS);
 const STORES_BY_ID = new Map(STORES.map((store) => [store.id, store]));
-
-
-const AREA_LABELS = { hakata: '博多', tenjin: '天神', kokura: '小倉' };
+const ROUTE_PLANNER = createRoutePlanner({ stores: STORES, products: PRODUCTS, readStoredBool });
 const CATEGORY_LABELS = { shoe: '鞋款', drug: '藥妝', daily: '生活雜貨', supermarket: '超市', convenience: '便利商店', electronics: '家電', 'gift-food': '食品伴手禮', clothing: '服飾用品' };
 const MARKER_HTML = {
   shoe: '<span class="map-pin map-pin--shoe"><span aria-hidden="true"></span></span>',
@@ -148,24 +147,6 @@ function remainingText(items) {
   return remaining === 0 ? '・都買齊了' : `・還沒買 ${remaining} 項`;
 }
 
-/* ── 購物路線建議 ──────────────────────────────────────────
- * 只做「依區域分組＋同區域內最近鄰貪心排序」，不是精確步行路徑規劃：
- * 用經緯度直線距離（Haversine）挑下一家最近的店，夠用且不必接外部路徑服務。 */
-const ROUTE_AREA_ORDER = ['tenjin', 'hakata', 'kokura'];
-
-/* 每區的路線起點：從車站出發，而不是從 STORES 陣列裡碰巧排第一的那家店。
- *
- * 錨點指向「車站裡／出口直結的既有店家」，而不是另外寫一組車站座標——
- * 本專案規定座標一律要有查證來源、不得估算或從地址反推（見 docs/），
- * 而這幾家店的座標都已查證過，位置就在車站，拿來代表車站不必新增未經
- * 查證的數字。錨點只當「從哪裡開始找最近的店」的參考點，本身不一定
- * 會成為路線中的一站（該店沒有待買商品時就不會出現）。 */
-const ROUTE_START_ANCHORS = {
-  tenjin: { storeId: 'lawson-nishitetsu-fukuoka-tenjin-south', label: '西鐵福岡（天神）站 南口' },
-  hakata: { storeId: 'familymart-hakata-station', label: 'JR 博多站' },
-  kokura: { storeId: 'familymart-kokura-station', label: 'JR 小倉站' }
-};
-
 function haversineMeters(a, b) {
   const R = 6371000;
   const toRad = (deg) => (deg * Math.PI) / 180;
@@ -176,269 +157,12 @@ function haversineMeters(a, b) {
   return 2 * R * Math.asin(Math.sqrt(h));
 }
 
-/* 一家店「還要去」的條件：有清單商品還沒買，或有鞋款還沒試穿——
- * 鞋款沒有「買了沒」狀態，只要連結到這家店就一直算要去。
- * 候選店家（storeCandidates，例如行動電源那種「不保證有貨、到現場問」的品項）
- * 同樣要算，否則那幾家店會整個從購物路線上消失。 */
-function storeHasRemainingItems(store) {
-  const isRemaining = (product) =>
-    (product.tracking === 'buy' && !isBought(product.id)) || product.tracking === 'try';
-  return productsForStore(store.id, 'confirmed').some(isRemaining)
-    || productsForStore(store.id, 'candidate').some(isRemaining);
-}
-
-function routeStopMeta(items) {
-  const remaining = remainingText(items);
-  if (remaining) return remaining;
-  return items.some((product) => product.tracking === 'try') ? '・待試穿' : '';
-}
-
-/* 貪心最近鄰排序：從 anchor（車站）出發，每步選離「目前這站」直線距離最近的下一家。
- * 這不保證整體最短，只求「別讓使用者在區域內來回橫跳」，符合輕量路線建議的定位。
- * anchor 為 null 時退回舊行為（從陣列第一家開始），讓錨點設錯不會整段壞掉。 */
-function orderByProximity(stores, anchor = null) {
-  const remaining = stores.slice();
-  const ordered = [];
-  while (remaining.length > 0) {
-    if (ordered.length === 0 && !anchor) {
-      ordered.push(remaining.shift());
-      continue;
-    }
-    const from = ordered.length === 0 ? anchor : ordered[ordered.length - 1];
-    let nearestIndex = 0;
-    let nearestDist = Infinity;
-    remaining.forEach((store, index) => {
-      const dist = haversineMeters(from, store);
-      if (dist < nearestDist) {
-        nearestDist = dist;
-        nearestIndex = index;
-      }
-    });
-    ordered.push(remaining.splice(nearestIndex, 1)[0]);
-  }
-  return ordered;
-}
-
-/* 錨點要從「全部店家」找，不能只在待跑的店裡找：
- * 車站那家店可能已經買齊而不在路線上，但它仍然是有效的出發點。 */
-function routeStartAnchor(area) {
-  const config = ROUTE_START_ANCHORS[area];
-  if (!config) return null;
-      const store = STORES_BY_ID.get(config.storeId);
-  return store ? { lat: store.lat, lng: store.lng, label: config.label } : null;
-}
-
-function buildRouteGroups() {
-  const relevant = STORES.filter(storeHasRemainingItems);
-  return ROUTE_AREA_ORDER
-    .map((area) => {
-      const anchor = routeStartAnchor(area);
-      return { area, anchor, stores: orderByProximity(relevant.filter((store) => store.area === area), anchor) };
-    })
-    .filter((group) => group.stores.length > 0);
-}
-
-/* ── 路線模式：把這條路線畫在下方那張真實地圖上 ─────────────
- * 舊版是另外畫一張抽象示意圖（圓點＋虛線、沒有街道背景、編號會互相重疊），
- * 站在路口的人根本對不上眼前的街景。現在直接用 Leaflet：
- * 地圖只留這條路線的店家，圖釘換成依序編號的 marker，用 polyline 連起來。
- * routeMode 為 null 代表不在路線模式；有值時就是 buildRouteGroups() 的那一組
- * { area, anchor, stores }。 */
+/* 路線建議的資料與排序已移至行程頁共用模組；地圖只負責把網址指定的路線畫出來。 */
 let routeMode = null;
-let routeTabArea = null;   // 抽屜裡分頁 chips 目前選中的區域
-
-/* 逐站行程要的「距上一站多遠」：第一站從起點（車站錨點）量起。
- * 一律是直線距離，跟卡片上的距離文案同一套估算方式。 */
-function routeLegs(group) {
-  let previous = group.anchor;
-  return group.stores.map((store) => {
-    const meters = previous ? haversineMeters(previous, store) : null;
-    previous = store;
-    return { store, meters };
-  });
-}
-
-function walkText(meters) {
-  return `${formatDistance(meters)}・步行約 ${Math.max(1, Math.round(meters / 80))} 分`;
-}
 
 function routeLatLngs(group) {
   const points = group.anchor ? [[group.anchor.lat, group.anchor.lng]] : [];
   return points.concat(group.stores.map((store) => [store.lat, store.lng]));
-}
-
-/* Google Maps Directions URL API 一次最多帶 9 個中途點（origin／destination 不算在內），
- * 所以一段最多涵蓋 11 個點。超過就分段，而且下一段以上一段的最後一站當起點，
- * 兩段接起來才是完整路線、中間那一段路不會被漏掉。
- * 座標一律用 lat,lng 而不是店名字串——店名丟給 Google 可能對到別家分店。 */
-const GMAPS_MAX_WAYPOINTS = 9;
-
-function routeDirectionsSegments(group) {
-  const points = [];
-  if (group.anchor) points.push({ label: '起點', lat: group.anchor.lat, lng: group.anchor.lng });
-  group.stores.forEach((store, index) => points.push({ label: `第 ${index + 1} 站`, lat: store.lat, lng: store.lng }));
-  if (points.length < 2) return [];
-
-  const perSegment = GMAPS_MAX_WAYPOINTS + 2;
-  const coords = (point) => `${point.lat},${point.lng}`;
-  const segments = [];
-  for (let start = 0; start < points.length - 1; start += perSegment - 1) {
-    const chunk = points.slice(start, start + perSegment);
-    const last = chunk[chunk.length - 1];
-    const waypoints = chunk.slice(1, -1).map(coords);
-    const url = 'https://www.google.com/maps/dir/?api=1&travelmode=walking'
-      + `&origin=${coords(chunk[0])}&destination=${coords(last)}`
-      + (waypoints.length > 0 ? `&waypoints=${waypoints.join('|')}` : '');
-    segments.push({ url, from: chunk[0].label, to: last.label });
-  }
-  return segments;
-}
-
-function makeRouteStop(leg, index) {
-  const { store, meters } = leg;
-  const row = document.createElement('li');
-  row.className = 'route-stop';
-
-  const main = document.createElement('button');
-  main.type = 'button';
-  main.className = 'route-stop-main';
-  main.addEventListener('click', () => {
-    if (routeMode) {
-      // 路線模式時地圖上只有這條路線，直接對焦該站就好，不動篩選（離開時要原樣還原）
-      focusStore(store.id);
-      return;
-    }
-    /* 兩個篩選都對回這家店的區域／分類，否則若目前篩選剩下的分頁沒有這家店，
-     * store-card 會找不到、focusStore 的捲動與地圖對焦就失效。 */
-    applyFilters('area', store.area);
-    applyFilters('category', store.category);
-    focusStore(store.id, { scrollCard: true });
-  });
-
-  const items = productsForStore(store.id, 'confirmed');
-  const body = document.createElement('span');
-  body.className = 'route-stop-body';
-  body.append(
-    makeTextElement('span', 'route-stop-name', store.name),
-    makeTextElement('span', 'route-stop-meta', `${CATEGORY_LABELS[store.category]}${routeStopMeta(items)}`)
-  );
-  if (meters !== null) {
-    body.append(makeTextElement('span', 'route-stop-leg',
-      `${index === 0 ? '距起點' : '距上一站'}約 ${walkText(meters)}`));
-  }
-  main.append(makeTextElement('span', 'route-stop-index', String(index + 1)), body);
-
-  row.append(main, makeExternalLink('導航', makeMapsUrl(store), 'action-link route-stop-link'));
-  return row;
-}
-
-/* 一條路線的完整行程：進出路線模式的按鈕、總覽、起點、逐站清單、
- * 以及把整段丟給 Google Maps 步行導航的連結。 */
-function renderRouteView(group) {
-  const view = document.createElement('div');
-  view.className = 'route-view';
-
-  const primary = document.createElement('button');
-  primary.type = 'button';
-  primary.className = routeMode ? 'route-primary-btn route-exit-btn' : 'route-primary-btn';
-  primary.textContent = routeMode
-    ? '✕ 結束路線，回到店家清單'
-    : `🗺️ 在地圖上看${AREA_LABELS[group.area]}路線`;
-  primary.addEventListener('click', () => (routeMode ? exitRouteMode() : enterRouteMode(group.area)));
-  // 地圖載不到（降級成純清單）時沒有地方可以畫路線，只留逐站清單與導航連結
-  primary.hidden = !map && !routeMode;
-  view.append(primary);
-
-  const legs = routeLegs(group);
-  const total = legs.reduce((sum, leg) => sum + (leg.meters || 0), 0);
-  const totalLine = makeTextElement('p', 'route-total',
-    `共 ${group.stores.length} 站・全程約 ${(total / 1000).toFixed(1)} 公里・步行約 ${Math.max(1, Math.round(total / 80))} 分`);
-  totalLine.append(makeTextElement('span', 'route-total-note',
-    '這是各站之間的「直線」距離估算，不是實際步行路徑；真的走會因為街道繞行、地下街與紅綠燈而變長，出發前請以 Google Maps 導航為準。'));
-  view.append(totalLine);
-
-  if (group.anchor) {
-    view.append(makeTextElement('p', 'route-start-note', `起點：${group.anchor.label}`));
-  }
-
-  const list = document.createElement('ol');
-  list.className = 'route-stop-list';
-  legs.forEach((leg, index) => list.append(makeRouteStop(leg, index)));
-  view.append(list);
-
-  const segments = routeDirectionsSegments(group);
-  if (segments.length > 0) {
-    const wrap = document.createElement('div');
-    wrap.className = 'route-gmaps';
-    segments.forEach((segment, index) => {
-      const label = segments.length === 1
-        ? '在 Google Maps 開啟整段路線（步行）'
-        : `第 ${index + 1} 段（${segment.from} → ${segment.to}）`;
-      wrap.append(makeExternalLink(label, segment.url, 'action-link maps-link'));
-    });
-    if (segments.length > 1) {
-      wrap.append(makeTextElement('p', 'route-gmaps-note',
-        `Google Maps 一次最多只能帶 ${GMAPS_MAX_WAYPOINTS} 個中途點，這條路線有 ${group.stores.length} 站，所以拆成 ${segments.length} 段；每一段的起點就是上一段的最後一站，接著開下一段就能走完全程。`));
-    }
-    view.append(wrap);
-  }
-
-  return view;
-}
-
-let lastRouteRenderKey = '';
-
-function renderRoute({ force = false } = {}) {
-  const groups = buildRouteGroups();
-  const container = document.getElementById('routeGroups');
-  const tabs = document.getElementById('routeTabs');
-  const empty = document.getElementById('routeEmpty');
-  const summaryCount = document.getElementById('routeSummaryCount');
-  if (!container || !tabs) return false;
-
-  const routeRenderKey = [
-    routeMode ? `${routeMode.area}:${routeMode.category}` : 'overview',
-    routeTabArea || '',
-    boughtStateKey(),
-    ...groups.map((group) => `${group.area}:${group.stores.map((store) => store.id).join(',')}`),
-  ].join('|');
-  if (!force && routeRenderKey === lastRouteRenderKey) return false;
-  lastRouteRenderKey = routeRenderKey;
-
-  const totalStores = groups.reduce((sum, group) => sum + group.stores.length, 0);
-  empty.hidden = totalStores !== 0;
-  summaryCount.textContent = totalStores === 0 ? '' : `${groups.length} 區・${totalStores} 家店`;
-  if (groups.length === 0) {
-    tabs.replaceChildren();
-    container.replaceChildren();
-    return true;
-  }
-
-  if (routeMode) routeTabArea = routeMode.area;
-  if (!groups.some((group) => group.area === routeTabArea)) routeTabArea = groups[0].area;
-
-  /* 分頁 chips 一次只顯示一條路線，取代舊版一次攤開 40 幾家店的長列表。
-   * 路線模式時鎖在該區：地圖上畫的是哪一條，抽屜就只給哪一條，兩邊不會對不起來。 */
-  const tabGroups = routeMode ? groups.filter((group) => group.area === routeMode.area) : groups;
-  const tabFragment = document.createDocumentFragment();
-  tabGroups.forEach((group) => {
-    const tab = document.createElement('button');
-    tab.type = 'button';
-    tab.className = 'route-tab';
-    tab.setAttribute('role', 'tab');
-    tab.setAttribute('aria-selected', String(group.area === routeTabArea));
-    tab.textContent = `${AREA_LABELS[group.area]} ${group.stores.length} 站`;
-    tab.addEventListener('click', () => {
-      routeTabArea = group.area;
-      renderRoute();
-    });
-    tabFragment.append(tab);
-  });
-  tabs.replaceChildren(tabFragment);
-
-  const selected = groups.find((group) => group.area === routeTabArea);
-  container.replaceChildren(selected ? renderRouteView(selected) : document.createDocumentFragment());
-  return true;
 }
 
 /* 路線模式的地圖畫面：只有這條路線的編號 marker ＋ 連線。
@@ -509,25 +233,16 @@ function updateRouteChrome() {
   }
 }
 
-function enterRouteMode(area) {
-  const group = buildRouteGroups().find((item) => item.area === area);
+function enterRouteMode(group) {
   if (!group) return;
   routeMode = group;
-  routeTabArea = area;
-  drawer.dataset.route = 'on';
-  document.getElementById('routePanel').open = true;
-  // 先把抽屜拉開，--drawer-visible 更新後 fitPadding() 才會算到正確的下緣留白
-  expandDrawerAtLeast('half');
   updateRouteChrome();
-  renderRoute();
   renderRouteOnMap();
-  document.getElementById('drawerScroll').scrollTop = 0;
 }
 
 function exitRouteMode() {
   if (!routeMode) return;
   routeMode = null;
-  drawer.dataset.route = 'off';
   updateRouteChrome();
   if (map && routeLayer) {
     routeLayer.clearLayers();
@@ -536,7 +251,6 @@ function exitRouteMode() {
   // 強制重畫：篩選、聚合與框選全部回到進入路線模式之前的狀態
   lastPlacementKey = '';
   renderStores();
-  renderRoute();
 }
 
 function renderProductGroup(items, label, container, { showRemaining = false } = {}) {
@@ -962,6 +676,17 @@ function readStoreUrlParam() {
   return store;
 }
 
+function readRouteUrlParam() {
+  const searchParams = new URLSearchParams(location.search);
+  const planId = searchParams.get('plan');
+  const routeArea = searchParams.get('route');
+  const group = planId
+    ? ROUTE_PLANNER.fixedSegment(planId)
+    : (['tenjin', 'hakata', 'kokura'].includes(routeArea) ? ROUTE_PLANNER.remainingGroup(routeArea) : null);
+  if (!group) return null;
+  return { ...group, stores: group.stops.map((stop) => stop.store) };
+}
+
 function initMap() {
   if (window.__mapFallbackRequested || typeof L === 'undefined') {
     throw new Error('Leaflet 無法載入');
@@ -1260,8 +985,8 @@ document.getElementById('resetFiltersBtn').addEventListener('click', () => {
 document.getElementById('routeExitMapBtn').addEventListener('click', exitRouteMode);
 // 先讀網址參數設好篩選，initMap 的第一次框選才會直接對焦到指定店家
 const urlStore = readStoreUrlParam();
+const urlRoute = readRouteUrlParam();
 renderStores();
-renderRoute();
 
 try {
   initMap();
@@ -1269,7 +994,9 @@ try {
   showMapFallback();
 }
 
-if (urlStore) {
+if (urlRoute) {
+  enterRouteMode(urlRoute);
+} else if (urlStore) {
   revealActiveFilter('[data-category]');
   focusStore(urlStore.id);
 }
@@ -1279,7 +1006,16 @@ if (urlStore) {
     window.addEventListener('pageshow', (event) => {
   if (event.persisted) {
     renderStores();
-    renderRoute();
+    if (routeMode?.kind === 'remaining') {
+      const refreshed = ROUTE_PLANNER.remainingGroup(routeMode.area);
+      if (refreshed) {
+        routeMode = { ...refreshed, stores: refreshed.stops.map((stop) => stop.store) };
+        updateRouteChrome();
+        renderRouteOnMap();
+      } else {
+        exitRouteMode();
+      }
+    }
       }
     });
 }

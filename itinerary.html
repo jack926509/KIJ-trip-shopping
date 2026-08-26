@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>購物行程｜北九州之旅</title>
+  <meta name="description" content="2026 年 9 月北九州購物時間表，含天神、博多與小倉固定行程及即時補買路線。">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#2f6d5e">
+  <link rel="stylesheet" href="assets/kij.css">
+  <link rel="stylesheet" href="assets/itinerary.css">
+</head>
+<body class="kij itinerary-page">
+  <div id="app">
+    <header class="itinerary-header">
+      <div class="kij-shell">
+        <p class="itinerary-eyebrow">2026.09.03–09.06 · FUKUOKA / KOKURA</p>
+        <h1>北九州購物行程</h1>
+        <p>先看原定時間表；臨場缺貨或買完部分商品，再用下方即時補買路線調整。</p>
+      </div>
+    </header>
+
+    <main class="itinerary-main kij-shell">
+      <section aria-labelledby="fixedPlanTitle">
+        <div class="itinerary-section-heading">
+          <div>
+            <p class="section-kicker">ORIGINAL PLAN</p>
+            <h2 id="fixedPlanTitle">原定行程</h2>
+          </div>
+          <span>4 天 3 夜</span>
+        </div>
+        <div class="itinerary-day-tabs" id="itineraryDayTabs" role="tablist" aria-label="選擇旅遊日期"></div>
+        <div id="itineraryDayContent"></div>
+      </section>
+
+      <section class="remaining-section" aria-labelledby="remainingRouteTitle">
+        <div class="itinerary-section-heading">
+          <div>
+            <p class="section-kicker">LIVE BACKUP</p>
+            <h2 id="remainingRouteTitle">即時補買路線</h2>
+          </div>
+          <span id="remainingRouteCount" aria-live="polite"></span>
+        </div>
+        <p class="section-intro">依尚未購買或尚未試穿的商品重新分區排序。距離是直線估算，實際步行請以 Google Maps 為準。</p>
+        <div class="remaining-route-tabs" id="remainingRouteTabs" role="tablist" aria-label="即時補買區域"></div>
+        <div id="remainingRouteGroups"></div>
+        <p class="route-empty" id="remainingRouteEmpty" hidden>目前沒有需要補買的路線；清單商品可能都已完成。</p>
+      </section>
+    </main>
+
+    <nav class="kij-bottombar" aria-label="主要導覽">
+      <a href="index.html"><i>🛍️</i>清單</a>
+      <a href="itinerary.html" class="active" aria-current="page"><i>🗓️</i>行程</a>
+      <a href="map.html"><i>🗺️</i>地圖</a>
+    </nav>
+  </div>
+  <script type="module" src="scripts/itinerary-app.js"></script>
+</body>
+</html>

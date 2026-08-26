@@ -1456,19 +1456,6 @@
         <!-- 桌機版控制列的插槽；手機版留空（:empty 不佔高度） -->
         <div class="drawer-dock" id="drawerDock"></div>
 
-        <details class="route-panel" id="routePanel">
-          <summary>
-            <span>🧭 購物路線建議</span>
-            <span class="route-summary-count" id="routeSummaryCount"></span>
-          </summary>
-          <div class="route-body">
-            <div class="route-tabs" id="routeTabs" role="tablist" aria-label="購物路線分頁"></div>
-            <div id="routeGroups"></div>
-            <p class="route-empty" id="routeEmpty" hidden>目前沒有需要規劃的路線——可能是清單商品都買齊了，或還沒有店家連結到你的清單商品。</p>
-            <p class="route-copy">依你清單上還沒買（或還沒試穿）的商品，把有連結的店家依區域分組，從各區車站出發、用直線距離抓最近的下一家，幫你少繞路；不是精確的步行路徑，出發前仍請以 Google Maps 實際路況為準。</p>
-          </div>
-        </details>
-
         <div class="result-line">
           <span id="resultCount" aria-live="polite"></span>
           <button type="button" class="sort-distance-btn" id="sortDistanceBtn" aria-pressed="false" hidden>依距離排序</button>
@@ -1510,9 +1497,10 @@
     </aside>
   </div>
 
-  <nav class="kij-bottombar">
+  <nav class="kij-bottombar" aria-label="主要導覽">
     <a href="index.html"><i>🛍️</i>清單</a>
-    <a href="#" class="active" aria-current="page"><i>🗺️</i>地圖</a>
+    <a href="itinerary.html"><i>🗓️</i>行程</a>
+    <a href="map.html" class="active" aria-current="page"><i>🗺️</i>地圖</a>
   </nav>
 
   <script>
