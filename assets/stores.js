@@ -297,12 +297,12 @@ export const STORES = [
     referenceOnly: true,
     lat: 33.5882707,
     lng: 130.4023493,
-    officialUrl: 'https://www.cosmospc.co.jp/shop/kyushu/fukuoka/fukuoka/chuou/',
+    officialUrl: 'https://www.cosmospc.co.jp/lp/inbound/jp/index.html',
     officialSources: [
-      { label: 'Cosmos 官方中央區門市頁', url: 'https://www.cosmospc.co.jp/shop/kyushu/fukuoka/fukuoka/chuou/' },
+      { label: 'Cosmos 官方訪日門市頁', url: 'https://www.cosmospc.co.jp/lp/inbound/jp/index.html' },
       { label: 'MapFan 店鋪座標', url: 'https://mapfan.com/spots/SCWA3%2CFKF1%2C7R0' }
     ],
-    mapsQuery: 'ドラッグストアコスモス 天神大丸前店 福岡県福岡市中央区渡辺通 5-24-30'
+    mapsQuery: 'ドラッグストアコスモス 天神大丸前店 福岡県福岡市中央区渡辺通 5-24-30 東カン福岡第一ビル 103'
   },
   {
     id: 'cocokara-fine-kokura-station',
@@ -312,7 +312,7 @@ export const STORES = [
     brand: 'Cocokara Fine',
     category: 'drug',
     area: 'kokura',
-    address: '福岡縣北九州市小倉北區淺野 1-1-1',
+    address: '福岡県北九州市小倉北区浅野 1-1-1 アミュプラザ地下 1F',
     hours: '09:00–22:00',
     note: '位於小倉站商場地下樓層。',
     lat: 33.887192,
@@ -321,7 +321,7 @@ export const STORES = [
     officialSources: [
       { label: 'Cocokara Fine 官方門市頁', url: 'https://www.matsukiyococokara-online.com/map/?kid=20001291' }
     ],
-    mapsQuery: 'ココカラファイン 小倉駅店'
+    mapsQuery: 'ココカラファイン 小倉駅店 福岡県北九州市小倉北区浅野 1-1-1 アミュプラザ地下 1F'
   },
   {
     id: 'daiso-amu-plaza-kokura',
@@ -331,7 +331,7 @@ export const STORES = [
     brand: 'DAISO',
     category: 'daily',
     area: 'kokura',
-    address: '福岡縣北九州市小倉北區淺野 1-1-1',
+    address: '福岡県北九州市小倉北区浅野 1-1-1 アミュプラザ小倉店地下 1 階',
     hours: '10:00–20:00',
     note: '可與 Cocokara Fine 同樓層安排。',
     lat: 33.887192,
@@ -340,7 +340,7 @@ export const STORES = [
     officialSources: [
       { label: 'DAISO 官方門市頁', url: 'https://www.daiso-sangyo.co.jp/shop/detail/005500' }
     ],
-    mapsQuery: 'DAISO アミュプラザ小倉店'
+    mapsQuery: 'DAISO アミュプラザ小倉店 福岡県北九州市小倉北区浅野 1-1-1 アミュプラザ小倉店地下 1 階'
   },
   {
     id: '3coins-plus-amu-plaza-kokura',
@@ -467,7 +467,7 @@ export const STORES = [
     brand: 'Cocokara Fine',
     category: 'drug',
     area: 'tenjin',
-    address: '福岡縣福岡市中央區天神 2-9-18',
+    address: '福岡県福岡市中央区天神 2-9-18 福岡パルコ新館 B1F',
     hours: '10:00–20:30',
     note: '福岡 PARCO 新館 B1F；官方頁列有醫藥品、日用品與免稅服務資訊。',
     lat: 33.591072,
@@ -476,7 +476,7 @@ export const STORES = [
     officialSources: [
       { label: 'Cocokara Fine 官方門市頁', url: 'https://www.matsukiyococokara-online.com/map?kid=20002399' }
     ],
-    mapsQuery: 'ココカラファイン 福岡パルコ店'
+    mapsQuery: 'ココカラファイン 福岡パルコ店 福岡県福岡市中央区天神 2-9-18 福岡パルコ新館 B1F'
   },
   {
     id: 'loft-mina-tenjin',
@@ -715,7 +715,7 @@ export const STORES = [
     brand: 'セブン-イレブン',
     category: 'convenience',
     area: 'tenjin',
-    address: '福岡県福岡市中央区天神 2 天神地下街',
+    address: '福岡県福岡市中央区天神 2 天神地下街 1 番街 343 号',
     hours: '07:00–23:00',
     note: '天神地下街內；冷藏、冷凍與限定商品庫存請以店內為準。',
     lat: 33.58939,
@@ -724,7 +724,7 @@ export const STORES = [
     officialSources: [
       { label: '天神地下街官方店鋪頁', url: 'https://www.tenchika.com/shop/seven-eleven/' }
     ],
-    mapsQuery: 'セブン-イレブン 天神地下街店 福岡県福岡市中央区天神 2 天神地下街'
+    mapsQuery: 'セブン-イレブン 天神地下街店 福岡県福岡市中央区天神 2 天神地下街 1 番街 343 号'
   },
   {
     id: 'familymart-hakata-station',
