@@ -396,6 +396,17 @@ body.kij {
 .kij-card-source > summary::after { content: "▾"; font-size: 10px; }
 .kij-card-source[open] > summary::after { content: "▴"; }
 .kij-card-source .kij-card-note { margin-top: 2px; }
+.kij-candidate-stores {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--line);
+}
+.kij-candidate-stores > strong {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+.kij-candidate-stores .kij-store-links { margin-top: 2px; }
 
 .kij-tabs { padding: 0; gap: 9px; }
 .kij-tab { flex: 0 0 auto; min-height: 44px; }

@@ -39,6 +39,7 @@ const CATEGORY_CHIP_CLASS = {
   '皮膚護理': 'kij-cat-drug',
   '痠痛舒緩': 'kij-cat-drug',
   '旅途常備藥': 'kij-cat-drug',
+  '健康食品': 'kij-cat-drug',
   '食品伴手禮': 'kij-cat-food',
   '3C 配件': 'kij-cat-electronics',
   '日用品': 'kij-cat-shoe',
@@ -148,7 +149,7 @@ const POWERBANK_COMPARISON_ROWS = {
 
 const SHOE_BRANDS = {
   cloudtilt: 'ON', cloudsurfermax: 'ON', cloudsurfer2: 'ON', cloud6: 'ON', cloudrunner3: 'ON',
-  clifton11: 'HOKA', bondi9: 'HOKA', skyflow: 'HOKA', transport2: 'HOKA', gaviota5: 'HOKA',
+  clifton11: 'HOKA', bondi9: 'HOKA', skyflow: 'HOKA', transport2: 'HOKA', gaviota5: 'HOKA', 'mach-remastered': 'HOKA',
 };
 
 const MOUSE_BRANDS = {
@@ -196,6 +197,7 @@ const SHOE_COMPARISON_ROWS = {
   skyflow: ['HOKA', '¥22,000', '平順步行／跑步', '前掌彎折、後跟固定'],
   transport2: ['HOKA', '¥22,000', '旅遊通勤、城市步行', '鞋底抓地與鞋面耐候需求'],
   gaviota5: ['HOKA', '¥27,500', '穩定支撐、足弓需求較高', '內側支撐不會頂腳'],
+  'mach-remastered': ['HOKA', '¥17,600', '生活風格、日常穿搭', '尺碼、鞋面包覆與全黑配色實物'],
 };
 
 function tableHtml(headings, rows) {
@@ -242,11 +244,9 @@ function comparisonTableHtml(group, items) {
   </section>`;
 }
 
-/* 原本只有藥妝日用會顯示店家，但便利商店與吹風機的 stores 資料一直都在，
-   只是沒有被讀出來——站在博多站要找「哪一家 LAWSON」時反而查不到。
-   鞋款是到店試穿、店家已寫在品牌分區標題，這裡不重複。 */
+/* 原本只有藥妝日用會顯示店家，但便利商店、吹風機與鞋款的 stores 資料一直都在，
+   只是沒有被讀出來——站在博多站要找「哪一家 LAWSON／鞋店」時反而查不到。 */
 function recommendedStores(product) {
-  if (product.group === 'shoes') return [];
   return (product.stores ?? [])
     .map((id) => (STORE_SUMMARIES[id] ? { id, ...STORE_SUMMARIES[id] } : null))
     .filter(Boolean);
@@ -262,6 +262,23 @@ function storeLinksHtml(product) {
     .map((store) => `<a href="map.html?store=${encodeURIComponent(store.id)}">${escapeHtml(store.name)}</a>`)
     .join('');
   return `<div class="kij-store-links">${links}</div>`;
+}
+
+/* 候選店沒有指定分店 SKU／在庫證據，不可和主要店家混在一起顯示。
+ * 一般卡片把候選店收進可展開的查證區；滑鼠與行動電源在原分區已有共用 banner，
+ * 不在每張卡重複，但搜尋結果沒有 banner，必須把候選店補回卡片。 */
+function candidateStoreLinksHtml(product, { includeSharedGroups = false } = {}) {
+  if (!includeSharedGroups && (product.group === 'mouse' || product.group === 'powerbank')) return '';
+  const confirmedIds = new Set(product.stores ?? []);
+  const links = (product.storeCandidates ?? [])
+    .filter((id) => !confirmedIds.has(id))
+    .map((id) => (STORE_SUMMARIES[id]
+      ? `<a href="map.html?store=${encodeURIComponent(id)}">${escapeHtml(STORE_SUMMARIES[id].name)}</a>`
+      : ''))
+    .filter(Boolean)
+    .join('');
+  if (!links) return '';
+  return `<div class="kij-candidate-stores"><strong>候選店（到店確認）</strong><div class="kij-store-links">${links}</div></div>`;
 }
 
 /* 行動電源五款的購買地點完全重疊，每張卡都印一次只是同樣的字重複五遍。
@@ -448,7 +465,7 @@ function buildCardHtml(product, { showPill = true, groupBadge = false } = {}) {
       <div class="price-row">
         <span class="yen">${yenText}</span>
         <span class="kij-price-kind">${priceKindText}</span>
-      </div>`;
+      </div>${product.group === 'shoes' ? storeLinksHtml(product) : ''}`;
     controlsHtml = triedToggleHtml(product);
   }
 
@@ -463,10 +480,12 @@ function buildCardHtml(product, { showPill = true, groupBadge = false } = {}) {
      兩段攤開後在手機上常比價格區塊還高，站在貨架前是雜訊，因此收進同一個可展開區塊。
      不是刪掉——要查價格怎麼來的，點一下就看得到。 */
   const notes = [product.note, product.priceNote].filter(Boolean);
-  const noteHtml = notes.length > 0
-    ? `<details class="kij-card-source"><summary>商品與價格說明</summary>${
+  const candidateStoreHtml = candidateStoreLinksHtml(product, { includeSharedGroups: groupBadge });
+  const noteSummary = candidateStoreHtml ? '商品、價格與候選店家' : '商品與價格說明';
+  const noteHtml = notes.length > 0 || candidateStoreHtml
+    ? `<details class="kij-card-source"><summary>${noteSummary}</summary>${
         notes.map((text) => `<p class="kij-card-note">${escapeHtml(text)}</p>`).join('')
-      }</details>`
+      }${candidateStoreHtml}</details>`
     : '';
 
   return `

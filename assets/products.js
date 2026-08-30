@@ -376,15 +376,15 @@ const BASE_PRODUCTS = [
     name: 'Logicool MX Anywhere 3S 無線滑鼠',
     jaName: 'ワイヤレスマウス MX Anywhere 3S',
     model: 'MX1800GR（グラファイト）',
-    yen: 15880,
+    yen: 15950,
     twdRef: null,
     defaultQty: null,
     image: 'images/thumb/logicool-mx-anywhere-3s.webp',
     note: '主流大廠中日本買氣長銷的隨身滑鼠，體積輕巧、Darkfield 感應器可在玻璃桌面使用，MagSpeed 電磁滾輪與靜音按鍵，支援多達 3 台裝置快速切換。重視主流品牌與日規配色的人可考慮。',
-    source: 'docs/mouse-price-research-2026-08-19.md',
+    source: 'docs/product-price-sources-2026-08-30.md',
     stores: [],
     storeCandidates: ['yodobashi-camera-hakata', 'biccamera-tenjin-1'],
-    priceKind: 'retailer-reference', priceSourceUrl: 'https://www.yodobashi.com/product/100000001007851366/', priceCheckedAt: '2026-08-19', priceNote: 'Yodobashi.com 石墨灰（MX1800GR）款含稅售價，另有多種顏色與 Mac 專用版本；門市現場售價與庫存顏色可能不同。'
+    priceKind: 'official', priceSourceUrl: 'https://www.logicool.co.jp/ja-jp/shop/p/mx-anywhere-3s', priceCheckedAt: '2026-08-30', priceNote: 'Logicool 日本官網含稅價 ¥15,950；量販門市售價、顏色與庫存仍須現場確認。'
   },
   {
     id: 'logicool-pebble-mouse-2-m350s',
@@ -619,8 +619,8 @@ const BASE_PRODUCTS = [
     image: 'images/thumb/belt-fan.webp',
     note: '手拿風扇太占手，這款夾在腰帶上把風送進衣服裡，雙手能空出來。',
     source: '',
-    stores: ['hands-hakata'],
-    storeCandidates: ['3coins-plus-mina-tenjin', '3coins-plus-amu-plaza-kokura'],
+    stores: ['3coins-plus-mina-tenjin', '3coins-plus-amu-plaza-kokura'],
+    storeCandidates: [],
     priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '既有資料未有可追溯的同規格售價來源。'
   },
   {
@@ -740,9 +740,9 @@ const BASE_PRODUCTS = [
     id: 'kobayashi-zukkinon-ointment',
     group: 'shopping', tracking: 'buy', category: '旅途常備藥',
     name: '小林製藥塗抹式 ZUKKINON 軟膏', jaName: '塗るズッキノン軟膏', model: '第 3 類醫藥品・15 g',
-    yen: null, twdRef: null, defaultQty: 1, image: 'images/thumb/kobayashi-zukkinon-ointment.webp',
-    note: '肩頸僵硬伴隨頭痛時使用的外用軟膏；官方現行品採開放價格，實售以藥妝店架上標示為準。請依說明書使用，不可塗於太陽穴、眼周、黏膜或傷口。', source: 'docs/product-refresh-audit-2026-08-22.md', stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'], storeCandidates: ['welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
-    priceKind: 'pending', priceSourceUrl: null, priceCheckedAt: '2026-08-22', priceNote: '官方商品頁確認仍為現行品，但價格為開放價；舊 ¥1,100 僅能作過往預算，不當作現價。'
+    yen: 1100, twdRef: null, defaultQty: 1, image: 'images/thumb/kobayashi-zukkinon-ointment.webp',
+    note: '肩頸僵硬伴隨頭痛時使用的外用軟膏；官方希望零售含稅價為 ¥1,100，藥妝實售可能較低。請依說明書使用，不可塗於太陽穴、眼周、黏膜或傷口。', source: 'docs/product-price-sources-2026-08-30.md', stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'], storeCandidates: ['welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
+    priceKind: 'official', priceSourceUrl: 'https://www.kobayashi.co.jp/seihin/zkn_n/', priceCheckedAt: '2026-08-30', priceNote: '小林製藥官方列 15 g 希望零售未稅 ¥1,000，換算含稅 ¥1,100；連鎖藥妝實售可能不同。'
   },
   {
     id: 'jojoen-salad-sauce',
@@ -771,10 +771,10 @@ const BASE_PRODUCTS = [
   {
     id: '3coins-defrosting-plate',
     group: 'shopping', tracking: 'buy', category: '廚房用品',
-    name: '3COINS KITINTO 解凍盤', jaName: '解凍プレート／KITINTO', model: '2412-KR542-0000・約直徑19.6 × 厚み0.3 cm',
+    name: '3COINS KITINTO 退冰盤／解凍盤', jaName: '解凍プレート／KITINTO', model: '2412-KR542-0000・約直徑19.6 × 厚み0.3 cm',
     yen: 1100, twdRef: null, defaultQty: 1, image: 'images/thumb/3coins-defrosting-plate.webp',
-    note: '鋁合金解凍盤；生肉、魚類解凍用。圖片標價為 ¥1,100，本品為 3COINS 商品，實體店庫存請現場確認。', source: 'docs/product-price-sources-2026-08-09.md', stores: ['3coins-plus-mina-tenjin', '3coins-plus-amu-plaza-kokura'],
-    priceKind: 'photo-reference', priceSourceUrl: null, priceCheckedAt: '2026-08-09', priceNote: '使用者提供的層架照片可辨識 KITINTO 解凍盤與 ¥1,100（含稅）標價。'
+    note: '直徑約 19.6 cm、厚 0.3 cm 的鋁合金解凍盤，可加快肉類與魚類自然解凍，也可用來幫料理散熱；門市庫存與實售仍須現場確認。', source: 'docs/product-price-sources-2026-08-30.md', stores: ['3coins-plus-mina-tenjin', '3coins-plus-amu-plaza-kokura'],
+    priceKind: 'official', priceSourceUrl: 'https://www.palcloset.jp/display/item/2412-KR542-0000/?b=3coins&cl=19', priceCheckedAt: '2026-08-30', priceNote: 'PAL GROUP 官方通販含稅價 ¥1,100；官方提醒通販與實體店價格可能不同，門市庫存也會變動。'
   },
   {
     id: '3coins-folding-camp-chair',
@@ -798,7 +798,7 @@ const BASE_PRODUCTS = [
     name: '太田胃散 S 分包', jaName: '太田胃散〈分包〉S', model: '第 2 類醫藥品・50 包',
     yen: 2079, twdRef: null, defaultQty: 1, image: 'images/thumb/ohta-isan-s-50.webp',
     note: '圖片確認為 50 包分包裝；請依包裝與藥師說明確認是否適用。', source: 'docs/product-price-sources-2026-08-10.md', stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'], storeCandidates: ['welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
-    priceKind: 'official', priceSourceUrl: 'https://ohta-isan.co.jp/%E5%A4%AA%E7%94%B0%E8%83%83%E6%95%A3S%E3%83%BB%E5%A4%AA%E7%94%B0%E8%83%83%E6%95%A3%EF%BC%9C%E5%88%86%E5%8C%85%EF%BC%9ES_%E3%83%AA%E3%83%AA%E3%83%BC%E3%82%B9.pdf', priceCheckedAt: '2026-08-10', priceNote: null
+    priceKind: 'official', priceSourceUrl: 'https://ohta-isan.co.jp/product/medicine/ohtaisanb-s/', priceCheckedAt: '2026-08-30', priceNote: '太田胃散官方現行商品頁列 50 包希望零售含稅價 ¥2,079；藥妝實售可能不同。'
   },
   {
     id: 'daiso-toy-story-pendulum-clock',
@@ -806,7 +806,7 @@ const BASE_PRODUCTS = [
     name: 'DAISO 玩具總動員振子掛鐘', jaName: '振り子時計（トイ・ストーリー）', model: null,
     yen: 770, twdRef: null, defaultQty: 1, image: 'images/thumb/daiso-toy-story-pendulum-clock.webp',
     note: '玩具總動員角色振子掛鐘；圖片可辨識艾利三眼怪造型擺錘。官方網店目前無庫存，不代表福岡門市完全無貨，出發日再查。', source: 'docs/product-refresh-audit-2026-08-22.md', stores: ['daiso-hakata-bus-terminal', 'daiso-amu-plaza-kokura', 'daiso-lachic-fukuoka-tenjin'], storeCandidates: [],
-    priceKind: 'official', priceSourceUrl: 'https://jp.daisonet.com/collections/disney-design-collection-br-toy-story-br-toys-in-action', priceCheckedAt: '2026-08-22', priceNote: '官方含稅價 ¥770；網店當日無庫存，實體門市仍需另查。'
+    priceKind: 'launch-reference', priceSourceUrl: 'https://jp.daisonet.com/collections/disney-design-collection-br-toy-story-br-toys-in-action', priceCheckedAt: '2026-08-30', priceNote: 'DAISO 官方系列頁確認 2026-08-01 起販售，但目前未列此單品；¥770 由照片與近期販售資料交叉確認，屬限定上市參考價，出發日仍須到店確認。'
   },
   {
     id: 'cp-lip-lip-essence',
@@ -851,10 +851,10 @@ const BASE_PRODUCTS = [
   {
     id: 'seasoning-container-pair',
     group: 'shopping', tracking: 'buy', category: '廚房用品',
-    name: '附量匙調味料收納盒（兩入）', jaName: null, model: null,
-    yen: 300, twdRef: null, defaultQty: 1, image: 'images/thumb/seasoning-container-pair.webp',
-    note: '透明罐身、掀蓋與內附量匙的兩入調味料盒，為 3COINS 商品，到門市的廚房用品區找。影片字卡顯示兩個合計 ¥300（符合 3COINS 的 ¥300 定價）；照片未顯示型號，實體店庫存與規格請現場核對。', source: 'docs/product-price-sources-2026-08-13.md', stores: ['3coins-plus-mina-tenjin', '3coins-plus-amu-plaza-kokura'], storeCandidates: [],
-    priceKind: 'photo-reference', priceSourceUrl: null, priceCheckedAt: '2026-08-13', priceNote: '使用者提供照片的字卡清楚標示「兩個只要 300 日幣」，但未拍到品牌、店家與型號；品牌為 3COINS 係使用者 2026-08-15 指認。'
+    name: '附量匙調味料收納盒（兩入）', jaName: '調味料ポット2個セット／KITINTO', model: '2524-SJAR2P-000・各 340 ml',
+    yen: 330, twdRef: null, defaultQty: 1, image: 'images/thumb/seasoning-container-pair.webp',
+    note: '透明罐身、掀蓋與內附量匙的 3COINS 兩入調味料盒；外觀、兩個組與附匙均對應官方商品。門市庫存與顏色仍須現場確認。', source: 'docs/product-price-sources-2026-08-30.md', stores: ['3coins-plus-mina-tenjin', '3coins-plus-amu-plaza-kokura'], storeCandidates: [],
+    priceKind: 'official', priceSourceUrl: 'https://www.palcloset.jp/display/item/2524-SJAR2P-000/?b=3coins', priceCheckedAt: '2026-08-30', priceNote: '3COINS 官方商品頁含稅價 ¥330；原照片字卡 ¥300 為未稅表示。'
   },
 
   // ── 小林製藥 ハレナース 系列（2026-08-14，使用者提供圖片；同一藥同兩種劑型）──
@@ -872,7 +872,7 @@ const BASE_PRODUCTS = [
     name: '小林製藥扁桃腺發炎藥粉', jaName: 'ハレナース', model: '第 3 類醫藥品・18 包',
     yen: 2541, twdRef: null, defaultQty: 1, image: 'images/thumb/kobayashi-harenurse-18.webp',
     note: '第 3 類醫藥品；顆粒 18 包，免配水直接服用，方便隨身攜帶。適應症為扁桃炎（喉嚨腫、喉嚨痛）、咽頭炎、口內炎。同系列另有 9 包試用規格。購買與服用前請閱讀說明書，並向藥師／登錄販售者確認。', source: 'docs/product-price-sources-2026-08-14.md', stores: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu'], storeCandidates: ['welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
-    priceKind: 'retailer-reference', priceSourceUrl: 'https://www.askul.co.jp/p/P102166/', priceCheckedAt: '2026-08-14', priceNote: '通路單品頁標示廠商希望售價含稅 ¥2,541；該站自身折扣價 ¥2,434、比價站最低價帶 ¥1,871–2,392，連鎖藥妝常有折扣，門市標價為準。'
+    priceKind: 'official', priceSourceUrl: 'https://www.kobayashi.co.jp/seihin/hrn/', priceCheckedAt: '2026-08-30', priceNote: '小林製藥官方希望零售未稅 ¥2,310，換算含稅 ¥2,541；ASKUL 當日折扣 ¥2,434 屬通路售價，藥妝門市仍以架上價為準。'
   },
 
   // ── 清潔小物（2026-08-14，使用者提供圖片）──
@@ -901,7 +901,7 @@ const BASE_PRODUCTS = [
     yen: 160, twdRef: null, defaultQty: 1, image: 'images/thumb/calbee-satsumaimo-chips.webp',
     note: '素揚げ地瓜片，無調味（味付けなし）；全國性商品，非 LAWSON 專屬。AEON 網店當日含稅參考價約 ¥160，各超市與超商售價可能不同。', source: 'docs/product-refresh-audit-2026-08-22.md', stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'],
     storeCandidates: ['seven-eleven-tenjin-underground', 'familymart-hakata-station', 'familymart-kokura-station', 'lopia-hakata-yodobashi', 'aeon-shoppers-fukuoka-tenjin', 'lopia-kokura-riverwalk'],
-    priceKind: 'retailer-reference', priceSourceUrl: 'https://shop.aeon.com/netsuper/01050000004010/010500000040104901330805180.html', priceCheckedAt: '2026-08-22', priceNote: 'AEON 網店含稅價 ¥159.84，畫面以日圓整數顯示為 ¥160；分店與超商售價可能不同。'
+    priceKind: 'retailer-reference', priceSourceUrl: 'https://shop.aeon.com/netsuper/01050000002420/010500000024204901330805180.html', priceCheckedAt: '2026-08-30', priceNote: 'AEON 現行同 JAN 商品頁以整數計為含稅 ¥160；Calbee 為開放價，分店與超商售價可能不同。'
   },
 
   /* ── 行動電源分頁（2026-08-19 改版）──
@@ -994,6 +994,72 @@ const BASE_PRODUCTS = [
     priceCheckedAt: '2026-08-26',
     priceNote: '焼きりんご 這一檔是 2022 年秋季限定、官方單品頁已下架，取不到可佐證的單品頁，故不填價格。搜尋結果顯示這個系列近年各口味定價一致，但無法逐項核對到原始頁面，不寫進 yen；到店以架上標示為準。',
     stores: ['seven-eleven-tenjin-underground']
+  },
+
+  // ── 追加：葉黃素保健食品（2026-08-30，使用者提供圖片）──
+  {
+    id: 'matsukiyo-lab-lutein-blueberry',
+    group: 'shopping',
+    tracking: 'buy',
+    category: '健康食品',
+    name: 'matsukiyo LAB 葉黃素藍莓膠囊',
+    jaName: 'matsukiyo LAB ルテイン with ブルーベリー',
+    model: '40 粒（20 日份）・JAN 4571104437055',
+    yen: 1023,
+    twdRef: null,
+    defaultQty: 1,
+    image: 'images/thumb/matsukiyo-lab-lutein-blueberry.webp',
+    note: '營養補助食品；每日 2 粒，每份含葉黃素 16 mg、總花青素 44 mg，並含山桑子、黑醋栗及目藥之木萃取。不是藥品，請依包裝建議量食用。',
+    source: 'docs/product-price-sources-2026-08-30.md',
+    priceKind: 'official',
+    priceSourceUrl: 'https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4571104437055',
+    priceCheckedAt: '2026-08-30',
+    priceNote: '松本清官方線上商店一般購買含稅價 ¥1,023；未採用定期購買價 ¥973，實體店價格與庫存可能不同。',
+    stores: [],
+    storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'matsumoto-kiyoshi-kokura-station-south']
+  },
+  {
+    id: 'orihiro-blueberry-lutein',
+    group: 'shopping',
+    tracking: 'buy',
+    category: '健康食品',
+    name: 'ORIHIRO 藍莓葉黃素膠囊',
+    jaName: 'ブルーベリールテイン',
+    model: '30 粒（30 日份）・JAN 4571157259284',
+    yen: 2138,
+    twdRef: null,
+    defaultQty: 1,
+    image: 'images/thumb/orihiro-blueberry-lutein.webp',
+    note: '機能性表示食品（届出 H328）；每日 1 粒，每粒含山桑子來源花青素 43.2 mg 與葉黃素 6 mg。不是治療或預防疾病的藥品，請依包裝注意事項食用。',
+    source: 'docs/product-price-sources-2026-08-30.md',
+    priceKind: 'retailer-reference',
+    priceSourceUrl: 'https://www.matsukiyococokara-online.com/store/catalog/product/view/id/4571157259284',
+    priceCheckedAt: '2026-08-30',
+    priceNote: 'ORIHIRO 官方標示開放價格；松本清官方線上商店 30 粒裝含稅參考價 ¥2,138，實體店價格與庫存可能不同。',
+    stores: [],
+    storeCandidates: ['matsumoto-kiyoshi-hakata-station-underground', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'matsumoto-kiyoshi-kokura-station-south']
+  },
+
+  // ── 追加：HOKA Mach Remastered（2026-08-30，使用者提供圖片）──
+  {
+    id: 'mach-remastered',
+    group: 'shoes',
+    tracking: 'try',
+    category: null,
+    name: 'Mach Remastered',
+    jaName: 'マッハ リマスタード',
+    model: '1176250・男款／使用者圖片為全黑配色',
+    yen: 17600,
+    twdRef: null,
+    defaultQty: null,
+    image: 'images/thumb/mach-remastered.webp',
+    note: '以 HOKA Mach 的速度鞋輪廓重新設計為生活風格鞋，採半透明 ripstop 鞋面、無縫壓合薄膜、超臨界發泡中底、金屬鞋帶孔與反光鞋帶。使用者圖片為全黑配色，但無法只憑圖片確認官方色名；到店請核對配色與尺寸。',
+    source: 'docs/product-price-sources-2026-08-30.md',
+    priceKind: 'official',
+    priceSourceUrl: 'https://www.hoka.com/jp/mach-remastered/1176250.html',
+    priceCheckedAt: '2026-08-30',
+    priceNote: 'HOKA 日本官方男款商品頁含稅價 ¥17,600；官網與福岡天神店的配色、尺寸及現貨可能不同。',
+    stores: ['hoka-fukuoka-tenjin']
   }
 ];
 
@@ -1001,20 +1067,20 @@ const PRICE_OVERRIDES = {
   findmy: {
     yen: 1100,
     model: 'DG036-2102 / JAN 4560425562102',
-    source: 'docs/product-price-sources-2026-08-09.md',
-    priceKind: 'photo-reference',
-    priceSourceUrl: null,
-    priceCheckedAt: '2026-08-09',
-    priceNote: '原始照片包裝可辨識 DG036-2102、JAN 4560425562102 與 ¥1,100 標價。',
-    note: '照片確認為 DAISO 紛失防止タグ DG036-2102；包裝標價 ¥1,100（CR2032 電池另購）。',
+    source: 'docs/product-price-sources-2026-08-30.md',
+    priceKind: 'official',
+    priceSourceUrl: 'https://jp.daisonet.com/products/4560425562102',
+    priceCheckedAt: '2026-08-30',
+    priceNote: 'DAISO 官方網店確認 JAN 4560425562102 與含稅價 ¥1,100；分店庫存仍須由 App 或現場確認。',
+    note: 'DAISO 紛失防止タグ DG036-2102，可配合 Apple「尋找」使用；含稅 ¥1,100，CR2032 電池另購。',
   },
   kombu: {
     yen: null,
     model: '25 g',
     source: 'docs/product-refresh-audit-2026-08-22.md',
     priceKind: 'pending',
-    priceSourceUrl: null,
-    priceCheckedAt: '2026-08-22',
+    priceSourceUrl: 'https://www.kurakon.jp/products/01/genenshio.html',
+    priceCheckedAt: '2026-08-30',
     priceNote: 'くらこん官方已公告 25 g 減鹽鹽昆布暫停販售，目前沒有可用的現行固定價。',
     note: '照片對應くらこん減塩塩こんぶ 25 g；官方於 2026 年 4 月公告暫停販售，目前只可能買到通路剩餘庫存，不列為必買現貨。',
   },
@@ -1124,27 +1190,32 @@ const PRICE_OVERRIDES = {
     source: 'docs/product-price-sources-2026-08-11.md',
   },
   transport2: {
-    priceKind: 'launch-reference',
-    priceSourceUrl: 'https://web.goout.jp/fashion/461940/',
-    priceCheckedAt: '2026-08-01',
+    priceKind: 'official',
+    priceSourceUrl: 'https://hoka-jp-api.hoka.com/transport-2/1171851.html',
+    priceCheckedAt: '2026-08-30',
+    source: 'docs/product-price-sources-2026-08-30.md',
+    priceNote: 'HOKA 日本官方現行男款 1171851 含稅價 ¥22,000；福岡天神店的尺寸、楦寬、配色與現貨仍須另查。',
   },
   'golden-seasoning': {
-    priceKind: 'retailer-reference',
-    priceSourceUrl: 'https://www.yodobashi.com/product/100000001006781218/',
-    priceCheckedAt: '2026-08-11',
-    source: 'docs/product-price-sources-2026-08-11.md',
-    priceNote: '品牌官方站僅有系列頁未列單品定價，改以規格相符（瓶裝 100 g）的日本通路單品頁為準；¥1,590 經多家通路一致標示。',
-    note: 'HORINISHI 萬能調味鹽「ほりにしプレミアム（金のほりにし）」，100 g 白松露鹽口味，露營、居家料理皆可用。品牌官方站：https://horinishi.jp/lineup/',
+    priceKind: 'official',
+    priceSourceUrl: 'https://shop-orange.info/products/horinishi-023',
+    priceCheckedAt: '2026-08-30',
+    source: 'docs/product-price-sources-2026-08-30.md',
+    priceNote: 'HORINISHI 品牌官方販售通路含稅價 ¥1,590；其他零售通路促銷不作官網定價。',
+    note: 'HORINISHI 萬能調味鹽「ほりにしプレミアム（金のほりにし）」，100 g 白松露鹽口味，露營、居家料理皆可用。Alpen 僅列為到店詢問候選，未確認分店現貨。',
   },
   'toothbrush-p61': {
     priceKind: 'retailer-reference',
     priceSourceUrl: 'https://www.costco.co.jp/c/EBiSU-Premium-Care-Series-Toothbrush-6-PK/p/83612',
     priceCheckedAt: '2026-08-01',
+    note: 'Costco 六支組通路參考價 ¥2,298；一般藥妝可能只販售單支或不同組合，候選店不代表同組合、同價格或有庫存，購買前須核對包裝。',
   },
   '3coins-luggage-band': {
-    priceKind: 'retailer-reference',
-    priceSourceUrl: 'https://ure.pia.co.jp/articles/-/3063302',
-    priceCheckedAt: '2026-08-01',
+    priceKind: 'official',
+    priceSourceUrl: 'https://www.palcloset.jp/display/article/detail/?acd=2604133co_002&b=3coins&leeep_tracking=1',
+    priceCheckedAt: '2026-08-30',
+    source: 'docs/product-price-sources-2026-08-30.md',
+    priceNote: '3COINS 第一方 2026 商品介紹仍列含稅價 ¥550；分店款式與庫存須現場確認。',
   },
   'kayanoya-dashi': {
     priceKind: 'official',
@@ -1172,8 +1243,8 @@ const PRICE_OVERRIDES = {
     source: 'docs/product-price-sources-2026-08-09.md',
     priceKind: 'retailer-reference',
     priceSourceUrl: 'https://store.alpen-group.jp/Form/Product/ProductDetail.aspx?shop=0&pid=4304230316-0001&bid=1257',
-    priceCheckedAt: '2026-08-09',
-    note: 'HOKA 柔彈款，日本通路參考價 ¥22,000；實際門市價格與庫存可能不同。',
+    priceCheckedAt: '2026-08-30',
+    note: 'HOKA 柔彈款；¥22,000 是舊通路參考價，本輪無法由日本官方現行商品頁重新確認，不視為目前官網價。到店請先問是否仍有尺寸與庫存。',
   },
   gaviota5: {
     yen: 27500,
@@ -1209,14 +1280,131 @@ const PRICE_OVERRIDES = {
     note: 'PROTECT U 官方折疊日傘系列定價 ¥2,178；照片未能辨識具體款式，顏色與骨長請在門市再核對。',
   },
   'hanamidori-kiwami-spice': {
-    yen: 588,
-    source: 'docs/product-price-sources-2026-08-11.md',
-    priceKind: 'retailer-reference',
-    priceSourceUrl: 'https://www.profoods.co.jp/i/0600551',
-    priceCheckedAt: '2026-08-11',
-    priceNote: '現行 55 g 規格未見品牌官方定價；以日本食品通路標示價作參考。原紀錄引用的來源網址為運動用品通路且無法對應本商品，已更換為規格相符的食品通路頁。',
-    note: 'トリゼンフーズ 博多華味鳥 10 種極香料 55 g；日本食品通路參考價 ¥588，門市售價可能不同。九州在地超市可買到，優先到超市的調味料／香辛料區找；找不到時，唐吉訶德的食品區與百貨地下食品街也可以碰運氣。品牌官網伴手禮清單未收錄本品，各店是否上架仍以現場為準。製造販售商官方商品頁：https://www.torizenfoods.jp/items/hanamidori/seasoning/kiwami-spice/',
+    yen: 540,
+    source: 'docs/product-price-sources-2026-08-30.md',
+    priceKind: 'official',
+    priceSourceUrl: 'https://www.torizenfoods.jp/items/hanamidori/seasoning/kiwami-spice/',
+    priceCheckedAt: '2026-08-30',
+    priceNote: '製造商官方參考價未稅 ¥500、含稅 ¥540；Profoods 當日通路價 ¥588 屬零售商售價。',
+    note: 'トリゼンフーズ 博多華味鳥 10 種極香料 55 g；官方參考價含稅 ¥540。超市與唐吉訶德僅列為到店詢問候選，未確認指定分店鋪貨。',
   },
+  'logicool-mx-ergo-s': {
+    yen: 19580,
+    source: 'docs/product-price-sources-2026-08-30.md',
+    priceKind: 'official',
+    priceSourceUrl: 'https://press.logicool.co.jp/ja-jp/m575sp-mx-ergo-s-mxtb2-/',
+    priceCheckedAt: '2026-08-30',
+    priceNote: '精確型號 MXTB2（2 年保固）採 Logicool 官方直營定價 ¥19,580；官網分類頁另列一款 1 年保固通路型號與促銷價，不能混為同一型號。',
+  },
+  'coleman-auto-folding-umbrella': {
+    yen: 2980,
+    source: 'docs/product-price-sources-2026-08-30.md',
+    priceKind: 'official',
+    priceSourceUrl: 'https://www.lawson.co.jp/lab/camp/art/1520758_9995.html',
+    priceCheckedAt: '2026-08-30',
+    priceNote: 'LAWSON 官方 2026 商品頁確認含稅價 ¥2,980；此為 LAWSON × Coleman 合作款，指定分店現貨仍須到店確認。',
+  },
+  'strawberry-chocolate-melon-pan': {
+    yen: 214,
+    jaName: 'ゴロチョコ！メロンパン いちご',
+    source: 'docs/product-price-sources-2026-08-30.md',
+    priceKind: 'official',
+    priceSourceUrl: 'https://lawson-faq.lawson.co.jp/faq/show/1228',
+    priceCheckedAt: '2026-08-30',
+    priceNote: 'LAWSON 官方系列頁確認 2026 年 5 月上市標準含稅價 ¥214；舊照片 ¥235 不是這款目前官價。',
+    note: 'LAWSON 自有品牌「ゴロチョコ！メロンパン いちご」，有效期限短，適合當日購買食用；分店仍可能停售或缺貨。',
+  },
+  'jurokucha-630ml': {
+    source: 'docs/product-price-sources-2026-08-30.md',
+    priceKind: 'pending',
+    priceSourceUrl: 'https://www.asahiinryo.co.jp/products/tea/16cha/2CMV7.html',
+    priceCheckedAt: '2026-08-30',
+    priceNote: 'Asahi 官方仍有 630 ml 規格資料，但頁面只列整箱希望零售價，未提供可套用到單瓶的固定官價；單瓶以門市標價為準。',
+  },
+  'gogo-no-kocha-ice-milk-tea': {
+    yen: 186,
+    jaName: '午後の紅茶 アイスミルクティー デ モーニング',
+    model: '500 ml・LAWSON 限定',
+    source: 'docs/product-price-sources-2026-08-30.md',
+    priceKind: 'official',
+    priceSourceUrl: 'https://www.lawson.co.jp/lab/tsuushin/art/1520414_4659.html',
+    priceCheckedAt: '2026-08-30',
+    priceNote: 'LAWSON 官方頁確認 2026 年 4 月上市、500 ml、標準含稅價 ¥186；期間促銷或指定分店庫存另計。',
+    note: 'KIRIN 午後紅茶 40 週年推出的 LAWSON 限定晨間冰奶茶，500 ml；購買前仍須確認分店冷藏櫃庫存。',
+  },
+  'asari-miso-soup': {
+    source: 'docs/product-price-sources-2026-08-30.md',
+    priceKind: 'official',
+    priceSourceUrl: 'https://www.lawson.co.jp/recommend/original/detail/1529271_1996.html',
+    priceCheckedAt: '2026-08-30',
+    priceNote: 'LAWSON 官方現行單品頁標準含稅價 ¥178；各地規格、價格與庫存仍可能不同。',
+  },
+  'toraku-royal-custard-pudding': {
+    yen: 226,
+    source: 'docs/product-price-sources-2026-08-30.md',
+    priceKind: 'launch-reference',
+    priceSourceUrl: 'https://prtimes.jp/main/html/rd/p/000000064.000100115.html',
+    priceCheckedAt: '2026-08-30',
+    priceNote: 'TORAKU 2026 年官方新聞稿列希望零售含稅價 ¥226；超市與便利商店實售可能不同。',
+  },
+  'sugar-butter-tree-yaki-ringo-brulee': {
+    yen: 300,
+    source: 'docs/product-price-sources-2026-08-30.md',
+    priceKind: 'official',
+    priceSourceUrl: 'https://7premium.jp/product/search/detail?id=13212',
+    priceCheckedAt: '2026-08-30',
+    priceNote: '7 Premium 官方現行單品頁確認 3 個入含稅價 ¥300；地區、門市規格與庫存仍可能不同。',
+    note: '7‑ELEVEN 限定的 3 個入烤蘋果布蕾風味夾心餅；官方單品頁已恢復，但仍可能因地區或門市而停售。',
+  },
+};
+
+// 只有品牌直營、官方授權或自有品牌關係可列為主要店家；
+// 未取得指定分店 SKU／庫存證據的藥妝、超市、便利商店與量販店一律列候選。
+const STORE_CANDIDATE_GROUPS = {
+  drug: ['matsumoto-kiyoshi-hakata-station-underground', 'daikoku-drug-tenjin-building', 'matsumoto-kiyoshi-kokura-station-south', 'don-quijote-nakasu', 'welcia-one-fukuoka-tenjin', 'matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-mina-tenjin', 'cocokara-fine-fukuoka-parco', 'cocokara-fine-kokura-station', 'daikoku-drug-tenjin-nishidori', 'sundrug-uomachi-ginten-street'],
+  food: ['maxvalu-express-hakata-gion', 'reganet-tenjin', 'youme-mart-kokura', 'don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi', 'lopia-hakata-yodobashi', 'aeon-shoppers-fukuoka-tenjin', 'lopia-kokura-riverwalk'],
+  electronics: ['biccamera-tenjin-1', 'biccamera-tenjin-2', 'yodobashi-camera-hakata', 'bestdenki-kokura-ekimae'],
+  convenience: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome', 'seven-eleven-tenjin-underground', 'familymart-hakata-station', 'familymart-kokura-station'],
+  convenienceAndMarkets: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome', 'seven-eleven-tenjin-underground', 'familymart-hakata-station', 'familymart-kokura-station', 'lopia-hakata-yodobashi', 'aeon-shoppers-fukuoka-tenjin', 'lopia-kokura-riverwalk'],
+};
+
+const STORE_RELATION_OVERRIDES = {
+  jinmart: { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.drug },
+  roihi: { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.drug },
+  nature: { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.drug },
+  anelon: { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.drug },
+  kombu: { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.food },
+  'hareno-toothbrush': { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.drug },
+  'lion-stain-rescue': { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.drug },
+  'golden-seasoning': { stores: [], storeCandidates: ['alpen-fukuoka-canal-city-hakata'] },
+  'toothbrush-p61': { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.drug },
+  ne7n: { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.electronics },
+  ne5n: { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.electronics },
+  cloudsurfermax: { stores: ['murasaki-sports-canal-city-hakata'], storeCandidates: ['alpen-fukuoka-canal-city-hakata'] },
+  'protect-u-folding-umbrella': { stores: [], storeCandidates: ['hands-hakata', 'loft-mina-tenjin'] },
+  'coleman-auto-folding-umbrella': { stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'], storeCandidates: [], storeBrand: 'LAWSON' },
+  'pabron-ace-pro-x-36': { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.drug },
+  'taisho-kampo-stomach-48': { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.drug },
+  'morinaga-caramelic-pudding': { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.convenience, storeBrand: null },
+  'jurokucha-630ml': { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.convenienceAndMarkets, storeBrand: null },
+  'gogo-no-kocha-ice-milk-tea': { stores: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome'], storeCandidates: [], storeBrand: 'LAWSON' },
+  'hanamidori-kiwami-spice': { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.food },
+  'kobayashi-zukkinon-ointment': { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.drug },
+  'jojoen-salad-sauce': { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.food },
+  'fundokin-ao-yuzu-kosho': { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.food },
+  'higashimaru-oyster-dashi-shoyu': { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.food },
+  'lulu-attack-ex-24': { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.drug },
+  'ohta-isan-s-50': { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.drug },
+  'cp-lip-lip-essence': { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.drug },
+  'kinui-calm-7-soothing-serum': { stores: [], storeCandidates: ['matsumoto-kiyoshi-tenjin-underground', 'matsumoto-kiyoshi-hakata-station-underground', 'matsumoto-kiyoshi-kokura-station-south', 'cocokara-fine-fukuoka-parco', 'welcia-one-fukuoka-tenjin', 'cocokara-fine-kokura-station'] },
+  'salonpas-ae-240': { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.drug },
+  'passtime-lx-premium-21': { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.drug },
+  'toraku-royal-custard-pudding': { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.convenience },
+  'kobayashi-harenurse-spray': { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.drug },
+  'kobayashi-harenurse-18': { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.drug },
+  'calbee-satsumaimo-chips': { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.convenienceAndMarkets, storeBrand: null },
+  'horinishi-new-lemon': { stores: [], storeCandidates: STORE_CANDIDATE_GROUPS.food },
+  'sugar-butter-tree-yaki-ringo-brulee': { stores: ['seven-eleven-tenjin-underground'], storeCandidates: [] },
 };
 
 /* 日圓兌新臺幣參考匯率。
@@ -1225,19 +1413,23 @@ const PRICE_OVERRIDES = {
  * 更新匯率只需改這裡兩個值，並跑 npm run validate:data。 */
 export const JPY_TWD_RATE = 0.2032;
 export const JPY_TWD_RATE_CHECKED_AT = '2026-08-21';
+export const CATALOG_AUDIT_CHECKED_AT = '2026-08-30';
 
 export const PRODUCTS = BASE_PRODUCTS.map((product) => {
   const override = PRICE_OVERRIDES[product.id] || {};
+  const storeOverride = STORE_RELATION_OVERRIDES[product.id] || {};
   const yen = Object.hasOwn(override, 'yen') ? override.yen : product.yen;
   return {
     ...product,
     ...override,
+    ...storeOverride,
     yen,
     // twdRef 一律由 yen 與單一匯率推導，忽略任何手寫值。
     twdRef: yen === null ? null : Math.round(yen * JPY_TWD_RATE),
     priceKind: override.priceKind || product.priceKind || 'pending',
     priceSourceUrl: override.priceSourceUrl || product.priceSourceUrl || null,
-    priceCheckedAt: override.priceCheckedAt || product.priceCheckedAt || (yen === null ? null : '2026-08-01'),
+    // 2026-08-30 已逐項重新開啟或搜尋來源；無官價、停產與開放價也代表本輪已查而非漏查。
+    priceCheckedAt: CATALOG_AUDIT_CHECKED_AT,
     priceNote: Object.hasOwn(override, 'priceNote') ? override.priceNote : (product.priceNote || null),
   };
 });

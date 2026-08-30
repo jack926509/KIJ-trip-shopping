@@ -7,7 +7,7 @@ const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
 async function loadProducts() {
   const mod = await import(path.join(ROOT, 'assets/products.js'));
-  return { products: mod.PRODUCTS, rate: mod.JPY_TWD_RATE };
+  return { products: mod.PRODUCTS, rate: mod.JPY_TWD_RATE, auditCheckedAt: mod.CATALOG_AUDIT_CHECKED_AT };
 }
 
 /* 店家資料改由 assets/stores.js 匯出後，這裡直接讀物件，
@@ -29,7 +29,7 @@ const VALID_GROUP = new Set(['shopping', 'dryer', 'shoes', 'convenience', 'power
 const VALID_TRACKING = new Set(['buy', 'try']);
 const VALID_PRICE_KIND = new Set(['official', 'retailer-reference', 'launch-reference', 'photo-reference', 'pending']);
 
-const { products, rate: JPY_TWD_RATE } = await loadProducts();
+const { products, rate: JPY_TWD_RATE, auditCheckedAt } = await loadProducts();
 const stores = await loadStores();
 if (typeof JPY_TWD_RATE !== 'number' || !(JPY_TWD_RATE > 0)) {
   fail(['assets/products.js 必須匯出正數的 JPY_TWD_RATE']);
@@ -41,6 +41,10 @@ const indexHtml = readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 const mapApp = readFileSync(path.join(ROOT, 'scripts/map-app.js'), 'utf8');
 const indexApp = readFileSync(path.join(ROOT, 'scripts/index-app.js'), 'utf8');
 const mapStoreIds = new Set(stores.map((store) => store.id));
+
+if (!/^\d{4}-\d{2}-\d{2}$/.test(auditCheckedAt || '')) {
+  errors.push('assets/products.js 必須匯出 YYYY-MM-DD 格式的 CATALOG_AUDIT_CHECKED_AT');
+}
 
 /* 店家資料自身的檢查（欄位齊全、id 不重複、兩個名稱都在）。 */
 const seenStoreIds = new Set();
@@ -195,6 +199,12 @@ for (const p of products) {
   }
 }
 
+for (const p of products) {
+  if (p.priceCheckedAt !== auditCheckedAt) {
+    errors.push(`${p.id}: 本輪全商品查證日期應為 ${auditCheckedAt}，實際是 ${p.priceCheckedAt}`);
+  }
+}
+
 for (const forbiddenText of ['結算', '價格待確認原因']) {
   if (indexApp.includes(forbiddenText)) errors.push(`scripts/index-app.js: 不得保留「${forbiddenText}」`);
   if (mapApp.includes(forbiddenText)) errors.push(`scripts/map-app.js: 不得保留「${forbiddenText}」`);
@@ -253,7 +263,12 @@ for (const p of products) {
   if (url.pathname === '/' || url.pathname === '') {
     errors.push(`${p.id}: ${p.priceKind} 的 priceSourceUrl 只指到網站首頁（${p.priceSourceUrl}），必須指向單品頁`);
   }
-  if (/[?&]q=/.test(url.search) || /\/search(\/|$)/.test(url.pathname)) {
+  // 7PREMIUM 的正式單品頁固定使用 /product/search/detail?id=<商品編號>，
+  // 路徑雖含 search，實際上不是搜尋結果頁。
+  const isSevenPremiumDetail = url.hostname === '7premium.jp'
+    && url.pathname === '/product/search/detail'
+    && /^\d+$/.test(url.searchParams.get('id') || '');
+  if (!isSevenPremiumDetail && (/[?&]q=/.test(url.search) || /\/search(\/|$)/.test(url.pathname))) {
     errors.push(`${p.id}: ${p.priceKind} 的 priceSourceUrl 是站內搜尋頁（${p.priceSourceUrl}），必須指向單品頁`);
   }
 }

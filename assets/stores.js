@@ -297,8 +297,9 @@ export const STORES = [
     referenceOnly: true,
     lat: 33.5882707,
     lng: 130.4023493,
-    officialUrl: 'https://www.cosmospc.co.jp/lp/inbound/jp/index.html',
+    officialUrl: 'https://www.cosmospc.co.jp/shop/kyushu/fukuoka/fukuoka/chuou/',
     officialSources: [
+      { label: 'Cosmos 福岡市中央區官方門市列表', url: 'https://www.cosmospc.co.jp/shop/kyushu/fukuoka/fukuoka/chuou/' },
       { label: 'Cosmos 官方訪日門市頁', url: 'https://www.cosmospc.co.jp/lp/inbound/jp/index.html' },
       { label: 'MapFan 店鋪座標', url: 'https://mapfan.com/spots/SCWA3%2CFKF1%2C7R0' }
     ],
@@ -584,12 +585,13 @@ export const STORES = [
     area: 'hakata',
     address: '福岡県福岡市博多区博多駅前 2-6-12',
     hours: '24 小時營業',
-    note: 'LAWSON 商品的博多補貨點；冷藏、冷凍與限定商品庫存請以店內為準。',
+    note: 'LAWSON 商品的博多補貨點；官方電話 092-414-7122，冷藏、冷凍與限定商品庫存請以店內為準。',
     lat: 33.589935,
     lng: 130.414841,
-    officialUrl: 'https://www.lawson.co.jp/service/others/in/',
+    officialUrl: 'https://www.areamarker.com/lawson/info/275180/',
     officialSources: [
-      { label: 'LAWSON 官方門市資訊', url: 'https://www.lawson.co.jp/service/others/in/' }
+      { label: 'LAWSON 博多店官方地圖', url: 'https://www.areamarker.com/lawson/info/275180/' },
+      { label: 'LAWSON 官方訪日門市資訊', url: 'https://www.lawson.co.jp/service/others/in/' }
     ],
     mapsQuery: 'ローソン 博多店 福岡県福岡市博多区博多駅前 2-6-12'
   },
@@ -603,12 +605,13 @@ export const STORES = [
     area: 'tenjin',
     address: '福岡県福岡市中央区天神 2-2-67',
     hours: '24 小時營業',
-    note: '天神購物動線上的 LAWSON；冷藏、冷凍與限定商品庫存請以店內為準。',
+    note: '天神購物動線上的 LAWSON；官方電話 092-711-7352，冷藏、冷凍與限定商品庫存請以店內為準。',
     lat: 33.587902,
     lng: 130.400375,
-    officialUrl: 'https://www.lawson.co.jp/service/others/in/',
+    officialUrl: 'https://www.areamarker.com/lawson/info/134350/',
     officialSources: [
-      { label: 'LAWSON 官方門市資訊', url: 'https://www.lawson.co.jp/service/others/in/' }
+      { label: 'LAWSON 西鐵福岡天神站南口店官方地圖', url: 'https://www.areamarker.com/lawson/info/134350/' },
+      { label: 'LAWSON 官方訪日門市資訊', url: 'https://www.lawson.co.jp/service/others/in/' }
     ],
     mapsQuery: 'ローソン 西鉄福岡天神駅南口店 福岡県福岡市中央区天神 2-2-67'
   },
@@ -622,12 +625,13 @@ export const STORES = [
     area: 'kokura',
     address: '福岡県北九州市小倉北区魚町 2-4-18',
     hours: '24 小時營業',
-    note: '魚町銀天街旁的 LAWSON；冷藏、冷凍與限定商品庫存請以店內為準。',
+    note: '魚町銀天街旁的 LAWSON；官方電話 093-533-6060，冷藏、冷凍與限定商品庫存請以店內為準。',
     lat: 33.883812,
     lng: 130.879944,
-    officialUrl: 'https://www.lawson.co.jp/service/others/in/',
+    officialUrl: 'https://www.areamarker.com/lawson/info/154230/',
     officialSources: [
-      { label: 'LAWSON 官方門市資訊', url: 'https://www.lawson.co.jp/service/others/in/' }
+      { label: 'LAWSON 小倉魚町二丁目店官方地圖', url: 'https://www.areamarker.com/lawson/info/154230/' },
+      { label: 'LAWSON 官方訪日門市資訊', url: 'https://www.lawson.co.jp/service/others/in/' }
     ],
     mapsQuery: 'ローソン 小倉魚町二丁目店 福岡県北九州市小倉北区魚町 2-4-18'
   },

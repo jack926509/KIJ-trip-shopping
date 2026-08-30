@@ -117,6 +117,26 @@ if (indexApp.includes("return '唐吉訶德／松本清／SUNDRUG';")) {
   failures.push('推薦店家仍以品類寫死，會把未確認店家誤標為可購買');
 }
 
+/* 候選店不能只存在資料層：一般商品卡必須有可展開的「到店確認」連結，
+   否則把未證實店家從 stores 降級後，畫面會完全看不到可詢問地點。 */
+const candidateStoreRendererUses = indexApp.match(/candidateStoreLinksHtml\(product/g) || [];
+if (!/function candidateStoreLinksHtml\(product/.test(indexApp)
+  || !/候選店（到店確認）/.test(indexApp)
+  || candidateStoreRendererUses.length < 2
+  || !/includeSharedGroups:\s*groupBadge/.test(indexApp)) {
+  failures.push('一般商品卡沒有顯示候選店的到店確認連結');
+}
+
+/* 搜尋結果沒有滑鼠／行動電源的分區橫幅，卡片必須改由 groupBadge 情境補回候選店；
+   鞋款則要在卡片直接顯示已確認的試穿店，不能只存在資料層。 */
+if (/function candidateStoreLinksHtml[\s\S]*?if \(product\.group === 'mouse' \|\| product\.group === 'powerbank'\) return ''/.test(indexApp)) {
+  failures.push('搜尋結果仍會隱藏滑鼠或行動電源的候選店');
+}
+if (/function recommendedStores[\s\S]*?product\.group === 'shoes'[^\n]*return \[\]/.test(indexApp)
+  || !/product\.group === 'shoes' \? storeLinksHtml\(product\) : ''/.test(indexApp)) {
+  failures.push('鞋款卡片沒有顯示已確認的試穿店家');
+}
+
 /* 涵蓋所有分類，不能只查 shopping。
    只查 shopping 時，便利商店與吹風機的商品即使寫了 stores，
    少了顯示名稱就整條連結不會渲染，畫面上完全看不出漏掉——

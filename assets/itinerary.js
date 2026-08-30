@@ -3,7 +3,7 @@
  *
  * 排入原則（2026-08-26 使用者決定）：
  * 只排「特定店家才買得到」的品項——鞋店、家電量販、茅乃舍、超市的指定調味料等。
- * 藥妝（41 項）與便利商店（7 項）刻意不綁門市：福岡與小倉這兩類店密度極高，
+ * 藥妝與便利商店（8 項）刻意不綁門市：福岡與小倉這兩類店密度極高，
  * 釘在某一家反而是過度規劃，沿途遇到就買。這兩類全數由「即時補買路線」
  * （route-planner 的 remainingGroups）動態涵蓋，已驗證 7 項超商品項全部有站可去。 */
 
@@ -39,8 +39,8 @@ export const ITINERARY_SEGMENTS = [
         note: '確認型號、電壓、保固及免稅結帳時間。',
       },
       { storeId: 'daiso-lachic-fukuoka-tenjin', arrivalTime: '18:00', durationMinutes: 30, optional: false, productIds: ['findmy', 'hasameru-sponge', 'daiso-toy-story-pendulum-clock', 'daiso-basin-cleaner-cloth'], note: '防丟器相容性與現貨以店內為準。' },
-      { storeId: 'hoka-fukuoka-tenjin', arrivalTime: '18:35', durationMinutes: 55, optional: false, productIds: ['clifton11', 'bondi9', 'skyflow', 'transport2', 'gaviota5'], note: '建議 19:40 前完成選購，尺碼與顏色以現場為準。' },
-      { storeId: 'aeon-shoppers-fukuoka-tenjin', arrivalTime: '19:30', durationMinutes: 25, optional: false, productIds: ['jurokucha-630ml', 'gogo-no-kocha-ice-milk-tea', 'calbee-satsumaimo-chips'], note: '飲料有重量，只買預計攜回飯店的數量。' },
+      { storeId: 'hoka-fukuoka-tenjin', arrivalTime: '18:35', durationMinutes: 55, optional: false, productIds: ['clifton11', 'bondi9', 'skyflow', 'transport2', 'gaviota5', 'mach-remastered'], note: '建議 19:40 前完成選購，尺碼與顏色以現場為準。' },
+      { storeId: 'aeon-shoppers-fukuoka-tenjin', arrivalTime: '19:30', durationMinutes: 25, optional: false, productIds: ['jurokucha-630ml', 'calbee-satsumaimo-chips'], note: '飲料有重量，只買預計攜回飯店的數量；LAWSON 限定品改由即時補買路線處理。' },
       { storeId: 'reganet-tenjin', arrivalTime: '20:00', durationMinutes: 30, optional: false, productIds: ['kombu', 'hanamidori-kiwami-spice', 'jojoen-salad-sauce', 'fundokin-ao-yuzu-kosho', 'higashimaru-oyster-dashi-shoyu', 'horinishi-new-lemon'], note: '最重的食品放在最後買，再往天神南方向回飯店。' },
       { storeId: 'cosmos-tenjin-daimaru-mae', arrivalTime: '20:30', durationMinutes: 20, optional: true, productIds: [], note: '有時間、體力且仍在營業才順路進店，不必特地趕。' },
     ],
