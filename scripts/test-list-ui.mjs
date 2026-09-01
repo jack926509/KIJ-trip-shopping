@@ -17,40 +17,40 @@ const itineraryHtml = existsSync(itineraryHtmlPath) ? readFileSync(itineraryHtml
 const itineraryApp = existsSync(itineraryAppPath) ? readFileSync(itineraryAppPath, 'utf8') : '';
 const failures = [];
 
-if (!/<script type="module" src="scripts\/index-app\.js\?v=\d{8}"><\/script>/.test(indexHtml)) {
+if (!/<script type="module" src="scripts\/index-app\.js\?v=\d{8}\.\d+"><\/script>/.test(indexHtml)) {
   failures.push('index.html 沒有外部清單 module 引用');
 }
-if (!/<script type="module" src="scripts\/map-app\.js\?v=\d{8}"><\/script>/.test(mapHtml)) {
+if (!/<script type="module" src="scripts\/map-app\.js\?v=\d{8}\.\d+"><\/script>/.test(mapHtml)) {
   failures.push('map.html 沒有外部地圖 module 引用');
 }
-if (!/<script type="module" src="scripts\/itinerary-app\.js\?v=\d{8}"><\/script>/.test(itineraryHtml)) {
+if (!/<script type="module" src="scripts\/itinerary-app\.js\?v=\d{8}\.\d+"><\/script>/.test(itineraryHtml)) {
   failures.push('itinerary.html 沒有外部行程 module 引用');
 }
-if (!/<link rel="stylesheet" href="assets\/itinerary\.css\?v=\d{8}">/.test(itineraryHtml)) {
-  failures.push('itinerary.html 的行程樣式缺少 8 位日期快取版號');
+if (!/<link rel="stylesheet" href="assets\/itinerary\.css\?v=\d{8}\.\d+">/.test(itineraryHtml)) {
+  failures.push('itinerary.html 的行程樣式缺少日期與同日修訂號');
 }
 
 /* 三個入口與所有會讀取本次行程／店家／商品資料的巢狀 module 必須使用同一版號。
  * 只改 HTML 入口時，瀏覽器仍可能從 module 快取拿到舊資料，畫面就會與檔案不同。 */
 const versionedModuleRefs = [
-  ['清單入口', indexHtml, /scripts\/index-app\.js\?v=(\d{8})/],
-  ['行程入口', itineraryHtml, /scripts\/itinerary-app\.js\?v=(\d{8})/],
-  ['行程樣式', itineraryHtml, /assets\/itinerary\.css\?v=(\d{8})/],
-  ['地圖入口', mapHtml, /scripts\/map-app\.js\?v=(\d{8})/],
-  ['清單商品資料', indexApp, /assets\/products\.js\?v=(\d{8})/],
-  ['清單店家資料', indexApp, /assets\/stores\.js\?v=(\d{8})/],
-  ['行程商品資料', itineraryApp, /assets\/products\.js\?v=(\d{8})/],
-  ['行程店家資料', itineraryApp, /assets\/stores\.js\?v=(\d{8})/],
-  ['行程時段資料', itineraryApp, /assets\/itinerary\.js\?v=(\d{8})/],
-  ['行程路線模組', itineraryApp, /assets\/route-planner\.js\?v=(\d{8})/],
-  ['地圖商品資料', mapApp, /assets\/products\.js\?v=(\d{8})/],
-  ['地圖店家資料', mapApp, /assets\/stores\.js\?v=(\d{8})/],
-  ['地圖路線模組', mapApp, /assets\/route-planner\.js\?v=(\d{8})/],
-  ['路線時段資料', routePlannerApp, /itinerary\.js\?v=(\d{8})/],
+  ['清單入口', indexHtml, /scripts\/index-app\.js\?v=(\d{8}\.\d+)(?=['"])/],
+  ['行程入口', itineraryHtml, /scripts\/itinerary-app\.js\?v=(\d{8}\.\d+)(?=['"])/],
+  ['行程樣式', itineraryHtml, /assets\/itinerary\.css\?v=(\d{8}\.\d+)(?=['"])/],
+  ['地圖入口', mapHtml, /scripts\/map-app\.js\?v=(\d{8}\.\d+)(?=['"])/],
+  ['清單商品資料', indexApp, /assets\/products\.js\?v=(\d{8}\.\d+)(?=['"])/],
+  ['清單店家資料', indexApp, /assets\/stores\.js\?v=(\d{8}\.\d+)(?=['"])/],
+  ['行程商品資料', itineraryApp, /assets\/products\.js\?v=(\d{8}\.\d+)(?=['"])/],
+  ['行程店家資料', itineraryApp, /assets\/stores\.js\?v=(\d{8}\.\d+)(?=['"])/],
+  ['行程時段資料', itineraryApp, /assets\/itinerary\.js\?v=(\d{8}\.\d+)(?=['"])/],
+  ['行程路線模組', itineraryApp, /assets\/route-planner\.js\?v=(\d{8}\.\d+)(?=['"])/],
+  ['地圖商品資料', mapApp, /assets\/products\.js\?v=(\d{8}\.\d+)(?=['"])/],
+  ['地圖店家資料', mapApp, /assets\/stores\.js\?v=(\d{8}\.\d+)(?=['"])/],
+  ['地圖路線模組', mapApp, /assets\/route-planner\.js\?v=(\d{8}\.\d+)(?=['"])/],
+  ['路線時段資料', routePlannerApp, /itinerary\.js\?v=(\d{8}\.\d+)(?=['"])/],
 ];
 const moduleVersions = versionedModuleRefs.map(([label, source, pattern]) => {
   const match = source.match(pattern);
-  if (!match) failures.push(`${label}缺少 8 位日期快取版號`);
+  if (!match) failures.push(`${label}缺少日期與同日修訂號`);
   return match?.[1];
 }).filter(Boolean);
 if (new Set(moduleVersions).size > 1) failures.push('清單、行程、地圖與巢狀資料 module 的快取版號不一致');
@@ -193,7 +193,7 @@ const missing = [...new Set(PRODUCTS.flatMap((product) => [...(product.stores ??
 if (missing.length > 0) failures.push(`商品指到的店家缺少顯示名稱：${missing.join('、')}`);
 
 /* index.html 必須真的從 stores.js 取用，不能又退回自己維護一份。 */
-if (!/import \{ STORE_SUMMARIES \} from '\.\.\/assets\/stores\.js\?v=\d{8}'/.test(indexApp)) {
+if (!/import \{ STORE_SUMMARIES \} from '\.\.\/assets\/stores\.js\?v=\d{8}\.\d+'/.test(indexApp)) {
   failures.push('index.html 沒有從 assets/stores.js 匯入 STORE_SUMMARIES');
 }
 

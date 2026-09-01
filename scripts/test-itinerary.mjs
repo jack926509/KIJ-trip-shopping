@@ -100,7 +100,6 @@ assert.deepEqual(september6Drugstore.productIds, [], '9/6 藥妝代表站不得�
 const itineraryHtml = await readFile(new URL('../itinerary.html', import.meta.url), 'utf8');
 assert.ok(itineraryHtml.includes('藥妝不綁單一門市或庫存'), '頁面導言應說明藥妝只使用代表站');
 assert.ok(!itineraryHtml.includes('藥妝與便利商店刻意不排'), '頁面導言不得殘留舊版藥妝完全不排行程的說法');
-assert.ok(itineraryHtml.includes('itinerary-app.js?v=20260901'), '行程入口應更新快取版本，避免瀏覽器沿用舊資料模組');
 
 const state = new Map();
 const planner = createRoutePlanner({

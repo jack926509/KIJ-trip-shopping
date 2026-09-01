@@ -1,8 +1,8 @@
-import { STORES } from '../assets/stores.js?v=20260901';
-import { PRODUCTS } from '../assets/products.js?v=20260901';
+import { STORES } from '../assets/stores.js?v=20260901.2';
+import { PRODUCTS } from '../assets/products.js?v=20260901.2';
 import { createCatalogIndex } from '../assets/catalog-index.js';
 import { makeImageFallback, readStoredBool } from '../assets/app-utils.js';
-import { AREA_LABELS, createRoutePlanner, haversineMeters } from '../assets/route-planner.js?v=20260901';
+import { AREA_LABELS, createRoutePlanner, haversineMeters } from '../assets/route-planner.js?v=20260901.2';
 
 const leafletReady = await (window.__leafletReady || Promise.resolve(typeof L !== 'undefined')).catch(() => false);
 await (window.__markerClusterReady || Promise.resolve(false));

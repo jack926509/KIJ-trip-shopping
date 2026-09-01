@@ -1,7 +1,7 @@
-import { PRODUCTS } from '../assets/products.js?v=20260901';
-import { STORES } from '../assets/stores.js?v=20260901';
-import { ITINERARY_DAYS } from '../assets/itinerary.js?v=20260901';
-import { AREA_LABELS, createRoutePlanner, walkText } from '../assets/route-planner.js?v=20260901';
+import { PRODUCTS } from '../assets/products.js?v=20260901.2';
+import { STORES } from '../assets/stores.js?v=20260901.2';
+import { ITINERARY_DAYS } from '../assets/itinerary.js?v=20260901.2';
+import { AREA_LABELS, createRoutePlanner, walkText } from '../assets/route-planner.js?v=20260901.2';
 import { readStoredBool } from '../assets/app-utils.js';
 
 const planner = createRoutePlanner({ stores: STORES, products: PRODUCTS, readStoredBool });
