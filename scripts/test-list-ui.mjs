@@ -10,21 +10,50 @@ const indexHtml = readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 const mapHtml = readFileSync(path.join(ROOT, 'map.html'), 'utf8');
 const indexApp = readFileSync(path.join(ROOT, 'scripts/index-app.js'), 'utf8');
 const mapApp = readFileSync(path.join(ROOT, 'scripts/map-app.js'), 'utf8');
+const routePlannerApp = readFileSync(path.join(ROOT, 'assets/route-planner.js'), 'utf8');
 const itineraryHtmlPath = path.join(ROOT, 'itinerary.html');
 const itineraryAppPath = path.join(ROOT, 'scripts/itinerary-app.js');
 const itineraryHtml = existsSync(itineraryHtmlPath) ? readFileSync(itineraryHtmlPath, 'utf8') : '';
 const itineraryApp = existsSync(itineraryAppPath) ? readFileSync(itineraryAppPath, 'utf8') : '';
 const failures = [];
 
-if (!/<script type="module" src="scripts\/index-app\.js"><\/script>/.test(indexHtml)) {
+if (!/<script type="module" src="scripts\/index-app\.js\?v=\d{8}"><\/script>/.test(indexHtml)) {
   failures.push('index.html 沒有外部清單 module 引用');
 }
-if (!/<script type="module" src="scripts\/map-app\.js"><\/script>/.test(mapHtml)) {
+if (!/<script type="module" src="scripts\/map-app\.js\?v=\d{8}"><\/script>/.test(mapHtml)) {
   failures.push('map.html 沒有外部地圖 module 引用');
 }
-if (!/<script type="module" src="scripts\/itinerary-app\.js"><\/script>/.test(itineraryHtml)) {
+if (!/<script type="module" src="scripts\/itinerary-app\.js\?v=\d{8}"><\/script>/.test(itineraryHtml)) {
   failures.push('itinerary.html 沒有外部行程 module 引用');
 }
+if (!/<link rel="stylesheet" href="assets\/itinerary\.css\?v=\d{8}">/.test(itineraryHtml)) {
+  failures.push('itinerary.html 的行程樣式缺少 8 位日期快取版號');
+}
+
+/* 三個入口與所有會讀取本次行程／店家／商品資料的巢狀 module 必須使用同一版號。
+ * 只改 HTML 入口時，瀏覽器仍可能從 module 快取拿到舊資料，畫面就會與檔案不同。 */
+const versionedModuleRefs = [
+  ['清單入口', indexHtml, /scripts\/index-app\.js\?v=(\d{8})/],
+  ['行程入口', itineraryHtml, /scripts\/itinerary-app\.js\?v=(\d{8})/],
+  ['行程樣式', itineraryHtml, /assets\/itinerary\.css\?v=(\d{8})/],
+  ['地圖入口', mapHtml, /scripts\/map-app\.js\?v=(\d{8})/],
+  ['清單商品資料', indexApp, /assets\/products\.js\?v=(\d{8})/],
+  ['清單店家資料', indexApp, /assets\/stores\.js\?v=(\d{8})/],
+  ['行程商品資料', itineraryApp, /assets\/products\.js\?v=(\d{8})/],
+  ['行程店家資料', itineraryApp, /assets\/stores\.js\?v=(\d{8})/],
+  ['行程時段資料', itineraryApp, /assets\/itinerary\.js\?v=(\d{8})/],
+  ['行程路線模組', itineraryApp, /assets\/route-planner\.js\?v=(\d{8})/],
+  ['地圖商品資料', mapApp, /assets\/products\.js\?v=(\d{8})/],
+  ['地圖店家資料', mapApp, /assets\/stores\.js\?v=(\d{8})/],
+  ['地圖路線模組', mapApp, /assets\/route-planner\.js\?v=(\d{8})/],
+  ['路線時段資料', routePlannerApp, /itinerary\.js\?v=(\d{8})/],
+];
+const moduleVersions = versionedModuleRefs.map(([label, source, pattern]) => {
+  const match = source.match(pattern);
+  if (!match) failures.push(`${label}缺少 8 位日期快取版號`);
+  return match?.[1];
+}).filter(Boolean);
+if (new Set(moduleVersions).size > 1) failures.push('清單、行程、地圖與巢狀資料 module 的快取版號不一致');
 for (const [page, html] of [['清單', indexHtml], ['行程', itineraryHtml], ['地圖', mapHtml]]) {
   for (const href of ['index.html', 'itinerary.html', 'map.html']) {
     if (!html.includes(`href="${href}"`)) failures.push(`${page}頁底部導覽缺少 ${href}`);
@@ -42,6 +71,20 @@ if (!/createRoutePlanner/.test(mapApp) || !/searchParams\.get\('plan'\)/.test(ma
 }
 if (!/candidateProducts/.test(itineraryApp) || !/到店確認/.test(itineraryApp)) {
   failures.push('即時補買路線沒有標示候選店家的商品需到店確認');
+}
+const fixedStopRenderer = itineraryApp.match(/function renderFixedStop[\s\S]*?(?=function renderSegment)/)?.[0] || '';
+if (!/stop\.candidateProducts/.test(fixedStopRenderer) || !/到店確認/.test(fixedStopRenderer)) {
+  failures.push('固定行程沒有把候選商品明確渲染為到店確認');
+}
+if (!/if \(!routeMode\) \{[\s\S]{0,500}handleText\.textContent/.test(mapApp)) {
+  failures.push('地圖重畫店家清單時會覆蓋固定路線標題');
+}
+if (!/if \(map && markerLayer && !routeMode\) renderMarkers\(stores\);/.test(mapApp)) {
+  failures.push('路線模式仍會重畫一般店家圖釘，導致編號路線失焦');
+}
+const pageShowHandler = mapApp.match(/window\.addEventListener\('pageshow'[\s\S]*?\n\s*\}\);/)?.[0] || '';
+if (!/if \(routeMode\) \{\s*updateRouteChrome\(\);\s*renderRouteOnMap\(\);\s*\}/.test(pageShowHandler)) {
+  failures.push('地圖從 BFCache 返回後沒有重套路線標題並重新繪製路線');
 }
 if (!/renderStores\(\{ force: true \}\)/.test(mapApp)) {
   failures.push('地圖結束路線後沒有強制復原店家清單狀態');
@@ -150,7 +193,7 @@ const missing = [...new Set(PRODUCTS.flatMap((product) => [...(product.stores ??
 if (missing.length > 0) failures.push(`商品指到的店家缺少顯示名稱：${missing.join('、')}`);
 
 /* index.html 必須真的從 stores.js 取用，不能又退回自己維護一份。 */
-if (!/import \{ STORE_SUMMARIES \} from '\.\.\/assets\/stores\.js'/.test(indexApp)) {
+if (!/import \{ STORE_SUMMARIES \} from '\.\.\/assets\/stores\.js\?v=\d{8}'/.test(indexApp)) {
   failures.push('index.html 沒有從 assets/stores.js 匯入 STORE_SUMMARIES');
 }
 

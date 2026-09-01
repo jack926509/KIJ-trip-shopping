@@ -81,6 +81,7 @@
 }
 .stop-meta { margin-top: 4px; color: #65716c; font-size: 12px; line-height: 1.6; }
 .stop-products { margin: 7px 0 0; color: #35433d; font-size: 12px; line-height: 1.65; }
+.stop-products-candidate { color: #8b6424; font-weight: 750; }
 .stop-note { margin: 5px 0 0; color: #6b756f; font-size: 12px; line-height: 1.6; }
 .store-nav-link { align-self: center; border: 1px solid #cbd8d1; color: #2f6d5e; padding: 7px 10px; font-size: 11px; }
 .free-day-card { padding: 24px 20px; }

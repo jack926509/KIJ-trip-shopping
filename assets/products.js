@@ -1365,7 +1365,7 @@ const STORE_CANDIDATE_GROUPS = {
   food: ['maxvalu-express-hakata-gion', 'reganet-tenjin', 'youme-mart-kokura', 'don-quijote-fukuoka-tenjin', 'don-quijote-kokura-uomachi', 'lopia-hakata-yodobashi', 'aeon-shoppers-fukuoka-tenjin', 'lopia-kokura-riverwalk'],
   electronics: ['biccamera-tenjin-1', 'biccamera-tenjin-2', 'yodobashi-camera-hakata', 'bestdenki-kokura-ekimae'],
   convenience: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome', 'seven-eleven-tenjin-underground', 'familymart-hakata-station', 'familymart-kokura-station'],
-  convenienceAndMarkets: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome', 'seven-eleven-tenjin-underground', 'familymart-hakata-station', 'familymart-kokura-station', 'lopia-hakata-yodobashi', 'aeon-shoppers-fukuoka-tenjin', 'lopia-kokura-riverwalk'],
+  convenienceAndMarkets: ['lawson-hakata', 'lawson-nishitetsu-fukuoka-tenjin-south', 'lawson-kokura-uomachi-2chome', 'seven-eleven-tenjin-underground', 'familymart-hakata-station', 'familymart-kokura-station', 'maxvalu-express-hakata-gion', 'lopia-hakata-yodobashi', 'aeon-shoppers-fukuoka-tenjin', 'lopia-kokura-riverwalk'],
 };
 
 const STORE_RELATION_OVERRIDES = {

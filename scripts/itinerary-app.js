@@ -1,7 +1,7 @@
-import { PRODUCTS } from '../assets/products.js';
-import { STORES } from '../assets/stores.js';
-import { ITINERARY_DAYS } from '../assets/itinerary.js';
-import { AREA_LABELS, createRoutePlanner, walkText } from '../assets/route-planner.js';
+import { PRODUCTS } from '../assets/products.js?v=20260901';
+import { STORES } from '../assets/stores.js?v=20260901';
+import { ITINERARY_DAYS } from '../assets/itinerary.js?v=20260901';
+import { AREA_LABELS, createRoutePlanner, walkText } from '../assets/route-planner.js?v=20260901';
 import { readStoredBool } from '../assets/app-utils.js';
 
 const planner = createRoutePlanner({ stores: STORES, products: PRODUCTS, readStoredBool });
@@ -126,9 +126,13 @@ function renderFixedStop(stop, index, legElement) {
   if (stopCompletion(stop.products)) nameRow.append(makeElement('span', 'done-badge', '已完成'));
   body.append(nameRow);
   body.append(makeElement('div', 'stop-meta', `${stop.arrivalTime} 抵達・停留約 ${stop.durationMinutes} 分・營業 ${stop.store.hours}`));
-  if (stop.products.length > 0) {
-    body.append(makeElement('p', 'stop-products', `找：${stop.products.map((product) => product.name).join('、')}`));
-  } else {
+  if (stop.confirmedProducts.length > 0) {
+    body.append(makeElement('p', 'stop-products', `找：${stop.confirmedProducts.map((product) => product.name).join('、')}`));
+  }
+  if (stop.candidateProducts.length > 0) {
+    body.append(makeElement('p', 'stop-products stop-products-candidate', `到店確認：${stop.candidateProducts.map((product) => product.name).join('、')}`));
+  }
+  if (stop.products.length === 0) {
     body.append(makeElement('p', 'stop-products', '逛店／依現場需要選購'));
   }
   body.append(makeElement('p', 'stop-note', stop.note));

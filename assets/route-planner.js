@@ -1,5 +1,5 @@
 import { createCatalogIndex } from './catalog-index.js';
-import { ITINERARY_SEGMENTS_BY_ID } from './itinerary.js';
+import { ITINERARY_SEGMENTS_BY_ID } from './itinerary.js?v=20260901';
 
 export const ROUTE_AREA_ORDER = ['tenjin', 'hakata', 'kokura'];
 export const AREA_LABELS = { tenjin: '天神', hakata: '博多', kokura: '小倉' };
@@ -84,11 +84,20 @@ export function createRoutePlanner({ stores, products, readStoredBool = (_key, f
   function fixedSegment(segmentId) {
     const segment = ITINERARY_SEGMENTS_BY_ID.get(segmentId);
     if (!segment) return null;
-    const stops = segment.stops.map((stop) => ({
-      ...stop,
-      store: storesById.get(stop.storeId),
-      products: stop.productIds.map((productId) => productsById.get(productId)).filter(Boolean),
-    })).filter((stop) => stop.store);
+    const stops = segment.stops.map((stop) => {
+      const selectedProducts = stop.productIds.map((productId) => productsById.get(productId)).filter(Boolean);
+      const confirmedIds = new Set(catalog.productsForStore(stop.storeId, 'confirmed').map((product) => product.id));
+      const candidateIds = new Set(catalog.productsForStore(stop.storeId, 'candidate').map((product) => product.id));
+      const confirmedProducts = selectedProducts.filter((product) => confirmedIds.has(product.id));
+      const candidateProducts = selectedProducts.filter((product) => !confirmedIds.has(product.id) && candidateIds.has(product.id));
+      return {
+        ...stop,
+        store: storesById.get(stop.storeId),
+        products: selectedProducts,
+        confirmedProducts,
+        candidateProducts,
+      };
+    }).filter((stop) => stop.store);
     return { ...segment, kind: 'fixed', anchor: anchorFrom(segment.anchor), stops };
   }
 

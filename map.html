@@ -556,6 +556,20 @@
     .hero { margin: 0 0 12px; }
     .drawer-scroll .geo-notice { margin-top: 4px; }
 
+    .route-context {
+      margin: 8px 0 12px;
+      padding: 10px 12px;
+      border-left: 3px solid #b9862d;
+      border-radius: 10px;
+      background: #fff6df;
+      color: #684c1d;
+      font-size: 12.5px;
+      font-weight: 750;
+      line-height: 1.6;
+    }
+
+    .route-context[hidden] { display: none; }
+
     /* 抽屜收在 peek 時，把手底下唯一看得到的那一行。
      * 舊版這裡是頁面大標題，佔滿 peek 卻沒有任何一家店的資訊；
      * 現在改成「有定位就報最近的一家店，沒定位就講清楚往上滑會拿到什麼」。
@@ -1235,6 +1249,8 @@
 
         <p class="geo-notice" id="geoNotice" role="status" hidden></p>
 
+        <p class="route-context" id="routeContext" role="status" hidden></p>
+
         <!-- 桌機版控制列的插槽；手機版留空（:empty 不佔高度） -->
         <div class="drawer-dock" id="drawerDock"></div>
 
@@ -1315,6 +1331,6 @@
       ], () => typeof window.L?.markerClusterGroup === 'function');
     });
   </script>
-  <script type="module" src="scripts/map-app.js"></script>
+  <script type="module" src="scripts/map-app.js?v=20260901"></script>
 </body>
 </html>

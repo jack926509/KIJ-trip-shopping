@@ -1,8 +1,8 @@
-import { STORES } from '../assets/stores.js';
-import { PRODUCTS } from '../assets/products.js';
+import { STORES } from '../assets/stores.js?v=20260901';
+import { PRODUCTS } from '../assets/products.js?v=20260901';
 import { createCatalogIndex } from '../assets/catalog-index.js';
 import { makeImageFallback, readStoredBool } from '../assets/app-utils.js';
-import { AREA_LABELS, createRoutePlanner, haversineMeters } from '../assets/route-planner.js';
+import { AREA_LABELS, createRoutePlanner, haversineMeters } from '../assets/route-planner.js?v=20260901';
 
 const leafletReady = await (window.__leafletReady || Promise.resolve(typeof L !== 'undefined')).catch(() => false);
 await (window.__markerClusterReady || Promise.resolve(false));
@@ -223,7 +223,12 @@ function updateRouteChrome() {
   if (exitBtn) exitBtn.hidden = !routeMode;
   const handleText = document.getElementById('drawerHandleText');
   if (handleText && routeMode) {
-    handleText.textContent = `${AREA_LABELS[routeMode.area]}路線 ${routeMode.stores.length} 站`;
+    handleText.textContent = routeMode.mapTitle || `${AREA_LABELS[routeMode.area]}路線 ${routeMode.stores.length} 站`;
+  }
+  const routeContext = document.getElementById('routeContext');
+  if (routeContext) {
+    routeContext.textContent = routeMode?.mapNote || '';
+    routeContext.hidden = !routeMode?.mapNote;
   }
 }
 
@@ -480,20 +485,22 @@ function fitPadding() {
     document.createTextNode(` 間店家（共 ${STORES.length} 間）`)
   );
 
-  /* 抽屜收合成 peek 時只看得到把手這一行，摘要要直接寫在把手上，
-     使用者才知道下面還有幾家店可以拉開來看。 */
-  const handleText = document.getElementById('drawerHandleText');
-  if (handleText) {
-    const filtered = Boolean(searchTerm) || activeArea !== 'all' || activeCategory !== 'all';
-    handleText.textContent = `${filtered ? '符合條件 ' : ''}${stores.length} 間店家`;
+  /* 路線模式的把手與提示由 updateRouteChrome 維護；搜尋、篩選或定位雖會重畫
+     店家清單，但不能把「跨區 3 個購物站」覆蓋成一般的「N 間店家」。 */
+  if (!routeMode) {
+    const handleText = document.getElementById('drawerHandleText');
+    if (handleText) {
+      const filtered = Boolean(searchTerm) || activeArea !== 'all' || activeCategory !== 'all';
+      handleText.textContent = `${filtered ? '符合條件 ' : ''}${stores.length} 間店家`;
+    }
+
+    /* 把手底下那一行：有定位就直接報最近的一家（收著抽屜也知道往哪走），
+       沒定位就講清楚往上滑會看到什麼，不要留一行空白。 */
+    const peek = document.getElementById('peekSummary');
+    if (peek) peek.textContent = peekSummaryText(stores);
   }
 
-  /* 把手底下那一行：有定位就直接報最近的一家（收著抽屜也知道往哪走），
-     沒定位就講清楚往上滑會看到什麼，不要留一行空白。 */
-  const peek = document.getElementById('peekSummary');
-  if (peek) peek.textContent = peekSummaryText(stores);
-
-      if (map && markerLayer) renderMarkers(stores);
+      if (map && markerLayer && !routeMode) renderMarkers(stores);
       return true;
 }
 
@@ -1030,11 +1037,13 @@ if (urlRoute) {
       const refreshed = ROUTE_PLANNER.remainingGroup(routeMode.area);
       if (refreshed) {
         routeMode = { ...refreshed, stores: refreshed.stops.map((stop) => stop.store) };
-        updateRouteChrome();
-        renderRouteOnMap();
       } else {
         exitRouteMode();
       }
+    }
+    if (routeMode) {
+      updateRouteChrome();
+      renderRouteOnMap();
     }
       }
     });
