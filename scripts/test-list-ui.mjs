@@ -54,6 +54,8 @@ const versionedModuleRefs = [
   ['清單共用樣式', indexHtml, /assets\/kij\.css\?v=(\d{8}\.\d+)(?=['"])/],
   ['行程共用樣式', itineraryHtml, /assets\/kij\.css\?v=(\d{8}\.\d+)(?=['"])/],
   ['地圖共用樣式', mapHtml, /assets\/kij\.css\?v=(\d{8}\.\d+)(?=['"])/],
+  ['地圖頁樣式', mapHtml, /assets\/map\.css\?v=(\d{8}\.\d+)(?=['"])/],
+  ['地圖套件樣式', mapHtml, /assets\/vendor\/leaflet\/leaflet\.css\?v=(\d{8}\.\d+)(?=['"])/],
   ['清單商品索引', indexApp, /assets\/catalog-index\.js\?v=(\d{8}\.\d+)(?=['"])/],
   ['清單共用工具', indexApp, /assets\/app-utils\.js\?v=(\d{8}\.\d+)(?=['"])/],
   ['地圖商品索引', mapApp, /assets\/catalog-index\.js\?v=(\d{8}\.\d+)(?=['"])/],
@@ -81,6 +83,11 @@ if (!/ITINERARY_DAYS/.test(itineraryApp) || !/remainingGroups\(\)/.test(itinerar
 /* Leaflet 自帶：這個網站要在日本的店裡用，境外 CDN 是訊號差時最先斷的一環，
    而 service worker 只能快取同源資產。把地圖套件掛回 CDN 等於同時放棄離線能力，
    也把「檔案內容由第三方決定」這件事重新引進來。 */
+/* 地圖頁樣式不得再內嵌回 map.html：內嵌樣式拿不到 ?v= 版號、無法獨立快取，
+   也讓頁面結構被 1,100 行樣式淹沒。另外兩頁本來就走外部樣式表。 */
+if (/<style[\s>]/.test(mapHtml)) failures.push('map.html 不得再內嵌 <style>，地圖樣式屬於 assets/map.css');
+if (!existsSync(path.join(ROOT, 'assets/map.css'))) failures.push('缺少 assets/map.css');
+
 for (const cdn of ['unpkg.com', 'cdnjs.cloudflare.com']) {
   if (mapHtml.split('\n').some((line) => line.includes(cdn) && (line.includes('src=') || line.includes('href=')))) {
     failures.push(`地圖頁不得再從 ${cdn} 載入資產，Leaflet 已自帶於 assets/vendor/`);
