@@ -6,7 +6,7 @@
     "build:images": "node scripts/build-images.mjs",
     "build:placeholders": "node scripts/build-placeholder-images.mjs",
     "build:sw": "node scripts/build-sw-precache.mjs",
-    "test": "node scripts/test-list-ui.mjs && node scripts/test-itinerary.mjs",
+    "test": "node scripts/test-list-ui.mjs && node scripts/test-list-model.mjs && node scripts/test-itinerary.mjs",
     "validate:data": "node scripts/validate-products.mjs"
   },
   "devDependencies": {

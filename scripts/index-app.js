@@ -3,6 +3,8 @@ import { PRODUCTS } from '../assets/products.js?v=20260902.1';
    先前那份手抄的 STORE_SUMMARIES 與地圖的 STORES 已經漂移到 18 家店顯示不同名稱。 */
 import { STORE_SUMMARIES } from '../assets/stores.js?v=20260902.1';
 import { createCatalogIndex } from '../assets/catalog-index.js?v=20260902.1';
+import { GROUPS, GROUP_META, TRY_ONLY_GROUPS } from '../assets/groups.js?v=20260902.1';
+import { createListModel } from '../assets/list-model.js?v=20260902.1';
 import { makeImageFallback, readStoredBool, writeStoredBool } from '../assets/app-utils.js?v=20260902.1';
 
 /* ────────────────────────────────────────────────────────────────
@@ -10,15 +12,6 @@ import { makeImageFallback, readStoredBool, writeStoredBool } from '../assets/ap
  * ──────────────────────────────────────────────────────────────── */
 const CATALOG = createCatalogIndex(PRODUCTS);
 const PRODUCTS_BY_ID = CATALOG.byId;
-const GROUPS = ['shopping', 'convenience', 'powerbank', 'dryer', 'mouse', 'shoes'];
-const GROUP_META = {
-  shopping: { label: '藥妝日用', icon: '🛍️' },
-  convenience: { label: '便利商店', icon: '🏪' },
-  powerbank: { label: '行動電源', icon: '🔋' },
-  dryer: { label: '吹風機', icon: '💨' },
-  mouse: { label: '滑鼠', icon: '🖱️' },
-  shoes: { label: '鞋款試穿', icon: '👟' },
-};
 let activeGroup = 'shopping';
 /* 搜尋字串刻意不持久化：它是「現在站在這個貨架前」的臨時動作，
    下次開頁還帶著上次的關鍵字只會讓人以為清單不見了。
@@ -26,11 +19,6 @@ let activeGroup = 'shopping';
 let searchQuery = '';
 let unboughtOnly = false;
 
-/* 這三個群組是「選一／選幾個參考」而非每項都要買，tracking 一律是 'try'
- * （已試穿／已選定），不計入「已買 X / 48」的購買進度。
- * 狀態列與分區計數要跟著這份清單走，否則改了 tracking 卻漏改顯示邏輯，
- * 就會變成滑鼠／行動電源分頁永遠顯示「已買 0 項」。 */
-const TRY_ONLY_GROUPS = new Set(['shoes', 'mouse', 'powerbank']);
 
 /* 6 種實際 category → 4 種色票 class 的對應規則。
  * 分類文字本身一律從 PRODUCTS 動態取得（不寫死清單），
@@ -352,41 +340,30 @@ function isDone(product) {
   return product.tracking === 'buy' ? isBought(product.id) : isTried(product.id);
 }
 
-/* 每項商品的可搜尋文字建一次索引：中文品名、日文名、型號、分類、分頁名稱，
- * 外加店家的顯示名稱——站在店裡最常問的其實是「松本清有什麼」。
- * 75 項 × 每次輸入都重掃字串很浪費，所以在載入時算好。 */
-const SEARCH_TEXT = new Map(PRODUCTS.map((product) => {
-  const storeNames = [...(product.stores || []), ...(product.storeCandidates || [])]
-    .map((storeId) => STORE_SUMMARIES[storeId]?.name || '');
-  return [product.id, [
-    product.name,
-    product.jaName,
-    product.model,
-    product.category,
-    GROUP_META[product.group]?.label,
-    ...storeNames,
-  ].filter(Boolean).join(' ').toLowerCase()];
-}));
+/* 挑選邏輯（可搜尋文字索引、搜尋比對、未完成篩選、進度計數）住在
+ * assets/list-model.js：那些是純函式，抽出去之後可以在 node 裡跑真正的斷言，
+ * 不必再靠「對這支檔案的原始碼跑正則」來間接猜行為對不對。
+ * 本檔只負責把畫面當下的狀態餵給它，以及把結果畫出來。 */
+const LIST = createListModel({
+  products: PRODUCTS,
+  storeSummaries: STORE_SUMMARIES,
+  groupMeta: GROUP_META,
+  groups: GROUPS,
+  catalog: CATALOG,
+});
 
-function matchesSearch(product) {
-  if (!searchQuery) return true;
-  const haystack = SEARCH_TEXT.get(product.id) || '';
-  /* 以空白拆成多個關鍵字並全部要命中（AND）：「松本清 精華」找得到
-     「在松本清買得到的精華液」，而不是把整串當成一個詞比對。 */
-  return searchQuery.split(/\s+/).filter(Boolean).every((term) => haystack.includes(term));
-}
-
-function passesFilters(product) {
-  if (unboughtOnly && isDone(product)) return false;
-  return matchesSearch(product);
+/* 篩選狀態是模組層級的可變變數，每次取用時現讀，
+ * 避免把某個瞬間的狀態複製一份出去之後與畫面不同步。 */
+function filterState() {
+  return { query: searchQuery, unboughtOnly, isDone };
 }
 
 function visibleItems(group) {
-  return (CATALOG.byGroup.get(group) || []).filter(passesFilters);
+  return LIST.visibleItems(group, filterState());
 }
 
 function searchResults() {
-  return GROUPS.flatMap((group) => visibleItems(group));
+  return LIST.searchResults(filterState());
 }
 
 /* ────────────────────────────────────────────────────────────────
@@ -516,7 +493,7 @@ function buildCardHtml(product, { showPill = true, groupBadge = false } = {}) {
  * 分區標題的計數文字統一由這支函式產生，鞋款維持「已試穿…雙」，
  * 其餘兩個群組用「已選定…項」，措辭跟卡片上的按鈕文字（triedToggleHtml）一致。 */
 function triedCountText(group) {
-  const items = CATALOG.byGroup.get(group) || [];
+  const items = LIST.itemsIn(group);
   const triedCount = items.filter((p) => isTried(p.id)).length;
   return group === 'shoes'
     ? `已試穿 ${triedCount} / ${items.length}`
@@ -536,10 +513,10 @@ function buildSearchResultsHtml(items) {
 
 function buildSectionHtml(group) {
   const meta = GROUP_META[group];
-  const allItems = CATALOG.byGroup.get(group) || [];
+  const allItems = LIST.itemsIn(group);
   /* 「只看未完成」只藏卡片，不動比較表與店家橫幅——那些是整個分區的參考資料，
      跟「這一項買了沒」無關；買完最後一款吹風機時把比較表一起藏掉並不合理。 */
-  const items = allItems.filter(passesFilters);
+  const items = visibleItems(group);
   const collapsed = isSectionCollapsed(group);
   let bodyInner;
 
@@ -607,7 +584,7 @@ function attachImageFallbacks() {
 let lastSectionsKey = '';
 
 function sectionRenderKey() {
-  const items = searchQuery ? PRODUCTS : (CATALOG.byGroup.get(activeGroup) || []);
+  const items = searchQuery ? PRODUCTS : LIST.itemsIn(activeGroup);
   return [
     searchQuery,
     unboughtOnly,
@@ -700,9 +677,8 @@ function syncCardVisual(card, product) {
    後半保留全站進度，才知道整趟還剩多少沒買。
    鞋款是到店試穿、沒有「買了沒」，所以那一頁改講試穿雙數。 */
 function updateProgressBar() {
-  const groupItems = CATALOG.byGroup.get(activeGroup) || [];
-  const allBuyItems = CATALOG.byTracking.buy;
-  const allBoughtCount = allBuyItems.filter((p) => isBought(p.id)).length;
+  const groupItems = LIST.itemsIn(activeGroup);
+  const overall = LIST.boughtProgress((product) => isBought(product.id));
 
   let headText;
   if (activeGroup === 'shoes') {
@@ -721,8 +697,8 @@ function updateProgressBar() {
   /* 搜尋時結果跨全部分頁、分頁也不再亮選中狀態，這時再講「藥妝日用 已買 1 / 41」
      等於在說一個畫面上不存在的範圍，只留全站進度。 */
   document.getElementById('kijStatusLine').textContent = searchQuery
-    ? `全站已買 ${allBoughtCount} / ${allBuyItems.length} 項`
-    : `${headText}　·　全站已買 ${allBoughtCount} / ${allBuyItems.length} 項`;
+    ? `全站已買 ${overall.done} / ${overall.total} 項`
+    : `${headText}　·　全站已買 ${overall.done} / ${overall.total} 項`;
 }
 
 function updateTriedSectionCount(group) {

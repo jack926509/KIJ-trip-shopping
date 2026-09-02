@@ -5,6 +5,8 @@ import path from 'node:path';
 import { PRODUCTS } from '../assets/products.js';
 import { STORE_SUMMARIES } from '../assets/stores.js';
 import { createCatalogIndex } from '../assets/catalog-index.js';
+import { GROUPS, GROUP_META, TRY_ONLY_GROUPS } from '../assets/groups.js';
+import { createListModel } from '../assets/list-model.js';
 import { precacheUrls, renderBlock, currentBlock } from './build-sw-precache.mjs';
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
@@ -176,10 +178,21 @@ for (const id of ['kijSearch', 'kijSearchClear', 'kijUnboughtToggle', 'kijResult
   if (!indexHtml.includes(`id="${id}"`)) failures.push(`清單頁缺少 #${id}`);
   if (!indexApp.includes(`'${id}'`)) failures.push(`清單 module 沒有接上 #${id}`);
 }
-/* 搜尋要涵蓋店家名：「松本清有什麼」是實際會用的問法，
-   而店家名不在商品欄位裡，漏掉時搜尋仍然「有反應」，只是永遠找不到店。 */
-if (!/STORE_SUMMARIES\[storeId\]\?\.name/.test(indexApp)) {
-  failures.push('商品搜尋索引沒有納入店家顯示名稱');
+/* 分頁清單的唯一來源是 assets/groups.js。index.html 的按鈕刻意仍是靜態標記
+   （JS 載入前就看得到，現場開頁不會先閃一排空白），代價是它可能與資料脫節，
+   所以在這裡逐項比對：順序、data-group、以及按鈕文字都必須相符。 */
+const htmlTabs = [...indexHtml.matchAll(/data-group="([a-z]+)"/g)].map((m) => m[1]);
+if (htmlTabs.join(',') !== GROUPS.join(',')) {
+  failures.push(`index.html 的分頁與 assets/groups.js 不符（HTML: ${htmlTabs.join(',')}／資料: ${GROUPS.join(',')}）`);
+}
+for (const group of GROUPS) {
+  const label = GROUP_META[group]?.label;
+  if (!label) { failures.push(`groups.js 的 ${group} 缺少 label`); continue; }
+  /* 分頁按鈕的文字用的是不含「試穿」的短標（鞋款試穿 → 鞋款），比對前綴即可。 */
+  const shortLabel = label.replace('試穿', '');
+  if (!new RegExp(`data-group="${group}"[^>]*>${shortLabel}`).test(indexHtml)) {
+    failures.push(`index.html 的 ${group} 分頁文字與 groups.js 的「${label}」不一致`);
+  }
 }
 /* 地圖頁在 Leaflet 載不到時，店家清單／搜尋／篩選仍須運作。
  * 這曾經是把整支模組包在 `} else {` 裡而整段被跳過——畫面上卻寫著「仍可正常使用」。
@@ -265,6 +278,17 @@ if (!/import \{ STORE_SUMMARIES \} from '\.\.\/assets\/stores\.js\?v=\d{8}\.\d+'
 }
 
 const catalog = createCatalogIndex(PRODUCTS);
+
+/* TRY_ONLY_GROUPS 必須與商品資料的 tracking 欄位一致，否則會出現
+   「滑鼠分頁永遠顯示已買 0 項」這種只有實際打開那一頁才看得到的錯誤。 */
+for (const group of GROUPS) {
+  const items = catalog.byGroup.get(group) || [];
+  if (items.length === 0) continue;
+  const allTry = items.every((product) => product.tracking === 'try');
+  if (allTry !== TRY_ONLY_GROUPS.has(group)) {
+    failures.push(`${group} 的 tracking 與 TRY_ONLY_GROUPS 不一致（資料全為 try：${allTry}）`);
+  }
+}
 if (catalog.byId.size !== PRODUCTS.length || catalog.byTracking.buy.length + catalog.byTracking.try.length !== PRODUCTS.length) {
   failures.push('共用商品索引未完整涵蓋 id 與 buy／try tracking');
 }
