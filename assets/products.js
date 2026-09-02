@@ -1410,9 +1410,14 @@ const STORE_RELATION_OVERRIDES = {
 /* 日圓兌新臺幣參考匯率。
  * 台幣金額一律由此常數換算，各商品不得自帶手寫的 twdRef，
  * 否則會像先前 ne7n（0.311）與 ne5n（0.322）那樣各用一套匯率而互相矛盾。
- * 更新匯率只需改這裡兩個值，並跑 npm run validate:data。 */
-export const JPY_TWD_RATE = 0.2032;
-export const JPY_TWD_RATE_CHECKED_AT = '2026-08-21';
+ * 更新匯率只需改這裡兩個值，並跑 npm run validate:data。
+ *
+ * 這裡存的是「即期中間價」等級的市場參考匯率，不是銀行現鈔賣出價——
+ * 實際換鈔或刷卡的成本會比它高約 1–2%。清單上的台幣金額因此是比價用的概算，
+ * 不是你在櫃檯會付出的數字。歷來的值都是同一種口徑（0.2032 → 0.204），
+ * 換成現鈔價會讓整份清單的金額跳一階，要換就整套換掉並在這裡改掉這段說明。 */
+export const JPY_TWD_RATE = 0.204;
+export const JPY_TWD_RATE_CHECKED_AT = '2026-09-02';
 export const CATALOG_AUDIT_CHECKED_AT = '2026-08-30';
 
 export const PRODUCTS = BASE_PRODUCTS.map((product) => {

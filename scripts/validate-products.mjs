@@ -2,6 +2,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { ITINERARY_DAYS, ITINERARY_SEGMENTS } from '../assets/itinerary.js';
+import { GROUPS } from '../assets/groups.js';
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
@@ -25,7 +26,9 @@ function fail(errors) {
   process.exit(1);
 }
 
-const VALID_GROUP = new Set(['shopping', 'dryer', 'shoes', 'convenience', 'powerbank', 'mouse']);
+/* 分頁清單來自 assets/groups.js（唯一來源）。先前這裡自帶一份副本，
+   新增分類時要記得同步改四個地方，漏掉這裡的話驗證器會擋下合法的資料。 */
+const VALID_GROUP = new Set(GROUPS);
 const VALID_TRACKING = new Set(['buy', 'try']);
 const VALID_PRICE_KIND = new Set(['official', 'retailer-reference', 'launch-reference', 'photo-reference', 'pending']);
 
@@ -37,6 +40,9 @@ if (typeof JPY_TWD_RATE !== 'number' || !(JPY_TWD_RATE > 0)) {
 const errors = [];
 const seenIds = new Set();
 const mapHtml = readFileSync(path.join(ROOT, 'map.html'), 'utf8');
+/* 地圖頁樣式已從 map.html 抽到 assets/map.css，樣式檢查要跟著搬過去，
+   否則抽出的當下所有分類色都會被誤判成「不見了」。 */
+const mapCss = readFileSync(path.join(ROOT, 'assets/map.css'), 'utf8');
 const indexHtml = readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 const mapApp = readFileSync(path.join(ROOT, 'scripts/map-app.js'), 'utf8');
 const indexApp = readFileSync(path.join(ROOT, 'scripts/index-app.js'), 'utf8');
@@ -337,7 +343,7 @@ for (const category of categoryLabels) {
     ['圖例色 .legend .', new RegExp(`\\.legend \\.${category}\\s*\\{`)],
     ['卡片標籤色 .category-', new RegExp(`\\.category-${category}\\s*\\{`)],
   ]) {
-    if (!pattern.test(mapHtml)) errors.push(`map.html: 分類 ${category} 缺少${what}${category} 的樣式`);
+    if (!pattern.test(mapCss)) errors.push(`assets/map.css: 分類 ${category} 缺少${what}${category} 的樣式`);
   }
 }
 for (const category of usedCategories) {

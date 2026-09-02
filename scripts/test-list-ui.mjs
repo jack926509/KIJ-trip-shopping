@@ -1,9 +1,13 @@
 import { existsSync, readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { PRODUCTS } from '../assets/products.js';
 import { STORE_SUMMARIES } from '../assets/stores.js';
 import { createCatalogIndex } from '../assets/catalog-index.js';
+import { GROUPS, GROUP_META, TRY_ONLY_GROUPS } from '../assets/groups.js';
+import { createListModel } from '../assets/list-model.js';
+import { precacheUrls, renderBlock, currentBlock } from './build-sw-precache.mjs';
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const indexHtml = readFileSync(path.join(ROOT, 'index.html'), 'utf8');
@@ -47,6 +51,20 @@ const versionedModuleRefs = [
   ['地圖店家資料', mapApp, /assets\/stores\.js\?v=(\d{8}\.\d+)(?=['"])/],
   ['地圖路線模組', mapApp, /assets\/route-planner\.js\?v=(\d{8}\.\d+)(?=['"])/],
   ['路線時段資料', routePlannerApp, /itinerary\.js\?v=(\d{8}\.\d+)(?=['"])/],
+  /* 共用樣式與共用小模組先前完全沒有版號，而 kij.css 是三頁都吃的那一支——
+     改樣式是最頻繁的改動，卻剛好是唯一不會被快取版號保護的檔案，
+     結果就是新 DOM 配舊 CSS。這三支必須跟著其他資產一起帶版號。 */
+  ['清單共用樣式', indexHtml, /assets\/kij\.css\?v=(\d{8}\.\d+)(?=['"])/],
+  ['行程共用樣式', itineraryHtml, /assets\/kij\.css\?v=(\d{8}\.\d+)(?=['"])/],
+  ['地圖共用樣式', mapHtml, /assets\/kij\.css\?v=(\d{8}\.\d+)(?=['"])/],
+  ['地圖頁樣式', mapHtml, /assets\/map\.css\?v=(\d{8}\.\d+)(?=['"])/],
+  ['地圖套件樣式', mapHtml, /assets\/vendor\/leaflet\/leaflet\.css\?v=(\d{8}\.\d+)(?=['"])/],
+  ['清單商品索引', indexApp, /assets\/catalog-index\.js\?v=(\d{8}\.\d+)(?=['"])/],
+  ['清單共用工具', indexApp, /assets\/app-utils\.js\?v=(\d{8}\.\d+)(?=['"])/],
+  ['地圖商品索引', mapApp, /assets\/catalog-index\.js\?v=(\d{8}\.\d+)(?=['"])/],
+  ['地圖共用工具', mapApp, /assets\/app-utils\.js\?v=(\d{8}\.\d+)(?=['"])/],
+  ['行程共用工具', itineraryApp, /assets\/app-utils\.js\?v=(\d{8}\.\d+)(?=['"])/],
+  ['路線商品索引', routePlannerApp, /catalog-index\.js\?v=(\d{8}\.\d+)(?=['"])/],
 ];
 const moduleVersions = versionedModuleRefs.map(([label, source, pattern]) => {
   const match = source.match(pattern);
@@ -65,6 +83,57 @@ if (!/id="itineraryDayTabs"/.test(itineraryHtml) || !/id="remainingRouteGroups"/
 if (!/ITINERARY_DAYS/.test(itineraryApp) || !/remainingGroups\(\)/.test(itineraryApp)) {
   failures.push('行程頁沒有使用固定行程與即時補買共用資料');
 }
+/* Leaflet 自帶：這個網站要在日本的店裡用，境外 CDN 是訊號差時最先斷的一環，
+   而 service worker 只能快取同源資產。把地圖套件掛回 CDN 等於同時放棄離線能力，
+   也把「檔案內容由第三方決定」這件事重新引進來。 */
+/* 離線快取的預快取清單是產生出來的，但產生的結果會過期——
+   新增一項商品卻忘了跑 npm run build:sw，那張卡片在店裡就是沒有圖，
+   而且不會有任何錯誤訊息。這裡直接比對「現在該長什麼樣」與「sw.js 裡實際是什麼」。 */
+const swPath = path.join(ROOT, 'sw.js');
+if (!existsSync(swPath)) {
+  failures.push('缺少 sw.js，離線快取不存在');
+} else {
+  const swSource = readFileSync(swPath, 'utf8');
+  const expectedBlock = renderBlock(precacheUrls());
+  if (currentBlock(swSource) !== expectedBlock) {
+    failures.push('sw.js 的預快取清單已過期，請跑 npm run build:sw');
+  }
+  /* 版號必須與頁面資產一致，否則會變成「存了一份、又去抓一份」，離線時反而拿不到。 */
+  const swVersion = swSource.match(/CACHE_VERSION = '(\d{8}\.\d+)'/)?.[1];
+  const pageVersion = indexHtml.match(/\?v=(\d{8}\.\d+)/)?.[1];
+  if (swVersion !== pageVersion) {
+    failures.push(`sw.js 的 CACHE_VERSION（${swVersion}）與頁面資產版號（${pageVersion}）不一致`);
+  }
+  /* 三頁都要註冊，否則只有其中一頁能離線開啟——而現場最常開的是清單頁。 */
+  for (const [page, html] of [['清單', indexHtml], ['行程', itineraryHtml], ['地圖', mapHtml]]) {
+    if (!/scripts\/register-sw\.js\?v=\d{8}\.\d+/.test(html)) failures.push(`${page}頁沒有註冊離線快取`);
+  }
+}
+
+/* 地圖頁樣式不得再內嵌回 map.html：內嵌樣式拿不到 ?v= 版號、無法獨立快取，
+   也讓頁面結構被 1,100 行樣式淹沒。另外兩頁本來就走外部樣式表。 */
+if (/<style[\s>]/.test(mapHtml)) failures.push('map.html 不得再內嵌 <style>，地圖樣式屬於 assets/map.css');
+if (!existsSync(path.join(ROOT, 'assets/map.css'))) failures.push('缺少 assets/map.css');
+
+for (const cdn of ['unpkg.com', 'cdnjs.cloudflare.com']) {
+  if (mapHtml.split('\n').some((line) => line.includes(cdn) && (line.includes('src=') || line.includes('href=')))) {
+    failures.push(`地圖頁不得再從 ${cdn} 載入資產，Leaflet 已自帶於 assets/vendor/`);
+  }
+}
+for (const vendored of [
+  'assets/vendor/leaflet/leaflet.js',
+  'assets/vendor/leaflet/leaflet.css',
+  'assets/vendor/leaflet.markercluster/leaflet.markercluster.js',
+]) {
+  if (!mapHtml.includes(vendored)) failures.push(`地圖頁缺少自帶資產 ${vendored}`);
+  if (!existsSync(path.join(ROOT, vendored))) failures.push(`自帶資產檔案不存在：${vendored}`);
+}
+/* 沒有 Leaflet 就只畫店家清單的降級路徑，是自帶之後唯一還會用到旗標的地方，
+   自帶檔案一樣可能因部署漏檔而載不到，這兩個旗標不能跟著 CDN 一起被拿掉。 */
+if (!/window\.__leafletReady/.test(mapHtml) || !/window\.__markerClusterReady/.test(mapHtml)) {
+  failures.push('地圖頁移除了 Leaflet 載入結果旗標，map-app.js 的降級路徑會失效');
+}
+
 if (/id="routePanel"/.test(mapHtml)) failures.push('地圖頁仍保留舊購物路線建議面板');
 if (!/createRoutePlanner/.test(mapApp) || !/searchParams\.get\('plan'\)/.test(mapApp) || !/searchParams\.get\('route'\)/.test(mapApp)) {
   failures.push('地圖頁尚未使用共用路線模組解析 plan／route 網址參數');
@@ -109,10 +178,21 @@ for (const id of ['kijSearch', 'kijSearchClear', 'kijUnboughtToggle', 'kijResult
   if (!indexHtml.includes(`id="${id}"`)) failures.push(`清單頁缺少 #${id}`);
   if (!indexApp.includes(`'${id}'`)) failures.push(`清單 module 沒有接上 #${id}`);
 }
-/* 搜尋要涵蓋店家名：「松本清有什麼」是實際會用的問法，
-   而店家名不在商品欄位裡，漏掉時搜尋仍然「有反應」，只是永遠找不到店。 */
-if (!/STORE_SUMMARIES\[storeId\]\?\.name/.test(indexApp)) {
-  failures.push('商品搜尋索引沒有納入店家顯示名稱');
+/* 分頁清單的唯一來源是 assets/groups.js。index.html 的按鈕刻意仍是靜態標記
+   （JS 載入前就看得到，現場開頁不會先閃一排空白），代價是它可能與資料脫節，
+   所以在這裡逐項比對：順序、data-group、以及按鈕文字都必須相符。 */
+const htmlTabs = [...indexHtml.matchAll(/data-group="([a-z]+)"/g)].map((m) => m[1]);
+if (htmlTabs.join(',') !== GROUPS.join(',')) {
+  failures.push(`index.html 的分頁與 assets/groups.js 不符（HTML: ${htmlTabs.join(',')}／資料: ${GROUPS.join(',')}）`);
+}
+for (const group of GROUPS) {
+  const label = GROUP_META[group]?.label;
+  if (!label) { failures.push(`groups.js 的 ${group} 缺少 label`); continue; }
+  /* 分頁按鈕的文字用的是不含「試穿」的短標（鞋款試穿 → 鞋款），比對前綴即可。 */
+  const shortLabel = label.replace('試穿', '');
+  if (!new RegExp(`data-group="${group}"[^>]*>${shortLabel}`).test(indexHtml)) {
+    failures.push(`index.html 的 ${group} 分頁文字與 groups.js 的「${label}」不一致`);
+  }
 }
 /* 地圖頁在 Leaflet 載不到時，店家清單／搜尋／篩選仍須運作。
  * 這曾經是把整支模組包在 `} else {` 裡而整段被跳過——畫面上卻寫著「仍可正常使用」。
@@ -198,6 +278,17 @@ if (!/import \{ STORE_SUMMARIES \} from '\.\.\/assets\/stores\.js\?v=\d{8}\.\d+'
 }
 
 const catalog = createCatalogIndex(PRODUCTS);
+
+/* TRY_ONLY_GROUPS 必須與商品資料的 tracking 欄位一致，否則會出現
+   「滑鼠分頁永遠顯示已買 0 項」這種只有實際打開那一頁才看得到的錯誤。 */
+for (const group of GROUPS) {
+  const items = catalog.byGroup.get(group) || [];
+  if (items.length === 0) continue;
+  const allTry = items.every((product) => product.tracking === 'try');
+  if (allTry !== TRY_ONLY_GROUPS.has(group)) {
+    failures.push(`${group} 的 tracking 與 TRY_ONLY_GROUPS 不一致（資料全為 try：${allTry}）`);
+  }
+}
 if (catalog.byId.size !== PRODUCTS.length || catalog.byTracking.buy.length + catalog.byTracking.try.length !== PRODUCTS.length) {
   failures.push('共用商品索引未完整涵蓋 id 與 buy／try tracking');
 }
@@ -213,13 +304,31 @@ for (const product of PRODUCTS) {
 if (!/width="156" height="156" loading="lazy" decoding="async"/.test(indexApp) || !/img\.width = 48;[\s\S]*img\.height = 48;[\s\S]*img\.decoding = 'async';/.test(mapApp)) {
   failures.push('商品卡片或地圖縮圖缺少固定尺寸與非同步解碼');
 }
-for (const url of [
-  'https://unpkg.com/leaflet@1.9.4/',
-  'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/',
-  'https://unpkg.com/leaflet.markercluster@1.5.3/',
-  'https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/',
-]) {
-  if (!mapHtml.includes(url)) failures.push(`地圖 CDN 備援缺少 ${url}`);
+/* 這裡原本釘的是「unpkg 與 cdnjs 兩條備援都要在」。
+   Leaflet 改為自帶之後，那個契約已由上方「不得再引用 CDN」的檢查取代——
+   版本改釘在自帶檔案本身，避免升級時 map.html 與 assets/vendor/ 內容脫節。 */
+/* 自帶檔案改用內容雜湊釘住，而不是找檔案裡的版本字串——
+   markercluster 的壓縮檔裡根本沒有版本號，而雜湊連「同版本但被改過一個位元組」都擋得住。
+   這等於把原本掛在 CDN URL 上的 SRI 搬進版控裡：檔案由本站部署，但仍然驗得出內容。
+   leaflet.css 的雜湊與先前釘在 map.html 的 unpkg SRI 完全相同，
+   證明自帶的位元組就是原本從 CDN 載到的那一份。
+   升級套件時這裡的雜湊要跟著更新，這是刻意的：換掉第三方程式應該是明確的動作。 */
+const VENDOR_HASHES = {
+  'assets/vendor/leaflet/leaflet.js': 'sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=',
+  'assets/vendor/leaflet/leaflet.css': 'sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=',
+  'assets/vendor/leaflet.markercluster/leaflet.markercluster.js': 'sha256-Hk4dIpcqOSb0hZjgyvFOP+cEmDXUKKNE/tT542ZbNQg=',
+  'assets/vendor/leaflet.markercluster/MarkerCluster.css': 'sha256-YU3qCpj/P06tdPBJGPax0bm6Q1wltfwjsho5TR4+TYc=',
+  'assets/vendor/leaflet.markercluster/MarkerCluster.Default.css': 'sha256-YSWCMtmNZNwqex4CEw1nQhvFub2lmU7vcCKP+XVwwXA=',
+};
+for (const [file, expected] of Object.entries(VENDOR_HASHES)) {
+  const full = path.join(ROOT, file);
+  if (!existsSync(full)) { failures.push(`自帶套件檔案不存在：${file}`); continue; }
+  const actual = `sha256-${createHash('sha256').update(readFileSync(full)).digest('base64')}`;
+  if (actual !== expected) failures.push(`${file} 內容與釘住的雜湊不符（實際 ${actual}）`);
+}
+/* 自帶第三方程式就有義務保留授權條款（Leaflet BSD-2-Clause、markercluster MIT）。 */
+for (const licence of ['assets/vendor/leaflet/LICENSE', 'assets/vendor/leaflet.markercluster/MIT-LICENCE.txt']) {
+  if (!existsSync(path.join(ROOT, licence))) failures.push(`自帶套件缺少授權檔 ${licence}`);
 }
 if (!/lastPlacementKey/.test(mapApp) || !/placementKey === lastPlacementKey\) return false/.test(mapApp) || !/renderKey === lastStoreRenderKey\) return false/.test(mapApp)) {
   failures.push('地圖 marker 或店家清單缺少 lastPlacementKey／no-op 契約');

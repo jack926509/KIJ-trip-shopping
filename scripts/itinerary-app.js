@@ -1,8 +1,8 @@
-import { PRODUCTS } from '../assets/products.js?v=20260901.2';
-import { STORES } from '../assets/stores.js?v=20260901.2';
-import { ITINERARY_DAYS } from '../assets/itinerary.js?v=20260901.2';
-import { AREA_LABELS, createRoutePlanner, walkText } from '../assets/route-planner.js?v=20260901.2';
-import { readStoredBool } from '../assets/app-utils.js';
+import { PRODUCTS } from '../assets/products.js?v=20260902.1';
+import { STORES } from '../assets/stores.js?v=20260902.1';
+import { ITINERARY_DAYS } from '../assets/itinerary.js?v=20260902.1';
+import { AREA_LABELS, createRoutePlanner, walkText } from '../assets/route-planner.js?v=20260902.1';
+import { readStoredBool } from '../assets/app-utils.js?v=20260902.1';
 
 const planner = createRoutePlanner({ stores: STORES, products: PRODUCTS, readStoredBool });
 const storesById = new Map(STORES.map((store) => [store.id, store]));
@@ -16,10 +16,13 @@ function makeElement(tag, className, text) {
   return element;
 }
 
-/* 旅程在日本、人從台灣出發，兩地同為 UTC+9／+8 之外的判斷會讓「今天」跳掉一天；
- * 沿用既有的 Asia/Taipei 基準，只是把它抽出來讓分頁也標得出「今天」。 */
+/* 「今天」一律以日本時間判斷：這份行程從頭到尾都在日本執行。
+ * 先前用 Asia/Taipei（UTC+8）而非 Asia/Tokyo（UTC+9），差的那一小時剛好落在
+ * 日本時間 00:00–01:00——那正是回到飯店、翻出隔天行程的時段，
+ * 畫面卻還把「今天」標在前一天，預設分頁也停在前一天。
+ * 裝置本身設在哪個時區不影響結果，因為這裡指定了時區而不是讀本機設定。 */
 function todayDate() {
-  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Taipei' }).format(new Date());
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Tokyo' }).format(new Date());
 }
 
 function defaultDate() {

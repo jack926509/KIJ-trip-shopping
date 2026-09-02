@@ -97,6 +97,18 @@ const september6Drugstore = ITINERARY_SEGMENTS.find((segment) => segment.id === 
 assert.equal(september6Drugstore.optional, true, '9/6 藥妝代表站必須可略過');
 assert.deepEqual(september6Drugstore.productIds, [], '9/6 藥妝代表站不得綁商品或暗示庫存');
 
+/* 「今天」必須以日本時間判斷。這個測試同時釘住選擇與理由：
+ * 下面的瞬間是日本 9/6 00:30、台北 9/5 23:30——正是回飯店翻隔天行程的時刻。
+ * 用錯時區時，行程頁會把「今天」標在已經過完的那一天。 */
+const itineraryAppSource = await readFile(new URL('./itinerary-app.js', import.meta.url), 'utf8');
+const todayTimeZone = itineraryAppSource.match(/timeZone: '([\w/]+)'/)?.[1];
+assert.equal(todayTimeZone, 'Asia/Tokyo', '行程頁的「今天」必須以 Asia/Tokyo 判斷，行程全程在日本');
+
+const midnightInJapan = new Date('2026-09-05T15:30:00Z');
+const dateIn = (timeZone) => new Intl.DateTimeFormat('en-CA', { timeZone }).format(midnightInJapan);
+assert.equal(dateIn('Asia/Tokyo'), '2026-09-06', '日本時間應已進入 9/6');
+assert.equal(dateIn('Asia/Taipei'), '2026-09-05', '台北時間仍停在 9/5——這正是舊實作標錯日期的原因');
+
 const itineraryHtml = await readFile(new URL('../itinerary.html', import.meta.url), 'utf8');
 assert.ok(itineraryHtml.includes('藥妝不綁單一門市或庫存'), '頁面導言應說明藥妝只使用代表站');
 assert.ok(!itineraryHtml.includes('藥妝與便利商店刻意不排'), '頁面導言不得殘留舊版藥妝完全不排行程的說法');

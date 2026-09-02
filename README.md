@@ -17,6 +17,7 @@
 - 商品價格來源與查證日期
 - 依日期顯示固定購物行程
 - 依未完成商品產生即時補買路線，並可在地圖顯示站序
+- 離線可用：三頁與商品縮圖預先快取，店內訊號不穩時仍打得開
 
 ## 專案結構
 
@@ -26,19 +27,27 @@
 ├── itinerary.html              # 固定行程與即時補買路線
 ├── map.html                    # 購物地圖（店家資料已抽出，見 assets/stores.js）
 ├── package.json
+├── sw.js                       # 離線快取（預快取清單由 build:sw 產生）
 ├── assets/
 │   ├── kij.css                 # 三頁共用樣式
 │   ├── itinerary.css           # 行程頁樣式
+│   ├── map.css                 # 地圖頁樣式
+│   ├── groups.js               # 商品分頁（group）唯一來源
 │   ├── itinerary.js            # 固定行程唯一資料源
+│   ├── list-model.js           # 清單挑選邏輯（搜尋、篩選、進度計數）
 │   ├── products.js             # 單一商品資料源＋JPY_TWD_RATE 匯率
 │   ├── route-planner.js        # 固定／即時路線共用邏輯
-│   └── stores.js               # 單一店家資料源（三頁共用）
+│   ├── stores.js               # 單一店家資料源（三頁共用）
+│   └── vendor/                 # 自帶的 Leaflet 與圖釘聚合套件（不走 CDN）
 ├── scripts/
 │   ├── index-app.js            # 清單頁互動
 │   ├── itinerary-app.js        # 行程頁互動
 │   ├── map-app.js              # 地圖頁互動與路線繪製
+│   ├── register-sw.js          # 三頁共用的離線快取註冊
 │   ├── validate-products.mjs   # 資料驗證器
 │   ├── build-images.mjs        # 由原圖產生 thumb／full
+│   ├── build-placeholder-images.mjs # 由 placeholder-manifest 產生文字品牌卡
+│   ├── build-sw-precache.mjs   # 產生 sw.js 的預快取清單
 │   └── extract-embedded-images.mjs
 ├── skills/kij-shopping-list/   # 新增商品用的 Skill
 ├── docs/                       # 價格與店家的查證紀錄
@@ -47,7 +56,8 @@
     ├── thumb/<id>.webp         # 卡片縮圖，檔名必須等於商品 id
     ├── full/<id>.webp          # 放大圖
     ├── source/                 # 原始圖（不直接使用）
-    ├── build-manifest.json     # id → 原圖來源對照
+    ├── build-manifest.json     # id → 原圖來源對照（實拍照片走這條）
+    ├── placeholder-manifest.json # id → 品牌／型號／主色（無實拍照的文字卡）
     ├── hoka/ · on/ · dryer/    # 品牌官方圖
     └── products/
 ```
@@ -58,6 +68,8 @@
 - 店家：`assets/stores.js`
 - 固定行程：`assets/itinerary.js`
 - 路線計算：`assets/route-planner.js`
+- 商品分頁：`assets/groups.js`
+- 清單挑選邏輯：`assets/list-model.js`
 
 店家的兩個名稱刻意並存、且在同一筆記錄裡相鄰擺放，方便一眼核對：
 
@@ -139,11 +151,21 @@ cp -R skills/kij-shopping-list ~/.codex/skills/
 **任何資料變更後都要執行：**
 
 ```bash
+npm run build:sw      # 商品有增減時，重新產生離線預快取清單
 npm run validate:data
 npm test
 ```
 
-`.github/workflows/validate-data.yml` 會在 push 與 PR 時自動執行這兩項。
+`npm test` 會擋下預快取清單過期，所以忘了跑 `build:sw` 不會悄悄溜過去。
+
+`.github/workflows/validate-data.yml` 會在 push 與 PR 時自動執行驗證與測試。
+
+測試分兩種，刻意不混在一起：
+
+- `test-list-ui.mjs`、`test-itinerary.mjs`：**契約與不變條件**（HTML 與資料相符、
+  快取版號一致、不得重建副本、自帶套件的雜湊）。這些只能靠比對原始碼。
+- `test-list-model.mjs`：**真的執行**清單頁的挑選邏輯（搜尋、篩選、進度計數）。
+  這類問題比對原始碼看不出來，必須跑一遍才知道。
 
 驗證器除了檢查欄位格式，也會攔截「同一筆資料的兩個欄位互相矛盾」這類過去只能靠人工複查才找得到的問題：
 
@@ -157,10 +179,41 @@ npm test
 | 營業時間 | 不得只寫「依…公告」這類空泛字樣 |
 | 樓層一致性 | 店家 `address` 與 `mapsQuery` 的樓層寫法不得互相矛盾 |
 | 店家資料完整性 | `stores.js` 每筆都必須有 `name`、`listName`、`type` 等欄位與數字座標，id 不得重複 |
-| 禁止重建副本 | `map.html` 不得再內嵌 `const STORES`，`index.html` 不得再寫死 `STORE_SUMMARIES` |
+| 禁止重建副本 | `map.html` 不得再內嵌 `const STORES` 或 `<style>`，`index.html` 不得再寫死 `STORE_SUMMARIES`；分頁按鈕必須與 `assets/groups.js` 相符 |
 | 行程資料 | 日期、時段、segment、店家與商品 id 必須存在且站序時間合法 |
 
 其他既有檢查：id 唯一、`stores` 必須指向地圖上存在的店家、有價格就必須有 `source` 檔案、每項商品都要有 `images/thumb/<id>.webp`、中文欄位不得混入簡體字。
+
+## 離線快取
+
+網站要在日本的店裡用，而地下街與大型店內訊號經常不穩。`sw.js` 會預先快取三個頁面、
+全部程式與樣式、自帶的 Leaflet，以及 79 張商品縮圖（約 1.3 MB），斷線時三頁都能完整開啟。
+
+| 資源 | 策略 | 原因 |
+| --- | --- | --- |
+| HTML | 網路優先、離線回退 | HTML 是唯一指向版號的檔案，要拿得到新版才會載入新資產 |
+| 帶 `?v=` 的 CSS／JS | 快取優先 | 版號變了就是新網址，必然 miss，不會拿到過期內容 |
+| 商品縮圖 | 安裝時預抓 | 現場一定會看 |
+| 放大圖 | 用到才存 | 5.7 MB 且多數不會點開 |
+| 地圖圖磚 | 用到才存，上限 800 筆 | 存過的區域離線也看得到；不隨版本汰換 |
+
+**更新網站時**：改任何資產後把三頁的 `?v=` 與 `sw.js` 的 `CACHE_VERSION` 一起推進，
+再跑 `npm run build:sw`。三者對不上時 `npm test` 會擋下來。
+
+## 第三方套件
+
+Leaflet 1.9.4 與 leaflet.markercluster 1.5.3 **自帶在 `assets/vendor/`，不走 CDN**。
+CDN 是境外連線、訊號差時最先斷的一環，而 service worker 只能快取同源資產——
+掛在 CDN 上等於地圖永遠離線不了。自帶之後也不需要 SRI：檔案同源、跟著本站部署。
+
+檔案內容由 `npm test` 以 sha256 釘住（`VENDOR_HASHES`）。升級方式：
+
+```bash
+npm pack leaflet@<版本>
+# 解開後覆蓋 assets/vendor/，更新測試裡的雜湊與 sw.js 的 CACHE_VERSION
+```
+
+授權條款隨檔案保留：Leaflet 為 BSD-2-Clause、markercluster 為 MIT。
 
 ## 匯率
 
@@ -189,6 +242,16 @@ npm run build:images
 
 原圖放在 `images/source/`（或 `images/products/`、品牌資料夾），並在 `images/build-manifest.json` 登記 `商品 id → 原圖路徑`，產出 `images/thumb/<id>.webp` 與 `images/full/<id>.webp`。**縮圖檔名必須等於商品 id**，驗證器會檢查。
 
+有些商品目前找不到可用的實拍照（例如部分滑鼠），但卡片仍需要一張圖檔。這類改用文字版品牌卡：
+
+```bash
+npm run build:placeholders
+```
+
+它讀 `images/placeholder-manifest.json` 的 `商品 id → 品牌／型號／主色`，產出同樣的 `thumb`／`full`。
+兩份 manifest 是互斥的：一個商品的圖只會由其中一條管線產生，日後補到實拍照就從
+`placeholder-manifest.json` 移到 `build-manifest.json`。
+
 商品下架時，記得一併刪除 `thumb`／`full`／原圖與 manifest 項目，避免留下無人引用的孤兒圖片。
 
 建議：
@@ -201,7 +264,8 @@ npm run build:images
 
 ## 圖片來源
 
-- CIO 行動電源與滑鼠分頁的卡片圖為**品牌官方商品照**（2026-08-20 由規格示意圖／文字版品牌卡換成實品照）；原圖存於 `images/source/`，如需更換照片，覆蓋原圖後再跑 `npm run build:images` 即可。舊的 `.svg` 規格示意圖仍留在 `images/source/`，已不被 `images/build-manifest.json` 引用。
+- CIO 行動電源與**部分**滑鼠的卡片圖為**品牌官方商品照**（2026-08-20 由規格示意圖／文字版品牌卡換成實品照，共 8 項）；原圖存於 `images/source/`，如需更換照片，覆蓋原圖後再跑 `npm run build:images` 即可。舊的 `.svg` 規格示意圖仍留在 `images/source/`，已不被 `images/build-manifest.json` 引用。
+- 滑鼠分頁其餘 6 款（`elecom-ex-g-pro`、`sanwa-400-ma092`、`logicool-ergo-m575-sp`、`logicool-mx-ergo-s`、`logicool-pebble-mouse-2-m350s`、`buffalo-bsmbw318bk`）**仍是文字版品牌卡，不是實拍照片**，由 `npm run build:placeholders` 依 `images/placeholder-manifest.json` 產生。找到可用的官方商品照後，把它登記到 `images/build-manifest.json`、從 `placeholder-manifest.json` 移除，再跑 `npm run build:images`。
 - ON 鞋款圖片取自 [ON 官方網站](https://www.on.com/)，頁面內均標註來源並連回對應官方商品頁。
 - HOKA 鞋款圖片取自台灣經銷商 [ISPO+ 官方網站](https://www.ispo.com.tw/)，頁面內均標註實際圖片來源；商品資訊連結仍指向 HOKA 日本官方網站。
 - 圖片僅供個人旅遊採購規劃使用；公開或商業使用仍應依品牌授權條款辦理。
