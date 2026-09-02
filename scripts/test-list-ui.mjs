@@ -5,6 +5,7 @@ import path from 'node:path';
 import { PRODUCTS } from '../assets/products.js';
 import { STORE_SUMMARIES } from '../assets/stores.js';
 import { createCatalogIndex } from '../assets/catalog-index.js';
+import { precacheUrls, renderBlock, currentBlock } from './build-sw-precache.mjs';
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const indexHtml = readFileSync(path.join(ROOT, 'index.html'), 'utf8');
@@ -83,6 +84,30 @@ if (!/ITINERARY_DAYS/.test(itineraryApp) || !/remainingGroups\(\)/.test(itinerar
 /* Leaflet 自帶：這個網站要在日本的店裡用，境外 CDN 是訊號差時最先斷的一環，
    而 service worker 只能快取同源資產。把地圖套件掛回 CDN 等於同時放棄離線能力，
    也把「檔案內容由第三方決定」這件事重新引進來。 */
+/* 離線快取的預快取清單是產生出來的，但產生的結果會過期——
+   新增一項商品卻忘了跑 npm run build:sw，那張卡片在店裡就是沒有圖，
+   而且不會有任何錯誤訊息。這裡直接比對「現在該長什麼樣」與「sw.js 裡實際是什麼」。 */
+const swPath = path.join(ROOT, 'sw.js');
+if (!existsSync(swPath)) {
+  failures.push('缺少 sw.js，離線快取不存在');
+} else {
+  const swSource = readFileSync(swPath, 'utf8');
+  const expectedBlock = renderBlock(precacheUrls());
+  if (currentBlock(swSource) !== expectedBlock) {
+    failures.push('sw.js 的預快取清單已過期，請跑 npm run build:sw');
+  }
+  /* 版號必須與頁面資產一致，否則會變成「存了一份、又去抓一份」，離線時反而拿不到。 */
+  const swVersion = swSource.match(/CACHE_VERSION = '(\d{8}\.\d+)'/)?.[1];
+  const pageVersion = indexHtml.match(/\?v=(\d{8}\.\d+)/)?.[1];
+  if (swVersion !== pageVersion) {
+    failures.push(`sw.js 的 CACHE_VERSION（${swVersion}）與頁面資產版號（${pageVersion}）不一致`);
+  }
+  /* 三頁都要註冊，否則只有其中一頁能離線開啟——而現場最常開的是清單頁。 */
+  for (const [page, html] of [['清單', indexHtml], ['行程', itineraryHtml], ['地圖', mapHtml]]) {
+    if (!/scripts\/register-sw\.js\?v=\d{8}\.\d+/.test(html)) failures.push(`${page}頁沒有註冊離線快取`);
+  }
+}
+
 /* 地圖頁樣式不得再內嵌回 map.html：內嵌樣式拿不到 ?v= 版號、無法獨立快取，
    也讓頁面結構被 1,100 行樣式淹沒。另外兩頁本來就走外部樣式表。 */
 if (/<style[\s>]/.test(mapHtml)) failures.push('map.html 不得再內嵌 <style>，地圖樣式屬於 assets/map.css');
