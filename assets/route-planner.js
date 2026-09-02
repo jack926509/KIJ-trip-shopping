@@ -1,5 +1,5 @@
-import { createCatalogIndex } from './catalog-index.js';
-import { ITINERARY_SEGMENTS_BY_ID } from './itinerary.js?v=20260901.2';
+import { createCatalogIndex } from './catalog-index.js?v=20260902.1';
+import { ITINERARY_SEGMENTS_BY_ID } from './itinerary.js?v=20260902.1';
 
 export const ROUTE_AREA_ORDER = ['tenjin', 'hakata', 'kokura'];
 export const AREA_LABELS = { tenjin: '天神', hakata: '博多', kokura: '小倉' };

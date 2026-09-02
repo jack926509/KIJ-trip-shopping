@@ -1,9 +1,9 @@
-import { PRODUCTS } from '../assets/products.js?v=20260901.2';
+import { PRODUCTS } from '../assets/products.js?v=20260902.1';
 /* 店家的顯示名稱與分類一律取自 assets/stores.js，本檔不再自行維護副本——
    先前那份手抄的 STORE_SUMMARIES 與地圖的 STORES 已經漂移到 18 家店顯示不同名稱。 */
-import { STORE_SUMMARIES } from '../assets/stores.js?v=20260901.2';
-import { createCatalogIndex } from '../assets/catalog-index.js';
-import { makeImageFallback, readStoredBool, writeStoredBool } from '../assets/app-utils.js';
+import { STORE_SUMMARIES } from '../assets/stores.js?v=20260902.1';
+import { createCatalogIndex } from '../assets/catalog-index.js?v=20260902.1';
+import { makeImageFallback, readStoredBool, writeStoredBool } from '../assets/app-utils.js?v=20260902.1';
 
 /* ────────────────────────────────────────────────────────────────
  * 資料索引

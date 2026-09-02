@@ -34,7 +34,7 @@
        真正的降級判斷在 initMap()：L.markerClusterGroup 不存在就退回 L.layerGroup。 -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" onerror="this.onerror=null;this.href='https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css'">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" onerror="this.onerror=null;this.href='https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css'">
-  <link rel="stylesheet" href="assets/kij.css">
+  <link rel="stylesheet" href="assets/kij.css?v=20260902.1">
   <style>
     /* 色票主檔是 assets/kij.css（index.html 也吃同一支）：
      * --bg / --surface / --accent / --accent-soft / --text / --muted / --line / --tap-min
@@ -1331,6 +1331,6 @@
       ], () => typeof window.L?.markerClusterGroup === 'function');
     });
   </script>
-  <script type="module" src="scripts/map-app.js?v=20260901.2"></script>
+  <script type="module" src="scripts/map-app.js?v=20260902.1"></script>
 </body>
 </html>

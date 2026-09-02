@@ -47,6 +47,18 @@ const versionedModuleRefs = [
   ['地圖店家資料', mapApp, /assets\/stores\.js\?v=(\d{8}\.\d+)(?=['"])/],
   ['地圖路線模組', mapApp, /assets\/route-planner\.js\?v=(\d{8}\.\d+)(?=['"])/],
   ['路線時段資料', routePlannerApp, /itinerary\.js\?v=(\d{8}\.\d+)(?=['"])/],
+  /* 共用樣式與共用小模組先前完全沒有版號，而 kij.css 是三頁都吃的那一支——
+     改樣式是最頻繁的改動，卻剛好是唯一不會被快取版號保護的檔案，
+     結果就是新 DOM 配舊 CSS。這三支必須跟著其他資產一起帶版號。 */
+  ['清單共用樣式', indexHtml, /assets\/kij\.css\?v=(\d{8}\.\d+)(?=['"])/],
+  ['行程共用樣式', itineraryHtml, /assets\/kij\.css\?v=(\d{8}\.\d+)(?=['"])/],
+  ['地圖共用樣式', mapHtml, /assets\/kij\.css\?v=(\d{8}\.\d+)(?=['"])/],
+  ['清單商品索引', indexApp, /assets\/catalog-index\.js\?v=(\d{8}\.\d+)(?=['"])/],
+  ['清單共用工具', indexApp, /assets\/app-utils\.js\?v=(\d{8}\.\d+)(?=['"])/],
+  ['地圖商品索引', mapApp, /assets\/catalog-index\.js\?v=(\d{8}\.\d+)(?=['"])/],
+  ['地圖共用工具', mapApp, /assets\/app-utils\.js\?v=(\d{8}\.\d+)(?=['"])/],
+  ['行程共用工具', itineraryApp, /assets\/app-utils\.js\?v=(\d{8}\.\d+)(?=['"])/],
+  ['路線商品索引', routePlannerApp, /catalog-index\.js\?v=(\d{8}\.\d+)(?=['"])/],
 ];
 const moduleVersions = versionedModuleRefs.map(([label, source, pattern]) => {
   const match = source.match(pattern);
