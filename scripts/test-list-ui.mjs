@@ -1,4 +1,5 @@
 import { existsSync, readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { PRODUCTS } from '../assets/products.js';
@@ -77,6 +78,28 @@ if (!/id="itineraryDayTabs"/.test(itineraryHtml) || !/id="remainingRouteGroups"/
 if (!/ITINERARY_DAYS/.test(itineraryApp) || !/remainingGroups\(\)/.test(itineraryApp)) {
   failures.push('行程頁沒有使用固定行程與即時補買共用資料');
 }
+/* Leaflet 自帶：這個網站要在日本的店裡用，境外 CDN 是訊號差時最先斷的一環，
+   而 service worker 只能快取同源資產。把地圖套件掛回 CDN 等於同時放棄離線能力，
+   也把「檔案內容由第三方決定」這件事重新引進來。 */
+for (const cdn of ['unpkg.com', 'cdnjs.cloudflare.com']) {
+  if (mapHtml.split('\n').some((line) => line.includes(cdn) && (line.includes('src=') || line.includes('href=')))) {
+    failures.push(`地圖頁不得再從 ${cdn} 載入資產，Leaflet 已自帶於 assets/vendor/`);
+  }
+}
+for (const vendored of [
+  'assets/vendor/leaflet/leaflet.js',
+  'assets/vendor/leaflet/leaflet.css',
+  'assets/vendor/leaflet.markercluster/leaflet.markercluster.js',
+]) {
+  if (!mapHtml.includes(vendored)) failures.push(`地圖頁缺少自帶資產 ${vendored}`);
+  if (!existsSync(path.join(ROOT, vendored))) failures.push(`自帶資產檔案不存在：${vendored}`);
+}
+/* 沒有 Leaflet 就只畫店家清單的降級路徑，是自帶之後唯一還會用到旗標的地方，
+   自帶檔案一樣可能因部署漏檔而載不到，這兩個旗標不能跟著 CDN 一起被拿掉。 */
+if (!/window\.__leafletReady/.test(mapHtml) || !/window\.__markerClusterReady/.test(mapHtml)) {
+  failures.push('地圖頁移除了 Leaflet 載入結果旗標，map-app.js 的降級路徑會失效');
+}
+
 if (/id="routePanel"/.test(mapHtml)) failures.push('地圖頁仍保留舊購物路線建議面板');
 if (!/createRoutePlanner/.test(mapApp) || !/searchParams\.get\('plan'\)/.test(mapApp) || !/searchParams\.get\('route'\)/.test(mapApp)) {
   failures.push('地圖頁尚未使用共用路線模組解析 plan／route 網址參數');
@@ -225,13 +248,31 @@ for (const product of PRODUCTS) {
 if (!/width="156" height="156" loading="lazy" decoding="async"/.test(indexApp) || !/img\.width = 48;[\s\S]*img\.height = 48;[\s\S]*img\.decoding = 'async';/.test(mapApp)) {
   failures.push('商品卡片或地圖縮圖缺少固定尺寸與非同步解碼');
 }
-for (const url of [
-  'https://unpkg.com/leaflet@1.9.4/',
-  'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/',
-  'https://unpkg.com/leaflet.markercluster@1.5.3/',
-  'https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/',
-]) {
-  if (!mapHtml.includes(url)) failures.push(`地圖 CDN 備援缺少 ${url}`);
+/* 這裡原本釘的是「unpkg 與 cdnjs 兩條備援都要在」。
+   Leaflet 改為自帶之後，那個契約已由上方「不得再引用 CDN」的檢查取代——
+   版本改釘在自帶檔案本身，避免升級時 map.html 與 assets/vendor/ 內容脫節。 */
+/* 自帶檔案改用內容雜湊釘住，而不是找檔案裡的版本字串——
+   markercluster 的壓縮檔裡根本沒有版本號，而雜湊連「同版本但被改過一個位元組」都擋得住。
+   這等於把原本掛在 CDN URL 上的 SRI 搬進版控裡：檔案由本站部署，但仍然驗得出內容。
+   leaflet.css 的雜湊與先前釘在 map.html 的 unpkg SRI 完全相同，
+   證明自帶的位元組就是原本從 CDN 載到的那一份。
+   升級套件時這裡的雜湊要跟著更新，這是刻意的：換掉第三方程式應該是明確的動作。 */
+const VENDOR_HASHES = {
+  'assets/vendor/leaflet/leaflet.js': 'sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=',
+  'assets/vendor/leaflet/leaflet.css': 'sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=',
+  'assets/vendor/leaflet.markercluster/leaflet.markercluster.js': 'sha256-Hk4dIpcqOSb0hZjgyvFOP+cEmDXUKKNE/tT542ZbNQg=',
+  'assets/vendor/leaflet.markercluster/MarkerCluster.css': 'sha256-YU3qCpj/P06tdPBJGPax0bm6Q1wltfwjsho5TR4+TYc=',
+  'assets/vendor/leaflet.markercluster/MarkerCluster.Default.css': 'sha256-YSWCMtmNZNwqex4CEw1nQhvFub2lmU7vcCKP+XVwwXA=',
+};
+for (const [file, expected] of Object.entries(VENDOR_HASHES)) {
+  const full = path.join(ROOT, file);
+  if (!existsSync(full)) { failures.push(`自帶套件檔案不存在：${file}`); continue; }
+  const actual = `sha256-${createHash('sha256').update(readFileSync(full)).digest('base64')}`;
+  if (actual !== expected) failures.push(`${file} 內容與釘住的雜湊不符（實際 ${actual}）`);
+}
+/* 自帶第三方程式就有義務保留授權條款（Leaflet BSD-2-Clause、markercluster MIT）。 */
+for (const licence of ['assets/vendor/leaflet/LICENSE', 'assets/vendor/leaflet.markercluster/MIT-LICENCE.txt']) {
+  if (!existsSync(path.join(ROOT, licence))) failures.push(`自帶套件缺少授權檔 ${licence}`);
 }
 if (!/lastPlacementKey/.test(mapApp) || !/placementKey === lastPlacementKey\) return false/.test(mapApp) || !/renderKey === lastStoreRenderKey\) return false/.test(mapApp)) {
   failures.push('地圖 marker 或店家清單缺少 lastPlacementKey／no-op 契約');
